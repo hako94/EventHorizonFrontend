@@ -50,7 +50,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'EventHorizonFrontend'
+          app-name: 'event-horizon-frontend'
 #          slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0648C78382DD4330A23345E26CAEDAFE }}
-          package: ./dist/EventHorizonFrontend
+          package: ./dist/event-horizon-frontend
