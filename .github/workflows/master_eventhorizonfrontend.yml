@@ -30,7 +30,7 @@ jobs:
       - name: npm install, build, and test
         run: |
           npm install
-          npm run build --prod --if-present
+          npm run build --if-present
 #          npm run test --if-present
 #          tar -zcvf dist.tar.gz .
 
