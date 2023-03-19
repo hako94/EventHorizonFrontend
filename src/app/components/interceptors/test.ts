@@ -17,18 +17,6 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     req = req.clone({
       headers: req.headers.set('Authorization', jwtString)
     });
-    req = req.clone({
-      headers: req.headers.set('jwtCookie', jwtString)
-    });
-    req = req.clone({
-      headers: req.headers.set('XSRF-TOKEN', xss)
-    });
-    req = req.clone({
-      headers: req.headers.set('X-XSRF-TOKEN', xss)
-    });
-    req = req.clone({
-      withCredentials: true
-    });
 
     return next.handle(req);
   }

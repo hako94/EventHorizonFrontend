@@ -2,7 +2,8 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 
-const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
+const BACKEND_API = 'http://localhost:8080/'
+//const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
 
 @Injectable({
   providedIn: 'root',

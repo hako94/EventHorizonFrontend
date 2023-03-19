@@ -3,7 +3,8 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {LoginResponse} from "../models/LoginResponse";
 
-const BACKEND_AUTH_API = 'https://eventhorizonbackend.azurewebsites.net/';
+//const BACKEND_AUTH_API = 'http://localhost:8080/api/v1/auth/'
+const BACKEND_AUTH_API = 'https://eventhorizonbackend.azurewebsites.net/api/v1/auth/';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
