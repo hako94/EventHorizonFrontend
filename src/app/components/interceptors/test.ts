@@ -12,11 +12,10 @@ export class HttpRequestInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     let jwtString = "Bearer " + this.storageService.getUser();
-    let xss = this.storageService.getCsrfKey() || '';
 
-    req = req.clone({
-      headers: req.headers.set('Authorization', jwtString)
-    });
+    //req = req.clone({
+    //  headers: req.headers.set('Authorization', jwtString)
+    //});
 
     return next.handle(req);
   }
