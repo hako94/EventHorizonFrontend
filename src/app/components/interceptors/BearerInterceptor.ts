@@ -13,9 +13,9 @@ export class HttpRequestInterceptor implements HttpInterceptor {
 
     let jwtString = "Bearer " + this.storageService.getUser();
 
-    //req = req.clone({
-    //  headers: req.headers.set('Authorization', jwtString)
-    //});
+    req = req.clone({
+      headers: req.headers.set('Authorization', jwtString)
+    });
 
     return next.handle(req);
   }
