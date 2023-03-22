@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {AuthService} from "../../services/AuthService";
 import {StorageService} from "../../services/Storage";
 import {DataService} from "../../services/DataService";
-import {subscribeOn} from "rxjs";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -15,7 +15,49 @@ export class RegisterComponent {
     password: null
   };
 
-  constructor(private authService: AuthService, private jwtStorage : StorageService, private dataService : DataService) { }
+  withOrganizationId : boolean;
+  withNewUser : boolean;
+  organization : string;
+  preparedEmail : string;
+  inviteId : string;
+
+  constructor(private authService: AuthService,
+              private jwtStorage : StorageService,
+              private dataService : DataService,
+              private route: ActivatedRoute) {
+
+    this.withOrganizationId = false;
+    this.withNewUser = true;
+    this.organization = "";
+    this.preparedEmail = "";
+    this.inviteId = "";
+
+    this.route.queryParams.subscribe(params => {
+
+      console.log("found newUser" + params['newUser'])
+
+      if (params['newUser'] == 'false') {
+        this.withNewUser = false;
+        //TODO: Check session.isalive
+      }
+
+      this.organization = params['OrganizationId']
+      if (this.organization) {
+        this.withOrganizationId = true;
+      }
+      this.preparedEmail = decodeURIComponent(params['UserIdEmail']);
+      this.inviteId = params['createdUserModel'];
+
+      console.log("Email " + this.preparedEmail)
+
+      if (this.preparedEmail != "undefined"){
+        this.form.email = this.preparedEmail;
+      }
+    });
+
+    console.log("withOrganizationId:" + this.withOrganizationId + " - newUser: " + this.withNewUser)
+  }
+
 
   test(): void {
     this.dataService.privateping().subscribe(success => {
@@ -24,23 +66,52 @@ export class RegisterComponent {
   }
 
   onSubmit(): void {
-    const { email, password } = this.form;
+    if (this.withOrganizationId) {
+      const {email, password} = this.form;
 
-    this.authService.register(email, password).subscribe(success => {
+      this.authService.registerWithLink(
+        email,
+        password,
+        "EinVorname",
+        "EinNachname",
+        this.preparedEmail,
+        this.organization,
+        this.inviteId).subscribe(success => {
 
-        //Auto Login
-        this.authService.login(email, password).subscribe(success => {
+          //Auto Login
+          this.authService.login(email, password).subscribe(success => {
 
-          this.jwtStorage.saveUser(success)
+            this.jwtStorage.saveUser(success)
 
-          console.log(success)
-        }, error => {
+            console.log(success)
+          }, error => {
+            console.log(error)
+          })
+        },
+        error => {
           console.log(error)
-        })
-      },
-      error => {
-        console.log(error)
-      }
-    );
+        }
+      );
+    } else {
+      const {email, password} = this.form;
+
+      this.authService.register(email, password).subscribe(success => {
+
+          //Auto Login
+          this.authService.login(email, password).subscribe(success => {
+
+            this.jwtStorage.saveUser(success)
+
+            console.log(success)
+
+          }, error => {
+            console.log(error)
+          })
+        },
+        error => {
+          console.log(error)
+        }
+      );
+    }
   }
 }

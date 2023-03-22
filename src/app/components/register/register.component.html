@@ -1,18 +1,30 @@
 <div class="register">
-  <h2>Registrierung für neuen User</h2>
-  <form name="form">
-    <label for="email">Email Adresse:</label>
-    <input type="email" id="email" name="email" [(ngModel)]="form.email"><br>
-    <label for="firstName">Vorname:</label>
-    <input type="text" id="firstName" required><br>
-    <label for="lastName">Nachname:</label>
-    <input type="text" id="lastName" required><br>
-    <label for="orgID">Organisations-ID:</label>
-    <input type="text" id="orgID" required><br>
-    <label for="password">Passwort: </label>
-    <input type="password" id="password" name="password" [(ngModel)]="form.password"><br>
-    <input type="submit" (click)="onSubmit()">
-  </form>
+  <ng-container *ngIf="withNewUser">
+    <ng-container *ngIf="withOrganizationId">
+      <h2>Registrierung neuer User mit Einladungslink</h2>
+      <p>zur Organisation: {{organization}}.decode</p>
+      <p>EinladungsId: {{inviteId}}</p>
+    </ng-container>
+    <ng-container *ngIf="!withOrganizationId">
+      <h2>Registrierung neuer User</h2>
+    </ng-container>
+    <form name="form">
+      <label for="email">Email Adresse:</label>
+      <input [disabled]="withOrganizationId" type="email" id="email" name="email" [(ngModel)]="form.email"><br>
+      <label for="firstName">Vorname:</label>
+      <input type="text" id="firstName" required><br>
+      <label for="lastName">Nachname:</label>
+      <input type="text" id="lastName" required><br>
+      <label for="password">Passwort: </label>
+      <input type="password" id="password" name="password" [(ngModel)]="form.password"><br>
+      <input type="submit" (click)="onSubmit()">
+    </form>
+  </ng-container>
+  <ng-container *ngIf="!withNewUser">
+    <p>Du wurdest zum Beitritt in eingeladen</p>
+    <button>Ja</button>
+    <button>Nein</button>
+  </ng-container>
 </div>
 
 <p>Test</p>
