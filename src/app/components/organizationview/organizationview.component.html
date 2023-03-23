@@ -4,6 +4,7 @@
 <button (click)="updateURLWithParam(memberViewParam)">Mitglieder</button>
 <button (click)="updateURLWithParam(upcommingViewParam)">Upcomming</button>
 <button (click)="updateURLWithParam(presetViewParam)">Vorlagen</button>
+<button (click)="updateURLWithParam(settingsViewParam)">Settings</button>
 <br>
 <ng-container *ngIf="currentParam === eventViewParam">
   <div class="border">
@@ -15,6 +16,12 @@
   <div class="border">
     <app-organizationmemberview [orgaID]="currentOrganization">
     </app-organizationmemberview>
+  </div>
+</ng-container>
+<ng-container *ngIf="currentParam === settingsViewParam">
+  <div class="border">
+    <app-organization-settings [orgaID]="currentOrganization">
+    </app-organization-settings>
   </div>
 </ng-container>
 <br>

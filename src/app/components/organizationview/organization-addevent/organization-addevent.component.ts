@@ -7,6 +7,7 @@ import {isEmpty} from "rxjs";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {EventTemplateModel} from "../../../models/EventTemplateModel";
 import {VariableTemplate} from "../../../models/VariableTemplate";
+import {AvailableTemplateList} from "../../../models/AvailableTemplateList";
 
 @Component({
   selector: 'app-organization-addevent',
@@ -16,6 +17,8 @@ import {VariableTemplate} from "../../../models/VariableTemplate";
 export class OrganizationAddeventComponent {
 
   currentOrganization : string = '';
+
+  availableTemplates : AvailableTemplateList[] = []
 
   customFields : Array<AddEventCustomField> = [];
   customFieldData : Array<string> = [];
@@ -62,6 +65,10 @@ export class OrganizationAddeventComponent {
     } else {
       this.currentOrganization = '';
     }
+
+    this.dataService.getAvailableTemplates(this.currentOrganization).subscribe(success => {
+        this.availableTemplates = success;
+    })
   }
 
   onSubmit() : void {
@@ -105,5 +112,21 @@ export class OrganizationAddeventComponent {
     this.dataService.safeTemplate(this.currentOrganization, submitedTemplate).subscribe(success => {
       console.log(success)
     })
+  }
+
+  onFileSelected(event : any) {
+
+    const file:File = event.target.files[0];
+
+    if (file) {
+
+      const formData = new FormData();
+
+      formData.append("thumbnail", file);
+
+      //const upload$ = this.http.post("/api/thumbnail-upload", formData);
+
+      //upload$.subscribe();
+    }
   }
 }

@@ -1,5 +1,5 @@
-<p>organization-addevent works!</p>
-<h2>addEvent.tetc</h2>
+<p>organization-addevent</p>
+<h2>addEvent Basis Informationen</h2>
 <form id="loginForm">
   <label for="eventname">Name: </label>
   <input id="eventname" name="eventname" [(ngModel)]="form.eventname"><br>
@@ -8,11 +8,26 @@
 
   <br><br>
   <h2>CustomFields</h2>
-  <input #inputTemplate value="641c5814bb701409e42a8df3">
-  <button (click)="loadTemplate(inputTemplate.value)">Load Template</button>
 
-  <br>
-  <input #inputt>
+  <hr>
+  <h3>mögliche Templates: </h3>
+  <ng-container *ngFor="let template of availableTemplates">
+    <div>
+      <p>ID: {{template.id}}</p>
+      <p>Name: {{template.name}}</p>
+    </div>
+  </ng-container>
+
+  <label for="inputTemplate">Template ID: </label>
+  <input #inputTemplate id="inputTemplate" value="641c5814bb701409e42a8df3">
+  <button (click)="loadTemplate(inputTemplate.value)">Load Template</button>
+  <hr>
+
+  <br><br>
+  <h3>Feld manuell hinzufügen</h3>
+
+  <label for="add">Feld Name: </label>
+  <input #inputt id="add">
   <button (click)="addCustomField(inputt.value)">Add</button>
   <br><br>
 
@@ -30,3 +45,14 @@
   <button (click)="onSubmitTemplate(inputTemplateSafe.value)" type="submit" form="loginForm" formaction="">Safe Template</button><br>
   <button (click)="onSubmit()" type="submit" form="loginForm" formaction="">Create Event</button>
 </form>
+
+<br><br>
+
+<h2>Datei Upload</h2>
+<div>
+  <input type="file" class="file-upload" (change)="onFileSelected($event)" #fileUpload>
+</div>
+
+
+
+

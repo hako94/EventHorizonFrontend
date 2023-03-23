@@ -19,6 +19,7 @@ import {
 } from "./components/organizationview/organization-event-view/organization-event-view.component";
 import { OrganizationmemberviewComponent } from './components/organizationview/organizationmemberview/organizationmemberview.component';
 import { OrganizationAddeventComponent } from './components/organizationview/organization-addevent/organization-addevent.component';
+import { OrganizationSettingsComponent } from './components/organizationview/organization-settings/organization-settings.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { OrganizationAddeventComponent } from './components/organizationview/org
     OrganizationEventViewComponent,
     HeaderComponent,
     OrganizationmemberviewComponent,
-    OrganizationAddeventComponent
+    OrganizationAddeventComponent,
+    OrganizationSettingsComponent
   ],
     imports: [
         BrowserModule,

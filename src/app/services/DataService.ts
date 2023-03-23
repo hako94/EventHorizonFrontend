@@ -7,6 +7,7 @@ import {CreateEventModel} from "../models/CreateEventModel";
 import {UserRoleModel} from "../models/UserRoleModel";
 import {OrganizationUserModel} from "../models/OrganizationUserModel";
 import {EventTemplateModel} from "../models/EventTemplateModel";
+import {AvailableTemplateList} from "../models/AvailableTemplateList";
 
 const BACKEND_API = 'http://localhost:8080/'
 //const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
@@ -82,6 +83,28 @@ export class DataService {
     return this.http.post<EventTemplateModel>(
       BACKEND_API + 'api/v1/organizations/' + orgId + '/events/eventtemplates',
       template,
+      httpOptions
+    )
+  }
+
+  storeFile(formData : FormData, orgId : string) : Observable<any> {
+    return this.http.post<any>(
+      BACKEND_API + 'api/v1/files',
+      formData,
+      {params: {'orgId':orgId}}
+    )
+  }
+
+  getImage(orgId : string) : Observable<any> {
+    return this.http.get<any>(
+      BACKEND_API + 'api/v1/files',
+      {params: {'orgId':orgId}}
+    )
+  }
+
+  getAvailableTemplates(orgaId : string) : Observable<AvailableTemplateList[]> {
+    return this.http.get<AvailableTemplateList[]>(
+      BACKEND_API + 'api/v1/organizations/641c7f7403c83a1314a2d3e2/events/eventtemplates',
       httpOptions
     )
   }

@@ -14,6 +14,7 @@ export class OrganizationviewComponent {
   memberViewParam : Params = {'view' : 'member'};
   upcommingViewParam : Params = {'view' : 'upcomming'};
   presetViewParam : Params = {'view' : 'presetView'};
+  settingsViewParam : Params = {'view' : 'settings'};
   currentOrganization : string = '';
 
   currentParam : Params = this.eventViewParam;
