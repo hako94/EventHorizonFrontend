@@ -1,0 +1,9 @@
+<p>organization-addevent works!</p>
+<h2>addEvent.tetc</h2>
+<form id="loginForm">
+  <label for="eventname">Name: </label>
+  <input id="eventname" name="eventname" [(ngModel)]="form.eventname"><br>
+  <label for="description">Description: </label>
+  <input id="description" name="description" [(ngModel)]="form.description"><br>
+  <button (click)="onSubmit()" type="submit" form="loginForm" formaction="">Login</button>
+</form>

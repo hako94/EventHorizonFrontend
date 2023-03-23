@@ -23,7 +23,13 @@ export class OrganizationviewComponent {
     let orga = this.location.path().split('/').at(2)?.toString()
 
     if (orga) {
-      this.currentOrganization = orga.slice(0,orga.indexOf('?'));
+      console.log("Orga index " + orga.indexOf('?'))
+
+      if (orga.indexOf('?') > 0) {
+        this.currentOrganization = orga.slice(0,orga.indexOf('?'));
+      } else {
+        this.currentOrganization = orga;
+      }
     } else {
       this.currentOrganization = '';
     }

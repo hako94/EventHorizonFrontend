@@ -1,4 +1,11 @@
-<p>organizationeventview works!</p>
+<p>TAB:: organizationeventview works!</p>
 <p>Event View für Organization {{orgaID}}</p>
-<p>ein wert vom Backend: {{data.at(0)?.id || 'undefined'}}</p>
-<button> Add</button>
+<ng-container *ngFor="let event of data">
+  <div>
+    <hr>
+    <h3>Ein Event</h3>
+    <p>ein wert vom Backend: {{event.id}}</p>
+    <hr>
+  </div>
+</ng-container>
+<button routerLink="/organizations/{{orgaID}}/addEvent">Add</button>

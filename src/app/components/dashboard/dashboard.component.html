@@ -1,9 +1,11 @@
 <p>dashboard works!</p>
 <div *ngFor="let organization of organizations">
-  <app-organizationitem
-    [id]="organization.id"
-    [description]="organization.description"
-    [name]="organization.name">
-  </app-organizationitem>
+  <div class="border">
+    <app-organizationitem
+      [id]="organization.id"
+      [description]="organization.description"
+      [name]="organization.name">
+    </app-organizationitem>
+  </div>
 </div>
 

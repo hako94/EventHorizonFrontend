@@ -1,13 +1,21 @@
-<p>organizationview works!</p>
+<hr>
+<p>organizationview works! for {{currentOrganization}}</p>
 <button (click)="updateURLWithParam(eventViewParam)">Events</button>
 <button (click)="updateURLWithParam(memberViewParam)">Mitglieder</button>
 <button (click)="updateURLWithParam(upcommingViewParam)">Upcomming</button>
 <button (click)="updateURLWithParam(presetViewParam)">Vorlagen</button>
+<br>
 <ng-container *ngIf="currentParam === eventViewParam">
-  <app-organizationeventview [orgaID]="currentOrganization">
-  </app-organizationeventview>
+  <div class="border">
+    <app-organizationeventview [orgaID]="currentOrganization">
+    </app-organizationeventview>
+  </div>
 </ng-container>
 <ng-container *ngIf="currentParam === memberViewParam">
-  <app-organizationmemberview>
-  </app-organizationmemberview>
+  <div class="border">
+    <app-organizationmemberview [orgaID]="currentOrganization">
+    </app-organizationmemberview>
+  </div>
 </ng-container>
+<br>
+<hr>

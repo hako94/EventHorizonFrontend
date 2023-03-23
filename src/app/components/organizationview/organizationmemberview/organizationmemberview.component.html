@@ -1,1 +1,14 @@
-<p>organizationmemberview works!</p>
+<p>TAB:: organizationmemberview works!</p>
+<p>Member View für Organization {{orgaID}}</p>
+<ng-container *ngFor="let member of members">
+  <div>
+    <hr>
+    <h3>Ein Member</h3>
+    <p>id: {{member.userId}} role: {{member.role.role}}</p>
+    <hr>
+  </div>
+</ng-container>
+<br><br><hr>
+<input [(ngModel)]="invitedEmail">
+<button (click)="inviteSubmit()">Invite User</button>
+<br><br>
