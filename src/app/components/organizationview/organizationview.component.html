@@ -3,7 +3,11 @@
 <button (click)="updateURLWithParam(memberViewParam)">Mitglieder</button>
 <button (click)="updateURLWithParam(upcommingViewParam)">Upcomming</button>
 <button (click)="updateURLWithParam(presetViewParam)">Vorlagen</button>
-<ng-container>
+<ng-container *ngIf="currentParam === eventViewParam">
   <app-organizationeventview [orgaID]="currentOrganization">
   </app-organizationeventview>
+</ng-container>
+<ng-container *ngIf="currentParam === memberViewParam">
+  <app-organizationmemberview>
+  </app-organizationmemberview>
 </ng-container>

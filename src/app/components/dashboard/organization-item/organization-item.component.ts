@@ -2,10 +2,10 @@ import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-organizationitem',
-  templateUrl: './organizationitem.component.html',
-  styleUrls: ['./organizationitem.component.scss']
+  templateUrl: './organization-item.component.html',
+  styleUrls: ['./organization-item.component.scss']
 })
-export class OrganizationitemComponent {
+export class OrganizationItemComponent {
 
   //TODO: combined INPUT with MODEL
   @Input() name = '';

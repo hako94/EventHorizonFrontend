@@ -10,11 +10,13 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 export class OrganizationviewComponent {
 
   eventViewParam : Params = {'view' : 'events'};
+
   memberViewParam : Params = {'view' : 'member'};
   upcommingViewParam : Params = {'view' : 'upcomming'};
   presetViewParam : Params = {'view' : 'presetView'};
-
   currentOrganization : string = '';
+
+  currentParam : Params = this.eventViewParam;
 
   constructor(private location : Location, private router : Router, private activatedRoute : ActivatedRoute) {
 
@@ -38,11 +40,14 @@ export class OrganizationviewComponent {
   }
 
   updateURLWithParam(param : Params) : void {
+
+    this.currentParam = param;
+
     this.router.navigate(
       [],
       {
         relativeTo: this.activatedRoute,
-        queryParams: param,
+        queryParams: this.currentParam,
         queryParamsHandling: 'merge',
       });
   }

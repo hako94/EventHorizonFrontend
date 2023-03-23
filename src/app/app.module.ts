@@ -11,6 +11,13 @@ import {httpInterceptorProviders} from "./interceptors/BearerInterceptor";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HeaderComponent } from './components/header/header.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {OrganizationItemComponent} from "./components/dashboard/organization-item/organization-item.component";
+import {OrganizationviewComponent} from "./components/organizationview/organizationview.component";
+import {
+  OrganizationEventViewComponent
+} from "./components/organizationview/organization-event-view/organization-event-view.component";
+import { OrganizationmemberviewComponent } from './components/organizationview/organizationmemberview/organizationmemberview.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +25,11 @@ import { HeaderComponent } from './components/header/header.component';
     RegisterComponent,
     LoginComponent,
     DashboardComponent,
-    HeaderComponent
+    OrganizationItemComponent,
+    OrganizationviewComponent,
+    OrganizationEventViewComponent,
+    HeaderComponent,
+    OrganizationmemberviewComponent
   ],
     imports: [
         BrowserModule,
@@ -26,6 +37,7 @@ import { HeaderComponent } from './components/header/header.component';
         HttpClientModule,
         FormsModule,
         BrowserAnimationsModule,
+        MatToolbarModule,
     ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

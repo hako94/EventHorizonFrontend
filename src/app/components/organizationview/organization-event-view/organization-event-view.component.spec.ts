@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OrganizationeventviewComponent } from './organizationeventview.component';
+import { OrganizationEventViewComponent } from './organization-event-view.component';
 
 describe('OrganizationeventviewComponent', () => {
-  let component: OrganizationeventviewComponent;
-  let fixture: ComponentFixture<OrganizationeventviewComponent>;
+  let component: OrganizationEventViewComponent;
+  let fixture: ComponentFixture<OrganizationEventViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OrganizationeventviewComponent ]
+      declarations: [ OrganizationEventViewComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(OrganizationeventviewComponent);
+    fixture = TestBed.createComponent(OrganizationEventViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
