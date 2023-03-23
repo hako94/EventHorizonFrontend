@@ -5,5 +5,26 @@
   <input id="eventname" name="eventname" [(ngModel)]="form.eventname"><br>
   <label for="description">Description: </label>
   <input id="description" name="description" [(ngModel)]="form.description"><br>
+
+  <br><br>
+  <h2>CustomFields</h2>
+  <input #inputTemplate>
+  <button (click)="addCustomField(inputTemplate.value)">Load Template</button>
+
+  <br>
+  <input #inputt>
+  <button (click)="addCustomField(inputt.value)">Add</button>
+  <br><br>
+
+  <div>
+    <ng-container *ngFor="let field of customFields; let i = index">
+      <label>{{field.name}}</label>
+      <input (input)="updateField(i, $event)"  id="{{field.id}}" name="{{field.id}}">
+      <button (click)="removeValueFromCustomFields(i)" id="{{field.id}}">X</button> <br>
+    </ng-container>
+  </div>
+
+  <br><br>
+
   <button (click)="onSubmit()" type="submit" form="loginForm" formaction="">Login</button>
 </form>

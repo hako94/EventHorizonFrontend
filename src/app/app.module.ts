@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {httpInterceptorProviders} from "./interceptors/BearerInterceptor";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -39,6 +39,7 @@ import { OrganizationAddeventComponent } from './components/organizationview/org
         HttpClientModule,
         FormsModule,
         BrowserAnimationsModule,
+        ReactiveFormsModule,
         MatToolbarModule,
     ],
   providers: [httpInterceptorProviders],
