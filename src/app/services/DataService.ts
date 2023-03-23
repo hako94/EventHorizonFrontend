@@ -6,6 +6,7 @@ import {OrganizationEventModel} from "../models/OrganizationEventModel";
 import {CreateEventModel} from "../models/CreateEventModel";
 import {UserRoleModel} from "../models/UserRoleModel";
 import {OrganizationUserModel} from "../models/OrganizationUserModel";
+import {EventTemplateModel} from "../models/EventTemplateModel";
 
 const BACKEND_API = 'http://localhost:8080/'
 //const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
@@ -70,4 +71,18 @@ export class DataService {
     )
   }
 
+  loadTemplate(orgId : string, templateID : string) : Observable<EventTemplateModel> {
+    return this.http.get<EventTemplateModel>(
+      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/eventtemplates/' + templateID,
+      httpOptions
+    )
+  }
+
+  safeTemplate(orgId : string, template : EventTemplateModel) : Observable<EventTemplateModel> {
+    return this.http.post<EventTemplateModel>(
+      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/eventtemplates',
+      template,
+      httpOptions
+    )
+  }
 }

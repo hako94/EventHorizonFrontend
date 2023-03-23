@@ -5,6 +5,8 @@ import {Location} from "@angular/common";
 import {AddEventCustomField} from "../../../dataobjects/AddEventCustomField";
 import {isEmpty} from "rxjs";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {EventTemplateModel} from "../../../models/EventTemplateModel";
+import {VariableTemplate} from "../../../models/VariableTemplate";
 
 @Component({
   selector: 'app-organization-addevent',
@@ -46,9 +48,6 @@ export class OrganizationAddeventComponent {
     this.customFields.push({ id: "1", name: "test"})
     this.customFields.push({ id: "2", name: "test1"})
     this.customFields.push({ id: "3", name: "test2"})
-  }
-
-  onSubmit() : void {
 
     let orga = this.location.path().split('/').at(2)?.toString()
 
@@ -63,6 +62,9 @@ export class OrganizationAddeventComponent {
     } else {
       this.currentOrganization = '';
     }
+  }
+
+  onSubmit() : void {
 
     const model : CreateEventModel = {
       name: this.form.eventname,
@@ -75,6 +77,33 @@ export class OrganizationAddeventComponent {
 
     this.dataService.postEventInOrganization(this.currentOrganization,model).subscribe(sucess => {
       console.log(sucess)
+    })
+  }
+
+  loadTemplate(value: string) {
+    this.dataService.loadTemplate(this.currentOrganization,value).subscribe(success => {
+        success.variables.forEach(template => {
+          this.customFields.push({id: this.customFields.length.toString(), name: template.name})
+        })
+      }
+    )
+  }
+
+  onSubmitTemplate(name : string) {
+    const variableTemplate : Array<VariableTemplate> = []
+
+    this.customFields.forEach(field => {
+      variableTemplate.push({name: field.name, label: field.name})
+    })
+
+    const submitedTemplate : EventTemplateModel = {
+        name: name,
+        organizationId: this.currentOrganization,
+        variables: variableTemplate
+    }
+
+    this.dataService.safeTemplate(this.currentOrganization, submitedTemplate).subscribe(success => {
+      console.log(success)
     })
   }
 }

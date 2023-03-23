@@ -8,8 +8,8 @@
 
   <br><br>
   <h2>CustomFields</h2>
-  <input #inputTemplate>
-  <button (click)="addCustomField(inputTemplate.value)">Load Template</button>
+  <input #inputTemplate value="641c5814bb701409e42a8df3">
+  <button (click)="loadTemplate(inputTemplate.value)">Load Template</button>
 
   <br>
   <input #inputt>
@@ -26,5 +26,7 @@
 
   <br><br>
 
-  <button (click)="onSubmit()" type="submit" form="loginForm" formaction="">Login</button>
+  <input #inputTemplateSafe>
+  <button (click)="onSubmitTemplate(inputTemplateSafe.value)" type="submit" form="loginForm" formaction="">Safe Template</button><br>
+  <button (click)="onSubmit()" type="submit" form="loginForm" formaction="">Create Event</button>
 </form>
