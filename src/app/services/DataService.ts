@@ -95,10 +95,13 @@ export class DataService {
     )
   }
 
-  getImage(orgId : string) : Observable<any> {
-    return this.http.get<any>(
-      BACKEND_API + 'api/v1/files',
-      {params: {'orgId':orgId}}
+  getImage(orgId : string, fileId : string) : Observable<any> {
+    return this.http.get(
+      BACKEND_API + 'api/v1/files/'+ fileId,
+      { responseType: "blob",
+        params: {'orgId':orgId}
+
+      }
     )
   }
 
@@ -106,6 +109,13 @@ export class DataService {
     return this.http.get<AvailableTemplateList[]>(
       BACKEND_API + 'api/v1/organizations/641c7f7403c83a1314a2d3e2/events/eventtemplates',
       httpOptions
+    )
+  }
+
+  getOrganizationInfos(orgId : string) : Observable<OrganizationModel> {
+    return this.http.get<OrganizationModel>(
+     BACKEND_API + 'api/v1/organization/'+orgId,
+     httpOptions
     )
   }
 }
