@@ -1,0 +1,9 @@
+<p>organizationview works!</p>
+<button (click)="updateURLWithParam(eventViewParam)">Events</button>
+<button (click)="updateURLWithParam(memberViewParam)">Mitglieder</button>
+<button (click)="updateURLWithParam(upcommingViewParam)">Upcomming</button>
+<button (click)="updateURLWithParam(presetViewParam)">Vorlagen</button>
+<ng-container>
+  <app-organizationeventview [orgaID]="currentOrganization">
+  </app-organizationeventview>
+</ng-container>
