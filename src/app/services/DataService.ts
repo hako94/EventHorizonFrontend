@@ -1,6 +1,6 @@
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
-import {Observable} from "rxjs";
+import {flatMap, Observable, tap} from "rxjs";
 import {OrganizationModel} from "../models/OrganizationModel";
 import {OrganizationEventModel} from "../models/OrganizationEventModel";
 import {CreateEventModel} from "../models/CreateEventModel";
@@ -65,9 +65,8 @@ export class DataService {
         organizationId: orgId
       },
       {
-        headers: {'Content-Type': 'application/json'},
-        observe: "response" as 'body'
-      },
+        headers: {'Content-Type': 'application/json'}
+      }
     )
   }
 

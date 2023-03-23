@@ -10,6 +10,7 @@ import {OrganizationUserModel} from "../../../models/OrganizationUserModel";
 export class OrganizationmemberviewComponent implements OnInit{
 
   invitedEmail : string = '';
+  invitedUser : string = '';
 
   @Input() orgaID = '';
 
@@ -30,10 +31,8 @@ export class OrganizationmemberviewComponent implements OnInit{
 
   inviteSubmit() : void {
     this.dataService.inviteUser(this.invitedEmail, this.orgaID).subscribe(success => {
-      console.log(success)
+      this.invitedUser = success;
     })
   }
-
-
 
 }
