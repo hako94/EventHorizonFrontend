@@ -10,7 +10,6 @@ import {DomSanitizer} from "@angular/platform-browser";
 export class OrganizationSettingsComponent implements OnInit{
 
   @Input() orgaID : string = '';
-
   image : string = '';
   shownimage : any;
 
