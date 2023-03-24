@@ -1,16 +1,15 @@
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from "@angular/core";
-import {flatMap, Observable, tap} from "rxjs";
+import { Observable} from "rxjs";
 import {OrganizationModel} from "../models/OrganizationModel";
 import {OrganizationEventModel} from "../models/OrganizationEventModel";
 import {CreateEventModel} from "../models/CreateEventModel";
-import {UserRoleModel} from "../models/UserRoleModel";
 import {OrganizationUserModel} from "../models/OrganizationUserModel";
 import {EventTemplateModel} from "../models/EventTemplateModel";
 import {AvailableTemplateList} from "../models/AvailableTemplateList";
 
-//const BACKEND_API = 'http://localhost:8080/'
-const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
+const BACKEND_API = 'http://localhost:8080/'
+//const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })

@@ -20,6 +20,8 @@ import {
 import { OrganizationmemberviewComponent } from './components/organizationview/organizationmemberview/organizationmemberview.component';
 import { OrganizationAddeventComponent } from './components/organizationview/organization-addevent/organization-addevent.component';
 import { OrganizationSettingsComponent } from './components/organizationview/organization-settings/organization-settings.component';
+import { EventComponent } from './components/organizationview/event/event.component';
+import {RxStomp} from "@stomp/rx-stomp";
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { OrganizationSettingsComponent } from './components/organizationview/org
     HeaderComponent,
     OrganizationmemberviewComponent,
     OrganizationAddeventComponent,
-    OrganizationSettingsComponent
+    OrganizationSettingsComponent,
+    EventComponent
   ],
     imports: [
         BrowserModule,
@@ -44,7 +47,9 @@ import { OrganizationSettingsComponent } from './components/organizationview/org
         ReactiveFormsModule,
         MatToolbarModule,
     ],
-  providers: [httpInterceptorProviders],
+  providers: [
+    httpInterceptorProviders,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
