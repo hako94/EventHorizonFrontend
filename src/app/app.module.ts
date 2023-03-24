@@ -22,6 +22,7 @@ import { OrganizationAddeventComponent } from './components/organizationview/org
 import { OrganizationSettingsComponent } from './components/organizationview/organization-settings/organization-settings.component';
 import { EventComponent } from './components/organizationview/event/event.component';
 import {RxStomp} from "@stomp/rx-stomp";
+import {rxStompServiceFactory, SocketService} from "./services/SocketService";
 
 @NgModule({
   declarations: [
@@ -49,6 +50,10 @@ import {RxStomp} from "@stomp/rx-stomp";
     ],
   providers: [
     httpInterceptorProviders,
+    {
+      provide: SocketService,
+      useFactory: rxStompServiceFactory,
+    },
   ],
   bootstrap: [AppComponent]
 })

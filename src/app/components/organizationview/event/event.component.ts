@@ -3,6 +3,7 @@ import {OrganizationEventModel} from "../../../models/OrganizationEventModel";
 import {map, Observable, share, Subject, tap} from "rxjs";
 import {RxStomp} from "@stomp/rx-stomp";
 import {SocketService} from "../../../services/SocketService";
+import {Message} from "@stomp/stompjs";
 
 
 @Component({
@@ -15,15 +16,20 @@ export class EventComponent implements OnInit{
   constructor(private socketService : SocketService) {
   }
 
+  socketValue : string = "";
 
   @Input() orgEvent? : OrganizationEventModel;
 
 
   ngOnInit(): void {
-
+    this.socketService.watch('/notifier/test').subscribe((message: Message) => {
+      console.log(message.body)
+      this.socketValue = message.body;
+    });
   }
 
+
   connect() {
-    this.socketService.connect()
+
   }
 }
