@@ -6,6 +6,7 @@ import {SocketService} from "../../../services/SocketService";
 import {Message} from "@stomp/stompjs";
 import {AuthService} from "../../../services/AuthService";
 import {DataService} from "../../../services/DataService";
+import {StorageService} from "../../../services/Storage";
 
 
 @Component({
@@ -15,8 +16,8 @@ import {DataService} from "../../../services/DataService";
 })
 export class EventComponent implements OnInit{
 
-  constructor(private socketService : SocketService, private authService : AuthService, private dataService : DataService) {
-    console.log(authService.authEmail)
+  constructor(private socketService : SocketService, private storageService : StorageService, private dataService : DataService) {
+
   }
 
   socketValue : string = "";
@@ -28,12 +29,13 @@ export class EventComponent implements OnInit{
 
 
   ngOnInit(): void {
-
+    console.warn(this.orgEvent)
   }
 
   annmelden() {
-    console.log(this.authService.authEmail.toString())
-    this.dataService.acceptEvent(this.orgId, this.orgEvent?.id || '', this.authService.authEmail.toString()).subscribe();
+    console.log(this.storageService.getEmail())
+    this.dataService.acceptEvent(this.orgId, this.orgEvent?.id || '', this.storageService.getEmail()).subscribe();
+    window.location.reload()
   }
 
   watchSocket() {
@@ -64,8 +66,8 @@ export class EventComponent implements OnInit{
   }
 
   signout() {
-    console.log(this.authService.authEmail.toString())
-    this.dataService.leaveEvent(this.orgId, this.orgEvent?.id || '', this.authService.authEmail.toString()).subscribe();
+    this.dataService.leaveEvent(this.orgId, this.orgEvent?.id || '', this.storageService.getEmail()).subscribe();
+    window.location.reload()
   }
 
   pushMessageToBackend(message : string) {

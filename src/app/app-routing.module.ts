@@ -7,11 +7,15 @@ import {OrganizationviewComponent} from "./components/organizationview/organizat
 import {
   OrganizationAddeventComponent
 } from "./components/organizationview/organization-addevent/organization-addevent.component";
+import {
+  EventQuestionnairesComponent
+} from "./components/organizationview/event-questionnaires/event-questionnaires.component";
 
 const routes: Routes = [
   { path: "register", component: RegisterComponent },
   { path: "login", component: LoginComponent },
   { path: "dashboard", component: DashboardComponent},
+  { path: "organizations/:id/event/:eventid/questionnaires", component: EventQuestionnairesComponent},
   { path: "organizations/:id", component: OrganizationviewComponent},
   { path: "organizations/:id/addEvent", component: OrganizationAddeventComponent},
   { path: '**', component: DashboardComponent }

@@ -5,11 +5,9 @@ export interface OrganizationEventModel {
   description : string;
   eventStart : string;
   eventEnd : string;
-  created : string;
-  lastModified : string;
-
   location: string;
-  selectedTemplateId : string;
   organizationId : string;
-
+  organisator : boolean;
+  tutor : boolean;
+  attender : boolean
 }

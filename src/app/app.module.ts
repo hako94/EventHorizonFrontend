@@ -23,6 +23,7 @@ import { OrganizationSettingsComponent } from './components/organizationview/org
 import { EventComponent } from './components/organizationview/event/event.component';
 import {RxStomp} from "@stomp/rx-stomp";
 import {rxStompServiceFactory, SocketService} from "./services/SocketService";
+import { EventQuestionnairesComponent } from './components/organizationview/event-questionnaires/event-questionnaires.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {rxStompServiceFactory, SocketService} from "./services/SocketService";
     OrganizationmemberviewComponent,
     OrganizationAddeventComponent,
     OrganizationSettingsComponent,
-    EventComponent
+    EventComponent,
+    EventQuestionnairesComponent
   ],
     imports: [
         BrowserModule,

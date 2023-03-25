@@ -3,6 +3,7 @@ import {LoginResponse} from "../models/LoginResponse";
 
 
 const SESSION_STORAGE_KEY = "auth-user";
+const EMAIL_STORAGE_KEY = "auth-user_email";
 const CSRF_KEY = "XSRF-TOKEN";
 
 @Injectable({
@@ -13,6 +14,15 @@ export class StorageService {
 
   clear(): void {
     window.sessionStorage.clear();
+  }
+
+  public saveEmail(email : string) {
+    window.sessionStorage.removeItem(EMAIL_STORAGE_KEY)
+    window.sessionStorage.setItem(EMAIL_STORAGE_KEY, email)
+  }
+
+  public getEmail() : string {
+    return window.sessionStorage.getItem(EMAIL_STORAGE_KEY) || '';
   }
 
   public saveCsrfKey(key : string) : void {

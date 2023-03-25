@@ -102,7 +102,7 @@ export class RegisterComponent {
           this.authService.login(email, password).subscribe(success => {
 
             this.jwtStorage.saveUser(success)
-            this.authService.authEmail = success.email;
+            this.jwtStorage.saveEmail(success.email.toString());
 
             console.log(success)
 

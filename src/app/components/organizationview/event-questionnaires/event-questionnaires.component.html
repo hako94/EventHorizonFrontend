@@ -1,0 +1,47 @@
+<p>event-questionnaires works!</p>
+<button (click)="goBack()">Back</button>
+<!-- TODO: switch if user is organisator or not-->
+<ng-container>
+  <h1>CrerateContainer</h1>
+  <label>titel</label>
+  <input [(ngModel)]="formIn.titeln">
+  <br>
+  <label>description</label>
+  <input [(ngModel)]="formIn.descriptionn">
+  <br>
+  <!-- ---------------- -->
+  <br><br><br>
+  <input #inputt id="add">
+  <button (click)="addCustomField(inputt.value)">erstell Frage</button>
+  <br><br>
+
+  <div>
+    <ng-container *ngFor="let field of questions; let i = index">
+      <!-- Frage -->
+      <label>{{field.questionText}}</label>
+      <button (click)="removeValueFromCustomFields(i)" id="{{field.questionText}}">X</button> <br>
+
+      <!-- Antwort -->
+
+      <input #inputAntwort id="addAntwort">
+      <button (click)="addAnswerOption(inputAntwort.value, i)">erstelle Anwort</button>
+
+      <ng-container *ngFor="let answer of field.answerOptions; let j = index">
+
+        <br><label>{{answer.answerText}}</label>
+
+      </ng-container>
+
+      <!-- -->
+      <br><br><br>
+
+    </ng-container>
+  </div>
+
+  <button (click)="submitBogen()">Sumit</button>
+
+  <!-- ---------------- -->
+</ng-container>
+<ng-container>
+  <h1>AnswerContainer</h1>
+</ng-container>

@@ -1,22 +1,24 @@
-<div>
-  <hr>
-  <div style="float: right; margin-right: 50px">
-    <button (click)="deleteEvent()">X</button>
-    <button>E</button>
+<ng-container *ngIf="orgEvent">
+  <div style="border: {{orgEvent.attender ? 'green' : 'red'}} 1px solid">
+    <div style="float: right; margin-right: 50px">
+      <button (click)="deleteEvent()">X</button>
+      <button>E</button>
+    </div>
+    <h3>Ein Event</h3>
+      <p>ein wert vom Backend: {{orgEvent.name}}</p>
+      <p>EventUserInfo Tutor: {{orgEvent.tutor ? "ja" : "nein"}} Organizer: {{orgEvent.organisator  ? "ja" : "nein"}}</p>
+    <div style="display: flex">
+      <button (click)="annmelden()">Teilnehmen</button>
+      <button (click)="signout()">Abmelden</button>
+      <button routerLink='event/{{orgEvent.id || "missing"}}/questionnaires'>Fragebögen</button>
+    </div>
+    <br><br>
+    <p>[SocketChat] {{socketValue}}</p>
+    <div style="display: flex">
+      <button (click)="watchSocket()">Connect to Chat</button>
+      <button (click)="unWatchSocjet()">Disconnect from Chat</button>
+    </div>
+    <input #socketInput>
+    <button (click)="pushMessageToBackend(socketInput.value)">Push</button>
   </div>
-  <h3>Ein Event</h3>
-  <p>ein wert vom Backend: {{orgEvent?.id || ''}}</p>
-  <div style="display: flex">
-    <button (click)="annmelden()">Teilnehmen</button>
-    <button (click)="signout()">Abmelden</button>
-  </div>
-  <br><br>
-  <p>[SocketChat] {{socketValue}}</p>
-  <div style="display: flex">
-    <button (click)="watchSocket()">Connect to Chat</button>
-    <button (click)="unWatchSocjet()">Disconnect from Chat</button>
-  </div>
-  <input #socketInput>
-  <button (click)="pushMessageToBackend(socketInput.value)">Push</button>
-  <hr>
-</div>
+</ng-container>
