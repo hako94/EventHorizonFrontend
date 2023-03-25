@@ -131,4 +131,11 @@ export class DataService {
       httpOptions
     )
   }
+
+  leaveEvent(orgId : string, eventId : string, userId : string) : Observable<any> {
+    return this.http.post<any>(
+      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/signoff/' + userId,
+      httpOptions
+    )
+  }
 }

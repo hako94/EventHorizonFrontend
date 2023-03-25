@@ -63,7 +63,12 @@ export class EventComponent implements OnInit{
     }
   }
 
-  abmelden() {
+  signout() {
+    console.log(this.authService.authEmail.toString())
+    this.dataService.leaveEvent(this.orgId, this.orgEvent?.id || '', this.authService.authEmail.toString()).subscribe();
+  }
 
+  pushMessageToBackend(message : string) {
+    this.socketService.publish({ destination: '/app/notifier/message', body: '{"message": "' + message + '"}' });
   }
 }

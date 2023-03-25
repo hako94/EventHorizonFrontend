@@ -8,7 +8,7 @@
   <p>ein wert vom Backend: {{orgEvent?.id || ''}}</p>
   <div style="display: flex">
     <button (click)="annmelden()">Teilnehmen</button>
-    <button (click)="abmelden()">Abmelden</button>
+    <button (click)="signout()">Abmelden</button>
   </div>
   <br><br>
   <p>[SocketChat] {{socketValue}}</p>
@@ -16,5 +16,7 @@
     <button (click)="watchSocket()">Connect to Chat</button>
     <button (click)="unWatchSocjet()">Disconnect from Chat</button>
   </div>
+  <input #socketInput>
+  <button (click)="pushMessageToBackend(socketInput.value)">Push</button>
   <hr>
 </div>
