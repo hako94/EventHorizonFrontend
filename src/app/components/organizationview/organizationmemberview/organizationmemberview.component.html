@@ -9,7 +9,19 @@
   </div>
 </ng-container>
 <br><br><hr>
-<input [(ngModel)]="invitedEmail">
-<button (click)="inviteSubmit()">Invite User</button>
+<mat-form-field class="example-full-width">
+  <mat-label>Email-Adresse</mat-label>
+  <input [(ngModel)]="invitedEmail" matInput placeholder="eineemail@mail.de">
+</mat-form-field>
+<mat-form-field appearance="fill">
+  <mat-label>Rolle</mat-label>
+  <mat-select [(value)]="selected">
+    <mat-option value="organizer" disabled>Admin</mat-option>
+    <mat-option value="organizer">Organisator</mat-option>
+    <mat-option value="tutor">Tutor</mat-option>
+    <mat-option value="guest">Gast</mat-option>
+  </mat-select>
+</mat-form-field>
+<button mat-raised-button color="primary" (click)="inviteSubmit()">Invite User</button>
 <br><br>
 <p>{{invitedUser}}</p>

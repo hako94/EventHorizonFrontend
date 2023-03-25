@@ -2,10 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {Location} from "@angular/common";
 import {DataService} from "../../../services/DataService";
 import {EventQuestionnairesModel} from "../../../models/EventQuestionnairesModel";
-import {AddEventCustomField} from "../../../dataobjects/AddEventCustomField";
 import {QuestionModel} from "../../../models/QuestionModel";
-import {AnswerModel} from "../../../models/AnswerModel";
 
+//TODO wtf typscript
 export interface FormIn {
   titeln : string,
   descriptionn : string;
@@ -16,7 +15,21 @@ export interface FormIn {
   templateUrl: './event-questionnaires.component.html',
   styleUrls: ['./event-questionnaires.component.scss']
 })
-export class EventQuestionnairesComponent {
+export class EventQuestionnairesComponent implements OnInit{
+
+  availableQuestionnaires : EventQuestionnairesModel[] = [];
+
+  ngOnInit(): void {
+    this.dataServie.loadAvailableEventQuestionnaires(this.orgId, this.eventId).subscribe(sucess => {
+      this.availableQuestionnaires = sucess
+    })
+
+    console.log(this.availableQuestionnaires)
+  }
+
+
+  orgId : string = '';
+  eventId : string = '';
 
   formIn : FormIn = {
     titeln : '',
@@ -27,74 +40,93 @@ export class EventQuestionnairesComponent {
 
 
   removeValueFromCustomFields(index : number) : void {
-
-
+    delete this.questions[index]
+    this.questions = this.questions.filter(el => {return el != null});
   }
-
-  counter : number = -1;
-  answerCounter : Array<number> = [];
 
 
   addCustomField(name : string) : void {
-    this.counter ++;
     this.questions.push({
       answerOptions: [],
-      questionNumber: this.counter,
+      questionNumber: 0,
       questionText: name,
       type: "MULTIPLE_CHOICE",
     })
     console.log(this.questions)
   }
 
+  writeIndices(model : EventQuestionnairesModel) : EventQuestionnairesModel {
+
+    let questionCounter = 0;
+
+    model.questions.forEach(question => {
+
+      question.questionNumber = questionCounter;
+      questionCounter++;
+
+      let answerCounter = 0;
+
+      question.answerOptions.forEach(answer => {
+
+        answer.answerNumber = answerCounter;
+        answerCounter++;
+
+      })
+    })
+
+    return model;
+  }
 
   addAnswerOption(value: string, i : number) {
-
-    this.answerCounter[i] = this.answerCounter[i] + 1;
 
     if (this.questions.at(i)) {
       this.questions.at(i)?.answerOptions.push(
         {
-          answerNumber: i,
+          answerNumber: 0,
           answerText : value
         }
       )
     }
   }
 
+  //TODO wtf typscript
+  removeAnswerOption(questionIndex: number, answerIndex : number) {
+    if (this.questions.at(questionIndex)) {
+      // @ts-ignore
+      if (this.questions.at(questionIndex).answerOptions) {
+        // @ts-ignore
+        delete this.questions.at(questionIndex).answerOptions[answerIndex];
+        // @ts-ignore
+        this.questions.at(questionIndex).answerOptions = this.questions.at(questionIndex).answerOptions.filter(el => {return el != null});
+      }
+    }
+  }
+
   submitBogen() {
 
-    const eventQuestionnairesModel : EventQuestionnairesModel =
+    let eventQuestionnairesModel : EventQuestionnairesModel =
       {
         description: this.formIn.descriptionn,
         title: this.formIn.titeln,
-        eventId : "641ecf2bc2dc12102b2794bb",
+        eventId : this.eventId,
         questions : this.questions
       };
 
-    this.dataServie.createEventQuestionnaires("641ecf2ac2dc12102b2794b6","641ecf2bc2dc12102b2794bb", eventQuestionnairesModel).subscribe()
+    eventQuestionnairesModel = this.writeIndices(eventQuestionnairesModel);
+
+    this.dataServie.createEventQuestionnaires(this.orgId,this.eventId, eventQuestionnairesModel).subscribe()
   }
 
-  /*eventQuestionnairesModel : EventQuestionnairesModel =
-    {
-      title: "sdad",
-      description: "sadasd",
-      eventId : "641ecf2bc2dc12102b2794bb",
-      questions : [
-        {
-          questionNumber: 1,
-          questionText: "sadasd",
-          type : "MULTIPLE_CHOICE",
-          answerOptions : [
-            {
-              answerNumber: 1,
-              answerText: "saddaad"
-            }
-          ]
-        }
-      ]
-    }*/
-
   constructor(private location : Location, private dataServie : DataService) {
+
+    const regex = /\/\d+\//g;
+    const matches = this.location.path().match(regex);
+    if (matches) {
+      const nums = matches.map(match => match.replace(/\//g, ""));
+
+      this.orgId = nums[0];
+      this.eventId = nums[1];
+    }
   }
 
   goBack() {

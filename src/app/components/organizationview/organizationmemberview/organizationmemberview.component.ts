@@ -15,6 +15,7 @@ export class OrganizationmemberviewComponent implements OnInit{
   @Input() orgaID = '';
 
   members : OrganizationUserModel[] = [];
+  selected: any = 'guest';
 
   constructor(private dataService : DataService) {
 
@@ -30,7 +31,8 @@ export class OrganizationmemberviewComponent implements OnInit{
 
 
   inviteSubmit() : void {
-    this.dataService.inviteUser(this.invitedEmail, this.orgaID).subscribe(success => {
+    console.log(this.selected)
+    this.dataService.inviteUser(this.invitedEmail, this.orgaID, this.selected).subscribe(success => {
       this.invitedUser = success;
     })
   }

@@ -24,6 +24,9 @@ import { EventComponent } from './components/organizationview/event/event.compon
 import {RxStomp} from "@stomp/rx-stomp";
 import {rxStompServiceFactory, SocketService} from "./services/SocketService";
 import { EventQuestionnairesComponent } from './components/organizationview/event-questionnaires/event-questionnaires.component';
+import {MatInputModule} from "@angular/material/input";
+import {MatSelectModule} from "@angular/material/select";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -41,15 +44,18 @@ import { EventQuestionnairesComponent } from './components/organizationview/even
     EventComponent,
     EventQuestionnairesComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        FormsModule,
-        BrowserAnimationsModule,
-        ReactiveFormsModule,
-        MatToolbarModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    MatToolbarModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+  ],
   providers: [
     httpInterceptorProviders,
     {

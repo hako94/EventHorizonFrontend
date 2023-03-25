@@ -59,12 +59,13 @@ export class DataService {
     )
   }
 
-  inviteUser(email : string, orgId : string) : Observable<string> {
+  inviteUser(email : string, orgId : string, asRole : string) : Observable<string> {
     return this.http.post<string>(
       BACKEND_API + 'api/v1/authenticatedUser/invite',
       {
         email: email,
-        organizationId: orgId
+        organizationId: orgId,
+        asRole: asRole
       },
       {
         headers: {'Content-Type': 'application/json'}
@@ -144,6 +145,13 @@ export class DataService {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/questionnaires',
       eventQuestionnairesModel,
+      httpOptions
+    )
+  }
+
+  loadAvailableEventQuestionnaires(orgId : string, eventId : string) : Observable<EventQuestionnairesModel[]>{
+    return this.http.get<EventQuestionnairesModel[]>(
+      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/questionnaires',
       httpOptions
     )
   }

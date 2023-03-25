@@ -28,7 +28,7 @@
 
       <ng-container *ngFor="let answer of field.answerOptions; let j = index">
 
-        <br><label>{{answer.answerText}}</label>
+        <br><label>{{answer.answerText}}</label><button (click)="removeAnswerOption(i, j)">X</button>
 
       </ng-container>
 
