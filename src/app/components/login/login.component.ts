@@ -24,6 +24,7 @@ export class LoginComponent {
     this.authService.login(this.form.email, this.form.password).subscribe(sucess => {
 
       this.storageService.saveUser(sucess)
+      this.authService.authEmail = sucess.email;
 
       this.router.navigate(['/dashboard']);
     })

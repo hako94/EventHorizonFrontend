@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {AuthService} from "../../services/AuthService";
 import {StorageService} from "../../services/Storage";
 import {DataService} from "../../services/DataService";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -24,7 +24,8 @@ export class RegisterComponent {
   constructor(private authService: AuthService,
               private jwtStorage : StorageService,
               private dataService : DataService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private router : Router) {
 
     this.withOrganizationId = false;
     this.withNewUser = true;
@@ -101,8 +102,11 @@ export class RegisterComponent {
           this.authService.login(email, password).subscribe(success => {
 
             this.jwtStorage.saveUser(success)
+            this.authService.authEmail = success.email;
 
             console.log(success)
+
+            this.router.navigate(['/dashboard']);
 
           }, error => {
             console.log(error)

@@ -8,6 +8,7 @@ import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {EventTemplateModel} from "../../../models/EventTemplateModel";
 import {VariableTemplate} from "../../../models/VariableTemplate";
 import {AvailableTemplateList} from "../../../models/AvailableTemplateList";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-organization-addevent',
@@ -46,7 +47,9 @@ export class OrganizationAddeventComponent {
     console.log(this.customFieldData)
   }
 
-  constructor(private dataService : DataService, private location : Location) {
+  constructor(private dataService : DataService,
+              private location : Location,
+              private router : Router) {
 
     this.customFields.push({ id: "1", name: "test"})
     this.customFields.push({ id: "2", name: "test1"})
@@ -84,6 +87,8 @@ export class OrganizationAddeventComponent {
 
     this.dataService.postEventInOrganization(this.currentOrganization,model).subscribe(sucess => {
       console.log(sucess)
+
+      this.location.back();
     })
   }
 

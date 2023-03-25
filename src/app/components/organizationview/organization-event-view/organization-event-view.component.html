@@ -1,6 +1,6 @@
 <p>TAB:: organizationeventview works!</p>
 <p>Event View für Organization {{orgaID}}</p>
 <ng-container *ngFor="let event of data">
-  <app-event [orgEvent]="event"></app-event>
+  <app-event [orgEvent]="event" [orgId]="orgaID"></app-event>
 </ng-container>
 <button routerLink="/organizations/{{orgaID}}/addEvent">Add</button>

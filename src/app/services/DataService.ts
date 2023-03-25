@@ -117,4 +117,18 @@ export class DataService {
      httpOptions
     )
   }
+
+  acceptEvent(orgId : string, eventId : string, userId : string) : Observable<any> {
+    return this.http.post<any>(
+      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/book/' + userId,
+      httpOptions
+    )
+  }
+
+  deleteEvent(orgId : string, eventId : string) : Observable<any> {
+    return this.http.delete<any>(
+      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId,
+      httpOptions
+    )
+  }
 }

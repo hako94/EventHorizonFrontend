@@ -15,6 +15,8 @@ const defaultHttpOptions = {
 })
 export class AuthService {
 
+  authEmail : String = 'unset';
+
   constructor(private http: HttpClient) {}
 
   login(email: string, password: string): Observable<LoginResponse> {

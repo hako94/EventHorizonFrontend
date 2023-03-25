@@ -1,8 +1,20 @@
 <div>
   <hr>
+  <div style="float: right; margin-right: 50px">
+    <button (click)="deleteEvent()">X</button>
+    <button>E</button>
+  </div>
   <h3>Ein Event</h3>
   <p>ein wert vom Backend: {{orgEvent?.id || ''}}</p>
-  <p>Wert vom Backend über socket {{socketValue}}</p>
-  <button (click)="connect()"></button>
+  <div style="display: flex">
+    <button (click)="annmelden()">Teilnehmen</button>
+    <button (click)="abmelden()">Abmelden</button>
+  </div>
+  <br><br>
+  <p>[SocketChat] {{socketValue}}</p>
+  <div style="display: flex">
+    <button (click)="watchSocket()">Connect to Chat</button>
+    <button (click)="unWatchSocjet()">Disconnect from Chat</button>
+  </div>
   <hr>
 </div>
