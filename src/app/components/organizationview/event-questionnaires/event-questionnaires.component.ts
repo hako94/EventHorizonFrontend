@@ -129,13 +129,13 @@ export class EventQuestionnairesComponent implements OnInit{
 
   constructor(private location : Location, private dataServie : DataService) {
 
-    const regex = /\/\d+\//g;
-    const matches = this.location.path().match(regex);
+    const regex = /\/organizations\/(\w+)\/event\/(\w+)\//;
+    const matches = regex.exec(location.path());
     if (matches) {
       const nums = matches.map(match => match.replace(/\//g, ""));
 
-      this.orgId = nums[0];
-      this.eventId = nums[1];
+      this.orgId = nums[1];
+      this.eventId = nums[2];
     }
 
     this.dataServie.loadAvailableEventQuestionnaires(this.orgId, this.eventId).subscribe(sucess => {
