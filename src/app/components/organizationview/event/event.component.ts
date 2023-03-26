@@ -35,7 +35,7 @@ export class EventComponent implements OnInit, OnDestroy {
     this.watchSocket()
     this.dataService.getChatHistory(this.orgId, this.orgEvent?.id).subscribe(success => {
       for (const chatMessage of success) {
-        const formattedMessage = "[" + new DatePipe('de-DE').transform(chatMessage.timestamp, 'dd.MM.yyyy HH:mm:ss') + " | " + chatMessage.sender + "] " + chatMessage.message;
+        const formattedMessage = "\"[" + new DatePipe('de-DE').transform(chatMessage.timestamp, 'dd.MM.yyyy HH:mm:ss') + " | " + chatMessage.sender + "]\" " + chatMessage.message;
         this.chatMessages.push(formattedMessage);
       }
     })
