@@ -10,6 +10,14 @@ export interface FormIn {
   descriptionn : string;
 }
 
+interface SwitchView {
+  value: number;
+  viewValue: string;
+}
+
+
+
+//TODO: split container i 2 seperate Components
 @Component({
   selector: 'app-event-questionnaires',
   templateUrl: './event-questionnaires.component.html',
@@ -18,13 +26,14 @@ export interface FormIn {
 export class EventQuestionnairesComponent implements OnInit{
 
   availableQuestionnaires : EventQuestionnairesModel[] = [];
+  switchView: SwitchView[] = [];
+
+  questionsView : QuestionModel[] = [];
+
+  currentVire : number = 0;
 
   ngOnInit(): void {
-    this.dataServie.loadAvailableEventQuestionnaires(this.orgId, this.eventId).subscribe(sucess => {
-      this.availableQuestionnaires = sucess
-    })
 
-    console.log(this.availableQuestionnaires)
   }
 
 
@@ -106,6 +115,7 @@ export class EventQuestionnairesComponent implements OnInit{
 
     let eventQuestionnairesModel : EventQuestionnairesModel =
       {
+        id: undefined,
         description: this.formIn.descriptionn,
         title: this.formIn.titeln,
         eventId : this.eventId,
@@ -127,9 +137,29 @@ export class EventQuestionnairesComponent implements OnInit{
       this.orgId = nums[0];
       this.eventId = nums[1];
     }
+
+    this.dataServie.loadAvailableEventQuestionnaires(this.orgId, this.eventId).subscribe(sucess => {
+      this.availableQuestionnaires = sucess
+
+      let index = 0;
+
+      sucess.forEach(elem => {
+        console.log("load Questionna" + elem.id)
+        this.switchView.push({value: index, viewValue: elem.title})
+        index++;
+      })
+
+    })
   }
 
   goBack() {
     this.location.back()
+  }
+
+  getQuestions() : QuestionModel[] {
+    if (this.availableQuestionnaires.at(this.currentVire)) {
+      return this.availableQuestionnaires[this.currentVire].questions
+    }
+    return []
   }
 }

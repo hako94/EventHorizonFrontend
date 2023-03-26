@@ -44,4 +44,26 @@
 </ng-container>
 <ng-container>
   <h1>AnswerContainer</h1>
+  <mat-form-field>
+    <mat-label>Fragebogen</mat-label>
+    <mat-select [(value)]="currentVire">
+      <mat-option *ngFor="let elem of switchView" [value]="elem.value">
+        {{elem.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <ng-container>
+    <p>{{"V:" + currentVire + ""}}</p>
+    <ng-container *ngFor="let questiont of getQuestions()">
+      <h3>{{questiont.questionText}}</h3>
+      <mat-radio-group aria-label="Select an option">
+        <mat-radio-button *ngFor="let answer of questiont.answerOptions" value="1">{{answer.answerText}}</mat-radio-button>
+      </mat-radio-group>
+      <hr><br>
+    </ng-container>
+
+    <br>
+    <button mat-raised-button color="primary">Absenden</button>
+
+  </ng-container>
 </ng-container>

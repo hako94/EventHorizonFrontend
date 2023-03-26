@@ -30,6 +30,8 @@ import localeDe from '@angular/common/locales/de';
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {MatButtonModule} from "@angular/material/button";
+import {MatCardModule} from "@angular/material/card";
+import {MatRadioModule} from "@angular/material/radio";
 
 registerLocaleData(localeDe);
 
@@ -60,6 +62,8 @@ registerLocaleData(localeDe);
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
+    MatCardModule,
+    MatRadioModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de-DE' },
