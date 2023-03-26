@@ -160,7 +160,7 @@ export class DataService {
 
   getChatHistory(orgId: string, eventId: string | undefined) : Observable<ChatHistoryModel[]> {
     return this.http.get<ChatHistoryModel[]>(
-      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/chat/',
+      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/chat',
       httpOptions
     )
   }
