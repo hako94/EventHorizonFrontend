@@ -7,6 +7,8 @@ import {CreateEventModel} from "../models/CreateEventModel";
 import {OrganizationUserModel} from "../models/OrganizationUserModel";
 import {EventTemplateModel} from "../models/EventTemplateModel";
 import {AvailableTemplateList} from "../models/AvailableTemplateList";
+import {ChatHistoryModel} from "../models/ChatHistoryModel";
+import {ChatModel} from "../models/ChatModel";
 import {EventQuestionnairesModel} from "../models/EventQuestionnairesModel";
 
 //const BACKEND_API = 'http://localhost:8080/'
@@ -152,6 +154,13 @@ export class DataService {
   loadAvailableEventQuestionnaires(orgId : string, eventId : string) : Observable<EventQuestionnairesModel[]>{
     return this.http.get<EventQuestionnairesModel[]>(
       BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/questionnaires',
+      httpOptions
+    )
+  }
+
+  getChatHistory(orgId: string, eventId: string | undefined) : Observable<ChatHistoryModel[]> {
+    return this.http.get<ChatHistoryModel[]>(
+      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/chat/',
       httpOptions
     )
   }

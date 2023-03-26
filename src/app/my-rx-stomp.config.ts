@@ -27,4 +27,18 @@ export const myRxStompConfig: RxStompConfig = {
   debug: (msg: string): void => {
     console.log(new Date(), msg);
   },
+  beforeConnect: () => {
+    const headers: { [key: string]: string } = {};
+
+    if (myRxStompConfig.connectHeaders) {
+      Object.assign(headers, myRxStompConfig.connectHeaders);
+    }
+
+    const token = window.sessionStorage.getItem('auth-user');
+    if (token) {
+      headers['Authorization'] = 'Bearer ' + token;
+    }
+
+    myRxStompConfig.connectHeaders = headers;
+  },
 };

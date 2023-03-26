@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -24,9 +24,14 @@ import { EventComponent } from './components/organizationview/event/event.compon
 import {RxStomp} from "@stomp/rx-stomp";
 import {rxStompServiceFactory, SocketService} from "./services/SocketService";
 import { EventQuestionnairesComponent } from './components/organizationview/event-questionnaires/event-questionnaires.component';
+import {DatePipe, registerLocaleData} from "@angular/common";
+import {StorageService} from "./services/Storage";
+import localeDe from '@angular/common/locales/de';
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {MatButtonModule} from "@angular/material/button";
+
+registerLocaleData(localeDe);
 
 @NgModule({
   declarations: [
@@ -57,10 +62,18 @@ import {MatButtonModule} from "@angular/material/button";
     MatButtonModule,
   ],
   providers: [
+    { provide: LOCALE_ID, useValue: 'de-DE' },
     httpInterceptorProviders,
+    DatePipe,
     {
       provide: SocketService,
       useFactory: rxStompServiceFactory,
+    },
+    StorageService,
+    {
+      provide: SocketService,
+      useFactory: rxStompServiceFactory,
+      deps: [StorageService],
     },
   ],
   bootstrap: [AppComponent]

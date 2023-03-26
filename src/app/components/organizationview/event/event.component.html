@@ -13,11 +13,17 @@
       <button routerLink='event/{{orgEvent.id || "missing"}}/questionnaires'>Fragebögen</button>
     </div>
     <br><br>
-    <p>[SocketChat] {{socketValue}}</p>
-    <div style="display: flex">
+<!--    <p>[SocketChat] {{socketValue}}</p>-->
+    <h4>Event-Guide</h4>
+    <div class="chat-window" style="height: 100px; overflow-y: scroll;">
+      <div *ngFor="let message of chatMessages">
+        {{message}}
+      </div>
+    </div>
+<!--    <div style="display: flex">
       <button (click)="watchSocket()">Connect to Chat</button>
       <button (click)="unWatchSocjet()">Disconnect from Chat</button>
-    </div>
+    </div>-->
     <input #socketInput>
     <button (click)="pushMessageToBackend(socketInput.value)">Push</button>
   </div>

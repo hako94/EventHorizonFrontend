@@ -1,12 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {OrganizationEventModel} from "../../../models/OrganizationEventModel";
-import {map, Observable, share, Subject, Subscription, tap} from "rxjs";
-import {RxStomp} from "@stomp/rx-stomp";
+import {Subscription} from "rxjs";
 import {SocketService} from "../../../services/SocketService";
 import {Message} from "@stomp/stompjs";
-import {AuthService} from "../../../services/AuthService";
 import {DataService} from "../../../services/DataService";
 import {StorageService} from "../../../services/Storage";
+import {ChatModel} from "../../../models/ChatModel";
+import {ChatHistoryModel} from "../../../models/ChatHistoryModel";
+import {DatePipe} from "@angular/common";
 
 
 @Component({
@@ -14,22 +15,35 @@ import {StorageService} from "../../../services/Storage";
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.scss']
 })
-export class EventComponent implements OnInit{
+export class EventComponent implements OnInit, OnDestroy {
 
-  constructor(private socketService : SocketService, private storageService : StorageService, private dataService : DataService) {
+  constructor(private socketService: SocketService, private storageService: StorageService, private dataService: DataService, private datepipe: DatePipe) {
 
   }
 
-  socketValue : string = "";
+  socketValue: string = "";
 
-  @Input() orgEvent? : OrganizationEventModel;
-  @Input() orgId : string = '';
+  @Input() orgEvent?: OrganizationEventModel;
+  @Input() orgId: string = '';
 
-  chatSubscription? : Subscription;
-
+  chatSubscription?: Subscription;
+  chatMessages: string[] = [];
+  private readonly MAX_CHAT_MESSAGES = 50;
 
   ngOnInit(): void {
     console.warn(this.orgEvent)
+    this.watchSocket()
+    this.dataService.getChatHistory(this.orgId, this.orgEvent?.id).subscribe(success => {
+      for (const chatMessage of success) {
+        const formattedMessage = "[" + new DatePipe('de-DE').transform(chatMessage.timestamp, 'dd.MM.yyyy HH:mm:ss') + " | " + chatMessage.sender + "] " + chatMessage.message;
+        this.chatMessages.push(formattedMessage);
+      }
+    })
+
+  }
+
+  ngOnDestroy(): void {
+    this.unWatchSocjet()
   }
 
   annmelden() {
@@ -39,9 +53,17 @@ export class EventComponent implements OnInit{
   }
 
   watchSocket() {
-    this.chatSubscription = this.socketService.watch('/notifier/chat').subscribe((message: Message) => {
-      this.socketValue = message.body;
+    this.chatSubscription = this.socketService.watch('/topic/' + this.orgId + '/' + this.orgEvent?.id).subscribe((message: Message) => {
+      //this.socketValue = message.body;
+      this.addChatMessage(message.body);
     });
+  }
+
+  addChatMessage(message: string) {
+    this.chatMessages.push(message); // Fügt die neue Nachricht am Ende des Arrays an
+    if (this.chatMessages.length > this.MAX_CHAT_MESSAGES) {
+      this.chatMessages.shift(); // Entfernt die älteste Nachricht, wenn das Array die maximale Größe erreicht
+    }
   }
 
   unWatchSocjet() {
@@ -70,7 +92,21 @@ export class EventComponent implements OnInit{
     window.location.reload()
   }
 
-  pushMessageToBackend(message : string) {
-    this.socketService.publish({ destination: '/app/notifier/message', body: '{"message": "' + message + '"}' });
+  pushMessageToBackend(chat: string) {
+    const model: ChatModel = {
+      orgId: this.orgId,
+      eventId: this.orgEvent?.id,
+      message: chat
+    }
+    const message = JSON.stringify(model);
+    this.socketService.publish({destination: '/app/events/chats', body: message});
   }
+
+  /*  pushMessageToBackend1(chat : string) {
+      const model : ChatModel = {
+        message: chat
+      }
+
+      this.dataService.sendChat(this.orgId,this.orgEvent?.id, model).subscribe();
+    }*/
 }

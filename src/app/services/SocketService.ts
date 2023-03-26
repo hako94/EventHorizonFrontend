@@ -18,6 +18,10 @@ export function rxStompServiceFactory() {
 export class SocketService extends RxStomp {
 
   constructor() {
-    super();
+    super();// hier dein Token einfügen
+    this.configure({
+      ...myRxStompConfig // füge andere Konfigurationen hinzu
+    });
+    this.activate();
   }
 }
