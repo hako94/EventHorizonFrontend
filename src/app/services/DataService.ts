@@ -10,6 +10,7 @@ import {AvailableTemplateList} from "../models/AvailableTemplateList";
 import {ChatHistoryModel} from "../models/ChatHistoryModel";
 import {ChatModel} from "../models/ChatModel";
 import {EventQuestionnairesModel} from "../models/EventQuestionnairesModel";
+import {UserAtEventModel} from "../models/UserAtEventModel";
 
 const BACKEND_API = 'http://localhost:8080/'
 //const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
@@ -161,6 +162,21 @@ export class DataService {
   getChatHistory(orgId: string, eventId: string | undefined) : Observable<ChatHistoryModel[]> {
     return this.http.get<ChatHistoryModel[]>(
       BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/chat',
+      httpOptions
+    )
+  }
+
+  getUserMangamnetList(orgId: string, eventId: string) : Observable<UserAtEventModel[]> {
+    return this.http.get<UserAtEventModel[]>(
+      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/attendees',
+      httpOptions
+    )
+  }
+
+  saveUserMangamnetList(orgId: string, eventId: string, users : UserAtEventModel[]) : Observable<any> {
+    return this.http.post<any>(
+      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/attendees',
+      users,
       httpOptions
     )
   }

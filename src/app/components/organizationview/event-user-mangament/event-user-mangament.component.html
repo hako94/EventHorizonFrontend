@@ -1,0 +1,8 @@
+<p>event-user-mangament works!</p>
+<div *ngFor="let attendee of attendees; let i = index">
+  <h3>{{attendee.email}}</h3>
+  <p>{{attendee.vorname + " " + attendee.nachname}}</p>
+  <mat-checkbox (change)="updateList(i, $event)" [checked]="attendee.here">ist hier!</mat-checkbox>
+</div>
+<br><br>
+<button (click)="sendChanges()" mat-raised-button color="primary">Senden</button>

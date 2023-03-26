@@ -32,6 +32,9 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCardModule} from "@angular/material/card";
 import {MatRadioModule} from "@angular/material/radio";
+import { EventUserMangamentComponent } from './components/organizationview/event-user-mangament/event-user-mangament.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 registerLocaleData(localeDe);
 
@@ -49,7 +52,8 @@ registerLocaleData(localeDe);
     OrganizationAddeventComponent,
     OrganizationSettingsComponent,
     EventComponent,
-    EventQuestionnairesComponent
+    EventQuestionnairesComponent,
+    EventUserMangamentComponent
   ],
   imports: [
     BrowserModule,
@@ -64,6 +68,8 @@ registerLocaleData(localeDe);
     MatButtonModule,
     MatCardModule,
     MatRadioModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de-DE' },
