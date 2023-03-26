@@ -11,8 +11,8 @@ import {ChatHistoryModel} from "../models/ChatHistoryModel";
 import {ChatModel} from "../models/ChatModel";
 import {EventQuestionnairesModel} from "../models/EventQuestionnairesModel";
 
-const BACKEND_API = 'http://localhost:8080/'
-//const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
+//const BACKEND_API = 'http://localhost:8080/'
+const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
