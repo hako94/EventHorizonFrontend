@@ -1,28 +1,21 @@
-<hr>
-<p>organizationview works! for {{currentOrganization}}</p>
-<button (click)="updateURLWithParam(eventViewParam)">Events</button>
-<button (click)="updateURLWithParam(memberViewParam)">Mitglieder</button>
-<button (click)="updateURLWithParam(upcommingViewParam)">Upcomming</button>
-<button (click)="updateURLWithParam(presetViewParam)">Vorlagen</button>
-<button (click)="updateURLWithParam(settingsViewParam)">Settings</button>
-<br>
+<nav mat-tab-nav-bar [tabPanel]="tabPanel">
+  <a mat-tab-link [active]="currentParam === eventViewParam" (click)="updateURLWithParam(eventViewParam)">Events</a>
+  <a mat-tab-link [active]="currentParam === memberViewParam" (click)="updateURLWithParam(memberViewParam)">Mitglieder</a>
+  <a mat-tab-link [active]="currentParam === settingsViewParam" (click)="updateURLWithParam(settingsViewParam)">Settings</a>
+  <a mat-tab-link disabled>Upcomming</a>
+  <a mat-tab-link disabled>Vorlagen</a>
+  <a mat-tab-link disabled>Disabled Link</a>
+</nav>
+<mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
 <ng-container *ngIf="currentParam === eventViewParam">
-  <div class="border">
-    <app-organizationeventview [orgaID]="currentOrganization">
-    </app-organizationeventview>
-  </div>
+  <app-organizationeventview [orgaID]="currentOrganization">
+  </app-organizationeventview>
 </ng-container>
 <ng-container *ngIf="currentParam === memberViewParam">
-  <div class="border">
-    <app-organizationmemberview [orgaID]="currentOrganization">
-    </app-organizationmemberview>
-  </div>
+  <app-organizationmemberview [orgaID]="currentOrganization">
+  </app-organizationmemberview>
 </ng-container>
 <ng-container *ngIf="currentParam === settingsViewParam">
-  <div class="border">
-    <app-organization-settings [orgaID]="currentOrganization">
-    </app-organization-settings>
-  </div>
+  <app-organization-settings [orgaID]="currentOrganization">
+  </app-organization-settings>
 </ng-container>
-<br>
-<hr>

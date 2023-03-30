@@ -1,31 +1,42 @@
 <ng-container *ngIf="orgEvent">
-  <div style="border: {{orgEvent.attender ? 'green' : 'red'}} 1px solid">
-    <div style="float: right; margin-right: 50px">
-      <button (click)="deleteEvent()">X</button>
-      <button>E</button>
-    </div>
-    <h3>Ein Event</h3>
-      <p>ein wert vom Backend: {{orgEvent.name}}</p>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{orgEvent.name}}</mat-card-title>
+      <span style="flex-grow: 1"></span>
+      <span>
+        <button mat-raised-button color="warn" (click)="deleteEvent()">
+          <mat-icon>edit</mat-icon>
+          Editieren
+        </button>
+        <button style="margin-left: 5px" mat-raised-button color="warn" (click)="deleteEvent()">
+          <mat-icon>delete</mat-icon>
+          Löschen
+        </button>
+      </span>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Beschreibung: {{orgEvent.description}}</p>
       <p>EventUserInfo Tutor: {{orgEvent.tutor ? "ja" : "nein"}} Organizer: {{orgEvent.organisator  ? "ja" : "nein"}}</p>
-    <div style="display: flex">
-      <button (click)="annmelden()">Teilnehmen</button>
-      <button (click)="signout()">Abmelden</button>
-      <button routerLink='event/{{orgEvent.id || "missing"}}/questionnaires'>Fragebögen</button>
-      <button routerLink='event/{{orgEvent.id || "missing"}}/eventusermanagment'>Teilnehmerverwaltung</button>
-    </div>
-    <br><br>
-<!--    <p>[SocketChat] {{socketValue}}</p>-->
-    <h4>Event-Guide</h4>
-    <div class="chat-window" style="height: 100px; overflow-y: scroll;">
-      <div *ngFor="let message of chatMessages">
-        {{message}}
+      <mat-divider></mat-divider>
+      <h4>Event-Guide</h4>
+      <div class="chat-window" style="height: 100px; overflow-y: scroll;">
+        <div *ngFor="let message of chatMessages">
+          {{message}}
+        </div>
       </div>
-    </div>
-<!--    <div style="display: flex">
-      <button (click)="watchSocket()">Connect to Chat</button>
-      <button (click)="unWatchSocjet()">Disconnect from Chat</button>
-    </div>-->
-    <input #socketInput>
-    <button (click)="pushMessageToBackend(socketInput.value)">Push</button>
-  </div>
+      <mat-form-field>
+        <mat-label>Chat Nachricht</mat-label>
+        <input matInput #socketInput>
+      </mat-form-field>
+      <button style="margin-left: 10px" mat-stroked-button (click)="pushMessageToBackend(socketInput.value)">Nachricht senden</button>
+      <mat-divider></mat-divider>
+    </mat-card-content>
+    <mat-card-actions>
+      <button style="margin: 5px" *ngIf="!orgEvent.attender" mat-raised-button color="primary" (click)="annmelden()">Teilnehmen</button>
+      <button style="margin: 5px" *ngIf="orgEvent.attender" style="margin-left: 5px" mat-raised-button color="primary" (click)="signout()">Abmelden</button>
+      <button style="margin: 5px" mat-raised-button color="primary" routerLink='event/{{orgEvent.id || "missing"}}/questionnaires'>Fragebögen</button>
+      <button style="margin: 5px" mat-raised-button color="primary" routerLink='event/{{orgEvent.id || "missing"}}/eventusermanagment'>Teilnehmerverwaltung</button>
+    </mat-card-actions>
+  </mat-card>
 </ng-container>
+<br>

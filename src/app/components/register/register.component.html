@@ -1,23 +1,36 @@
-<div class="register">
+<div style="margin-top: 2%">
   <ng-container *ngIf="withNewUser">
     <ng-container *ngIf="withOrganizationId">
-      <h2>Registrierung neuer User mit Einladungslink</h2>
+      <h2>Registrierung für neue User mit Einladungslink</h2>
       <p>zur Organisation: {{organization}}.decode</p>
       <p>EinladungsId: {{inviteId}}</p>
+      <br>
     </ng-container>
     <ng-container *ngIf="!withOrganizationId">
-      <h2>Registrierung neuer User</h2>
+      <h2>Registrierung für neue User</h2>
     </ng-container>
-    <form name="form">
-      <label for="email">Email Adresse:</label>
-      <input [disabled]="withOrganizationId" type="email" id="email" name="email" [(ngModel)]="form.email"><br>
-      <label for="firstName">Vorname:</label>
-      <input type="text" id="firstName" required><br>
-      <label for="lastName">Nachname:</label>
-      <input type="text" id="lastName" required><br>
-      <label for="password">Passwort: </label>
-      <input type="password" id="password" name="password" [(ngModel)]="form.password"><br>
-      <input type="submit" (click)="onSubmit()">
+    <form name="form" style="display: flex; flex-direction: column">
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput [disabled]="withOrganizationId" name="email" [(ngModel)]="form.email">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Vorname</mat-label>
+        <input matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Nachname</mat-label>
+        <input matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Passwort</mat-label>
+        <input matInput name="password" type="password" [(ngModel)]="form.password">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Passwort wiederholen</mat-label>
+        <input matInput type="password">
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Absenden</button>
     </form>
   </ng-container>
   <ng-container *ngIf="!withNewUser">
@@ -26,6 +39,3 @@
     <button>Nein</button>
   </ng-container>
 </div>
-
-<p>Test</p>
-<input type="submit" (click)="test()">

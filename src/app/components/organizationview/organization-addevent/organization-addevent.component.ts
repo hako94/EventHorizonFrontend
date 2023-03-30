@@ -51,7 +51,7 @@ export class OrganizationAddeventComponent {
               private location : Location,
               private router : Router) {
 
-    this.customFields.push({ id: "1", name: "test"})
+    this.customFields.push({ id: "1", name: "test0"})
     this.customFields.push({ id: "2", name: "test1"})
     this.customFields.push({ id: "3", name: "test2"})
 
@@ -133,5 +133,9 @@ export class OrganizationAddeventComponent {
 
       //upload$.subscribe();
     }
+  }
+
+  goback() : void {
+    this.location.back()
   }
 }

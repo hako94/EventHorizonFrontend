@@ -26,6 +26,8 @@ export class EventComponent implements OnInit, OnDestroy {
   @Input() orgEvent?: OrganizationEventModel;
   @Input() orgId: string = '';
 
+  @Input() mock : boolean = false;
+
   chatSubscription?: Subscription;
   chatMessages: string[] = [];
   private readonly MAX_CHAT_MESSAGES = 50;

@@ -1,3 +1,12 @@
-<p>organizationitem works!</p>
-<p>{{name}}{{id}}{{description}}</p>
-<button routerLink="/organizations/{{id}}">Go deeper</button>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{name}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>ID: {{id}}</p>
+    <p>Beschreibung{{description}}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" routerLink="/organizations/{{id}}">Auswählen</button>
+  </mat-card-actions>
+</mat-card>

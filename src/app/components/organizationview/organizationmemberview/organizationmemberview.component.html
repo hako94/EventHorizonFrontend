@@ -1,14 +1,5 @@
-<p>TAB:: organizationmemberview works!</p>
-<p>Member View für Organization {{orgaID}}</p>
-<ng-container *ngFor="let member of members">
-  <div>
-    <hr>
-    <h3>Ein Member</h3>
-    <p>id: {{member.userId}} role: {{member.role.role}}</p>
-    <hr>
-  </div>
-</ng-container>
-<br><br><hr>
+<br>
+<h2>Mitglieder-Übersicht</h2>
 <mat-form-field class="example-full-width">
   <mat-label>Email-Adresse</mat-label>
   <input [(ngModel)]="invitedEmail" matInput placeholder="eineemail@mail.de">
@@ -23,6 +14,25 @@
     <mat-option value="gast">Gast</mat-option>
   </mat-select>
 </mat-form-field>
-<button mat-raised-button color="primary" (click)="inviteSubmit()">Invite User</button>
-<br><br>
-<p>{{invitedUser}}</p>
+<button style="margin-left: 5px" mat-raised-button color="primary" (click)="inviteSubmit()">User einladen</button>
+<mat-card>
+  <mat-card-content>
+    <ng-container *ngFor="let member of members">
+      <mat-divider></mat-divider>
+      <div style="display: flex; padding: 5px; align-items: center">
+        <p style="margin: 0; flex-grow: 1; max-width: 35%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">id: {{member.userId}}</p>
+        <p style="margin: 0; flex-grow: 1; max-width: 35%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">Email: {{member.userId}}</p>
+        <p style="margin: 0; flex-grow: 1; max-width: 20%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">Rolle: {{member.role.role}}</p>
+        <section>
+          <button mat-icon-button color="primary">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </section>
+      </div>
+    </ng-container>
+    <mat-divider></mat-divider>
+  </mat-card-content>
+</mat-card>

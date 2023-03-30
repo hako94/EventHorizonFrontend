@@ -35,6 +35,10 @@ import {MatRadioModule} from "@angular/material/radio";
 import { EventUserMangamentComponent } from './components/organizationview/event-user-mangament/event-user-mangament.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatIconModule} from "@angular/material/icon";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatStepperModule} from "@angular/material/stepper";
 
 registerLocaleData(localeDe);
 
@@ -70,6 +74,10 @@ registerLocaleData(localeDe);
     MatRadioModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
+    MatIconModule,
+    MatTabsModule,
+    MatDividerModule,
+    MatStepperModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de-DE' },

@@ -1,0 +1,25 @@
+.mat-spinner-color::ng-deep circle{
+  stroke: #FFFFFF !important;
+}
+
+.mat-spinner-color {
+  margin-top: 1px;
+}
+
+.loadingState ::ng-deep {
+  span {
+    display: flex;
+  }
+  section {
+    padding-left: 15px;
+    margin-top: 3px;
+  }
+}
+
+.finishedState ::ng-deep {
+  section {
+    margin-left: 5px;
+    margin-right: 17px;
+    margin-top: 3px;
+  }
+}

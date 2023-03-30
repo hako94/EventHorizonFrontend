@@ -22,7 +22,4 @@ export class OrganizationEventViewComponent implements OnInit{
       this.data = success;
     })
   }
-
-
-
 }

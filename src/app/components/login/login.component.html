@@ -1,10 +1,20 @@
-<div class="login">
+<div style="margin-top: 2%">
   <h2>Anmelden</h2>
   <form id="loginForm">
-    <label for="email">Email: </label>
-    <input type="email" id="email" name="email" [(ngModel)]="form.email"><br>
-    <label for="password">Passwort: </label>
-    <input type="text" id="password" name="password" [(ngModel)]="form.password"><br>
-    <button (click)="onSubmit()" type="submit" form="loginForm" formaction="">Login</button>
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput name="email" [(ngModel)]="form.email"><br>
+    </mat-form-field><br>
+    <mat-form-field>
+      <mat-label>Passwort</mat-label>
+      <input matInput name="password" [(ngModel)]="form.password"><br>
+    </mat-form-field><br>
+    <button [@openClose]="loading ? 'open' : 'closed'" [ngClass]="loading ? 'loadingState' : ''" mat-raised-button color="primary" (click)="onSubmit()" type="submit" form="loginForm" formaction="">
+      <mat-spinner [diameter]="20"
+                   class="mat-spinner-color" *ngIf="loading"></mat-spinner>
+      <section>
+        Login
+      </section>
+    </button>
   </form>
 </div>

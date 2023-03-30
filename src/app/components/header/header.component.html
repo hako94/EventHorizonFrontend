@@ -1,13 +1,12 @@
-<mat-toolbar>
-  <h1>Event Horizon</h1>
-  <a
-    routerLink="/register"
-    routerLinkActive="active"
-    ariaCurrentWhenActive="page"
-  >Register</a>
-  <a
-    routerLink="/login"
-    routerLinkActive="active"
-    ariaCurrentWhenActive="page"
-  >Login</a>
+<mat-toolbar color="primary">
+  <span style="display: flex; align-items: center; justify-content: center; flex-grow: 1">
+    <mat-icon>home</mat-icon>
+    <h1 style="margin: 0px 0px 0px 10px;">Event Horizon</h1>
+    <span style="flex-grow: 4"></span>
+    <button mat-raised-button aria-label="Login" routerLink="/register">Register</button>
+    <button mat-icon-button aria-label="Login" routerLink="/login">
+      <mat-icon>login</mat-icon>
+    </button>
+    <mat-icon>person</mat-icon>
+  </span>
 </mat-toolbar>

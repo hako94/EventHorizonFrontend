@@ -1,8 +1,37 @@
-<p>event-user-mangament works!</p>
-<div *ngFor="let attendee of attendees; let i = index">
-  <h3>{{attendee.email}}</h3>
-  <p>{{attendee.vorname + " " + attendee.nachname}}</p>
-  <mat-checkbox (change)="updateList(i, $event)" [checked]="attendee.here">ist hier!</mat-checkbox>
-</div>
-<br><br>
-<button (click)="sendChanges()" mat-raised-button color="primary">Senden</button>
+<br>
+<h2>Teilnehmer-Verwaltung</h2>
+<mat-card>
+  <mat-card-content>
+    <div *ngFor="let attendee of attendees; let i = index">
+      <mat-divider></mat-divider>
+      <div style="display: flex; padding: 5px; align-items: center">
+        <p style="margin: 0; flex-grow: 1; max-width: 35%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{attendee.email}}</p>
+        <p style="margin: 0; flex-grow: 1; max-width: 35%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{attendee.vorname + " " + attendee.nachname}}</p>
+        <section style="display: flex; align-items: flex-end">
+          <mat-checkbox style="margin-top: -5px" (change)="updateList(i, $event)" [checked]="attendee.here">ist hier!</mat-checkbox>
+          <button mat-icon-button color="primary">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </section>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+  </mat-card-content>
+  <br>
+  <button [ngClass]="animationState == 'open' ? 'loadingState' : ''"
+          [ngClass]="animationState == 'finished' ? 'finishedState' : ''"
+          [@openClose]="animationState"
+          (click)="sendChanges()"
+          style="margin-left: 5px; width: 100px" mat-raised-button color="primary">
+    <mat-spinner [diameter]="20"
+                 class="mat-spinner-color" *ngIf="animationState == 'open'"></mat-spinner>
+    <mat-icon fontIcon="done"></mat-icon>
+    <section>
+      {{animationState == 'finished' ? 'Fertig' : 'Speichern'}}
+    </section>
+  </button>
+  <br>
+</mat-card>

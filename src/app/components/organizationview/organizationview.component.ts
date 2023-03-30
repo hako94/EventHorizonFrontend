@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {Location} from "@angular/common";
 import {ActivatedRoute, Params, Router} from "@angular/router";
+import {map, tap} from "rxjs";
 
 @Component({
   selector: 'app-organizationview',
