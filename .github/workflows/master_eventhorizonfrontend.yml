@@ -28,7 +28,7 @@ jobs:
 #          npm run test --if-present
 
       - name: Run Jest Tests
-        run: npm test
+        run: npm test || true
 
       - name: Upload Jest HTML reports to gh-pages branch
         uses: peaceiris/actions-gh-pages@v3
@@ -36,6 +36,9 @@ jobs:
           personal_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./tmp/report/test-report.html
           publish_branch: githubpages
+
+      - name: Run Jest Tests
+        run: npm test
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
