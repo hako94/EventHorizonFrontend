@@ -32,8 +32,10 @@ jobs:
 
       - name: Upload Jest HTML reports to gh-pages branch
         uses: peaceiris/actions-gh-pages@v3
+        permissions:
+          contents: write
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./tmp/report/
           publish_branch: githubpages
 
