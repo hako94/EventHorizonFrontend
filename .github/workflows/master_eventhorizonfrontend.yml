@@ -27,6 +27,16 @@ jobs:
           npm run build --production --if-present
 #          npm run test --if-present
 
+      - name: Run Jest Tests
+        run: npm test
+
+      - name: Upload Jest HTML reports to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./tmp/report/test-report.html
+          publish_branch: githubpages
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
@@ -36,6 +46,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    if: ${{ success() }}
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
