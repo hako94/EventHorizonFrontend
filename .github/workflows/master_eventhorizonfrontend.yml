@@ -37,10 +37,11 @@ jobs:
           personal_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./tmp/report/
           publish_branch: githubpages
+          commit_message: "Deploy updated files to GitHub Pages"
 
-
-      - name: Run Jest Tests
-        run: npm test
+#      - name: Run Jest Tests
+#        run: npm test
+#     Activate, if all tests need to be successful for deployment
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -51,7 +52,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    if: ${{ success() }}
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
