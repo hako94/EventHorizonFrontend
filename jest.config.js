@@ -6,8 +6,12 @@ module.exports = {
     "**/*.steps.ts"
   ],
   collectCoverage: true,
-  "reporters": [ "default", ["./node_modules/jest-html-reporter", { outputPath: "./tmp/report/index.html",
-      "pageTitle": "Latest Test Report"
+  "reporters": [
+    "default",
+    ["jest-html-reporter", {
+      "pageTitle": "Latest Test Report",
+      "outputPath": "./tmp/report/index.html",
+      "includeCoverage": true
     }]
   ],
   testPathIgnorePatterns: ["/node_modules/"],
