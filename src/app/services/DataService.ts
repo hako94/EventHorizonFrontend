@@ -166,14 +166,14 @@ export class DataService {
     )
   }
 
-  getUserMangamnetList(orgId: string, eventId: string) : Observable<UserAtEventModel[]> {
+  getUserManagementList(orgId: string, eventId: string) : Observable<UserAtEventModel[]> {
     return this.http.get<UserAtEventModel[]>(
       BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/attendees',
       httpOptions
     )
   }
 
-  saveUserMangamnetList(orgId: string, eventId: string, users : UserAtEventModel[]) : Observable<any> {
+  saveUserManagementList(orgId: string, eventId: string, users : UserAtEventModel[]) : Observable<any> {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/attendees',
       users,
