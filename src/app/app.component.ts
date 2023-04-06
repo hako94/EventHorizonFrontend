@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "./services/AuthService";
-import {StorageService} from "./services/Storage";
+import {StorageService} from "./services/StorageService";
 import {CsrfService} from "./services/CsrfService";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "@angular/common";

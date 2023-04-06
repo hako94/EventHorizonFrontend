@@ -4,7 +4,7 @@ import {Subscription} from "rxjs";
 import {SocketService} from "../../../services/SocketService";
 import {Message} from "@stomp/stompjs";
 import {DataService} from "../../../services/DataService";
-import {StorageService} from "../../../services/Storage";
+import {StorageService} from "../../../services/StorageService";
 import {ChatModel} from "../../../models/ChatModel";
 import {ChatHistoryModel} from "../../../models/ChatHistoryModel";
 import {DatePipe} from "@angular/common";

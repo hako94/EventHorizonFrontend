@@ -25,7 +25,7 @@ import {RxStomp} from "@stomp/rx-stomp";
 import {rxStompServiceFactory, SocketService} from "./services/SocketService";
 import { EventQuestionnairesComponent } from './components/organizationview/event-questionnaires/event-questionnaires.component';
 import {DatePipe, registerLocaleData} from "@angular/common";
-import {StorageService} from "./services/Storage";
+import {StorageService} from "./services/StorageService";
 import localeDe from '@angular/common/locales/de';
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
