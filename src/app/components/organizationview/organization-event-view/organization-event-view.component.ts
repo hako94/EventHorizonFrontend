@@ -11,7 +11,7 @@ export class OrganizationEventViewComponent implements OnInit{
 
   @Input() orgaID = '';
 
-  data : OrganizationEventModel[] = [];
+  events : OrganizationEventModel[] = [];
 
   constructor(private dataService : DataService) {
 
@@ -19,7 +19,7 @@ export class OrganizationEventViewComponent implements OnInit{
 
   ngOnInit(): void {
     this.dataService.getOrganizationEvents(this.orgaID).subscribe(success => {
-      this.data = success;
+      this.events = success;
     })
   }
 }

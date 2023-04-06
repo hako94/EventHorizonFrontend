@@ -1,7 +1,7 @@
 <div style="height: calc(100% - 64px - 48px); overflow: auto">
   <br>
   <h2>Events</h2>
-  <ng-container *ngFor="let event of data">
+  <ng-container *ngFor="let event of events">
     <app-event [orgEvent]="event" [orgId]="orgaID"></app-event>
   </ng-container>
   <br>
