@@ -29,24 +29,6 @@ export class OrganizationAddeventComponent {
     description : null
   }
 
-  removeValueFromCustomFields(index : number) : void {
-    //TODO test: gut möglich das er hier mit den indizes mal durcheinander kommmt
-      delete this.customFields[index];
-      delete this.customFieldData[index]
-      this.customFields = this.customFields.filter(el => {return el != null});
-    this.customFieldData = this.customFieldData.filter(el => {return el != null});
-  }
-
-  addCustomField(name : string) : void {
-    this.customFields.push({ id: this.customFields.length.toString(), name: name})
-  }
-
-  updateField(i: number, $event: any) {
-    this.customFieldData[i] = $event.target.value;
-
-    console.log(this.customFieldData)
-  }
-
   constructor(private dataService : DataService,
               private location : Location,
               private router : Router) {
@@ -70,8 +52,26 @@ export class OrganizationAddeventComponent {
     }
 
     this.dataService.getAvailableTemplates(this.currentOrganization).subscribe(success => {
-        this.availableTemplates = success;
+      this.availableTemplates = success;
     })
+  }
+
+  removeValueFromCustomFields(index : number) : void {
+    //TODO test: gut möglich das er hier mit den indizes mal durcheinander kommmt
+      delete this.customFields[index];
+      delete this.customFieldData[index]
+      this.customFields = this.customFields.filter(el => {return el != null});
+    this.customFieldData = this.customFieldData.filter(el => {return el != null});
+  }
+
+  addCustomField(name : string) : void {
+    this.customFields.push({ id: this.customFields.length.toString(), name: name})
+  }
+
+  updateField(i: number, $event: any) {
+    this.customFieldData[i] = $event.target.value;
+
+    console.log(this.customFieldData)
   }
 
   onSubmit() : void {
@@ -135,7 +135,7 @@ export class OrganizationAddeventComponent {
     }
   }
 
-  goback() : void {
+  goBack() : void {
     this.location.back()
   }
 }
