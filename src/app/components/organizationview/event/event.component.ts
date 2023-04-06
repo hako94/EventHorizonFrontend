@@ -45,7 +45,7 @@ export class EventComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.unWatchSocjet()
+    this.unwatchSocket()
   }
 
   annmelden() {
@@ -68,7 +68,7 @@ export class EventComponent implements OnInit, OnDestroy {
     }
   }
 
-  unWatchSocjet() {
+  unwatchSocket() {
     if (this.chatSubscription) {
       this.chatSubscription.unsubscribe()
     }
