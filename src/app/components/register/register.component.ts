@@ -61,7 +61,7 @@ export class RegisterComponent {
 
 
   test(): void {
-    this.dataService.privateping().subscribe(success => {
+    this.dataService.privatePing().subscribe(success => {
       console.log(success)
     });
   }

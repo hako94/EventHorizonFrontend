@@ -26,7 +26,7 @@ export class DataService {
 
   constructor(private http: HttpClient) {}
 
-  privateping(): Observable<any> {
+  privatePing(): Observable<any> {
     return this.http.get<any>(
       BACKEND_API + 'private-test/ping',
       httpOptions
