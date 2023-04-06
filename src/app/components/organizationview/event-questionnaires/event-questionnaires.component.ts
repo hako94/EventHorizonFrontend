@@ -32,11 +32,6 @@ export class EventQuestionnairesComponent implements OnInit{
 
   currentVire : number = 0;
 
-  ngOnInit(): void {
-
-  }
-
-
   orgId : string = '';
   eventId : string = '';
 
@@ -47,12 +42,40 @@ export class EventQuestionnairesComponent implements OnInit{
 
   questions : Array<QuestionModel> = [];
 
+  constructor(private location : Location, private dataServie : DataService) {
+
+    const regex = /\/organizations\/(\w+)\/event\/(\w+)\//;
+    const matches = regex.exec(location.path());
+    if (matches) {
+      const nums = matches.map(match => match.replace(/\//g, ""));
+
+      this.orgId = nums[1];
+      this.eventId = nums[2];
+    }
+
+    this.dataServie.loadAvailableEventQuestionnaires(this.orgId, this.eventId).subscribe(sucess => {
+      this.availableQuestionnaires = sucess
+
+      let index = 0;
+
+      sucess.forEach(elem => {
+        console.log("load Questionna" + elem.id)
+        this.switchView.push({value: index, viewValue: elem.title})
+        index++;
+      })
+
+    })
+  }
+
+  ngOnInit(): void {
+
+  }
+
 
   removeValueFromCustomFields(index : number) : void {
     delete this.questions[index]
     this.questions = this.questions.filter(el => {return el != null});
   }
-
 
   addCustomField(name : string) : void {
     this.questions.push({
@@ -86,10 +109,10 @@ export class EventQuestionnairesComponent implements OnInit{
     return model;
   }
 
-  addAnswerOption(value: string, i : number) {
+  addAnswerOption(value: string, answerIndex : number) {
 
-    if (this.questions.at(i)) {
-      this.questions.at(i)?.answerOptions.push(
+    if (this.questions.at(answerIndex)) {
+      this.questions.at(answerIndex)?.answerOptions.push(
         {
           answerNumber: 0,
           answerText : value
@@ -97,8 +120,8 @@ export class EventQuestionnairesComponent implements OnInit{
       )
     }
   }
-
   //TODO wtf typscript
+
   removeAnswerOption(questionIndex: number, answerIndex : number) {
     if (this.questions.at(questionIndex)) {
       // @ts-ignore
@@ -111,7 +134,7 @@ export class EventQuestionnairesComponent implements OnInit{
     }
   }
 
-  submitBogen() {
+  submitQuestionnaire() {
 
     let eventQuestionnairesModel : EventQuestionnairesModel =
       {
@@ -125,31 +148,6 @@ export class EventQuestionnairesComponent implements OnInit{
     eventQuestionnairesModel = this.writeIndices(eventQuestionnairesModel);
 
     this.dataServie.createEventQuestionnaires(this.orgId,this.eventId, eventQuestionnairesModel).subscribe()
-  }
-
-  constructor(private location : Location, private dataServie : DataService) {
-
-    const regex = /\/organizations\/(\w+)\/event\/(\w+)\//;
-    const matches = regex.exec(location.path());
-    if (matches) {
-      const nums = matches.map(match => match.replace(/\//g, ""));
-
-      this.orgId = nums[1];
-      this.eventId = nums[2];
-    }
-
-    this.dataServie.loadAvailableEventQuestionnaires(this.orgId, this.eventId).subscribe(sucess => {
-      this.availableQuestionnaires = sucess
-
-      let index = 0;
-
-      sucess.forEach(elem => {
-        console.log("load Questionna" + elem.id)
-        this.switchView.push({value: index, viewValue: elem.title})
-        index++;
-      })
-
-    })
   }
 
   goBack() {
