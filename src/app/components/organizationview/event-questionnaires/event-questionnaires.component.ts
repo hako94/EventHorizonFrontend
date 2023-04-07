@@ -42,7 +42,7 @@ export class EventQuestionnairesComponent implements OnInit{
 
   questions : Array<QuestionModel> = [];
 
-  constructor(private location : Location, private dataServie : DataService) {
+  constructor(private location : Location, private dataService : DataService) {
 
     const regex = /\/organizations\/(\w+)\/event\/(\w+)\//;
     const matches = regex.exec(location.path());
@@ -53,7 +53,7 @@ export class EventQuestionnairesComponent implements OnInit{
       this.eventId = nums[2];
     }
 
-    this.dataServie.loadAvailableEventQuestionnaires(this.orgId, this.eventId).subscribe(sucess => {
+    this.dataService.loadAvailableEventQuestionnaires(this.orgId, this.eventId).subscribe(sucess => {
       this.availableQuestionnaires = sucess
 
       let index = 0;
@@ -147,7 +147,7 @@ export class EventQuestionnairesComponent implements OnInit{
 
     eventQuestionnairesModel = this.writeIndices(eventQuestionnairesModel);
 
-    this.dataServie.createEventQuestionnaires(this.orgId,this.eventId, eventQuestionnairesModel).subscribe()
+    this.dataService.createEventQuestionnaires(this.orgId,this.eventId, eventQuestionnairesModel).subscribe()
   }
 
   goBack() {
