@@ -17,7 +17,7 @@ import {OrganizationviewComponent} from "./components/organizationview/organizat
 import {
   OrganizationEventViewComponent
 } from "./components/organizationview/organization-event-view/organization-event-view.component";
-import { OrganizationmemberviewComponent } from './components/organizationview/organizationmemberview/organizationmemberview.component';
+import { OrganizationmemberviewComponent } from './components/organizationview/organization-member-view/organizationmemberview.component';
 import { OrganizationAddeventComponent } from './components/organizationview/organization-addevent/organization-addevent.component';
 import { OrganizationSettingsComponent } from './components/organizationview/organization-settings/organization-settings.component';
 import { EventComponent } from './components/organizationview/event/event.component';
