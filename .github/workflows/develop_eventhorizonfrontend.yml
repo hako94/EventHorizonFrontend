@@ -68,5 +68,3 @@ jobs:
           #          slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A49DF171585642BBA5099AD8103BFABD }}
           package: .
-        env:
-          NODE_ENV: dev
