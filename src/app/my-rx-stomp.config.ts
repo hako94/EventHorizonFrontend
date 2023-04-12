@@ -1,9 +1,12 @@
 import { RxStompConfig } from '@stomp/rx-stomp';
+import {environment} from "../environments/environment";
 
 export const myRxStompConfig: RxStompConfig = {
   // Which server?
+  brokerURL : environment.wsBrokerUrl,
   //brokerURL: 'wss://127.0.0.1:8080/ws',
-  brokerURL: 'wss://eventhorizonbackend.azurewebsites.net/ws',
+
+  //brokerURL: 'wss://eventhorizonbackend.azurewebsites.net/ws',
 
   // Headers
   // Typical keys: login, passcode, host

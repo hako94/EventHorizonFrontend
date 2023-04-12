@@ -8,12 +8,14 @@ import {OrganizationUserModel} from "../models/OrganizationUserModel";
 import {EventTemplateModel} from "../models/EventTemplateModel";
 import {AvailableTemplateList} from "../models/AvailableTemplateList";
 import {ChatHistoryModel} from "../models/ChatHistoryModel";
-import {ChatModel} from "../models/ChatModel";
 import {EventQuestionnairesModel} from "../models/EventQuestionnairesModel";
 import {UserAtEventModel} from "../models/UserAtEventModel";
+import {environment} from "../../environments/environment";
 
 //const BACKEND_API = 'http://localhost:8080/'
-const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
+//const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
+const BACKEND_API = environment.backendApi;
+
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
