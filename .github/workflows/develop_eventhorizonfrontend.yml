@@ -23,7 +23,7 @@ jobs:
       - name: npm install, build, and test
         run: |
           npm install
-          npm run build --configuration=dev
+          npm run build:dev
       #          npm run test --if-present
 
       - name: Run Jest Tests
@@ -68,3 +68,5 @@ jobs:
           #          slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A49DF171585642BBA5099AD8103BFABD }}
           package: .
+        env:
+          NODE_ENV: dev
