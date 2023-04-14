@@ -1,11 +1,30 @@
 <br>
 <h1>Organisationen</h1>
-<div *ngFor="let organization of organizations">
-  <app-organizationitem
-    [id]="organization.id"
-    [description]="organization.description"
-    [name]="organization.name">
-  </app-organizationitem>
-  <br>
+  <!--<mat-grid-list cols="4" [style.background]="'lime'">
+  <div *ngFor="let organization of organizations">
+    <mat-grid-tile>
+      <app-organizationitem
+      [id]="organization.id"
+      [description]="organization.description"
+      [name]="organization.name">
+      </app-organizationitem>
+      <br>
+    </mat-grid-tile>
+  </div>
+  </mat-grid-list> -->
+
+<div class="flex-container">
+
+  <div class="flex-child magenta">
+    Flex Column 1
+  </div>
+
+  <div class="flex-child green">
+    Flex Column 2
+  </div>
+
 </div>
+
+
+
 

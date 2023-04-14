@@ -12,3 +12,18 @@ app-login{
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.flex-container {
+  display: flex;
+}
+
+.flex-child {
+  flex: 1;
+  border: 2px solid yellow;
+}
+
+.flex-child:first-child {
+  margin-right: 20px;
+}
+
+

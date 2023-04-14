@@ -39,6 +39,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatStepperModule} from "@angular/material/stepper";
+import {MatGridListModule} from "@angular/material/grid-list";
 
 registerLocaleData(localeDe);
 
@@ -59,26 +60,27 @@ registerLocaleData(localeDe);
     EventQuestionnairesComponent,
     EventUserMangamentComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    MatToolbarModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatCardModule,
-    MatRadioModule,
-    MatCheckboxModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatTabsModule,
-    MatDividerModule,
-    MatStepperModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        MatToolbarModule,
+        MatInputModule,
+        MatSelectModule,
+        MatButtonModule,
+        MatCardModule,
+        MatRadioModule,
+        MatCheckboxModule,
+        MatProgressSpinnerModule,
+        MatIconModule,
+        MatTabsModule,
+        MatDividerModule,
+        MatStepperModule,
+        MatGridListModule,
+    ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de-DE' },
     httpInterceptorProviders,
