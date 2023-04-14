@@ -1,28 +1,32 @@
 <br>
-<h1>Organisationen</h1>
-  <!--<mat-grid-list cols="4" [style.background]="'lime'">
-  <div *ngFor="let organization of organizations">
-    <mat-grid-tile>
-      <app-organizationitem
-      [id]="organization.id"
-      [description]="organization.description"
-      [name]="organization.name">
-      </app-organizationitem>
-      <br>
-    </mat-grid-tile>
+
+<div class="flex sm:flex-row flex-col">
+  <div class="basis-1/2">
+    <h1>Zugeordnete Organisationen</h1>
+    <div class="grid lg:grid-cols-4 grid-cols-2 gap-4 justify-start justify-items-center">
+      <div *ngFor="let organization of organizations">
+        <app-organizationitem
+          [id]="organization.id"
+          [description]="organization.description"
+          [name]="organization.name">
+        </app-organizationitem>
+        <br>
+      </div>
+      <!-- Die Wiederholung der Organisations-Kacheln ist nur zum Testen der flex-Anzeige...-->
+      <div *ngFor="let organization of organizations">
+        <app-organizationitem
+          [id]="organization.id"
+          [description]="organization.description"
+          [name]="organization.name">
+        </app-organizationitem>
+        <br>
+      </div>
+    </div>
+
   </div>
-  </mat-grid-list> -->
-
-<div class="flex-container">
-
-  <div class="flex-child magenta">
-    Flex Column 1
+  <div class="basis-1/4">
+    <h1>Event-Radar</h1>
   </div>
-
-  <div class="flex-child green">
-    Flex Column 2
-  </div>
-
 </div>
 
 

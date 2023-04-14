@@ -1,12 +1,10 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>{{name}}</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <p>ID: {{id}}</p>
-    <p>Beschreibung{{description}}</p>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-raised-button color="primary" routerLink="/organizations/{{id}}">Auswählen</button>
-  </mat-card-actions>
-</mat-card>
+<div>
+  <mat-card class="h-32 w-32 min-w-0 truncate cursor-pointer" routerLink="/organizations/{{id}}">
+    <mat-card-content>
+      <h3 class="text-center">{{name}}</h3>
+    </mat-card-content>
+    <mat-card-actions>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
