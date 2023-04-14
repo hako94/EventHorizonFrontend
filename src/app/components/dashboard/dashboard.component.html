@@ -1,8 +1,8 @@
 <br>
 
-<div class="flex sm:flex-row flex-col">
-  <div class="basis-1/2">
-    <h1>Zugeordnete Organisationen</h1>
+<div class="flex sm:flex-row flex-col gap-4">
+  <div class="basis-1/2 overflow-y-auto max-h-96 sm:max-h-screen">
+    <h1>Deine Organisationen</h1>
     <div class="grid lg:grid-cols-4 grid-cols-2 gap-4 justify-start justify-items-center">
       <div *ngFor="let organization of organizations">
         <app-organizationitem
@@ -21,10 +21,34 @@
         </app-organizationitem>
         <br>
       </div>
+      <div *ngFor="let organization of organizations">
+        <app-organizationitem
+          [id]="organization.id"
+          [description]="organization.description"
+          [name]="organization.name">
+        </app-organizationitem>
+        <br>
+      </div>
+      <div *ngFor="let organization of organizations">
+        <app-organizationitem
+          [id]="organization.id"
+          [description]="organization.description"
+          [name]="organization.name">
+        </app-organizationitem>
+        <br>
+      </div>
+      <div *ngFor="let organization of organizations">
+        <app-organizationitem
+          [id]="organization.id"
+          [description]="organization.description"
+          [name]="organization.name">
+        </app-organizationitem>
+        <br>
+      </div>
     </div>
 
   </div>
-  <div class="basis-1/4">
+  <div class="basis-1/4 overflow-y-auto max-h-fit">
     <h1>Event-Radar</h1>
   </div>
 </div>
