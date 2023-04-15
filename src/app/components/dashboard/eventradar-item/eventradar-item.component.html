@@ -1,0 +1,13 @@
+<div>
+  <mat-card class="h-32 min-w-0 truncate cursor-pointer" routerLink="/organizations/{{organization}}/{{id}}">
+    <mat-card-content class="flex">
+        <h3 class="flex-auto">{{name}}</h3>
+        <div class="flex-none"><mat-icon>event</mat-icon><p>{{startTime}} - {{endTime}}</p></div>
+        <div class="flex-none"><mat-icon>business_center</mat-icon><p>{{organization}}</p></div>
+        <div class="flex-none"><mat-icon>place</mat-icon><p>{{location}}</p></div>
+    </mat-card-content>
+    <mat-card-actions>
+    </mat-card-actions>
+  </mat-card>
+</div>
+

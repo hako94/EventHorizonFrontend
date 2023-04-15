@@ -40,6 +40,7 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatStepperModule} from "@angular/material/stepper";
 import {MatGridListModule} from "@angular/material/grid-list";
+import { EventradarItemComponent } from './components/dashboard/eventradar-item/eventradar-item.component';
 
 registerLocaleData(localeDe);
 
@@ -58,7 +59,8 @@ registerLocaleData(localeDe);
     OrganizationSettingsComponent,
     EventComponent,
     EventQuestionnairesComponent,
-    EventUserMangamentComponent
+    EventUserMangamentComponent,
+    EventradarItemComponent
   ],
     imports: [
         BrowserModule,

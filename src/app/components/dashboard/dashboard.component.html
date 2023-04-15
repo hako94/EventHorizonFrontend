@@ -48,8 +48,13 @@
     </div>
 
   </div>
-  <div class="basis-1/4 overflow-y-auto max-h-fit">
+  <div class="basis-1/2 overflow-y-auto max-h-fit">
     <h1>Event-Radar</h1>
+      <div *ngFor="let event of currentEvents" class="mr-9 mb-9">
+      <app-eventradar-item
+        [name]="event.name">
+      </app-eventradar-item>
+    </div>
   </div>
 </div>
 
