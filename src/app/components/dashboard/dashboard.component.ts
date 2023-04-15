@@ -37,4 +37,13 @@ export class DashboardComponent implements OnInit {
       })
     }
   }
+
+  getOrganizationNameById(id: string): string{
+    for (let i = 0; i < this.organizations.length; i++) {
+      if(this.organizations[i].id == id){
+        return this.organizations[i].name;
+      }
+    }
+    return '-';
+  }
 }

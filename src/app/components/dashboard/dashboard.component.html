@@ -1,7 +1,7 @@
 <br>
 
 <div class="flex sm:flex-row flex-col gap-4">
-  <div class="basis-1/2">
+  <div class="w-full sm:w-1/2">
     <h1>Deine Organisationen</h1>
     <div class="overflow-x-hidden overflow-y-auto max-h-96 sm:max-h-screen">
       <div class="grid lg:grid-cols-4 grid-cols-2 gap-4 justify-start justify-items-center">
@@ -50,15 +50,15 @@
     </div>
 
   </div>
-  <div class="basis-1/2">
+  <div class="w-full sm:w-1/2">
     <h1>Event-Radar</h1>
-    <div class="overflow-y-auto max-h-96 md:max-h-screen">
+    <div class="overflow-y-auto max-h-96 lg:max-h-screen">
       <div *ngFor="let event of currentEvents" class="mx-4 sm:ml-0 mb-4">
         <app-eventradar-item
           [name]="event.name"
           [location]="event.location"
           [id]="event.id"
-          [organization]="event.organizationId"
+          [organization]="this.getOrganizationNameById(event.organizationId)"
           [startTime]="event.eventStart"
           [endTime]="event.eventEnd">
         </app-eventradar-item>
