@@ -39,6 +39,9 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatStepperModule} from "@angular/material/stepper";
+import {MatGridListModule} from "@angular/material/grid-list";
+import { EventradarItemComponent } from './components/dashboard/eventradar-item/eventradar-item.component';
+import {MatMenuModule} from "@angular/material/menu";
 
 registerLocaleData(localeDe);
 
@@ -57,28 +60,31 @@ registerLocaleData(localeDe);
     OrganizationSettingsComponent,
     EventComponent,
     EventQuestionnairesComponent,
-    EventUserMangamentComponent
+    EventUserMangamentComponent,
+    EventradarItemComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    MatToolbarModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatCardModule,
-    MatRadioModule,
-    MatCheckboxModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatTabsModule,
-    MatDividerModule,
-    MatStepperModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        MatToolbarModule,
+        MatInputModule,
+        MatSelectModule,
+        MatButtonModule,
+        MatCardModule,
+        MatRadioModule,
+        MatCheckboxModule,
+        MatProgressSpinnerModule,
+        MatIconModule,
+        MatTabsModule,
+        MatDividerModule,
+        MatStepperModule,
+        MatGridListModule,
+        MatMenuModule,
+    ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de-DE' },
     httpInterceptorProviders,
