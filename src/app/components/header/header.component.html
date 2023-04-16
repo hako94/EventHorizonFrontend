@@ -1,12 +1,28 @@
 <mat-toolbar color="primary">
   <span style="display: flex; align-items: center; justify-content: center; flex-grow: 1">
-    <mat-icon>home</mat-icon>
+    <mat-icon routerLink="/dashboard">home</mat-icon>
     <h1 style="margin: 0px 0px 0px 10px;">Event Horizon</h1>
     <span style="flex-grow: 4"></span>
-    <button mat-raised-button aria-label="Login" routerLink="/register">Register</button>
-    <button mat-icon-button aria-label="Login" routerLink="/login">
-      <mat-icon>login</mat-icon>
-    </button>
-    <mat-icon>person</mat-icon>
+    <div *ngIf="!foundSession()">
+      <button mat-raised-button aria-label="Register" routerLink="/register" class="mr-3">
+        <mat-icon>login</mat-icon>
+        Register
+      </button>
+      <button mat-raised-button aria-label="Login" routerLink="/login">
+        <mat-icon>login</mat-icon>
+        Login
+      </button>
+    </div>
+    <div *ngIf="foundSession()">
+      <button [matMenuTriggerFor]="menu" mat-button>
+        {{ getUserEmail() }}
+        <mat-icon>person</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" xPosition="after">
+        <button (click)="abmelden()" mat-menu-item>
+          <mat-icon>logout</mat-icon>
+          Abmelden</button>
+      </mat-menu>
+    </div>
   </span>
 </mat-toolbar>

@@ -4,9 +4,6 @@ import {StorageService} from "./services/StorageService";
 import {CsrfService} from "./services/CsrfService";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "@angular/common";
-import {subscribeOn} from "rxjs";
-
-const SESSION_STORAGE_KEY = "auth-user";
 
 @Component({
   selector: 'app-root',
@@ -28,7 +25,7 @@ export class AppComponent implements OnInit{
 
     //TODO: remove session Check from component
     //TODO: safe check
-    if (!window.sessionStorage.getItem(SESSION_STORAGE_KEY) &&
+    if (!this.storageService.getUser() &&
         !this.location.path().includes("newUser") &&
         !this.location.path().includes("register")) {
 

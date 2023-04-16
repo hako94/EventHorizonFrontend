@@ -41,6 +41,7 @@ import {MatDividerModule} from "@angular/material/divider";
 import {MatStepperModule} from "@angular/material/stepper";
 import {MatGridListModule} from "@angular/material/grid-list";
 import { EventradarItemComponent } from './components/dashboard/eventradar-item/eventradar-item.component';
+import {MatMenuModule} from "@angular/material/menu";
 
 registerLocaleData(localeDe);
 
@@ -82,6 +83,7 @@ registerLocaleData(localeDe);
         MatDividerModule,
         MatStepperModule,
         MatGridListModule,
+        MatMenuModule,
     ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de-DE' },
