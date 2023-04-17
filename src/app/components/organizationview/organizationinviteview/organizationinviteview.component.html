@@ -1,0 +1,17 @@
+<br>
+<h2>Einladungs-Übersicht</h2>
+
+<mat-card>
+  <mat-card-content class="overflow-y-auto max-h-[60vh]">
+    <ng-container *ngFor="let invitedUser of invitedUsers">
+      <mat-divider></mat-divider>
+      <div class="grid grid-cols-1 md:grid-cols-3">
+        <div class="p-2 pt-3 ">{{invitedUser.email}}</div>
+        <div class="p-2 pt-3 ">{{invitedUser.role.role}}</div>
+        <div class="justify-self-end flex"><button mat-icon-button color="warn" (click)="deleteInvite(invitedUser.id)"><mat-icon>delete</mat-icon></button></div>
+      </div>
+    </ng-container>
+    <mat-divider></mat-divider>
+  </mat-card-content>
+</mat-card>
+
