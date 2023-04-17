@@ -72,6 +72,26 @@ export class DataService {
     )
   }
 
+  deleteOrganizationInvite(orgId : string, inviteId : string) : Observable<any> {
+    return this.http.delete<any>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/invites/' + inviteId,
+      httpOptions
+    )
+  }
+
+  changeOrganizationInviteRole(orgId : string, inviteId : string, email : string, asRole : string) : Observable<string> {
+    return this.http.put<string>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/invites/' + inviteId,
+      {
+        email: email,
+        asRole: asRole
+      },
+      {
+        headers: {'Content-Type': 'application/json'}
+      }
+    )
+  }
+
   inviteUser(email : string, orgId : string, asRole : string) : Observable<string> {
     return this.http.post<string>(
       BACKEND_API + 'api/v1/authenticatedUser/invite',

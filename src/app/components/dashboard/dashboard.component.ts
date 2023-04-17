@@ -8,6 +8,12 @@ import {OrganizationEventModel} from "../../models/OrganizationEventModel";
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
+
+/**
+ * Komponente des EventHorizon-Dashboards
+ *
+ * beinhaltet Organisationen-Übersicht und Event-Radar
+ */
 export class DashboardComponent implements OnInit {
 
   organizations: OrganizationModel[] = [];
@@ -29,15 +35,28 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  /**
+   * Fügt Events, die innerhalb der nächsten 2 Wochen stattfinden, dem Event-Radar hinzu.
+   */
   addAllEvents(): void {
     for (let i = 0; i < this.organizations.length; i++) {
       this.dataService.getOrganizationEvents(this.organizations[i].id).subscribe(success => {
         console.log(success[0]);
-        this.currentEvents = [...this.currentEvents, ...success];
+        for (let i = 0; i < success.length; i++) {
+          let upcomingEventDate : Date = new Date(success[i].eventStart);
+          if(upcomingEventDate <= new Date( Date.now() + (6.048e+8 * 2)) && upcomingEventDate >= new Date( Date.now())) {
+            this.currentEvents.push(success[i]);
+          }
+        }
       })
     }
   }
 
+  /**
+   * Liefert den Name der Organisation anhand der OrganisationsID zurück
+   *
+   * @param id
+   */
   getOrganizationNameById(id: string): string{
     for (let i = 0; i < this.organizations.length; i++) {
       if(this.organizations[i].id == id){
