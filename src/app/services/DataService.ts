@@ -11,6 +11,7 @@ import {ChatHistoryModel} from "../models/ChatHistoryModel";
 import {EventQuestionnairesModel} from "../models/EventQuestionnairesModel";
 import {UserAtEventModel} from "../models/UserAtEventModel";
 import {environment} from "../../environments/environment";
+import {OrganizationInviteModel} from "../models/OrganizationInviteModel";
 
 //const BACKEND_API = 'http://localhost:8080/'
 //const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
@@ -60,6 +61,13 @@ export class DataService {
   getOrganizationMember(orgId : string) : Observable<OrganizationUserModel[]> {
     return this.http.get<OrganizationUserModel[]>(
       BACKEND_API + 'api/v1/organization/'+ orgId +'/member',
+      httpOptions
+    )
+  }
+
+  getOrganizationInvites(orgId : string) : Observable<OrganizationInviteModel[]> {
+    return this.http.get<OrganizationInviteModel[]>(
+      BACKEND_API + 'api/v1/organization/'+ orgId +'/member/invites',
       httpOptions
     )
   }

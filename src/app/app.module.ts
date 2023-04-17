@@ -21,7 +21,6 @@ import { OrganizationmemberviewComponent } from './components/organizationview/o
 import { OrganizationAddeventComponent } from './components/organizationview/organization-addevent/organization-addevent.component';
 import { OrganizationSettingsComponent } from './components/organizationview/organization-settings/organization-settings.component';
 import { EventComponent } from './components/organizationview/event/event.component';
-import {RxStomp} from "@stomp/rx-stomp";
 import {rxStompServiceFactory, SocketService} from "./services/SocketService";
 import { EventQuestionnairesComponent } from './components/organizationview/event-questionnaires/event-questionnaires.component';
 import {DatePipe, registerLocaleData} from "@angular/common";
@@ -42,6 +41,8 @@ import {MatStepperModule} from "@angular/material/stepper";
 import {MatGridListModule} from "@angular/material/grid-list";
 import { EventradarItemComponent } from './components/dashboard/eventradar-item/eventradar-item.component';
 import {MatMenuModule} from "@angular/material/menu";
+import { OrganizationinviteviewComponent } from './components/organizationview/organizationinviteview/organizationinviteview.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 registerLocaleData(localeDe);
 
@@ -61,7 +62,8 @@ registerLocaleData(localeDe);
     EventComponent,
     EventQuestionnairesComponent,
     EventUserMangamentComponent,
-    EventradarItemComponent
+    EventradarItemComponent,
+    OrganizationinviteviewComponent
   ],
     imports: [
         BrowserModule,
@@ -84,6 +86,7 @@ registerLocaleData(localeDe);
         MatStepperModule,
         MatGridListModule,
         MatMenuModule,
+        MatPaginatorModule,
     ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de-DE' },

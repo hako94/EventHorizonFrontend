@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {Location} from "@angular/common";
 import {ActivatedRoute, Params, Router} from "@angular/router";
-import {map, tap} from "rxjs";
 
 @Component({
   selector: 'app-organizationview',
@@ -13,6 +12,7 @@ export class OrganizationviewComponent {
   eventViewParam : Params = {'view' : 'events'};
 
   memberViewParam : Params = {'view' : 'member'};
+  invitesViewParam : Params = {'view' : 'invites'};
   upcommingViewParam : Params = {'view' : 'upcomming'};
   presetViewParam : Params = {'view' : 'presetView'};
   settingsViewParam : Params = {'view' : 'settings'};

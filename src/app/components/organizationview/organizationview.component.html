@@ -1,6 +1,7 @@
 <nav mat-tab-nav-bar [tabPanel]="tabPanel">
   <a mat-tab-link [active]="currentParam === eventViewParam" (click)="updateURLWithParam(eventViewParam)">Events</a>
   <a mat-tab-link [active]="currentParam === memberViewParam" (click)="updateURLWithParam(memberViewParam)">Mitglieder</a>
+  <a mat-tab-link [active]="currentParam === invitesViewParam" (click)="updateURLWithParam(invitesViewParam)">Einladungen</a>
   <a mat-tab-link [active]="currentParam === settingsViewParam" (click)="updateURLWithParam(settingsViewParam)">Settings</a>
   <a mat-tab-link disabled>Upcomming</a>
   <a mat-tab-link disabled>Vorlagen</a>
@@ -14,6 +15,10 @@
 <ng-container *ngIf="currentParam === memberViewParam">
   <app-organizationmemberview [orgaID]="currentOrganization">
   </app-organizationmemberview>
+</ng-container>
+<ng-container *ngIf="currentParam === invitesViewParam">
+  <app-organizationinviteview [orgaID]="currentOrganization">
+  </app-organizationinviteview>
 </ng-container>
 <ng-container *ngIf="currentParam === settingsViewParam">
   <app-organization-settings [orgaID]="currentOrganization">
