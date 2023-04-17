@@ -32,9 +32,7 @@ describe('DataService', () => {
   });
 
   it('should retrieve organizations', () => {
-    const dummyOrganizations: OrganizationModel[] = [
-      // Provide dummy data for the organizations
-    ];
+    const dummyOrganizations: OrganizationModel[] = [{id : "1", name : "test", description : "test", logoId : "1"}];
 
     service.getOrganizations().subscribe((organizations) => {
       expect(organizations).toEqual(dummyOrganizations);
@@ -47,9 +45,7 @@ describe('DataService', () => {
 
   it('should retrieve organization events', () => {
     const orgId = 'dummyOrgId';
-    const dummyOrganizationEvents: OrganizationEventModel[] = [
-      // Provide dummy data for the organization events
-    ];
+    const dummyOrganizationEvents: OrganizationEventModel[] = [{id : "1", name : "test", description : "test", eventStart : "1", eventEnd : "2", location : "here", organizationId: orgId, organisator: true, attender: true, tutor: true}];
 
     service.getOrganizationEvents(orgId).subscribe((events) => {
       expect(events).toEqual(dummyOrganizationEvents);
@@ -60,21 +56,19 @@ describe('DataService', () => {
     req.flush(dummyOrganizationEvents);
   });
 
-  // it('should post event in organization', () => {
-  //   const orgId = 'dummyOrgId';
-  //   const dummyCreateEventModel: {} = {
-  //   };
-  //
-  //   service.postEventInOrganization(orgId, dummyCreateEventModel).subscribe((response) => {
-  //     expect(response).toBeTruthy();
-  //   });
-  //
-  //   const req = httpMock.expectOne(`${BACKEND_API}api/v1/organizations/${orgId}/events`);
-  //   expect(req.request.method).toBe('POST');
-  //   req.flush({});
-  // });
+  it('should post event in organization', () => {
+    const orgId = 'dummyOrgId';
+    const dummyCreateEventModel: {} = {
+    };
 
-  // Write similar test cases for other methods in the DataService class
+    service.postEventInOrganization(orgId, {name: "hello", description : "hello", eventStart : "1", eventEnd : "2", location : "here", organisatorId: [orgId]}).subscribe((response) => {
+      expect(response).toBeTruthy();
+    });
+
+    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organizations/${orgId}/events`);
+    expect(req.request.method).toBe('POST');
+    req.flush({});
+  });
 
   it('should retrieve organization members', () => {
     const orgId = '123';

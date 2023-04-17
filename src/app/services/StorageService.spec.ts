@@ -44,22 +44,22 @@ describe('StorageService', () => {
     expect(service.getCsrfKey()).toEqual(csrfKey);
   });
 
-  // it('sollte saveUser() verwenden, um den Benutzer im sessionStorage zu speichern', () => {
-  //   //given
-  //   const loginResponse: { token: string } = { token: 'abcdefg' };
-  //   //when
-  //   service.saveUser(loginResponse);
-  //   //then
-  //   expect(window.sessionStorage.getItem('auth-user')).toEqual(loginResponse.token);
-  // });
+  it('sollte saveUser() verwenden, um den Benutzer im sessionStorage zu speichern', () => {
+    //given
+    const loginRespons : LoginResponse = {token : "hello", type : "user", id : "123", username : "test", email : "test@test.de"};
+    //when
+    service.saveUser(loginRespons);
+    //then
+    expect(window.sessionStorage.getItem('auth-user')).toEqual(loginRespons.token);
+  });
 
   it('should use getUser() to retrieve the user from the sessionStorage', () => {
     //given
-    const loginResponse: { token: string } = { token: 'abcdefg' };
+    const loginRespons : LoginResponse = {token : "hello", type : "user", id : "123", username : "test", email : "test@test.de"};
     //when
-    window.sessionStorage.setItem('auth-user', loginResponse.token);
+    window.sessionStorage.setItem('auth-user', "hello");
     //then
-    expect(service.getUser()).toEqual(loginResponse.token);
+    expect(service.getUser()).toEqual(loginRespons.token);
   });
 
   it('should use isLoggedIn() to check if a user is logged in', () => {
