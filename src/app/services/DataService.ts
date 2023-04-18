@@ -79,12 +79,11 @@ export class DataService {
     )
   }
 
-  changeOrganizationInviteRole(orgId : string, inviteId : string, email : string, asRole : string) : Observable<string> {
+  changeOrganizationInviteRole(orgId : string, inviteId : string, roleId : number) : Observable<string> {
     return this.http.put<string>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/invites/' + inviteId,
       {
-        email: email,
-        asRole: asRole
+        roleId: roleId
       },
       {
         headers: {'Content-Type': 'application/json'}

@@ -35,8 +35,8 @@
             <mat-select [(value)]="selectedRole">
               <mat-option value=5>Gast</mat-option>
               <mat-option value=4>Teilnehmer</mat-option>
-              <mat-option value=2>Organisator</mat-option>
-              <mat-option value=1>Admin</mat-option>
+              <mat-option *ngIf="hasRole(2) || hasRole(1)" value=2>Organisator</mat-option>
+              <mat-option *ngIf="hasRole(2) || hasRole(1)" value=1>Admin</mat-option>
             </mat-select>
           </mat-form-field>
           </div>
@@ -51,7 +51,7 @@
                 <mat-icon>edit</mat-icon>
               </button>
             </div>
-            <button mat-icon-button color="warn">
+            <button mat-icon-button color="warn" [disabled]="editMode">
               <mat-icon>delete</mat-icon>
             </button>
           </div>

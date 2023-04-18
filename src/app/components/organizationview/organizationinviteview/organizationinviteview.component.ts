@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {DataService} from "../../../services/DataService";
 import {OrganizationInviteModel} from "../../../models/OrganizationInviteModel";
 import {UserRoleModel} from "../../../models/UserRoleModel";
+import {StorageService} from "../../../services/StorageService";
 
 @Component({
   selector: 'app-organizationinviteview',
@@ -36,7 +37,7 @@ export class OrganizationinviteviewComponent {
     }
   ];
 
-  constructor(private dataService : DataService) {
+  constructor(private dataService : DataService, private storageService : StorageService) {
 
   }
 
@@ -46,13 +47,24 @@ export class OrganizationinviteviewComponent {
     })
   }
 
-  changeInviteRole(inviteId : string, email : string, asRole : string) {
-    this.dataService.changeOrganizationInviteRole(this.orgaID, inviteId, email, asRole).subscribe(success => {
+  /**
+   * Aufruf des DataService, um die Rolle zu einer bestimmten Einladung zu ändern
+   *
+   * @param inviteId
+   * @param roleId
+   */
+  changeInviteRole(inviteId : string, roleId : number) {
+    this.dataService.changeOrganizationInviteRole(this.orgaID, inviteId, roleId).subscribe(success => {
       console.log(success)
       window.location.reload();
     });
   }
 
+  /**
+   * Aufruf des DataService, um eine bestimmte Einladung zu löschen
+   *
+   * @param inviteId
+   */
   deleteInvite(inviteId : string) {
     this.dataService.deleteOrganizationInvite(this.orgaID, inviteId).subscribe(success => {
       console.log(success)
@@ -60,14 +72,29 @@ export class OrganizationinviteviewComponent {
     });
   }
 
+  /**
+   * Schaltet zwischen dem "Bearbeiten" und "Anzeigen" Modus der Tabelle um
+   *
+   * @param id
+   */
   edit(id: string) {
     if (!this.editMode) {
       this.editMode = true;
       this.editedUser = id;
     } else {
+      this.changeInviteRole(id, this.selectedRole)
       this.editMode = false;
       this.editedUser = '';
       this.selectedRole = -1;
     }
+  }
+
+  /**
+   * Überprüft, ob der aktuelle Benutzer die übergebene Rolle in der Organisation besitzt
+   *
+   * @param roleId
+   */
+  hasRole(roleId: number) : boolean {
+    return this.storageService.getRoleInCurrentOrganization(this.orgaID) == roleId;
   }
 }
