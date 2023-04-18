@@ -45,6 +45,8 @@ import { OrganizationinviteviewComponent } from './components/organizationview/o
 import {MatPaginatorModule} from "@angular/material/paginator";
 import { ResetPasswordComponent } from './components/login/reset-password/reset-password.component';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from '@angular/material/core';
 
 registerLocaleData(localeDe);
 
@@ -68,30 +70,33 @@ registerLocaleData(localeDe);
     OrganizationinviteviewComponent,
     ResetPasswordComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        FormsModule,
-        BrowserAnimationsModule,
-        ReactiveFormsModule,
-        MatToolbarModule,
-        MatInputModule,
-        MatSelectModule,
-        MatButtonModule,
-        MatCardModule,
-        MatRadioModule,
-        MatCheckboxModule,
-        MatProgressSpinnerModule,
-        MatIconModule,
-        MatTabsModule,
-        MatDividerModule,
-        MatStepperModule,
-        MatGridListModule,
-        MatMenuModule,
-        MatPaginatorModule,
-        MatSnackBarModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    MatToolbarModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatCardModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatTabsModule,
+    MatDividerModule,
+    MatStepperModule,
+    MatGridListModule,
+    MatMenuModule,
+    MatPaginatorModule,
+    MatSnackBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+
+  ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de-DE' },
     httpInterceptorProviders,

@@ -3,8 +3,8 @@ import {CreateEventModel} from "../../../models/CreateEventModel";
 import {DataService} from "../../../services/DataService";
 import {Location} from "@angular/common";
 import {AddEventCustomField} from "../../../dataobjects/AddEventCustomField";
-import {isEmpty} from "rxjs";
-import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {isEmpty, range} from "rxjs";
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {EventTemplateModel} from "../../../models/EventTemplateModel";
 import {VariableTemplate} from "../../../models/VariableTemplate";
 import {AvailableTemplateList} from "../../../models/AvailableTemplateList";
@@ -17,6 +17,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class OrganizationAddeventComponent {
 
+  range = new FormGroup({
+    start: new FormControl<Date | null>(new Date()),
+    end: new FormControl<Date | null>(new Date()),
+  });
+
   currentOrganization : string = '';
 
   availableTemplates : AvailableTemplateList[] = []
@@ -26,7 +31,12 @@ export class OrganizationAddeventComponent {
 
   form : any = {
     eventname : null,
-    description : null
+    description : null,
+    eventStart : null,
+    eventStop : null,
+    starttime: null,
+    endtime: null,
+    location : null,
   }
 
   constructor(private dataService : DataService,
@@ -56,6 +66,13 @@ export class OrganizationAddeventComponent {
     })
   }
 
+  firstDateChanged(event: any) {
+    this.form.eventStart = event.value;
+  }
+
+  secondDateChanged(event: any) {
+    this.form.eventStop = event.value;
+  }
   removeValueFromCustomFields(index : number) : void {
     //TODO test: gut möglich das er hier mit den indizes mal durcheinander kommmt
       delete this.customFields[index];
@@ -76,12 +93,15 @@ export class OrganizationAddeventComponent {
 
   onSubmit() : void {
 
+    const events = `${this.form.eventStart.toISOString().slice(0, 10), this.form.starttime}`
+    const evente = `${this.form.eventStop.toISOString().slice(0, 10), this.form.endtime}`
+
     const model : CreateEventModel = {
       name: this.form.eventname,
       description: this.form.description,
-      eventStart: "2023-11-23T05:17:23.399Z",
-      eventEnd: "2023-11-23T05:17:23.399Z",
-      location: "sad",
+      eventStart: events,
+      eventEnd: evente,
+      location: this.form.location,
       organisatorId: ["sadasd"]
     }
 

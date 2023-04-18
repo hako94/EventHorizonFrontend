@@ -13,14 +13,40 @@
       <textarea style="height: 200px;" matInput id="description" name="description" [(ngModel)]="form.description"></textarea>
     </mat-form-field>
     <section>
+      <mat-form-field appearance="fill" class="example-form-field mr-2">
+        <mat-label>Start Datum</mat-label>
+        <input matInput [matDatepicker]="datepicker" (dateChange)="firstDateChanged($event)">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+        <mat-datepicker #datepicker>
+          <mat-datepicker-actions>
+            <button mat-button matDatepickerCancel>Cancel</button>
+            <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+          </mat-datepicker-actions>
+        </mat-datepicker>
+      </mat-form-field>
       <mat-form-field>
-        <mat-label>Von</mat-label>
-        <input matInput>
+        <mat-label>Start Zeit</mat-label>
+        <input type = "time" matInput [(ngModel)]="form.starttime">
       </mat-form-field>
-      <mat-form-field style="margin-left: 5px">
-        <mat-label>Bis</mat-label>
-        <input matInput>
+      <br>
+      <mat-form-field appearance="fill" class="example-form-field mr-2">
+        <mat-label>End Datum</mat-label>
+        <input matInput [matDatepicker]="datepicker2" (dateChange)="secondDateChanged($event)">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="datepicker2"></mat-datepicker-toggle>
+        <mat-datepicker #datepicker2>
+          <mat-datepicker-actions>
+            <button mat-button matDatepickerCancel>Cancel</button>
+            <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+          </mat-datepicker-actions>
+        </mat-datepicker>
       </mat-form-field>
+      <mat-form-field>
+        <mat-label>End Zeit</mat-label>
+        <input type = "time" matInput [(ngModel)]="form.endtime">
+      </mat-form-field>
+
     </section>
     <mat-form-field>
       <mat-label>Ort</mat-label>
