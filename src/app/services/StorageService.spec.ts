@@ -46,20 +46,20 @@ describe('StorageService', () => {
 
   it('sollte saveUser() verwenden, um den Benutzer im sessionStorage zu speichern', () => {
     //given
-    const loginRespons : LoginResponse = {token : "hello", type : "user", id : "123", username : "test", email : "test@test.de"};
+    const loginResponse : LoginResponse = {token : "hello", type : "user", id : "123", username : "test", email : "test@test.de", organizations: { orgId: "123", role: { id: 1, role: "admin" }}};
     //when
-    service.saveUser(loginRespons);
+    service.saveUser(loginResponse);
     //then
-    expect(window.sessionStorage.getItem('auth-user')).toEqual(loginRespons.token);
+    expect(window.sessionStorage.getItem('auth-user')).toEqual(loginResponse.token);
   });
 
   it('should use getUser() to retrieve the user from the sessionStorage', () => {
     //given
-    const loginRespons : LoginResponse = {token : "hello", type : "user", id : "123", username : "test", email : "test@test.de"};
+    const loginResponse : LoginResponse = {token : "hello", type : "user", id : "123", username : "test", email : "test@test.de", organizations: { orgId: "123", role: { id: 1, role: "admin" }}};
     //when
     window.sessionStorage.setItem('auth-user', "hello");
     //then
-    expect(service.getUser()).toEqual(loginRespons.token);
+    expect(service.getUser()).toEqual(loginResponse.token);
   });
 
   it('should use isLoggedIn() to check if a user is logged in', () => {
