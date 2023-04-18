@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {DataService} from "../../../services/DataService";
 import {OrganizationInviteModel} from "../../../models/OrganizationInviteModel";
+import {UserRoleModel} from "../../../models/UserRoleModel";
 
 @Component({
   selector: 'app-organizationinviteview',
@@ -14,7 +15,24 @@ export class OrganizationinviteviewComponent {
 
   @Input() orgaID = '';
 
-  invitedUsers : OrganizationInviteModel[] = [];
+  invitedUsers : OrganizationInviteModel[] = [
+    new class implements OrganizationInviteModel {
+      email: string = 'local.test1@test.de';
+      id: string = 'blablubb-ID';
+      role: UserRoleModel = new class implements UserRoleModel {
+        id: number = 4;
+        role: string = 'teilnehmer';
+      };
+    },
+    new class implements OrganizationInviteModel {
+      email: string = 'local.test2@test.de';
+      id: string = 'blablubb-ID';
+      role: UserRoleModel = new class implements UserRoleModel {
+        id: number = 5;
+        role: string = 'gast';
+      };
+    }
+  ];
 
   constructor(private dataService : DataService) {
 
@@ -22,7 +40,7 @@ export class OrganizationinviteviewComponent {
 
   ngOnInit(): void {
     this.dataService.getOrganizationInvites(this.orgaID).subscribe(success => {
-      this.invitedUsers = success;
+      //this.invitedUsers = success;
     })
   }
 

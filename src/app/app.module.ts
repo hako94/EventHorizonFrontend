@@ -45,6 +45,7 @@ import { OrganizationinviteviewComponent } from './components/organizationview/o
 import {MatPaginatorModule} from "@angular/material/paginator";
 import { ResetPasswordComponent } from './components/login/reset-password/reset-password.component';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { OrganizationMailsViewComponent } from './components/organizationview/organization-mails-view/organization-mails-view.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from '@angular/material/core';
 
@@ -68,7 +69,8 @@ registerLocaleData(localeDe);
     EventUserMangamentComponent,
     EventradarItemComponent,
     OrganizationinviteviewComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    OrganizationMailsViewComponent
   ],
   imports: [
     BrowserModule,

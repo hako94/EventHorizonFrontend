@@ -40,6 +40,19 @@ export class StorageService {
     return null;
   }
 
+  public getRoleInCurrentOrganization(orgId: string): number {
+    let userOrganizationModels : UserOrganizationModel[] | null = this.getOrganizationList();
+    if (userOrganizationModels == null) {
+      return 0;
+    }
+    for (let i = 0; i < userOrganizationModels.length; i++) {
+      if (userOrganizationModels[i].orgId == orgId) {
+        return userOrganizationModels[i].role.id;
+      }
+    }
+    return 4;
+  }
+
   public saveCsrfKey(key : string) : void {
     window.sessionStorage.removeItem(CSRF_KEY)
     window.sessionStorage.setItem(CSRF_KEY, key);
