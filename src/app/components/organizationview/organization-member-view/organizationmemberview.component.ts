@@ -9,7 +9,7 @@ import {StorageService} from "../../../services/StorageService";
   styleUrls: ['./organizationmemberview.component.scss']
 })
 export class OrganizationmemberviewComponent implements OnInit{
-
+  selectedRole : number = -1;
   invitedEmail : string = '';
   invitedUser : string = '';
 
@@ -17,6 +17,8 @@ export class OrganizationmemberviewComponent implements OnInit{
 
   members : OrganizationUserModel[] = [];
   selected: any = 'guest';
+  editMode : boolean = false;
+  editedUser : string = '';
 
   constructor(private dataService : DataService, private storageService : StorageService) {
 
@@ -41,5 +43,16 @@ export class OrganizationmemberviewComponent implements OnInit{
 
   hasRole(roleId: number) : boolean {
     return this.storageService.getRoleInCurrentOrganization(this.orgaID) == roleId;
+  }
+
+  enableEdit(id: string) {
+    if (!this.editMode) {
+      this.editMode = true;
+      this.editedUser = id;
+    } else {
+      this.editMode = false;
+      this.editedUser = '';
+      this.selectedRole = -1;
+    }
   }
 }

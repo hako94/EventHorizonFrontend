@@ -1,10 +1,10 @@
 <br>
 <h2>Mitglieder-Übersicht</h2>
-<mat-form-field class="example-full-width">
+<mat-form-field class="example-full-width m-2 w-1/4">
   <mat-label>Email-Adresse</mat-label>
-  <input [(ngModel)]="invitedEmail" matInput placeholder="eineemail@mail.de">
+  <input [(ngModel)]="invitedEmail" matInput placeholder="muster@mail.de">
 </mat-form-field>
-<mat-form-field appearance="fill">
+<mat-form-field appearance="fill" class="m-2 w-36">
   <mat-label>Rolle</mat-label>
   <mat-select [(value)]="selected">
     <mat-option value="organizer" disabled>Admin</mat-option>
@@ -14,10 +14,10 @@
     <mat-option value="gast">Gast</mat-option>
   </mat-select>
 </mat-form-field>
-<button style="margin-left: 5px" mat-raised-button color="primary" (click)="inviteSubmit()">User einladen</button>
+<button class="ml-1 mb-4" mat-raised-button color="primary" (click)="inviteSubmit()">User einladen</button>
 <mat-card>
   <mat-card-content class="overflow-y-auto max-h-[60vh]">
-    <div class="hidden md:grid md:grid-cols-4">
+    <div class="hidden md:grid md:grid-cols-4 font-bold">
       <span class="p-2 pt-3">Vorname, Nachname</span>
       <span class="p-2 pt-3">E-Mail</span>
       <span class="p-2 pt-3">Rolle</span>
@@ -28,9 +28,34 @@
       <div class="grid grid-cols-1 md:grid-cols-4">
         <div class="p-2 pt-3 ">{{member.userId}}</div>
         <div class="p-2 pt-3 ">{{member.role.role}}</div>
-        <div class="p-2 pt-3 ">{{member.role.role}}</div>
-        <div *ngIf="hasRole(1) || hasRole(2)" class="justify-self-end flex"><button mat-icon-button color="warn"><mat-icon>delete</mat-icon></button></div>
-      </div>
+        <div *ngIf="!editMode || editedUser != member.userId" class="p-2 pt-3 ">{{member.role.role}}</div>
+        <div *ngIf="editMode && editedUser == member.userId" class="p-2 pt-3">
+          <mat-form-field appearance="fill">
+            <mat-label>Rolle bearbeiten</mat-label>
+            <mat-select [(value)]="selectedRole">
+              <mat-option value=5>Gast</mat-option>
+              <mat-option value=4>Teilnehmer</mat-option>
+              <mat-option value=2>Organisator</mat-option>
+              <mat-option value=1>Admin</mat-option>
+            </mat-select>
+          </mat-form-field>
+          </div>
+          <div *ngIf="hasRole(1) || hasRole(2)" class="justify-self-end flex">
+            <div *ngIf="this.editMode && this.editedUser == member.userId">
+              <button mat-icon-button color="primary" (click)="this.enableEdit(member.userId)">
+                <mat-icon>save</mat-icon>
+              </button>
+            </div>
+            <div *ngIf="!(this.editedUser == member.userId)">
+              <button mat-icon-button color="primary" (click)="this.enableEdit(member.userId)" [disabled]="editMode">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+            <button mat-icon-button color="warn">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
     </ng-container>
     <mat-divider></mat-divider>
   </mat-card-content>
