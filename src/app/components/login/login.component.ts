@@ -48,6 +48,7 @@ export class LoginComponent {
 
       this.storageService.saveUser(sucess)
       this.storageService.saveEmail(sucess.email.toString());
+      this.storageService.saveOrganizationList(sucess.organizations)
 
       this.router.navigate(['/dashboard']);
     })

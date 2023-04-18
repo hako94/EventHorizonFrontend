@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import {LoginResponse} from "../models/LoginResponse";
+import {UserOrganizationModel} from "../models/UserOrganizationModel";
 
 
 const SESSION_STORAGE_KEY = "auth-user";
 const EMAIL_STORAGE_KEY = "auth-user_email";
 const CSRF_KEY = "XSRF-TOKEN";
+const ORGANIZATIONS_STORAGE_KEY = "auth-orgs";
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +25,19 @@ export class StorageService {
 
   public getEmail() : string {
     return window.sessionStorage.getItem(EMAIL_STORAGE_KEY) || '';
+  }
+
+  public saveOrganizationList(list: UserOrganizationModel): void {
+    const json = JSON.stringify(list);
+    window.sessionStorage.setItem(ORGANIZATIONS_STORAGE_KEY, json);
+  }
+
+  public getOrganizationList(): UserOrganizationModel[] | null {
+    const json = window.sessionStorage.getItem(ORGANIZATIONS_STORAGE_KEY);
+    if (json) {
+      return JSON.parse(json);
+    }
+    return null;
   }
 
   public saveCsrfKey(key : string) : void {
