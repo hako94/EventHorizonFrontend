@@ -21,6 +21,6 @@ export class ResetPasswordComponent {
   onSubmit() : void {
     this.loading = true;
 
-    //authService neues Passwort setzen
+    //TODO authService neues Passwort setzen
   }
 }

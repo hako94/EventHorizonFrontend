@@ -8,6 +8,12 @@ import {StorageService} from "../../../services/StorageService";
   templateUrl: './organizationmemberview.component.html',
   styleUrls: ['./organizationmemberview.component.scss']
 })
+
+/**
+ *abc
+ *
+ * fss
+ */
 export class OrganizationmemberviewComponent implements OnInit{
   selectedRole : number = -1;
   invitedEmail : string = '';
@@ -41,6 +47,11 @@ export class OrganizationmemberviewComponent implements OnInit{
     })
   }
 
+  /**
+   * Überprüft, ob der aktuelle Benutzer die übergebene Rolle in der Organisation besitzt
+   *
+   * @param roleId
+   */
   hasRole(roleId: number) : boolean {
     return this.storageService.getRoleInCurrentOrganization(this.orgaID) == roleId;
   }

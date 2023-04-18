@@ -1,9 +1,12 @@
-<div style="height: calc(100% - 64px - 48px); overflow: auto">
+<div class="mx-3">
+  <div class="max-h-[80vh] overflow-y-auto">
+    <br>
+    <h2>Events</h2>
+    <ng-container *ngFor="let event of events">
+      <app-event [orgEvent]="event" [orgId]="orgaID"></app-event>
+    </ng-container>
+    <br>
+  </div>
   <br>
-  <h2>Events</h2>
-  <ng-container *ngFor="let event of events">
-    <app-event [orgEvent]="event" [orgId]="orgaID"></app-event>
-  </ng-container>
-  <br>
-  <button mat-raised-button color="primary" routerLink="/organizations/{{orgaID}}/addEvent">Erstellen</button>
+  <button mat-raised-button color="primary" routerLink="/organizations/{{orgaID}}/addEvent"><mat-icon>add</mat-icon> Event</button>
 </div>

@@ -59,7 +59,10 @@ export class LoginComponent {
   forgotPassword(): void{
     console.log('upsi');
     if (this.form.email == null){
-      this.snackBar.open('Bitte Email eingeben', 'OK', {duration: 2500});
+      this.snackBar.open('Bitte Email eingeben', 'OK', {duration: 3500});
+    } else {
+      this.snackBar.open('Sie haben eine Email mit einem Link zum Zurücksetzen ihres Passworts erhalten', 'OK', {duration: 5000});
+      //TODO send email
     }
   }
 }

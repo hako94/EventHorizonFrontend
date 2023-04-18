@@ -8,23 +8,23 @@
   <!--<div><a mat-tab-link disabled>Upcomming</a></div>-->
 </nav>
 <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
-<ng-container *ngIf="currentParam === eventViewParam">
+<ng-container *ngIf="currentParam === eventViewParam" class="mx-3">
   <app-organizationeventview [orgaID]="currentOrganization">
   </app-organizationeventview>
 </ng-container>
-<ng-container *ngIf="currentParam === memberViewParam">
+<ng-container *ngIf="currentParam === memberViewParam" class="mx-3">
   <app-organizationmemberview [orgaID]="currentOrganization">
   </app-organizationmemberview>
 </ng-container>
-<ng-container *ngIf="currentParam === invitesViewParam">
+<ng-container *ngIf="currentParam === invitesViewParam" class="mx-3">
   <app-organizationinviteview [orgaID]="currentOrganization">
   </app-organizationinviteview>
 </ng-container>
-<ng-container *ngIf="currentParam === mailsViewParam">
+<ng-container *ngIf="currentParam === mailsViewParam" class="mx-3">
   <app-organization-mails-view [orgaID]="currentOrganization">
   </app-organization-mails-view>
 </ng-container>
-<ng-container *ngIf="currentParam === settingsViewParam">
+<ng-container *ngIf="currentParam === settingsViewParam" class="mx-3">
   <app-organization-settings [orgaID]="currentOrganization">
   </app-organization-settings>
 </ng-container>
