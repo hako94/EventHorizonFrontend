@@ -9,7 +9,7 @@ import {UserRoleModel} from "../../../models/UserRoleModel";
   styleUrls: ['./organizationinviteview.component.scss']
 })
 export class OrganizationinviteviewComponent {
-
+  selectedRole : number = -1;
   editMode : boolean = false;
   editedUser : string = '';
   email : string = '';
@@ -67,6 +67,7 @@ export class OrganizationinviteviewComponent {
     } else {
       this.editMode = false;
       this.editedUser = '';
+      this.selectedRole = -1;
     }
   }
 }
