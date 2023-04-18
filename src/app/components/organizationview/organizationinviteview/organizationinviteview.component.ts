@@ -10,6 +10,8 @@ import {UserRoleModel} from "../../../models/UserRoleModel";
 })
 export class OrganizationinviteviewComponent {
 
+  editMode : boolean = false;
+  editedUser : string = '';
   email : string = '';
   role : string = '';
 
@@ -26,7 +28,7 @@ export class OrganizationinviteviewComponent {
     },
     new class implements OrganizationInviteModel {
       email: string = 'local.test2@test.de';
-      id: string = 'blablubb-ID';
+      id: string = '222-ID';
       role: UserRoleModel = new class implements UserRoleModel {
         id: number = 5;
         role: string = 'gast';
@@ -56,5 +58,15 @@ export class OrganizationinviteviewComponent {
       console.log(success)
       window.location.reload();
     });
+  }
+
+  edit(id: string) {
+    if (!this.editMode) {
+      this.editMode = true;
+      this.editedUser = id;
+    } else {
+      this.editMode = false;
+      this.editedUser = '';
+    }
   }
 }
