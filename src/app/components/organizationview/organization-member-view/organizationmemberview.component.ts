@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DataService} from "../../../services/DataService";
 import {OrganizationUserModel} from "../../../models/OrganizationUserModel";
+import {StorageService} from "../../../services/StorageService";
 
 @Component({
   selector: 'app-organizationmemberview',
@@ -17,7 +18,7 @@ export class OrganizationmemberviewComponent implements OnInit{
   members : OrganizationUserModel[] = [];
   selected: any = 'guest';
 
-  constructor(private dataService : DataService) {
+  constructor(private dataService : DataService, private storageService : StorageService) {
 
   }
 
@@ -26,9 +27,10 @@ export class OrganizationmemberviewComponent implements OnInit{
       console.log(success[0].userId)
 
       this.members = success;
+      console.log(this.hasRole(1));
+      console.log(this.hasRole(2));
     })
   }
-
 
   inviteSubmit() : void {
     console.log(this.selected)
@@ -37,4 +39,7 @@ export class OrganizationmemberviewComponent implements OnInit{
     })
   }
 
+  hasRole(roleId: number) : boolean {
+    return this.storageService.getRoleInCurrentOrganization(this.orgaID) == roleId;
+  }
 }

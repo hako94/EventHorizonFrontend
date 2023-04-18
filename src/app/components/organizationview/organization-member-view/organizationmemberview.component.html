@@ -17,13 +17,19 @@
 <button style="margin-left: 5px" mat-raised-button color="primary" (click)="inviteSubmit()">User einladen</button>
 <mat-card>
   <mat-card-content class="overflow-y-auto max-h-[60vh]">
+    <div class="hidden md:grid md:grid-cols-4">
+      <span class="p-2 pt-3">Vorname, Nachname</span>
+      <span class="p-2 pt-3">E-Mail</span>
+      <span class="p-2 pt-3">Rolle</span>
+      <span class="p-2 pt-3"></span>
+    </div>
     <ng-container *ngFor="let member of members">
       <mat-divider></mat-divider>
       <div class="grid grid-cols-1 md:grid-cols-4">
         <div class="p-2 pt-3 ">{{member.userId}}</div>
         <div class="p-2 pt-3 ">{{member.role.role}}</div>
         <div class="p-2 pt-3 ">{{member.role.role}}</div>
-        <div class="justify-self-end flex"><button mat-icon-button color="warn"><mat-icon>delete</mat-icon></button></div>
+        <div *ngIf="hasRole(1) || hasRole(2)" class="justify-self-end flex"><button mat-icon-button color="warn"><mat-icon>delete</mat-icon></button></div>
       </div>
     </ng-container>
     <mat-divider></mat-divider>
