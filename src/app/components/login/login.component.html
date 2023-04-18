@@ -2,14 +2,17 @@
   <div>
     <h2>Anmelden</h2>
     <form id="loginForm">
-      <mat-form-field>
+      <mat-form-field class="w-full">
         <mat-label>Email</mat-label>
         <input matInput name="email" [(ngModel)]="form.email"><br>
       </mat-form-field><br>
-      <mat-form-field>
+      <mat-form-field class="w-full">
         <mat-label>Passwort</mat-label>
         <input matInput name="password" type="password" [(ngModel)]="form.password"><br>
       </mat-form-field><br>
+      <button mat-button class="mr-2" (click)="forgotPassword()">
+        Passwort zurücksetzen
+      </button>
       <button [@openClose]="loading ? 'open' : 'closed'" [ngClass]="loading ? 'loadingState' : ''" mat-raised-button color="primary" (click)="onSubmit()" type="submit" form="loginForm" formaction="">
         <mat-spinner [diameter]="20"
                      class="mat-spinner-color" *ngIf="loading"></mat-spinner>

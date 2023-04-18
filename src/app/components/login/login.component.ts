@@ -3,6 +3,7 @@ import {AuthService} from "../../services/AuthService";
 import {StorageService} from "../../services/StorageService";
 import {Router} from "@angular/router";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-login',
@@ -37,7 +38,7 @@ export class LoginComponent {
 
   loading : boolean = false;
 
-  constructor(private authService : AuthService, private storageService : StorageService, private router : Router) {
+  constructor(private authService : AuthService, private storageService : StorageService, private router : Router, private snackBar : MatSnackBar) {
 
   }
 
@@ -55,4 +56,10 @@ export class LoginComponent {
 
   }
 
+  forgotPassword(): void{
+    console.log('upsi');
+    if (this.form.email == null){
+      this.snackBar.open('Bitte Email eingeben', 'OK', {duration: 2500});
+    }
+  }
 }

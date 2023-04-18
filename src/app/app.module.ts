@@ -43,6 +43,8 @@ import { EventradarItemComponent } from './components/dashboard/eventradar-item/
 import {MatMenuModule} from "@angular/material/menu";
 import { OrganizationinviteviewComponent } from './components/organizationview/organizationinviteview/organizationinviteview.component';
 import {MatPaginatorModule} from "@angular/material/paginator";
+import { ResetPasswordComponent } from './components/login/reset-password/reset-password.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 registerLocaleData(localeDe);
 
@@ -63,7 +65,8 @@ registerLocaleData(localeDe);
     EventQuestionnairesComponent,
     EventUserMangamentComponent,
     EventradarItemComponent,
-    OrganizationinviteviewComponent
+    OrganizationinviteviewComponent,
+    ResetPasswordComponent
   ],
     imports: [
         BrowserModule,
@@ -87,6 +90,7 @@ registerLocaleData(localeDe);
         MatGridListModule,
         MatMenuModule,
         MatPaginatorModule,
+        MatSnackBarModule
     ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de-DE' },
