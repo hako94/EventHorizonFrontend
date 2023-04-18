@@ -7,4 +7,6 @@ import {Component, Input} from '@angular/core';
 })
 export class OrganizationMailsViewComponent {
   @Input() orgaID = '';
+
+  availableEmailTemplates : any[] = [];
 }
