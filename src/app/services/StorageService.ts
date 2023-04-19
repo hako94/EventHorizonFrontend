@@ -7,6 +7,7 @@ const SESSION_STORAGE_KEY = "auth-user";
 const EMAIL_STORAGE_KEY = "auth-user_email";
 const CSRF_KEY = "XSRF-TOKEN";
 const ORGANIZATIONS_STORAGE_KEY = "auth-orgs";
+const PLATTFORMADMIN_STORAGE_KEY = "admin";
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,15 @@ export class StorageService {
 
   public getEmail() : string {
     return window.sessionStorage.getItem(EMAIL_STORAGE_KEY) || '';
+  }
+
+  public savePlattformAdmin(bool : string) {
+    window.sessionStorage.removeItem(PLATTFORMADMIN_STORAGE_KEY)
+    window.sessionStorage.setItem(PLATTFORMADMIN_STORAGE_KEY, String(bool))
+  }
+
+  public isPlattformAdmin() : string {
+    return window.sessionStorage.getItem(PLATTFORMADMIN_STORAGE_KEY) || '';
   }
 
   public saveOrganizationList(list: UserOrganizationModel): void {

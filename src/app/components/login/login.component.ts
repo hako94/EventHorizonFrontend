@@ -47,9 +47,10 @@ export class LoginComponent {
 
     this.authService.login(this.form.email, this.form.password).subscribe(sucess => {
 
-      this.storageService.saveUser(sucess)
+      this.storageService.saveUser(sucess);
       this.storageService.saveEmail(sucess.email.toString());
-      this.storageService.saveOrganizationList(sucess.organizations)
+      this.storageService.saveOrganizationList(sucess.organizations);
+      this.storageService.savePlattformAdmin(sucess.plattformAdmin)
 
       this.router.navigate(['/dashboard']);
     })
