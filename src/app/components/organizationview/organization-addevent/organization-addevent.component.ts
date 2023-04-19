@@ -17,17 +17,14 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class OrganizationAddeventComponent {
 
-  range = new FormGroup({
-    start: new FormControl<Date | null>(new Date()),
-    end: new FormControl<Date | null>(new Date()),
-  });
-
   currentOrganization : string = '';
 
   availableTemplates : AvailableTemplateList[] = []
 
   customFields : Array<AddEventCustomField> = [];
   customFieldData : Array<string> = [];
+
+  files : File[] = [];
 
   form : any = {
     eventname : null,
@@ -65,7 +62,15 @@ export class OrganizationAddeventComponent {
       this.availableTemplates = success;
     })
   }
+  onSelect(event: any) {
+    console.log(event);
+    this.files.push(...event.addedFiles);
+  }
 
+  onRemove(event: any) {
+    console.log(event);
+    this.files.splice(this.files.indexOf(event), 1);
+  }
   firstDateChanged(event: any) {
     this.form.eventStart = event.value;
   }

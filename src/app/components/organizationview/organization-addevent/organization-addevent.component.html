@@ -108,7 +108,12 @@
     <br>
     <h2>Datei Upload</h2>
     <div>
-      <input type="file" class="file-upload" (change)="onFileSelected($event)" #fileUpload>
+      <ngx-dropzone (change)="onSelect($event)">
+        <ngx-dropzone-label>Bitte legen sie ihre Dateien hier ab</ngx-dropzone-label>
+        <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+          <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+        </ngx-dropzone-preview>
+      </ngx-dropzone>
     </div>
   </mat-step>
   <mat-step>

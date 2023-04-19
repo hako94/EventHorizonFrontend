@@ -48,6 +48,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { OrganizationMailsViewComponent } from './components/organizationview/organization-mails-view/organization-mails-view.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from '@angular/material/core';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 registerLocaleData(localeDe);
 
@@ -97,6 +98,7 @@ registerLocaleData(localeDe);
     MatSnackBarModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    NgxDropzoneModule,
 
   ],
   providers: [
