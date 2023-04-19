@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {EmailTemplateModel} from "../../../models/EmailTemplateModel";
 
 @Component({
   selector: 'app-organization-mails-view',
@@ -8,5 +9,6 @@ import {Component, Input} from '@angular/core';
 export class OrganizationMailsViewComponent {
   @Input() orgaID = '';
 
-  availableEmailTemplates : any[] = [];
+  availableEmailTemplates : EmailTemplateModel[] = [];
+  panelOpenState: boolean = false;
 }

@@ -49,6 +49,7 @@ import { OrganizationMailsViewComponent } from './components/organizationview/or
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from '@angular/material/core';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import {MatExpansionModule} from "@angular/material/expansion";
 
 registerLocaleData(localeDe);
 
@@ -73,34 +74,35 @@ registerLocaleData(localeDe);
     ResetPasswordComponent,
     OrganizationMailsViewComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    MatToolbarModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatCardModule,
-    MatRadioModule,
-    MatCheckboxModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatTabsModule,
-    MatDividerModule,
-    MatStepperModule,
-    MatGridListModule,
-    MatMenuModule,
-    MatPaginatorModule,
-    MatSnackBarModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    NgxDropzoneModule,
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        MatToolbarModule,
+        MatInputModule,
+        MatSelectModule,
+        MatButtonModule,
+        MatCardModule,
+        MatRadioModule,
+        MatCheckboxModule,
+        MatProgressSpinnerModule,
+        MatIconModule,
+        MatTabsModule,
+        MatDividerModule,
+        MatStepperModule,
+        MatGridListModule,
+        MatMenuModule,
+        MatPaginatorModule,
+        MatSnackBarModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        NgxDropzoneModule,
+        MatExpansionModule,
 
-  ],
+    ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de-DE' },
     httpInterceptorProviders,
