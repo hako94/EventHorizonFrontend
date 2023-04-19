@@ -33,8 +33,9 @@ export class StorageService {
     window.sessionStorage.setItem(PLATTFORMADMIN_STORAGE_KEY, String(bool))
   }
 
-  public isPlattformAdmin() : string {
-    return window.sessionStorage.getItem(PLATTFORMADMIN_STORAGE_KEY) || '';
+  public isPlattformAdmin() : boolean {
+    const platformAdmin : string | null = window.sessionStorage.getItem(PLATTFORMADMIN_STORAGE_KEY);
+    return platformAdmin == '1';
   }
 
   public saveOrganizationList(list: UserOrganizationModel): void {

@@ -49,6 +49,7 @@ import { OrganizationMailsViewComponent } from './components/organizationview/or
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from '@angular/material/core';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { PlattformAdminComponent } from './components/plattform-admin/plattform-admin.component';
 import {MatExpansionModule} from "@angular/material/expansion";
 
 registerLocaleData(localeDe);
@@ -72,7 +73,8 @@ registerLocaleData(localeDe);
     EventradarItemComponent,
     OrganizationinviteviewComponent,
     ResetPasswordComponent,
-    OrganizationMailsViewComponent
+    OrganizationMailsViewComponent,
+    PlattformAdminComponent
   ],
     imports: [
         BrowserModule,

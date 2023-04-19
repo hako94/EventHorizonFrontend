@@ -1,0 +1,60 @@
+<div class="mx-3">
+  <br>
+  <h2>Einstellungen für Plattformbetreiber</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 overflow-y-auto max-h-[80vh]">
+    <div>
+      <mat-card class="sm:mr-1.5">
+        <div class="ml-2">
+          <h3>Organisation anlegen</h3>
+          <p>fopfop</p>
+          <p>fopfop</p>
+          <p>fopfop</p>
+          <p>fopfop</p>
+          <p>fopfop</p>
+          <p>fopfop</p>
+          <p>fopfop</p>
+          <p>fopfop</p>
+          <p>fopfop</p>
+        </div>
+      </mat-card>
+      <br>
+      <mat-card class="sm:mr-1.5">
+        <div class="ml-2">
+          <h3>Organisation löschen</h3>
+          <p>Durch einen Klick auf den Button wird die angegebene Organisation gelöscht.</p>
+          <p><strong>Achtung:</strong> Alle zugehörigen Daten (z.B. Events und Dateien) gehen hierbei <strong>unwiderruflich verloren!</strong></p>
+          <span>
+            <button class="mb-2" mat-raised-button color="warn" (click)="deleteOrga()"><mat-icon>delete</mat-icon>Löschen</button>
+          </span>
+          <br>
+        </div>
+      </mat-card>
+      <br>
+    </div>
+    <div>
+      <mat-card class="sm:ml-1.5">
+        <div class="ml-2">
+          <h3>Datenbank leeren</h3>
+          <p>Durch einen Klick auf den Button wird die Datenbank zurückgesetzt.</p>
+          <p><strong>Achtung:</strong> Alle vorhandenen Daten gehen hierbei <strong>unwiderruflich verloren!</strong></p>
+          <span>
+            <button class="mb-2" mat-raised-button color="warn" (click)="clearDB()"><mat-icon>delete</mat-icon>Daten löschen</button>
+          </span>
+          <br>
+        </div>
+      </mat-card>
+      <br>
+      <mat-card class="sm:ml-1.5">
+        <div class="ml-2">
+          <h3>Testdaten anlegen</h3>
+          <p>Durch einen Klick auf den Button wird die Datenbank zurückgesetzt und neu mit Testdaten befüllt.</p>
+          <p><strong>Achtung:</strong> Alle vorhandenen Daten gehen hierbei <strong>unwiderruflich verloren!</strong></p>
+          <span>
+            <button class="mb-2" mat-raised-button color="warn" (click)="resetDB()"><mat-icon>replay</mat-icon>Neu generieren</button>
+          </span>
+          <br>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,8 @@
 <mat-toolbar color="primary">
   <span style="display: flex; align-items: center; justify-content: center; flex-grow: 1">
-    <mat-icon routerLink="/dashboard">home</mat-icon>
+    <mat-icon routerLink="/dashboard" class="cursor-pointer">home</mat-icon>
     <h1 style="margin: 0px 0px 0px 10px;">Event Horizon</h1>
+    <span class="mx-3 pt-2.5"><button *ngIf="isLoggedInPlatformAdmin()"><mat-icon routerLink="/platform-settings" class="cursor-pointer">settings</mat-icon></button></span>
     <span style="flex-grow: 4"></span>
     <div *ngIf="!foundSession()">
       <button mat-raised-button aria-label="Register" routerLink="/register" class="mr-3">

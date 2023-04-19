@@ -13,10 +13,12 @@ import {
 import {
   EventUserMangamentComponent
 } from "./components/organizationview/event-user-mangament/event-user-mangament.component";
+import {PlattformAdminComponent} from "./components/plattform-admin/plattform-admin.component";
 
 const routes: Routes = [
   { path: "register", component: RegisterComponent },
   { path: "login", component: LoginComponent },
+  { path: "platform-settings", component: PlattformAdminComponent },
   { path: "dashboard", component: DashboardComponent},
   { path: "organizations/:id/event/:eventid/questionnaires", component: EventQuestionnairesComponent},
   { path: "organizations/:id/event/:eventid/eventusermanagment", component: EventUserMangamentComponent},
