@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-reset-password',
@@ -14,13 +15,17 @@ export class ResetPasswordComponent {
 
   loading : boolean = false;
 
-  constructor() {
+  constructor(private snackBar : MatSnackBar) {
 
   }
 
   onSubmit() : void {
     this.loading = true;
-
-    //TODO authService neues Passwort setzen
+    if (this.form.password != this.form.repeatPassword){
+      this.snackBar.open('Die beiden Felder stimmen nicht überein, bitte nochmal überprüfen!', 'OK', {duration: 5500});
+      this.loading = false;
+    } else {
+      //TODO authService neues Passwort setzen
+    }
   }
 }
