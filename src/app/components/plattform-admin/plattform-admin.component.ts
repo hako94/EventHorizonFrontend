@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {DataService} from "../../services/DataService";
-import {StorageService} from "../../services/StorageService";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
@@ -17,8 +16,10 @@ import {MatSnackBar} from "@angular/material/snack-bar";
  * @since
  */
 export class PlattformAdminComponent {
-  //TODO: Im header.component.ts die Anzeigelogik umkehren (das ! bei isPlatformAdmin wegmachen)
 
+  orgaName : string = '';
+  orgaAdminMail : string = '';
+  orgaDescription : string = '';
   toDeleteOrga : string = '';
 
   constructor(private dataService : DataService, private snackBar : MatSnackBar) {
@@ -35,7 +36,7 @@ export class PlattformAdminComponent {
     if (orgId == '') {
       this.snackBar.open('Bitte geben Sie eine Organisations-ID an', 'OK', {duration: 3000});
     } else {
-      this.dataService.deleteOrganization(orgId);
+      this.dataService.deleteOrganization(orgId).subscribe(console.log);
       this.toDeleteOrga = '';
     }
   }
@@ -44,13 +45,13 @@ export class PlattformAdminComponent {
    * Calls the DataService to delete all entries of the database
    */
   clearDB() {
-    this.dataService.deleteDatabase();
+    this.dataService.deleteDatabase().subscribe(console.log);
   }
 
   /**
    * Calls the DataService to re-initialize the database
    */
   resetDB() {
-    this.dataService.resetDatabase();
+    this.dataService.resetDatabase().subscribe(console.log);
   }
 }

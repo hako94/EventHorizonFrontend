@@ -40,6 +40,6 @@ export class HeaderComponent {
    * der sich auf dem Dashboard befindet
    */
   isLoggedInPlatformAdmin() : boolean {
-    return (!(this.storageService.isPlattformAdmin())) && (this.router.url == '/dashboard');
+    return ((this.storageService.isPlattformAdmin())) && (this.router.url == '/dashboard');
   }
 }
