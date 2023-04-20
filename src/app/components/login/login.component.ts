@@ -66,4 +66,6 @@ export class LoginComponent {
       //TODO send email
     }
   }
+
+    protected readonly onkeydown = onkeydown;
 }

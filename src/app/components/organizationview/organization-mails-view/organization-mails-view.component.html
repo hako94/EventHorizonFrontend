@@ -1,62 +1,45 @@
-<div class="mx-3">
-  <mat-expansion-panel (opened)="panelOpenState = true"
-                       (closed)="panelOpenState = false"
-                       *ngFor="let emailTemplate of availableEmailTemplates"
-                       class="mt-2">
+<div class="mx-3 overflow-y-auto h-[80vh]">
+  <mat-expansion-panel
+    class="customMargin"
+    (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false"
+    *ngFor="let emailTemplate of availableEmailTemplates">
     <mat-expansion-panel-header>
-      <mat-panel-title>
-        {{emailTemplate.subject}}
+      <mat-panel-title class="pt-2">
+        <p *ngIf="!editMode || editedEmailTemplate != emailTemplate.id">{{emailTemplate.subject}}</p>
       </mat-panel-title>
       <mat-panel-description>
         {{emailTemplate.name}}
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <textarea class="w-[80%] border-solid"
-              matInput
-              cdkTextareaAutosize
-              #autosize="cdkTextareaAutosize"
-              cdkAutosizeMinRows="10"
-              cdkAutosizeMaxRows="30">
-    </textarea>
-  </mat-expansion-panel>
-  <mat-expansion-panel class="mt-2"
-                       (opened)="panelOpenState = true"
-                       (closed)="panelOpenState = false">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Betreff
-      </mat-panel-title>
-      <mat-panel-description>
-        Name
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <textarea class="w-[80%] border-solid"
-              matInput
-              cdkTextareaAutosize
-              #autosize="cdkTextareaAutosize"
-              cdkAutosizeMinRows="10"
-              cdkAutosizeMaxRows="30">
-    Text
-    </textarea>
-  </mat-expansion-panel>
-  <mat-expansion-panel class="mt-2"
-                       (opened)="panelOpenState = true"
-                       (closed)="panelOpenState = false">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Betreff
-      </mat-panel-title>
-      <mat-panel-description>
-        Name
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <textarea class="w-[80%] border-solid"
-              matInput
-              cdkTextareaAutosize
-              #autosize="cdkTextareaAutosize"
-              cdkAutosizeMinRows="10"
-              cdkAutosizeMaxRows="30">
-    Text
-    </textarea>
+    <div class="flex flex-col">
+      <mat-form-field class="w-[80%]" *ngIf="editMode && editedEmailTemplate == emailTemplate.id">
+        <mat-label>Betreff</mat-label>
+        <input matInput placeholder="Hier Betreff eingeben" value="{{emailTemplate.subject}}">
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="w-[80%]">
+        <mat-label>Email Text</mat-label>
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="10"
+          cdkAutosizeMaxRows="30"
+          [readonly]="!editMode">{{emailTemplate.text}}</textarea>
+      </mat-form-field>
+    </div>
+    <div class="flex justify-self-end">
+      <button class="flex-col" *ngIf="!(this.editedEmailTemplate == emailTemplate.id)" mat-icon-button color="primary"
+              (click)="this.toggleEdit(emailTemplate.id)" [disabled]="editMode">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button class="flex-col" *ngIf="this.editMode && this.editedEmailTemplate == emailTemplate.id" mat-icon-button
+              color="primary" (click)="this.toggleEdit(emailTemplate.id)" [disabled]="!editMode">
+        <mat-icon>save</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deleteEmailTemplate(emailTemplate.id)" [disabled]="editMode">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
   </mat-expansion-panel>
 </div>
