@@ -36,10 +36,6 @@
             "scripts": []
           },
           "configurations": {
-            "development": {
-              "sourceMap": true,
-              "optimization": false
-            },
             "production": {
               "budgets": [
                 {
@@ -62,19 +58,12 @@
               ]
             },
             "dev": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "1mbb",
-                  "maximumError": "2mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
-                }
-              ],
-              "outputHashing": "all",
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -87,7 +76,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options" : {
-            "browserTarget":"EventHorizonFrontend:build"
+            "browserTarget":"EventHorizonFrontend:build:dev"
           },
           "configurations": {
             "production": {
