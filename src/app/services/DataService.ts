@@ -214,6 +214,18 @@ export class DataService {
     )
   }
 
+  createOrganization(name : string, email : string, description : string) : Observable<any> {
+    return this.http.post<OrganizationModel>(
+      BACKEND_API + 'api/v1/admin/organization',
+      {
+        'name': name,
+        'description': description,
+        'email': email
+      },
+      httpOptions
+    )
+  }
+
   deleteOrganization(orgId : string) : Observable<any> {
     return this.http.delete<any>(
       BACKEND_API + 'api/v1/admin/organization/' + orgId,

@@ -8,30 +8,28 @@
           <h3>Organisation anlegen</h3>
           <p>Organisations-Name und E-Mail Adresse des ersten Organisations-Admins müssen angegeben werden, eine Beschreibung der Organisation ist optional.</p>
           <br>
-          <form>
             <div class="grid grid-cols-1 sm:grid-cols-2">
               <div class="sm:mr-2">
                 <mat-form-field class="sm:mr-2 w-full">
-                  <mat-label>Org-Name</mat-label>
-                  <input matInput [required]="true">
+                  <mat-label>Org-Name*</mat-label>
+                  <input matInput [(ngModel)]="orgaName">
                 </mat-form-field>
               </div>
               <div>
                 <mat-form-field class="w-full">
-                  <mat-label>E-Mail Org-Admin</mat-label>
-                  <input matInput [required]="true">
+                  <mat-label>E-Mail Org-Admin*</mat-label>
+                  <input matInput [(ngModel)]="orgaAdminMail">
                 </mat-form-field>
               </div>
               <div class="sm:cols-span-2 sm:pr-2">
                 <mat-form-field class="w-full">
                   <mat-label>Beschreibung</mat-label>
-                  <textarea matInput></textarea>
+                  <textarea matInput [(ngModel)]="orgaDescription"></textarea>
                 </mat-form-field>
               </div>
             </div>
-          </form>
           <span class="mb-2 mr-2">
-            <button mat-raised-button color="primary"><mat-icon>add</mat-icon>Anlegen</button>
+            <button mat-raised-button color="primary" (click)="createOrganization()"><mat-icon>add</mat-icon>Anlegen</button>
           </span>
         </div>
       </mat-card>
