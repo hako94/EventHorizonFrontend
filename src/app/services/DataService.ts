@@ -25,6 +25,10 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root',
 })
+
+/**
+ * Sends http requests to the backend-api and returns the http response to the respective component
+ */
 export class DataService {
 
   constructor(private http: HttpClient) {}
@@ -206,6 +210,27 @@ export class DataService {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/attendees',
       users,
+      httpOptions
+    )
+  }
+
+  deleteOrganization(orgId : string) : Observable<any> {
+    return this.http.delete<any>(
+      BACKEND_API + 'api/v1/organization/' + orgId,
+      httpOptions
+    )
+  }
+
+  deleteDatabase() : Observable<any> {
+    return this.http.delete<any>(
+      BACKEND_API + 'api/v1/database/',
+      httpOptions
+    )
+  }
+
+  resetDatabase() : Observable<any> {
+    return this.http.post<any>(
+      BACKEND_API + 'api/v1/database/',
       httpOptions
     )
   }

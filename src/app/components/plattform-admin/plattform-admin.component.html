@@ -6,27 +6,22 @@
       <mat-card class="sm:mr-1.5">
         <div class="ml-2">
           <h3>Organisation anlegen</h3>
-          <p>fopfop</p>
-          <p>fopfop</p>
-          <p>fopfop</p>
-          <p>fopfop</p>
-          <p>fopfop</p>
-          <p>fopfop</p>
-          <p>fopfop</p>
-          <p>fopfop</p>
-          <p>fopfop</p>
         </div>
       </mat-card>
       <br>
-      <mat-card class="sm:mr-1.5">
+      <mat-card class="sm:mr-1.5 pb-2">
         <div class="ml-2">
           <h3>Organisation löschen</h3>
           <p>Durch einen Klick auf den Button wird die angegebene Organisation gelöscht.</p>
           <p><strong>Achtung:</strong> Alle zugehörigen Daten (z.B. Events und Dateien) gehen hierbei <strong>unwiderruflich verloren!</strong></p>
-          <span>
-            <button class="mb-2" mat-raised-button color="warn" (click)="deleteOrga()"><mat-icon>delete</mat-icon>Löschen</button>
-          </span>
           <br>
+          <mat-form-field appearance="fill" class="mr-2">
+            <mat-label>Organisations-ID</mat-label>
+            <input matInput [(ngModel)]="toDeleteOrga">
+          </mat-form-field>
+          <span class="mb-2">
+            <button mat-raised-button color="warn" (click)="deleteOrga(this.toDeleteOrga)"><mat-icon>delete</mat-icon>Löschen</button>
+          </span>
         </div>
       </mat-card>
       <br>

@@ -12,6 +12,10 @@ const PLATTFORMADMIN_STORAGE_KEY = "admin";
 @Injectable({
   providedIn: 'root'
 })
+
+/**
+ * Save and load information for the current frontend user session
+ */
 export class StorageService {
   constructor() {}
 
