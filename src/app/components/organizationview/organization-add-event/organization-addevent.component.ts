@@ -30,12 +30,22 @@ export interface dateSlotHolder {
   eventEndTime : string
 }
 
+export interface eventRepeatScheme {
+  repeatTimes : string,
+  repeatCycle : number
+}
+
 @Component({
   selector: 'app-organization-addevent',
   templateUrl: './organization-addevent.component.html',
   styleUrls: ['./organization-addevent.component.scss']
 })
 export class OrganizationAddeventComponent {
+
+  serialEvent : eventRepeatScheme = {
+    repeatTimes: "0",
+    repeatCycle: 0
+  };
 
   singleStartDate = new FormControl(new Date());
   singleEndDate = new FormControl(new Date());
@@ -123,34 +133,65 @@ export class OrganizationAddeventComponent {
 
     console.log("found " + this.childs.length + " child elements to persist")
 
-    if (this.form.eventType == "single") {
-      this.childs.push(
-        {
-          id: -1,
-          eventStart: "2022-04-01T12:00:00Z",
-          eventEnd: "2022-04-01T12:00:00Z"
-        }
-      )
-    }
-
-    //Basic Data
-
     let model = {
       name : this.form.eventName,
       description : this.form.eventDescription,
       location : this.form.location,
-      childs : this.childs.map(el => {return {eventStart: el.eventStart, eventEnd: el.eventEnd}})
-    }
-
-    //Child - case "Single-Event"
-    let modelExtended = {
-      ...model,
-      serial: (this.childs.length != 1),
       eventStatus:
         {
           id: 1,
           status: "erstellt"
         }
+    }
+
+    let modelExtended;
+
+    if (this.form.eventType == "single") {
+      if (this.singleStartDate.value != null && this.singleEndDate.value != null) {
+        modelExtended = {
+          ...model,
+          serial: false,
+          childs:
+            [
+              {
+                id: 0,
+                eventStart: this.dateToLocalDateTimeString(this.singleStartDate.value),
+                eventEnd: this.dateToLocalDateTimeString(this.singleEndDate.value)
+              }
+            ]
+        }
+      }
+
+    } else if (this.form.eventType == "serial") {
+
+      console.log("serial " + this.startDate.value)
+
+      if (this.startDate.value != null) {
+        modelExtended =
+          {
+            ...model,
+            serial: true,
+            eventRepeatScheme:
+              {
+                repeatCycle: "PT"+this.serialEvent.repeatCycle*24+"H",
+                repeatTimes: this.serialEvent.repeatTimes
+              },
+            childs:
+              [
+                {
+                  id: 0,
+                  eventStart: this.dateToLocalDateTimeString(this.startDate.value),
+                  eventEnd: this.dateToLocalDateTimeString(this.startDate.value)
+                }
+              ]
+          }
+      }
+    } else if (this.form.eventType == "multi") {
+      modelExtended = {
+        ...model,
+        serial: true,
+        childs: this.childs.map(el => {return {eventStart: el.eventStart, eventEnd: el.eventEnd}})
+      }
     }
 
     this.persistImage();

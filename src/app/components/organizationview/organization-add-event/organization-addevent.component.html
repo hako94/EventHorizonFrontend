@@ -121,7 +121,7 @@
           <p>Das Datum, an dem das Event das erste mal statt findet</p>
           <mat-form-field appearance="fill">
             <mat-label>Start-Datum</mat-label>
-            <input matInput [matDatepicker]="startPicker">
+            <input matInput [matDatepicker]="startPicker" [formControl]="startDate">
             <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
             <mat-datepicker #startPicker></mat-datepicker>
@@ -135,15 +135,19 @@
           <div class="mt-8">
             <p>Die Regel, nach der das Event wiederholt wird</p>
             <mat-form-field>
-              <mat-label>Wiederholung</mat-label>
-              <input matInput>
+              <mat-label>Zyklus</mat-label>
+              <input matInput [(ngModel)]="serialEvent.repeatCycle">
             </mat-form-field>
             <mat-form-field class="ml-2" appearance="fill">
               <mat-label>Einheit</mat-label>
               <mat-select>
                 <mat-option [value]="'days'">Tage</mat-option>
-                <mat-option [value]="'days'">Wochen</mat-option>
+                <mat-option [value]="'days'" disabled>Wochen</mat-option>
               </mat-select>
+            </mat-form-field>
+            <mat-form-field class="ml-2" appearance="fill">
+              <mat-label>Anzahl Wiederholungen</mat-label>
+              <input matInput [(ngModel)]="serialEvent.repeatTimes">
             </mat-form-field>
           </div>
         </div>
