@@ -14,6 +14,9 @@ import {
   EventUserMangamentComponent
 } from "./components/organizationview/event-user-mangament/event-user-mangament.component";
 import {PlattformAdminComponent} from "./components/plattform-admin/plattform-admin.component";
+import {
+  OrganizationAddMailComponent
+} from "./components/organizationview/organization-add-mail/organization-add-mail.component";
 
 const routes: Routes = [
   { path: "register", component: RegisterComponent },
@@ -24,6 +27,7 @@ const routes: Routes = [
   { path: "organizations/:id/event/:eventid/eventusermanagment", component: EventUserMangamentComponent},
   { path: "organizations/:id", component: OrganizationviewComponent},
   { path: "organizations/:id/addEvent", component: OrganizationAddeventComponent},
+  { path: "organizations/:id/addMail", component: OrganizationAddMailComponent},
   { path: '**', component: DashboardComponent }
 ];
 
