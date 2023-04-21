@@ -12,10 +12,10 @@ import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-event',
-  templateUrl: './event.component.html',
-  styleUrls: ['./event.component.scss']
+  templateUrl: './event-item.component.html',
+  styleUrls: ['./event-item.component.scss']
 })
-export class EventComponent implements OnInit, OnDestroy {
+export class EventItemComponent implements OnInit, OnDestroy {
 
   constructor(private socketService: SocketService, private storageService: StorageService, private dataService: DataService, private datepipe: DatePipe) {
 
@@ -48,10 +48,27 @@ export class EventComponent implements OnInit, OnDestroy {
     this.unwatchSocket()
   }
 
-  annmelden() {
+  book() {
     console.log(this.storageService.getEmail())
-    this.dataService.acceptEvent(this.orgId, this.orgEvent?.id || '', this.storageService.getEmail()).subscribe();
-    window.location.reload()
+    this.dataService.acceptEvent(this.orgId, this.orgEvent?.id || '', this.storageService.getEmail())
+      .subscribe(success => {
+        if (success.status == 200) {
+          if (this.orgEvent) {
+            this.orgEvent.attender = true;
+          }
+        }
+    });
+  }
+
+  signOff() {
+    this.dataService.leaveEvent(this.orgId, this.orgEvent?.id || '', this.storageService.getEmail())
+      .subscribe(success => {
+        if (success.status == 204) {
+          if (this.orgEvent) {
+            this.orgEvent.attender = false;
+          }
+        }
+    });
   }
 
   watchSocket() {
@@ -87,11 +104,6 @@ export class EventComponent implements OnInit, OnDestroy {
       })
 
     }
-  }
-
-  signout() {
-    this.dataService.leaveEvent(this.orgId, this.orgEvent?.id || '', this.storageService.getEmail()).subscribe();
-    window.location.reload()
   }
 
   pushMessageToBackend(chat: string) {

@@ -1,0 +1,32 @@
+<ng-container *ngIf="orgEvent">
+  <mat-card>
+    <div class="flex">
+      <div>
+        <img class="w-32 h-32" src="/assets/placeholder.PNG">
+      </div>
+      <div class="flex-grow">
+        <mat-card-title>{{orgEvent.name}}</mat-card-title>
+        <br>
+        <mat-card-content>
+          <p>{{orgEvent.location}}</p>
+          <p>{{orgEvent.childs[0].eventStart}}</p>
+        </mat-card-content>
+      </div>
+      <div>
+        <div>
+          <!-- siehe https://fonts.google.com/icons?hl=de -->
+          <mat-icon *ngIf="orgEvent.tutor">Mic</mat-icon>
+          <mat-icon *ngIf="orgEvent.organisator">man</mat-icon>
+        </div>
+        <mat-card-actions>
+          <div class="flex">
+            <button mat-raised-button>Details</button>
+            <button style="margin: 5px" *ngIf="!orgEvent.attender" mat-raised-button color="primary" (click)="book()">Teilnehmen</button>
+            <button style="margin: 5px" *ngIf="orgEvent.attender" mat-raised-button color="primary" (click)="signOff()">Abmelden</button>
+          </div>
+        </mat-card-actions>
+      </div>
+    </div>
+  </mat-card>
+</ng-container>
+<br>

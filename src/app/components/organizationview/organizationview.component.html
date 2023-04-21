@@ -1,11 +1,34 @@
 <nav mat-tab-nav-bar [tabPanel]="tabPanel" xmlns="http://www.w3.org/1999/html">
-  <div><a mat-tab-link [active]="currentParam === eventViewParam" (click)="updateURLWithParam(eventViewParam)">Events</a></div>
-  <div><a mat-tab-link [active]="currentParam === memberViewParam" (click)="updateURLWithParam(memberViewParam)">Mitglieder</a></div>
-  <div *ngIf="hasRole(1) || hasRole(2)"><a mat-tab-link [active]="currentParam === invitesViewParam" (click)="updateURLWithParam(invitesViewParam)">Einladungen</a></div>
-  <div *ngIf="hasRole(1) || hasRole(2)"><a mat-tab-link [active]="currentParam === mailsViewParam" (click)="updateURLWithParam(mailsViewParam)">Mail-Vorlagen</a></div>
-  <div *ngIf="hasRole(1) || hasRole(2)"><a mat-tab-link disabled>Event-Vorlagen</a></div>
-  <div *ngIf="hasRole(1) || hasRole(2)"><a mat-tab-link [active]="currentParam === settingsViewParam" (click)="updateURLWithParam(settingsViewParam)">Settings</a></div>
-  <!--<div><a mat-tab-link disabled>Upcomming</a></div>-->
+  <div>
+    <a mat-tab-link
+       [active]="currentParam === eventViewParam"
+       (click)="updateURLWithParam(eventViewParam)">Events</a>
+  </div>
+  <div>
+    <a mat-tab-link
+       [active]="currentParam === memberViewParam"
+       (click)="updateURLWithParam(memberViewParam)">Mitglieder</a>
+  </div>
+  <div *ngIf="hasRole(1) || hasRole(2)">
+    <a mat-tab-link
+       [active]="currentParam === invitesViewParam"
+       (click)="updateURLWithParam(invitesViewParam)">Einladungen</a>
+  </div>
+  <div *ngIf="hasRole(1) || hasRole(2)">
+    <a mat-tab-link
+       [active]="currentParam === mailsViewParam"
+       (click)="updateURLWithParam(mailsViewParam)">Mail-Vorlagen</a>
+  </div>
+  <div *ngIf="hasRole(1) || hasRole(2)">
+    <a mat-tab-link
+    [active]="currentParam === presetViewParam"
+    (click)="updateURLWithParam(presetViewParam)">Event-Vorlagen</a>
+  </div>
+  <div *ngIf="hasRole(1) || hasRole(2)">
+    <a mat-tab-link
+       [active]="currentParam === settingsViewParam"
+       (click)="updateURLWithParam(settingsViewParam)">Settings</a>
+  </div>
 </nav>
 <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
 <ng-container *ngIf="currentParam === eventViewParam" class="mx-3">

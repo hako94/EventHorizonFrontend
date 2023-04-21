@@ -6,7 +6,7 @@ import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import {OrganizationviewComponent} from "./components/organizationview/organizationview.component";
 import {
   OrganizationAddeventComponent
-} from "./components/organizationview/organization-addevent/organization-addevent.component";
+} from "./components/organizationview/organization-add-event/organization-addevent.component";
 import {
   EventQuestionnairesComponent
 } from "./components/organizationview/event-questionnaires/event-questionnaires.component";

@@ -1,4 +1,4 @@
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import { Observable} from "rxjs";
 import {OrganizationModel} from "../models/OrganizationModel";
@@ -49,7 +49,7 @@ export class DataService {
 
   getOrganizationEvents(orgaId : string) : Observable<OrganizationEventModel[]> {
     return this.http.get<OrganizationEventModel[]>(
-      BACKEND_API + 'api/v1/organizations/'+ orgaId +'/events',
+      BACKEND_API + 'api/v1/organization/'+ orgaId +'/events',
       httpOptions
     )
   }
@@ -64,7 +64,7 @@ export class DataService {
 
   getOrganizationMember(orgId : string) : Observable<OrganizationUserModel[]> {
     return this.http.get<OrganizationUserModel[]>(
-      BACKEND_API + 'api/v1/organization/'+ orgId +'/member',
+      BACKEND_API + 'api/v1/organization/'+ orgId +'/members',
       httpOptions
     )
   }
@@ -156,23 +156,33 @@ export class DataService {
     )
   }
 
-  acceptEvent(orgId : string, eventId : string, userId : string) : Observable<any> {
+  acceptEvent(orgId : string, eventId : string, userId : string) : Observable<HttpResponse<any>> {
     return this.http.post<any>(
-      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/book/' + userId,
-      httpOptions
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/book',
+      {},
+      {
+        observe: 'response',
+        headers: {'Content-Type': 'application/json'},
+        params: {'email':userId}
+      }
+    )
+  }
+
+  leaveEvent(orgId : string, eventId : string, userId : string) : Observable<HttpResponse<any>> {
+    return this.http.post<any>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/signoff',
+      {},
+      {
+        observe: 'response',
+        headers: {'Content-Type': 'application/json'},
+        params: {'email' : userId}
+      }
     )
   }
 
   deleteEvent(orgId : string, eventId : string) : Observable<any> {
     return this.http.delete<any>(
       BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId,
-      httpOptions
-    )
-  }
-
-  leaveEvent(orgId : string, eventId : string, userId : string) : Observable<any> {
-    return this.http.post<any>(
-      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/signoff/' + userId,
       httpOptions
     )
   }

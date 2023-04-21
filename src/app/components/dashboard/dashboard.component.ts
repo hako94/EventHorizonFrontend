@@ -43,10 +43,10 @@ export class DashboardComponent implements OnInit {
       this.dataService.getOrganizationEvents(this.organizations[i].id).subscribe(success => {
         console.log(success[0]);
         for (let i = 0; i < success.length; i++) {
-          let upcomingEventDate : Date = new Date(success[i].eventStart);
-          if(upcomingEventDate <= new Date( Date.now() + (6.048e+8 * 2)) && upcomingEventDate >= new Date( Date.now())) {
-            this.currentEvents.push(success[i]);
-          }
+          //TODO: fix let upcomingEventDate : Date = new Date(success[i].eventStart);
+          //if(upcomingEventDate <= new Date( Date.now() + (6.048e+8 * 2)) && upcomingEventDate >= new Date( Date.now())) {
+          //  this.currentEvents.push(success[i]);
+          //}
         }
       })
     }

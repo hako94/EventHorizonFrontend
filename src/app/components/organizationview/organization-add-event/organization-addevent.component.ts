@@ -10,12 +10,31 @@ import {VariableTemplate} from "../../../models/VariableTemplate";
 import {AvailableTemplateList} from "../../../models/AvailableTemplateList";
 import {ActivatedRoute, Router} from "@angular/router";
 
+export interface createInterfaceTemplateBasic {
+  eventName : string,
+  eventDescription : string,
+  location : string,
+  eventType : string
+}
+
+export interface childEventTemplate {
+  id: number,
+  eventStart : string,
+  eventEnd : string
+}
+
 @Component({
   selector: 'app-organization-addevent',
   templateUrl: './organization-addevent.component.html',
   styleUrls: ['./organization-addevent.component.scss']
 })
 export class OrganizationAddeventComponent {
+
+  currentRange = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
+
 
   currentOrganization : string = '';
 
@@ -26,15 +45,14 @@ export class OrganizationAddeventComponent {
 
   files : File[] = [];
 
-  form : any = {
-    eventname : null,
-    description : null,
-    eventStart : null,
-    eventStop : null,
-    starttime: null,
-    endtime: null,
-    location : null,
+  form : createInterfaceTemplateBasic = {
+    eventName : '',
+    eventDescription : '',
+    location : '',
+    eventType: 'single'
   }
+
+  childs : childEventTemplate[] = [];
 
   constructor(private dataService : DataService,
               private location : Location,
@@ -71,13 +89,7 @@ export class OrganizationAddeventComponent {
     console.log(event);
     this.files.splice(this.files.indexOf(event), 1);
   }
-  firstDateChanged(event: any) {
-    this.form.eventStart = event.value;
-  }
 
-  secondDateChanged(event: any) {
-    this.form.eventStop = event.value;
-  }
   removeValueFromCustomFields(index : number) : void {
     //TODO test: gut möglich das er hier mit den indizes mal durcheinander kommmt
       delete this.customFields[index];
@@ -98,23 +110,6 @@ export class OrganizationAddeventComponent {
 
   onSubmit() : void {
 
-    const events = `${this.form.eventStart.toISOString().slice(0, 10), this.form.starttime}`
-    const evente = `${this.form.eventStop.toISOString().slice(0, 10), this.form.endtime}`
-
-    const model : CreateEventModel = {
-      name: this.form.eventname,
-      description: this.form.description,
-      eventStart: events,
-      eventEnd: evente,
-      location: this.form.location,
-      organisatorId: ["sadasd"]
-    }
-
-    this.dataService.postEventInOrganization(this.currentOrganization,model).subscribe(sucess => {
-      console.log(sucess)
-
-      this.location.back();
-    })
   }
 
   loadTemplate(value: string) {
@@ -162,5 +157,22 @@ export class OrganizationAddeventComponent {
 
   goBack() : void {
     this.location.back()
+  }
+
+  addChildEvent(eventStart : string, eventEnd : string) : void {
+    this.childs.push(
+      {
+        id: this.childs.length,
+        eventStart: eventStart,
+        eventEnd: eventEnd
+      }
+    )
+  }
+
+  deleteChildEvent(id: number) {
+    delete this.childs[id];
+    this.childs = this.childs
+        .filter(el => {return el != null})
+        .map((el, index) => {return { ...el, id: index}})
   }
 }
