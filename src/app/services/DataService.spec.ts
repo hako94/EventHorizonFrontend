@@ -1,16 +1,18 @@
-import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { DataService } from './DataService';
-import { OrganizationModel } from '../models/OrganizationModel';
-import { OrganizationEventModel } from '../models/OrganizationEventModel';
-import { CreateEventModel } from '../models/CreateEventModel';
-import { OrganizationUserModel } from '../models/OrganizationUserModel';
-import { EventTemplateModel } from '../models/EventTemplateModel';
-import { AvailableTemplateList } from '../models/AvailableTemplateList';
-import { ChatHistoryModel } from '../models/ChatHistoryModel';
-import { EventQuestionnairesModel } from '../models/EventQuestionnairesModel';
-import { UserAtEventModel } from '../models/UserAtEventModel';
-import { environment } from '../../environments/environment';
+import {TestBed} from '@angular/core/testing';
+import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {DataService} from './DataService';
+import {OrganizationModel} from '../models/OrganizationModel';
+import {OrganizationEventModel} from '../models/OrganizationEventModel';
+import {CreateEventModel} from '../models/CreateEventModel';
+import {OrganizationUserModel} from '../models/OrganizationUserModel';
+import {EventTemplateModel} from '../models/EventTemplateModel';
+import {AvailableTemplateList} from '../models/AvailableTemplateList';
+import {ChatHistoryModel} from '../models/ChatHistoryModel';
+import {EventQuestionnairesModel} from '../models/EventQuestionnairesModel';
+import {UserAtEventModel} from '../models/UserAtEventModel';
+import {environment} from '../../environments/environment';
+import {UserRoleModel} from "../models/UserRoleModel";
+import {ChildEvent} from "../models/ChildEventModel";
 
 describe('DataService', () => {
   let service: DataService;
@@ -32,7 +34,7 @@ describe('DataService', () => {
   });
 
   it('should retrieve organizations', () => {
-    const dummyOrganizations: OrganizationModel[] = [{id : "1", name : "test", description : "test", logoId : "1"}];
+    const dummyOrganizations: OrganizationModel[] = [{id: "1", name: "test", description: "test", logoId: "1"}];
 
     service.getOrganizations().subscribe((organizations) => {
       expect(organizations).toEqual(dummyOrganizations);
@@ -45,7 +47,24 @@ describe('DataService', () => {
 
   it('should retrieve organization events', () => {
     const orgId = 'dummyOrgId';
-    const dummyOrganizationEvents: OrganizationEventModel[] = [{id : "1", name : "test", description : "test", eventStart : "1", eventEnd : "2", location : "here", organizationId: orgId, organisator: true, attender: true, tutor: true}];
+    const dummyOrganizationEvents: OrganizationEventModel[] = [{
+      id : '123',
+      name : 'testname',
+      description : 'testbeschreibung',
+      childs : [{
+        childId : '456',
+        eventStart : '219203',
+        eventEnd : '23456',
+      }],
+      parentId : '789',
+      serial : false,
+      location: 'hier',
+      pictureId: 'tz76',
+      organizationId : '654',
+      organisator : true,
+      tutor : false,
+      attender : false,
+    }];
 
     service.getOrganizationEvents(orgId).subscribe((events) => {
       expect(events).toEqual(dummyOrganizationEvents);
@@ -58,10 +77,16 @@ describe('DataService', () => {
 
   it('should post event in organization', () => {
     const orgId = 'dummyOrgId';
-    const dummyCreateEventModel: {} = {
-    };
+    const dummyCreateEventModel: {} = {};
 
-    service.postEventInOrganization(orgId, {name: "hello", description : "hello", eventStart : "1", eventEnd : "2", location : "here", organisatorId: [orgId]}).subscribe((response) => {
+    service.postEventInOrganizationAndPersist(orgId, {
+      name: "hello",
+      description: "hello",
+      eventStart: "1",
+      eventEnd: "2",
+      location: "here",
+      organisatorId: [orgId]
+    }).subscribe((response) => {
       expect(response).toBeTruthy();
     });
 
@@ -74,11 +99,23 @@ describe('DataService', () => {
     const orgId = '123';
 
     const mockResponse: OrganizationUserModel[] = [
-      { userId: "1", role: { id: 1 , role: 'admin' } },
-      { userId: "2", role: { id: 2 , role: 'admin' } },
+      {
+        id: '1',
+        email: 'email@email.de',
+        vorname: 'Max',
+        nachname: 'Mustermann',
+        role: {id: 1, role: 'admin'}
+      },
+      {
+        id: '1',
+        email: 'email@email.de',
+        vorname: 'Max',
+        nachname: 'Mustermann',
+        role: {id: 1, role: 'admin'}
+      }
     ];
 
-      service.getOrganizationMember(orgId).subscribe((members: string | any[]) => {
+    service.getOrganizationMember(orgId).subscribe((members: string | any[]) => {
       expect(members.length).toBe(2);
       expect(members).toEqual(mockResponse);
     });
@@ -100,14 +137,18 @@ describe('DataService', () => {
 
     const req = httpMock.expectOne(`${BACKEND_API}api/v1/authenticatedUser/invite`);
     expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual({ email, organizationId: orgId, asRole });
+    expect(req.request.body).toEqual({email, organizationId: orgId, asRole});
     req.flush(mockResponse);
   });
 
   it('should load event template', () => {
     const orgId = '123';
     const templateId = '456';
-    const mockResponse: EventTemplateModel = { name : templateId , organizationId : orgId , variables : [ { name : 'one' , label : 'two' } ]};
+    const mockResponse: EventTemplateModel = {
+      name: templateId,
+      organizationId: orgId,
+      variables: [{name: 'one', label: 'two'}]
+    };
 
     service.loadTemplate(orgId, templateId).subscribe((template) => {
       expect(template).toEqual(mockResponse);
@@ -120,8 +161,12 @@ describe('DataService', () => {
 
   it('should save event template', () => {
     const orgId = '123';
-    const template: EventTemplateModel = { name : '123' , organizationId : orgId , variables : [ { name : 'one' , label : 'two' } ]};
-    const mockResponse: EventTemplateModel = { name : '456' , organizationId : orgId , variables : [ { name : 'one' , label : 'two' } ]};
+    const template: EventTemplateModel = {name: '123', organizationId: orgId, variables: [{name: 'one', label: 'two'}]};
+    const mockResponse: EventTemplateModel = {
+      name: '456',
+      organizationId: orgId,
+      variables: [{name: 'one', label: 'two'}]
+    };
 
     service.safeTemplate(orgId, template).subscribe((savedTemplate) => {
       expect(savedTemplate).toEqual(mockResponse);
@@ -137,7 +182,7 @@ describe('DataService', () => {
   it('should store file successfully', () => {
     const orgId = 'orgId';
     const formData = new FormData();
-    const response = { status: 'success' };
+    const response = {status: 'success'};
 
     service.storeFile(formData, orgId).subscribe((data) => {
       expect(data).toEqual(response);
@@ -159,12 +204,12 @@ describe('DataService', () => {
 
     const req = httpMock.expectOne(`${environment.backendApi}api/v1/files/${fileId}?orgId=${orgId}`);
     expect(req.request.method).toBe('GET');
-    req.flush(response, { headers: { 'Content-Type': 'image/jpeg' } });
+    req.flush(response, {headers: {'Content-Type': 'image/jpeg'}});
   });
 
   it('should get available templates successfully', () => {
     const orgaId = 'orgaId';
-    const response: AvailableTemplateList[] = [{ id: '1', name: 'Template 1' }, { id: '2', name: 'Template 2' }];
+    const response: AvailableTemplateList[] = [{id: '1', name: 'Template 1'}, {id: '2', name: 'Template 2'}];
 
     service.getAvailableTemplates(orgaId).subscribe((data) => {
       expect(data).toEqual(response);
@@ -177,7 +222,7 @@ describe('DataService', () => {
 
   it('should get organization infos successfully', () => {
     const orgId = 'orgId';
-    const response: OrganizationModel = { id: '1', name: 'Organization 1' , description : 'hello' , logoId:  'logo'};
+    const response: OrganizationModel = {id: '1', name: 'Organization 1', description: 'hello', logoId: 'logo'};
 
     service.getOrganizationInfos(orgId).subscribe((data) => {
       expect(data).toEqual(response);
@@ -192,7 +237,7 @@ describe('DataService', () => {
     const orgId = 'orgId';
     const eventId = 'eventId';
     const userId = 'userId';
-    const response = { status: 'success' };
+    const response = {status: 'success'};
 
     service.acceptEvent(orgId, eventId, userId).subscribe((data) => {
       expect(data).toEqual(response);
@@ -231,9 +276,15 @@ describe('DataService', () => {
   it('should create event questionnaires', () => {
     const orgId = 'orgId';
     const eventId = 'eventId';
-    const eventQuestionnairesModel: EventQuestionnairesModel = { id: orgId, title: 'hello', description: 'description', questions: [], eventId: eventId };
+    const eventQuestionnairesModel: EventQuestionnairesModel = {
+      id: orgId,
+      title: 'hello',
+      description: 'description',
+      questions: [],
+      eventId: eventId
+    };
 
-      service.createEventQuestionnaires(orgId, eventId, eventQuestionnairesModel).subscribe();
+    service.createEventQuestionnaires(orgId, eventId, eventQuestionnairesModel).subscribe();
 
     const req = httpMock.expectOne(`${BACKEND_API}api/v1/organizations/${orgId}/events/${eventId}/questionnaires`);
     expect(req.request.method).toBe('POST');
@@ -269,8 +320,8 @@ describe('DataService', () => {
     const expectedUrl = `${BACKEND_API}api/v1/organizations/${orgId}/events/${eventId}/attendees`;
 
     const expectedUsers: UserAtEventModel[] = [
-      { id: 'user1', email: 'test@test.de', vorname: 'Max', nachname: 'Mustermann', here: true },
-      { id: 'user2', email: 'test1@test.de', vorname: 'Olaf', nachname: 'Mustermann', here: false },
+      {id: 'user1', email: 'test@test.de', vorname: 'Max', nachname: 'Mustermann', here: true},
+      {id: 'user2', email: 'test1@test.de', vorname: 'Olaf', nachname: 'Mustermann', here: false},
     ];
 
     service.getUserManagementList(orgId, eventId).subscribe(users => {
@@ -287,8 +338,8 @@ describe('DataService', () => {
     const orgId = 'org123';
     const eventId = 'event456';
     const users: UserAtEventModel[] = [
-      { id: 'user1', email: 'test@test.de', vorname: 'Max', nachname: 'Mustermann', here: true },
-      { id: 'user2', email: 'test1@test.de', vorname: 'Olaf', nachname: 'Mustermann', here: false },
+      {id: 'user1', email: 'test@test.de', vorname: 'Max', nachname: 'Mustermann', here: true},
+      {id: 'user2', email: 'test1@test.de', vorname: 'Olaf', nachname: 'Mustermann', here: false},
     ];
     const expectedUrl = `${BACKEND_API}api/v1/organizations/${orgId}/events/${eventId}/attendees`;
 
