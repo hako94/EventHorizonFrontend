@@ -1,14 +1,13 @@
-import {Component, Input} from '@angular/core';
-import {CreateEventModel} from "../../../models/CreateEventModel";
+import {Component} from '@angular/core';
 import {DataService} from "../../../services/DataService";
 import {Location} from "@angular/common";
 import {AddEventCustomField} from "../../../dataobjects/AddEventCustomField";
-import {isEmpty, range} from "rxjs";
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {Observable, of} from "rxjs";
+import {FormControl} from "@angular/forms";
 import {EventTemplateModel} from "../../../models/EventTemplateModel";
 import {VariableTemplate} from "../../../models/VariableTemplate";
 import {AvailableTemplateList} from "../../../models/AvailableTemplateList";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 
 export interface createInterfaceTemplateBasic {
   eventName : string,
@@ -33,6 +32,30 @@ export interface dateSlotHolder {
 export interface eventRepeatScheme {
   repeatTimes : string,
   repeatCycle : number
+}
+
+export interface baseModel {
+  name : string,
+  description : string,
+  location : string,
+  eventStatus:
+    {
+      id: number,
+      status : string
+    }
+}
+
+export interface RequestModel extends baseModel{
+  serial: boolean
+  childs: {
+    eventStart : string,
+    eventEnd : string
+  } []
+  eventRepeatScheme? :
+    {
+      repeatCycle: string,
+      repeatTimes: string
+    }
 }
 
 @Component({
@@ -133,7 +156,7 @@ export class OrganizationAddeventComponent {
 
     console.log("found " + this.childs.length + " child elements to persist")
 
-    let model = {
+    let model : baseModel = {
       name : this.form.eventName,
       description : this.form.eventDescription,
       location : this.form.location,
@@ -144,7 +167,7 @@ export class OrganizationAddeventComponent {
         }
     }
 
-    let modelExtended;
+    let modelExtended : RequestModel;
 
     if (this.form.eventType == "single") {
       if (this.singleStartDate.value != null && this.singleEndDate.value != null) {
@@ -154,7 +177,7 @@ export class OrganizationAddeventComponent {
           childs:
             [
               {
-                id: 0,
+                //id: 0, remove ID, may break
                 eventStart: this.dateToLocalDateTimeString(this.singleStartDate.value),
                 eventEnd: this.dateToLocalDateTimeString(this.singleEndDate.value)
               }
@@ -179,7 +202,7 @@ export class OrganizationAddeventComponent {
             childs:
               [
                 {
-                  id: 0,
+                  //id: 0 removedID, may break
                   eventStart: this.dateToLocalDateTimeString(this.startDate.value),
                   eventEnd: this.dateToLocalDateTimeString(this.endDate.value)
                 }
@@ -187,26 +210,41 @@ export class OrganizationAddeventComponent {
           }
       }
     } else if (this.form.eventType == "multi") {
-      modelExtended = {
-        ...model,
-        serial: true,
-        childs: this.childs.map(el => {return {eventStart: el.eventStart, eventEnd: el.eventEnd}})
-      }
+      modelExtended =
+        {
+          ...model,
+          serial: true,
+          childs: this.childs.map(el => {return {eventStart: el.eventStart, eventEnd: el.eventEnd}})
+        }
     }
 
-    this.persistImage();
-    this.persistFiles();
+    this.persistFiles().subscribe(file => {
 
-    this.dataService.postEventInOrganizationAndPersist(this.currentOrganization, modelExtended).subscribe(console.log)
+      this.persistImage().subscribe(image => {
+
+        console.log(file + " " + image)
+
+        this.dataService.postEventInOrganizationAndPersist(this.currentOrganization, modelExtended).subscribe();
+
+      })
+
+    })
 
   }
 
-  persistImage() : void {
-
+  persistImage() : Observable<any> {
+    return of("done")
+    //TODO unterscheiden zwischen Bild und anderen Dateien
+    /*if (this.filesToPersist.length > 0 && this.filesToPersist.at(0)) {
+      return this.dataService.storeEventImage(this.filesToPersist[0], this.currentOrganization);
+    } else {
+      return of("No files to persist found");
+    }*/
   }
 
-  persistFiles() : void {
-
+  persistFiles() : Observable<any> {
+    //TODO unterscheiden zwischen Bild und anderen Dateien
+    return of("No files to persist found");
   }
 
   loadTemplate(value: string) {

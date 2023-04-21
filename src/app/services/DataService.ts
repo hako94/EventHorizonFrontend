@@ -132,6 +132,19 @@ export class DataService {
     )
   }
 
+  storeEventImage(formData : FormData, orgId : string) : Observable<HttpResponse<any>> {
+    return this.http.post<any>(
+      BACKEND_API + 'api/v1/files',
+      formData,
+      {
+        observe: 'response',
+        params: {
+          'orgId':orgId,
+        }
+      }
+    )
+  }
+
   getImage(orgId : string, fileId : string) : Observable<any> {
     return this.http.get(
       BACKEND_API + 'api/v1/files/'+ fileId,
