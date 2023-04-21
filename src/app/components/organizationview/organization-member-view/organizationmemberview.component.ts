@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {DataService} from "../../../services/DataService";
 import {OrganizationUserModel} from "../../../models/OrganizationUserModel";
 import {StorageService} from "../../../services/StorageService";
+import {UserRoleModel} from "../../../models/UserRoleModel";
 
 @Component({
   selector: 'app-organizationmemberview',
@@ -32,7 +33,7 @@ export class OrganizationmemberviewComponent implements OnInit{
 
   ngOnInit(): void {
     this.dataService.getOrganizationMember(this.orgaID).subscribe(success => {
-      console.log(success[0].userId)
+      console.log(success[0].id)
 
       this.members = success;
       console.log(this.hasRole(1));
@@ -61,9 +62,14 @@ export class OrganizationmemberviewComponent implements OnInit{
       this.editMode = true;
       this.editedUser = id;
     } else {
+      this.saveMemberRole(this.orgaID, this.editedUser, this.selectedRole);
       this.editMode = false;
       this.editedUser = '';
       this.selectedRole = -1;
     }
+  }
+
+  saveMemberRole(orgId: string, userId: string, role: number){
+    this.dataService.changeOrganizationMemberRole(orgId, userId, role);
   }
 }

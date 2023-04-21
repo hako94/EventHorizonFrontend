@@ -1,9 +1,9 @@
 import {UserRoleModel} from "./UserRoleModel";
 
 export interface OrganizationUserModel {
-
-  userId : string;
-
-  role : UserRoleModel;
-
+  id: string,
+  email: string,
+  vorname: string,
+  nachname: string,
+  role: UserRoleModel
 }

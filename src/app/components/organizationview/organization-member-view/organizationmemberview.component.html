@@ -28,10 +28,10 @@
       <ng-container *ngFor="let member of members">
         <mat-divider></mat-divider>
         <div class="grid grid-cols-1 md:grid-cols-4">
-          <div class="p-2 pt-3 ">{{member.userId}}</div>
-          <div class="p-2 pt-3 ">{{member.role.role}}</div>
-          <div *ngIf="!editMode || editedUser != member.userId" class="p-2 pt-3 ">{{member.role.role}}</div>
-          <div *ngIf="editMode && editedUser == member.userId" class="p-2 pt-3">
+          <div class="p-2 pt-3 ">{{member.vorname}}, {{member.nachname}}</div>
+          <div class="p-2 pt-3 ">{{member.email}}</div>
+          <div *ngIf="!editMode || editedUser != member.id" class="p-2 pt-3 ">{{member.role.role}}</div>
+          <div *ngIf="editMode && editedUser == member.id" class="p-2 pt-3">
             <mat-form-field appearance="fill">
               <mat-label>Rolle bearbeiten</mat-label>
               <mat-select [(value)]="selectedRole">
@@ -43,13 +43,13 @@
             </mat-form-field>
           </div>
           <div *ngIf="hasRole(1) || hasRole(2)" class="justify-self-end flex">
-            <div *ngIf="this.editMode && this.editedUser == member.userId">
-              <button mat-icon-button color="primary" (click)="this.enableEdit(member.userId)">
+            <div *ngIf="this.editMode && this.editedUser == member.id">
+              <button mat-icon-button color="primary" (click)="this.enableEdit(member.id)">
                 <mat-icon>save</mat-icon>
               </button>
             </div>
-            <div *ngIf="!(this.editedUser == member.userId)">
-              <button mat-icon-button color="primary" (click)="this.enableEdit(member.userId)" [disabled]="editMode">
+            <div *ngIf="!(this.editedUser == member.id)">
+              <button mat-icon-button color="primary" (click)="this.enableEdit(member.id)" [disabled]="editMode">
                 <mat-icon>edit</mat-icon>
               </button>
             </div>

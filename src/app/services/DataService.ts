@@ -12,6 +12,7 @@ import {EventQuestionnairesModel} from "../models/EventQuestionnairesModel";
 import {UserAtEventModel} from "../models/UserAtEventModel";
 import {environment} from "../../environments/environment";
 import {OrganizationInviteModel} from "../models/OrganizationInviteModel";
+import {UserRoleModel} from "../models/UserRoleModel";
 
 //const BACKEND_API = 'http://localhost:8080/'
 //const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
@@ -68,6 +69,33 @@ export class DataService {
       httpOptions
     )
   }
+
+  changeOrganizationMemberRole(orgId: string, userId : string, role : number) : Observable<string> {
+    return this.http.put<string>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/members' + userId,
+      {
+        userId: userId,
+        role: {
+          id: role
+        }
+      },
+      {
+        headers: {'Content-Type': 'application/json'}
+      }
+    )
+  }
+
+  // changeOrganizationInviteRole(orgId : string, inviteId : string, roleId : number) : Observable<string> {
+  //   return this.http.put<string>(
+  //     BACKEND_API + 'api/v1/organization/' + orgId + '/invites/' + inviteId,
+  //     {
+  //       roleId: roleId
+  //     },
+  //     {
+  //       headers: {'Content-Type': 'application/json'}
+  //     }
+  //   )
+  // }
 
   getOrganizationInvites(orgId : string) : Observable<OrganizationInviteModel[]> {
     return this.http.get<OrganizationInviteModel[]>(
