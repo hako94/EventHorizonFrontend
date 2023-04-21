@@ -23,6 +23,13 @@ export interface childEventTemplate {
   eventEnd : string
 }
 
+export interface dateSlotHolder {
+  eventStartDate : string,
+  eventStartTime : string,
+  eventEndDate : string,
+  eventEndTime : string
+}
+
 @Component({
   selector: 'app-organization-addevent',
   templateUrl: './organization-addevent.component.html',
@@ -30,11 +37,8 @@ export interface childEventTemplate {
 })
 export class OrganizationAddeventComponent {
 
-  currentRange = new FormGroup({
-    start: new FormControl<Date | null>(null),
-    end: new FormControl<Date | null>(null),
-  });
-
+  startDate = new FormControl(new Date());
+  endDate = new FormControl(new Date());
 
   currentOrganization : string = '';
 

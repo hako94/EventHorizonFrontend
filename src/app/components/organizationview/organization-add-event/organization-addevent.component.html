@@ -83,23 +83,25 @@
           <h3>Mehrfachevent-Details</h3>
           <mat-form-field>
             <mat-label>Start-Datum</mat-label>
-            <input matInput [matDatepicker]="customStartPicker">
+            <input matInput [matDatepicker]="customStartPicker" [formControl]="startDate">
             <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="customStartPicker"></mat-datepicker-toggle>
             <mat-datepicker #customStartPicker></mat-datepicker>
           </mat-form-field>
           <mat-form-field class="ml-2">
             <mat-label>End-Datum</mat-label>
-            <input matInput [matDatepicker]="customEndPicker">
+            <input matInput [matDatepicker]="customEndPicker" [formControl]="endDate">
             <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="customEndPicker"></mat-datepicker-toggle>
             <mat-datepicker #customEndPicker></mat-datepicker>
           </mat-form-field>
-          <button class="ml-2" mat-raised-button color="primary" (click)='addChildEvent("ss","ss")'>Termin hinzufügen</button>
+          <button class="ml-2" mat-raised-button color="primary"
+                  (click)='addChildEvent(startDate.getRawValue()?.toDateString() || "error",endDate.getRawValue()?.toDateString() || "error")'>Termin hinzufügen</button>
           <ng-container *ngFor="let child of childs">
             <div>
               <br>
               <mat-divider></mat-divider>
+              <br>
               <h1>{{child.id+1}}. Datum</h1>
               <p>von {{child.eventStart}} bis {{child.eventEnd}}</p>
               <button mat-raised-button (click)="deleteChildEvent(child.id)" color="warn">
