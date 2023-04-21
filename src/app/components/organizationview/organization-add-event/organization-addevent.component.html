@@ -21,7 +21,7 @@
       <p>Der Ort, an dem das Event statt finden soll</p>
       <mat-form-field class="w-96">
         <mat-label>Ort</mat-label>
-        <input matInput>
+        <input matInput [(ngModel)]="form.location">
       </mat-form-field>
     </div>
   </mat-step>
@@ -49,7 +49,7 @@
             <h3>Einzelevent-Details</h3>
             <mat-form-field appearance="fill">
               <mat-label>Start-Datum</mat-label>
-              <input matInput [matDatepicker]="startPicker">
+              <input matInput [matDatepicker]="startPicker" [formControl]="singleStartDate">
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
               <mat-datepicker #startPicker></mat-datepicker>
@@ -62,7 +62,7 @@
             <br>
             <mat-form-field appearance="fill" class="mt-4">
               <mat-label>End-Datum</mat-label>
-              <input matInput [matDatepicker]="endPicker">
+              <input matInput [matDatepicker]="endPicker" [formControl]="singleEndDate">
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
               <mat-datepicker #endPicker></mat-datepicker>
@@ -96,7 +96,7 @@
             <mat-datepicker #customEndPicker></mat-datepicker>
           </mat-form-field>
           <button class="ml-2" mat-raised-button color="primary"
-                  (click)='addChildEvent(startDate.getRawValue()?.toDateString() || "error",endDate.getRawValue()?.toDateString() || "error")'>Termin hinzufügen</button>
+                  (click)='addChildEvent(startDate.value,endDate.value)'>Termin hinzufügen</button>
           <ng-container *ngFor="let child of childs">
             <div>
               <br>
@@ -170,25 +170,25 @@
     <br><mat-divider></mat-divider><br>
     <div>
       <h3>Weitere Dateien</h3>
-      <input (change)="onFileSelected($event)" type="file" #fileUpload>
+      <input (change)="onFileSelected($event)" type="file" #fileUpload multiple>
     </div>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Abschluss</ng-template>
     <br>
     <h2>Erstelle das Event</h2>
+    <button mat-raised-button color="primary" (click)="persistData()" type="submit" formaction="">Erstellen</button>
     <mat-divider></mat-divider>
     <br>
     <h3>Vorschau</h3>
     <br>
-    <div>
-    <div style="position: absolute; background-color: rgba(1,1,1,0.2); width: 96%; height: 43%; z-index: 100; overflow:hidden;"></div>
+    <div><br><br><br><br><br><br>
+      <div style="position: absolute; background-color: rgba(1,1,1,0.2); width: 96%; height: 43%; z-index: 100; overflow:hidden;"></div>
       <h3 style="position: absolute; z-index: 100; font-size: 120px; text-align: center; width: 96%; margin-top: 180px; color: grey; transform: rotate(-20deg);"> Vorschau </h3>
     </div>
     <br>
     <mat-divider></mat-divider>
     <br>
-    <button mat-raised-button color="primary" (click)="onSubmit()" type="submit" formaction="">Erstellen</button>
     <button style="margin-left: 5px" mat-raised-button color="warn" (click)="goBack()">Abbrechen</button>
   </mat-step>
 </mat-stepper>

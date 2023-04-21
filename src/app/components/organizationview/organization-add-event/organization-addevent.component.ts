@@ -37,6 +37,9 @@ export interface dateSlotHolder {
 })
 export class OrganizationAddeventComponent {
 
+  singleStartDate = new FormControl(new Date());
+  singleEndDate = new FormControl(new Date());
+
   shownPreviewImage : any;
 
   filesToPersist : FormData[] = [];
@@ -116,7 +119,52 @@ export class OrganizationAddeventComponent {
     console.log(this.customFieldData)
   }
 
-  onSubmit() : void {
+  persistData() : void {
+
+    console.log("found " + this.childs.length + " child elements to persist")
+
+    if (this.form.eventType == "single") {
+      this.childs.push(
+        {
+          id: -1,
+          eventStart: "2022-04-01T12:00:00Z",
+          eventEnd: "2022-04-01T12:00:00Z"
+        }
+      )
+    }
+
+    //Basic Data
+
+    let model = {
+      name : this.form.eventName,
+      description : this.form.eventDescription,
+      location : this.form.location,
+      childs : this.childs.map(el => {return {eventStart: el.eventStart, eventEnd: el.eventEnd}})
+    }
+
+    //Child - case "Single-Event"
+    let modelExtended = {
+      ...model,
+      serial: (this.childs.length != 1),
+      eventStatus:
+        {
+          id: 1,
+          status: "erstellt"
+        }
+    }
+
+    this.persistImage();
+    this.persistFiles();
+
+    this.dataService.postEventInOrganizationAndPersist(this.currentOrganization, modelExtended).subscribe(console.log)
+
+  }
+
+  persistImage() : void {
+
+  }
+
+  persistFiles() : void {
 
   }
 
@@ -183,14 +231,27 @@ export class OrganizationAddeventComponent {
     }
   }
 
-  addChildEvent(eventStart : string, eventEnd : string) : void {
-    this.childs.push(
-      {
-        id: this.childs.length,
-        eventStart: eventStart,
-        eventEnd: eventEnd
-      }
-    )
+  dateToLocalDateTimeString<T extends Date>(date: T): string {
+    const dateString : string = `${date.getFullYear()}-${(date.getMonth() + 1).toString()
+      .padStart(2, '0')}-${date.getDate().toString()
+      .padStart(2, '0')}T${date.getHours().toString()
+      .padStart(2, '0')}:${date.getMinutes().toString()
+      .padStart(2, '0')}:${date.getSeconds().toString()
+      .padStart(2, '0')}`;
+    return dateString;
+  }
+
+  addChildEvent(eventStart : Date | null, eventEnd : Date | null) : void {
+    if (eventStart != null && eventEnd != null) {
+      this.childs.push(
+        {
+          id: this.childs.length,
+          eventStart: this.dateToLocalDateTimeString(eventStart),
+          eventEnd: this.dateToLocalDateTimeString(eventEnd)
+        }
+      )
+    }
+    console.log(this.childs)
   }
 
   deleteChildEvent(id: number) {

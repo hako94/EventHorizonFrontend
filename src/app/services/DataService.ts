@@ -54,9 +54,9 @@ export class DataService {
     )
   }
 
-  postEventInOrganization(orgaId : string, model : CreateEventModel) : Observable<any> {
+  postEventInOrganizationAndPersist(orgaId : string, model : any) : Observable<any> {
     return this.http.post(
-      BACKEND_API + 'api/v1/organizations/'+ orgaId +'/events',
+      BACKEND_API + 'api/v1/organization/'+ orgaId +'/events',
       model,
       httpOptions
     )
