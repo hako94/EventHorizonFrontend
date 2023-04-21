@@ -155,12 +155,22 @@
     <br>
     <h2>Datei Upload</h2>
     <div>
-      <ngx-dropzone (change)="onSelect($event)">
-        <ngx-dropzone-label>Bitte legen sie ihre Dateien hier ab</ngx-dropzone-label>
-        <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
-          <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
-        </ngx-dropzone-preview>
-      </ngx-dropzone>
+      <h3>Event-Bild</h3>
+      <div class="mb-8 w-[400px] h-[200px] border-2 relative" >
+        <label style="color: #e5e7eb">Drag and Drop</label>
+        <div class="h-full flex flex-col items-center justify-center z-0">
+          <mat-icon class="w-32 h-32 scale-[3]">upload</mat-icon>
+          <label class="mt-8">Dateien hier ablegen oder klicken zum auswählen</label>
+        </div>
+        <input class="w-[400px] h-[200px] opacity-0 z-20 absolute top-0" (change)="onEventImageFileSelected($event)" type="file" #fileUpload>
+      </div>
+      <p>Vorschau</p>
+      <img [src]="shownPreviewImage" *ngIf="shownPreviewImage" class="w-32 h-32">
+    </div>
+    <br><mat-divider></mat-divider><br>
+    <div>
+      <h3>Weitere Dateien</h3>
+      <input (change)="onFileSelected($event)" type="file" #fileUpload>
     </div>
   </mat-step>
   <mat-step>

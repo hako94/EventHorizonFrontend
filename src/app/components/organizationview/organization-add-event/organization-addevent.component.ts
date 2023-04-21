@@ -37,6 +37,10 @@ export interface dateSlotHolder {
 })
 export class OrganizationAddeventComponent {
 
+  shownPreviewImage : any;
+
+  filesToPersist : FormData[] = [];
+
   startDate = new FormControl(new Date());
   endDate = new FormControl(new Date());
 
@@ -151,16 +155,32 @@ export class OrganizationAddeventComponent {
 
       const formData = new FormData();
 
-      formData.append("thumbnail", file);
+      formData.append("file", file, file.name);
 
-      //const upload$ = this.http.post("/api/thumbnail-upload", formData);
-
-      //upload$.subscribe();
+      this.filesToPersist.push(formData);
     }
   }
 
-  goBack() : void {
-    this.location.back()
+  //TODO unterscheiden
+
+  onEventImageFileSelected(event: any) {
+
+    const fileReader = new FileReader();
+    const file:File = event.target.files[0];
+
+    if (file) {
+
+      const formData = new FormData();
+      formData.append("file", file, file.name);
+
+      this.filesToPersist.push(formData);
+
+      fileReader.readAsDataURL(file);
+
+      fileReader.onload = () => {
+        this.shownPreviewImage = fileReader.result as string;
+      }
+    }
   }
 
   addChildEvent(eventStart : string, eventEnd : string) : void {
@@ -178,5 +198,9 @@ export class OrganizationAddeventComponent {
     this.childs = this.childs
         .filter(el => {return el != null})
         .map((el, index) => {return { ...el, id: index}})
+  }
+
+  goBack() : void {
+    this.location.back()
   }
 }
