@@ -166,7 +166,7 @@ export class OrganizationAddeventComponent {
 
       console.log("serial " + this.startDate.value)
 
-      if (this.startDate.value != null) {
+      if (this.startDate.value != null && this.endDate.value != null) {
         modelExtended =
           {
             ...model,
@@ -181,7 +181,7 @@ export class OrganizationAddeventComponent {
                 {
                   id: 0,
                   eventStart: this.dateToLocalDateTimeString(this.startDate.value),
-                  eventEnd: this.dateToLocalDateTimeString(this.startDate.value)
+                  eventEnd: this.dateToLocalDateTimeString(this.endDate.value)
                 }
               ]
           }
