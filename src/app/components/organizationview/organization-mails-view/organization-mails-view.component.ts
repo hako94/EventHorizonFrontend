@@ -9,6 +9,43 @@ import {EmailTemplateModel} from "../../../models/EmailTemplateModel";
 export class OrganizationMailsViewComponent {
   @Input() orgaID = '';
 
-  availableEmailTemplates : EmailTemplateModel[] = [];
+  //availableEmailTemplates : EmailTemplateModel[] = [];
+  availableEmailTemplates : EmailTemplateModel[] = [
+    {id: '123',
+      name: 'Dankeschön',
+      organizationId: '456',
+      subject: 'Liebe Teilnehmer Betreff',
+      text: 'Hallo zusammen, wir sind heute hier'},
+    {id: '789',
+      name: 'Dankeschön2',
+      organizationId: '12578',
+      subject: 'Liebe Menschen Betreff',
+      text: 'Hallo ihr doofians, moomjääj'}
+  ];
   panelOpenState: boolean = false;
+  editMode: boolean = false;
+  editedEmailTemplate: string = '';
+
+  constructor() {
+  }
+
+  ngOnInit(): void{
+    //TODO this.availableEmailTemplates = this.dataService.getAvailableEmailTemplates(this.orgaId);
+  }
+
+  toggleEdit(id: string) {
+    if (!this.editMode) {
+      this.editMode = true;
+      this.editedEmailTemplate = id;
+    } else {
+      this.editMode = false;
+      //TODO DataService safe Email changes
+      this.editedEmailTemplate = '';
+    }
+  }
+
+  deleteEmailTemplate(id: string) {
+    //TODO DataService deleteEmailTemplate
+    console.log("delete Email Template " + id);
+  }
 }
