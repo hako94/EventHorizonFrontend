@@ -53,6 +53,9 @@ export class LoginComponent {
       this.storageService.savePlattformAdmin(sucess.plattformAdmin)
 
       this.router.navigate(['/dashboard']);
+    }, error => {
+      this.snackBar.open('Die eingegebenen Zugangsdaten sind nicht korrekt', 'OK', {duration: 5000});
+      this.loading = false;
     })
 
   }
