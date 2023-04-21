@@ -99,23 +99,26 @@ export class DataService {
 
   getOrganizationInvites(orgId : string) : Observable<OrganizationInviteModel[]> {
     return this.http.get<OrganizationInviteModel[]>(
-      BACKEND_API + 'api/v1/organization/'+ orgId +'/member/invites',
+      BACKEND_API + 'api/v1/organization/'+ orgId +'/invites',
       httpOptions
     )
   }
 
   deleteOrganizationInvite(orgId : string, inviteId : string) : Observable<any> {
     return this.http.delete<any>(
-      BACKEND_API + 'api/v1/organization/' + orgId + '/invites/' + inviteId,
+      BACKEND_API + 'api/v1/organization/' + orgId + '/invite/' + inviteId,
       httpOptions
     )
   }
 
   changeOrganizationInviteRole(orgId : string, inviteId : string, roleId : number) : Observable<string> {
     return this.http.put<string>(
-      BACKEND_API + 'api/v1/organization/' + orgId + '/invites/' + inviteId,
+      BACKEND_API + 'api/v1/organization/' + orgId + '/invite/' + inviteId,
       {
-        roleId: roleId
+        inviteId: inviteId,
+        role : {
+          id: roleId
+        }
       },
       {
         headers: {'Content-Type': 'application/json'}

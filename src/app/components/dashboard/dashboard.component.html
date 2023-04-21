@@ -3,7 +3,7 @@
 <div class="flex sm:flex-row flex-col gap-4 ml-4">
   <div class="w-full sm:w-1/2">
     <h1>Deine Organisationen</h1>
-    <div class="overflow-x-hidden overflow-y-auto max-h-96 sm:max-h-screen">
+    <div class="overflow-x-hidden overflow-y-auto max-h-[40vh] sm:max-h-screen">
       <div class="grid lg:grid-cols-4 grid-cols-2 gap-4 justify-start justify-items-center">
         <div *ngFor="let organization of organizations">
           <app-organizationitem
@@ -52,7 +52,7 @@
   </div>
   <div class="w-full sm:w-1/2">
     <h1>Event-Radar</h1>
-    <div class="overflow-y-auto max-h-96 lg:max-h-screen">
+    <div class="overflow-y-auto max-h-[40vh] lg:max-h-screen">
       <div *ngFor="let event of currentEvents" class="mx-4 sm:ml-0 mb-4">
           <app-eventradar-item
             [name]="event.name"

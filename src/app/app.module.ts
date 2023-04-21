@@ -53,6 +53,7 @@ import { PlattformAdminComponent } from './components/plattform-admin/plattform-
 import {MatExpansionModule} from "@angular/material/expansion";
 import { EventViewMainComponent } from './components/event-view/event-view-main/event-view-main.component';
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import { OrganizationAddMailComponent } from './components/organizationview/organization-add-mail/organization-add-mail.component';
 
 registerLocaleData(localeDe);
 
@@ -77,7 +78,8 @@ registerLocaleData(localeDe);
     ResetPasswordComponent,
     OrganizationMailsViewComponent,
     PlattformAdminComponent,
-    EventViewMainComponent
+    EventViewMainComponent,
+    OrganizationAddMailComponent
   ],
   imports: [
     BrowserModule,

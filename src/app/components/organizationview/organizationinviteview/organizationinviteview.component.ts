@@ -1,8 +1,8 @@
 import {Component, Input} from '@angular/core';
 import {DataService} from "../../../services/DataService";
 import {OrganizationInviteModel} from "../../../models/OrganizationInviteModel";
-import {UserRoleModel} from "../../../models/UserRoleModel";
 import {StorageService} from "../../../services/StorageService";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-organizationinviteview',
@@ -19,6 +19,7 @@ export class OrganizationinviteviewComponent {
   @Input() orgaID = '';
 
   invitedUsers : OrganizationInviteModel[] = [
+    /*
     new class implements OrganizationInviteModel {
       email: string = 'local.test1@test.de';
       id: string = 'blablubb-ID';
@@ -34,21 +35,21 @@ export class OrganizationinviteviewComponent {
         id: number = 5;
         role: string = 'gast';
       };
-    }
+    } */
   ];
 
-  constructor(private dataService : DataService, private storageService : StorageService) {
+  constructor(private dataService : DataService, private storageService : StorageService, private snackBar : MatSnackBar) {
 
   }
 
   ngOnInit(): void {
     this.dataService.getOrganizationInvites(this.orgaID).subscribe(success => {
-      //this.invitedUsers = success;
+      this.invitedUsers = success;
     })
   }
 
   /**
-   * Aufruf des DataService, um die Rolle zu einer bestimmten Einladung zu ändern
+   * Calls DataService to change the role of a specified invitation
    *
    * @param inviteId
    * @param roleId
@@ -57,11 +58,14 @@ export class OrganizationinviteviewComponent {
     this.dataService.changeOrganizationInviteRole(this.orgaID, inviteId, roleId).subscribe(success => {
       console.log(success)
       window.location.reload();
+      this.snackBar.open('Rolle erfolgreich geändert', 'OK', {duration: 3000});
+    }, error => {
+      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
     });
   }
 
   /**
-   * Aufruf des DataService, um eine bestimmte Einladung zu löschen
+   * Calls the DataService to delete a specific invitation
    *
    * @param inviteId
    */
@@ -69,11 +73,14 @@ export class OrganizationinviteviewComponent {
     this.dataService.deleteOrganizationInvite(this.orgaID, inviteId).subscribe(success => {
       console.log(success)
       window.location.reload();
+      this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
+    }, error => {
+      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
     });
   }
 
   /**
-   * Schaltet zwischen dem "Bearbeiten" und "Anzeigen" Modus der Tabelle um
+   * Changes between 'edit' and 'view' mode of the table
    *
    * @param id
    */
@@ -90,7 +97,7 @@ export class OrganizationinviteviewComponent {
   }
 
   /**
-   * Überprüft, ob der aktuelle Benutzer die übergebene Rolle in der Organisation besitzt
+   * Checks if frontend-user has the specified role
    *
    * @param roleId
    */
