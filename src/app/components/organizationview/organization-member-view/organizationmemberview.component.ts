@@ -2,7 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {DataService} from "../../../services/DataService";
 import {OrganizationUserModel} from "../../../models/OrganizationUserModel";
 import {StorageService} from "../../../services/StorageService";
-import {UserRoleModel} from "../../../models/UserRoleModel";
 
 @Component({
   selector: 'app-organizationmemberview',
@@ -70,6 +69,11 @@ export class OrganizationmemberviewComponent implements OnInit{
   }
 
   saveMemberRole(orgId: string, userId: string, role: number){
+    console.log('hier');
     this.dataService.changeOrganizationMemberRole(orgId, userId, role);
+  }
+
+  deleteMember(userId: string) {
+    this.dataService.deleteOrganizationMember(this.orgaID, userId);
   }
 }
