@@ -54,6 +54,8 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import { EventViewMainComponent } from './components/event-view/event-view-main/event-view-main.component';
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import { OrganizationAddMailComponent } from './components/organizationview/organization-add-mail/organization-add-mail.component';
+import { InfoSnackbarComponent } from './components/organizationview/organization-mails-view/info-snackbar/info-snackbar.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 registerLocaleData(localeDe);
 
@@ -79,7 +81,8 @@ registerLocaleData(localeDe);
     OrganizationMailsViewComponent,
     PlattformAdminComponent,
     EventViewMainComponent,
-    OrganizationAddMailComponent
+    OrganizationAddMailComponent,
+    InfoSnackbarComponent
   ],
   imports: [
     BrowserModule,
@@ -109,6 +112,7 @@ registerLocaleData(localeDe);
     NgxDropzoneModule,
     MatExpansionModule,
     MatButtonToggleModule,
+    MatTooltipModule,
 
   ],
   providers: [

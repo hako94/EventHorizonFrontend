@@ -1,7 +1,10 @@
 <div class="mx-3">
   <br>
-  <h2>Mail-Vorlagen</h2>
-  <div class="overflow-y-auto max-h-[70vh]">
+  <div class="flex">
+    <h2>Mail-Vorlagen</h2>
+    <mat-icon (click)="openInfoSnackbar()" matTooltip="Mehr Infos über Platzhalter in den Vorlagen" class="cursor-pointer mt-1 ml-1">info</mat-icon>
+  </div>
+  <div class="overflow-y-auto max-h-[70vh] pb-1">
     <mat-expansion-panel
       class="customMargin"
       (opened)="panelOpenState = true"
@@ -47,5 +50,8 @@
     </mat-expansion-panel>
   </div>
   <br>
-  <button mat-raised-button color="primary" routerLink="/organizations/{{orgaID}}/addMail"><mat-icon>add</mat-icon> Mail-Vorlage</button>
+  <button mat-raised-button color="primary" routerLink="/organizations/{{orgaID}}/addMail">
+    <mat-icon>add</mat-icon>
+    Mail-Vorlage
+  </button>
 </div>

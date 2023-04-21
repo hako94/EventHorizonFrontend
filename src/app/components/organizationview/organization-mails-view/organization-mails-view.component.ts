@@ -1,5 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {EmailTemplateModel} from "../../../models/EmailTemplateModel";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {InfoSnackbarComponent} from "./info-snackbar/info-snackbar.component";
 
 @Component({
   selector: 'app-organization-mails-view',
@@ -26,7 +28,7 @@ export class OrganizationMailsViewComponent {
   editMode: boolean = false;
   editedEmailTemplate: string = '';
 
-  constructor() {
+  constructor(private snackbar: MatSnackBar) {
   }
 
   ngOnInit(): void{
@@ -47,5 +49,11 @@ export class OrganizationMailsViewComponent {
   deleteEmailTemplate(id: string) {
     //TODO DataService deleteEmailTemplate
     console.log("delete Email Template " + id);
+  }
+
+  openInfoSnackbar() {
+    this.snackbar.openFromComponent(InfoSnackbarComponent, {
+      duration: 7000,
+    });
   }
 }
