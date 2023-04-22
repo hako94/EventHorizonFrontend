@@ -18,25 +18,7 @@ export class OrganizationinviteviewComponent {
 
   @Input() orgaID = '';
 
-  invitedUsers : OrganizationInviteModel[] = [
-    /*
-    new class implements OrganizationInviteModel {
-      email: string = 'local.test1@test.de';
-      id: string = 'blablubb-ID';
-      role: UserRoleModel = new class implements UserRoleModel {
-        id: number = 4;
-        role: string = 'teilnehmer';
-      };
-    },
-    new class implements OrganizationInviteModel {
-      email: string = 'local.test2@test.de';
-      id: string = '222-ID';
-      role: UserRoleModel = new class implements UserRoleModel {
-        id: number = 5;
-        role: string = 'gast';
-      };
-    } */
-  ];
+  invitedUsers : OrganizationInviteModel[] = [];
 
   constructor(private dataService : DataService, private storageService : StorageService, private snackBar : MatSnackBar) {
 
@@ -45,6 +27,7 @@ export class OrganizationinviteviewComponent {
   ngOnInit(): void {
     this.dataService.getOrganizationInvites(this.orgaID).subscribe(success => {
       this.invitedUsers = success;
+      console.log(this.invitedUsers);
     })
   }
 
@@ -57,7 +40,7 @@ export class OrganizationinviteviewComponent {
   changeInviteRole(inviteId : string, roleId : number) {
     this.dataService.changeOrganizationInviteRole(this.orgaID, inviteId, roleId).subscribe(success => {
       console.log(success)
-      window.location.reload();
+      this.ngOnInit();
       this.snackBar.open('Rolle erfolgreich geändert', 'OK', {duration: 3000});
     }, error => {
       this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
@@ -72,7 +55,7 @@ export class OrganizationinviteviewComponent {
   deleteInvite(inviteId : string) {
     this.dataService.deleteOrganizationInvite(this.orgaID, inviteId).subscribe(success => {
       console.log(success)
-      window.location.reload();
+      this.ngOnInit();
       this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
     }, error => {
       this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});

@@ -32,7 +32,7 @@ export class OrganizationMailsViewComponent {
   }
 
   ngOnInit(): void{
-    //TODO this.availableEmailTemplates = this.dataService.getAvailableEmailTemplates(this.orgaId);
+    //TODO: this.availableEmailTemplates = this.dataService.getAvailableEmailTemplates(this.orgaId);
   }
 
   toggleEdit(id: string) {
@@ -41,13 +41,13 @@ export class OrganizationMailsViewComponent {
       this.editedEmailTemplate = id;
     } else {
       this.editMode = false;
-      //TODO DataService safe Email changes
+      //TODO: DataService safe Email changes
       this.editedEmailTemplate = '';
     }
   }
 
   deleteEmailTemplate(id: string) {
-    //TODO DataService deleteEmailTemplate
+    //TODO: DataService deleteEmailTemplate
     console.log("delete Email Template " + id);
   }
 

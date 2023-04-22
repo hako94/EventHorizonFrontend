@@ -11,7 +11,7 @@
       <ng-container *ngFor="let invitedUser of invitedUsers">
         <mat-divider></mat-divider>
         <div class="grid grid-cols-1 md:grid-cols-3">
-          <div class="p-2 pt-3 ">{{invitedUser.email}}</div>
+          <div class="p-2 pt-3 ">{{invitedUser.userEmail}}</div>
           <div *ngIf="!editMode || editedUser!=invitedUser.id" class="p-2 pt-3">{{invitedUser.role.role}}</div>
           <div *ngIf="editMode && editedUser==invitedUser.id" class="p-2 pt-3">
             <mat-form-field appearance="fill">

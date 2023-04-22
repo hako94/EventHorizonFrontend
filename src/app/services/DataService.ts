@@ -71,8 +71,8 @@ export class DataService {
     )
   }
 
-  changeOrganizationMemberRole(orgId: string, memberId: string, role: number): any {
-    this.http.put<string>(
+  changeOrganizationMemberRole(orgId: string, memberId: string, role: number): Observable<string> {
+    return this.http.put<string>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/member/' + memberId,
       {
         userId: memberId,
@@ -84,7 +84,7 @@ export class DataService {
       {
         headers: {'Content-Type': 'application/json'}
       }
-    ).subscribe(() => console.log("success"));
+    )
   }
 
   mapRoleIdToString(id: number): string {
