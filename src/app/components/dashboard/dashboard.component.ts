@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DataService} from '../../services/DataService';
 import {OrganizationModel} from '../../models/OrganizationModel';
-import {OrganizationEventModel} from "../../models/OrganizationEventModel";
+import {EventRadarItemModel} from "../../models/EventRadarItemModel";
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +17,7 @@ import {OrganizationEventModel} from "../../models/OrganizationEventModel";
 export class DashboardComponent implements OnInit {
 
   organizations: OrganizationModel[] = [];
-  currentEvents: OrganizationEventModel[] = [];
+  currentEvents: EventRadarItemModel[] = [];
 
   constructor(private readonly dataService: DataService) {
   }
@@ -36,24 +36,39 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Fügt Events, die innerhalb der nächsten 2 Wochen stattfinden, dem Event-Radar hinzu.
+   * Adds Events to event-radar that begin within the next 14 days
    */
   addAllEvents(): void {
     for (let i = 0; i < this.organizations.length; i++) {
       this.dataService.getOrganizationEvents(this.organizations[i].id).subscribe(success => {
         console.log(success[0]);
-        for (let i = 0; i < success.length; i++) {
-          //TODO: fix let upcomingEventDate : Date = new Date(success[i].eventStart);
-          //if(upcomingEventDate <= new Date( Date.now() + (6.048e+8 * 2)) && upcomingEventDate >= new Date( Date.now())) {
-          //  this.currentEvents.push(success[i]);
-          //}
+        for (let j = 0; j < success.length; j++) {
+          success[j].childs.forEach(child => {
+            //TODO: Das logische ODER zu einem logischen UND machen, um nur Events innerhalb der nächsten 2 wochen anzuzeigen
+            if (new Date(child.eventStart) <= new Date( Date.now() + (6.048e+8 * 2)) || new Date(child.eventStart) >= new Date( Date.now())) {
+              this.currentEvents.push(new class implements EventRadarItemModel {
+                childId: string = child.childId;
+                name: string = success[j].name;
+                description: string = success[j].description;
+                location: string = success[j].location;
+                organizationId: string = success[j].organizationId;
+                serial: boolean = success[j].serial;
+                eventStart: string = child.eventStart;
+                eventEnd: string = child.eventEnd;
+                pictureId: string = success[j].pictureId;
+                attender: boolean = success[j].attender;
+                organisator: boolean = success[j].organisator;
+                tutor: boolean = success[j].tutor;
+              });
+            }
+          })
         }
       })
     }
   }
 
   /**
-   * Liefert den Name der Organisation anhand der OrganisationsID zurück
+   * Returns name of organization based on OrgId
    *
    * @param id
    */

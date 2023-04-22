@@ -57,10 +57,10 @@
           <app-eventradar-item
             [name]="event.name"
             [location]="event.location"
-            [id]="event.id"
+            [id]="event.childId"
             [organization]="this.getOrganizationNameById(event.organizationId)"
-            [startTime]="'NOTSETDSDSDAD'"
-            [endTime]="'NOTSETDSDSDAD'">
+            [startTime]="event.eventStart"
+            [endTime]="event.eventEnd">
             <!-- //TODO -->
           </app-eventradar-item>
           <br>
