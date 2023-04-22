@@ -14,14 +14,14 @@ export class HeaderComponent {
   }
 
   /**
-   * Gibt zurück, ob eine aktive Session gefunden wurde
+   * Returns if an active session has been found
    */
   foundSession() : boolean {
     return this.storageService.getUser() != null;
   }
 
   /**
-   * Beendet die aktuelle Session, wodurch der Nutzer vom Frontend abgemeldet wird
+   * Terminates current session and current user gets logged out
    */
   abmelden() : void {
     this.storageService.clear()
@@ -29,15 +29,14 @@ export class HeaderComponent {
   }
 
   /**
-   * Gibt die Email-Adresse des Frontend-Benutzers zurück
+   * Returns mail address of frontend user
    */
   getUserEmail() : string {
     return this.storageService.getEmail()
   }
 
   /**
-   * Gibt zurück, ob es sich beim Benutzer um einen Plattform-Admin handelt,
-   * der sich auf dem Dashboard befindet
+   * Returns if current user is platform admin and on the dashboard component
    */
   isLoggedInPlatformAdmin() : boolean {
     return ((this.storageService.isPlattformAdmin())) && (this.router.url == '/dashboard');

@@ -10,9 +10,9 @@ import {StorageService} from "../../../services/StorageService";
 })
 
 /**
- *abc
  *
- * fss
+ *
+ *
  */
 export class OrganizationmemberviewComponent implements OnInit{
   selectedRole : number = -1;
@@ -48,7 +48,7 @@ export class OrganizationmemberviewComponent implements OnInit{
   }
 
   /**
-   * Überprüft, ob der aktuelle Benutzer die übergebene Rolle in der Organisation besitzt
+   * Checks if current user has specified role in current organization
    *
    * @param roleId
    */

@@ -44,7 +44,7 @@ export class OrganizationviewComponent {
       [],
       {
         relativeTo: this.activatedRoute,
-        queryParams: this.eventViewParam,
+        queryParams: this.currentParam,
         queryParamsHandling: 'merge',
       });
   }
@@ -63,7 +63,7 @@ export class OrganizationviewComponent {
   }
 
   /**
-   * Überprüft, ob der aktuelle Benutzer die übergebene Rolle in der Organisation besitzt
+   * Checks if the current user has the given role in the current organization
    *
    * @param role
    */

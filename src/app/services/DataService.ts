@@ -128,7 +128,8 @@ export class DataService {
       {
         inviteId: inviteId,
         role: {
-          id: roleId
+          id: roleId,
+          role: this.mapRoleIdToString(roleId)
         }
       },
       {
@@ -309,6 +310,19 @@ export class DataService {
   resetDatabase(): Observable<any> {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/admin/database/',
+      httpOptions
+    )
+  }
+
+  postMailTemplate(mailName: string, orgaId: string, mailSubject: string, mailText: string): Observable<any> {
+    return this.http.post<OrganizationModel>(
+      BACKEND_API + 'api/v1/organizations' + orgaId + '/emailtemplates',
+      {
+        'name': mailName,
+        'organizationId': orgaId,
+        'subject': mailSubject,
+        'text': mailText
+      },
       httpOptions
     )
   }
