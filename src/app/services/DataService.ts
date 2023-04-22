@@ -1,6 +1,6 @@
 import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Injectable} from "@angular/core";
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 import {OrganizationModel} from "../models/OrganizationModel";
 import {OrganizationEventModel} from "../models/OrganizationEventModel";
 import {CreateEventModel} from "../models/CreateEventModel";
@@ -76,26 +76,28 @@ export class DataService {
       BACKEND_API + 'api/v1/organization/' + orgId + '/member/' + memberId,
       {
         userId: memberId,
-        role: this.mapRoleIdToString(role),
+        role: {
+          id: role,
+          role: this.mapRoleIdToString(role),
+        }
       },
       {
         headers: {'Content-Type': 'application/json'}
       }
-    ).subscribe(() => console.log("Hi"));
+    ).subscribe(() => console.log("success"));
   }
 
   mapRoleIdToString(id: number): string {
-    switch (id) {
-      case 1:
-        return 'admin';
-      case 2:
-        return 'organisator';
-      case 4:
-        return 'teilnehmer';
-      case 5:
-        return 'gast';
-      default:
-        return 'error';
+    if (id == 1){
+      return 'admin';
+    } else if (id == 2){
+      return 'organisator';
+    } else if (id == 4){
+      return 'teilnehmer';
+    } else if (id == 5) {
+      return 'gast';
+    } else {
+      return 'error';
     }
   }
 

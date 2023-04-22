@@ -60,17 +60,14 @@ export class OrganizationmemberviewComponent implements OnInit{
     if (!this.editMode) {
       this.editMode = true;
       this.editedUser = id;
-    } else {
-      this.saveMemberRole(this.orgaID, this.editedUser, this.selectedRole);
-      this.editMode = false;
-      this.editedUser = '';
-      this.selectedRole = -1;
     }
   }
 
   saveMemberRole(orgId: string, userId: string, role: number){
-    console.log('hier');
     this.dataService.changeOrganizationMemberRole(orgId, userId, role);
+    this.editMode = false;
+    this.editedUser = '';
+    this.selectedRole = -1;
   }
 
   deleteMember(userId: string) {

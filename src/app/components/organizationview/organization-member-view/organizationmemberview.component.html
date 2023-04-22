@@ -44,7 +44,7 @@
           </div>
           <div *ngIf="hasRole(1) || hasRole(2)" class="justify-self-end flex">
             <div *ngIf="this.editMode && this.editedUser == member.id">
-              <button mat-icon-button color="primary" (click)="this.enableEdit(member.id)">
+              <button mat-icon-button color="primary" (click)="this.saveMemberRole(orgaID, member.id, selectedRole)">
                 <mat-icon>save</mat-icon>
               </button>
             </div>
@@ -53,7 +53,7 @@
                 <mat-icon>edit</mat-icon>
               </button>
             </div>
-            <button mat-icon-button color="warn" [disabled]="editMode">
+            <button mat-icon-button color="warn" [disabled]="editMode" (click)="deleteMember(member.id)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
