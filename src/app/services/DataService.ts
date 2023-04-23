@@ -342,9 +342,7 @@ export class DataService {
         id: templateId,
         name: emailTemplate.name,
         subject: emailTemplate.subject,
-        text: emailTemplate.text,
-        created: emailTemplate.created,
-        lastModified: emailTemplate.lastModified
+        text: emailTemplate.text
       },
       {
         headers: {'Content-Type': 'application/json'}
@@ -354,7 +352,7 @@ export class DataService {
 
   deleteMailTemplate(orgId: string, templateId: string): Observable<any> {
     return this.http.delete<any>(
-      BACKEND_API + 'api/v1/organization' + orgId + 'emailtemplate' + templateId,
+      BACKEND_API + 'api/v1/organization/' + orgId + '/emailtemplate/' + templateId,
       httpOptions
     )
   }

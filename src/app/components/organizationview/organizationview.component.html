@@ -4,7 +4,7 @@
        [active]="currentParam === eventViewParam"
        (click)="updateURLWithParam(eventViewParam)">Events</a>
   </div>
-  <div>
+  <div  *ngIf="!hasRole(5)">
     <a mat-tab-link
        [active]="currentParam === memberViewParam"
        (click)="updateURLWithParam(memberViewParam)">Mitglieder</a>

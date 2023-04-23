@@ -12,7 +12,7 @@ import {DataService} from "../../../services/DataService";
 export class OrganizationMailsViewComponent {
   @Input() orgaID = '';
 
-  availableEmailTemplates : EmailTemplateModel[] = [];
+  availableEmailTemplates: EmailTemplateModel[] = [];
   //availableEmailTemplates: EmailTemplateModel[] = [
   //  {
   //    id: '123',
@@ -51,7 +51,7 @@ export class OrganizationMailsViewComponent {
     }
   }
 
-  saveEmailTemplate(orgId: string, templateId: string, emailTemplate: EmailTemplateModel){
+  saveEmailTemplate(orgId: string, templateId: string, emailTemplate: EmailTemplateModel) {
     this.dataService.saveEmailTemplate(orgId, templateId, emailTemplate).subscribe(() => {
       this.ngOnInit();
       this.snackbar.open('Rolle erfolgreich geändert', 'OK', {duration: 3000});
@@ -63,7 +63,12 @@ export class OrganizationMailsViewComponent {
   }
 
   deleteEmailTemplate(templateId: string) {
-    this.dataService.deleteMailTemplate(this.orgaID, templateId)
+    this.dataService.deleteMailTemplate(this.orgaID, templateId).subscribe(() => {
+      this.ngOnInit();
+      this.snackbar.open('Eintrag gelöscht', 'OK', {duration: 3000});
+    }, error => {
+      this.snackbar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
+    })
     console.log("delete Email Template " + templateId);
   }
 

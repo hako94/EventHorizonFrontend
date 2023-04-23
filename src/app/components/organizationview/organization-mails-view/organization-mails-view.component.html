@@ -40,7 +40,7 @@
           <mat-icon>edit</mat-icon>
         </button>
         <button class="flex-col" *ngIf="this.editMode && this.editedEmailTemplate == emailTemplate.id" mat-icon-button
-                color="primary" (click)="this.saveEmailTemplate(emailTemplate.id, orgaID, emailTemplate)" [disabled]="!editMode">
+                color="primary" (click)="this.saveEmailTemplate(orgaID, emailTemplate.id, emailTemplate)" [disabled]="!editMode">
           <mat-icon>save</mat-icon>
         </button>
         <button mat-icon-button color="warn" (click)="deleteEmailTemplate(emailTemplate.id)" [disabled]="editMode">
