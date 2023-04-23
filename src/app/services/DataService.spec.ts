@@ -70,7 +70,7 @@ describe('DataService', () => {
       expect(events).toEqual(dummyOrganizationEvents);
     });
 
-    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organizations/${orgId}/events`);
+    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/events`);
     expect(req.request.method).toBe('GET');
     req.flush(dummyOrganizationEvents);
   });
@@ -90,7 +90,7 @@ describe('DataService', () => {
       expect(response).toBeTruthy();
     });
 
-    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organizations/${orgId}/events`);
+    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/events`);
     expect(req.request.method).toBe('POST');
     req.flush({});
   });
@@ -120,7 +120,7 @@ describe('DataService', () => {
       expect(members).toEqual(mockResponse);
     });
 
-    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/member`);
+    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/members`);
     expect(req.request.method).toBe('GET');
     req.flush(mockResponse);
   });
@@ -154,7 +154,7 @@ describe('DataService', () => {
       expect(template).toEqual(mockResponse);
     });
 
-    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organizations/${orgId}/events/eventtemplates/${templateId}`);
+    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/events/eventtemplates/${templateId}`);
     expect(req.request.method).toBe('GET');
     req.flush(mockResponse);
   });
@@ -172,7 +172,7 @@ describe('DataService', () => {
       expect(savedTemplate).toEqual(mockResponse);
     });
 
-    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organizations/${orgId}/events/eventtemplates`);
+    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/events/eventtemplates`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(template);
     req.flush(mockResponse);
@@ -215,7 +215,7 @@ describe('DataService', () => {
       expect(data).toEqual(response);
     });
 
-    const req = httpMock.expectOne(`${environment.backendApi}api/v1/organizations/${orgaId}/events/eventtemplates`);
+    const req = httpMock.expectOne(`${environment.backendApi}api/v1/organization/${orgaId}/events/eventtemplates`);
     expect(req.request.method).toBe('GET');
     req.flush(response);
   });
@@ -244,7 +244,7 @@ describe('DataService', () => {
     });
 
     const req = httpMock.expectOne(
-      `${environment.backendApi}api/v1/organizations/${orgId}/events/${eventId}/book/${userId}`
+      `${environment.backendApi}api/v1/organization/${orgId}/event/${eventId}/book?email=${userId}`
     );
     expect(req.request.method).toBe('POST');
     req.flush(response);
@@ -268,7 +268,7 @@ describe('DataService', () => {
 
     service.leaveEvent(orgId, eventId, userId).subscribe();
 
-    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organizations/${orgId}/events/${eventId}/signoff/${userId}`);
+    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/event/${eventId}/signoff?email=${userId}`);
     expect(req.request.method).toBe('POST');
     req.flush({});
   });
