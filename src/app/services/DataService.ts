@@ -155,14 +155,14 @@ export class DataService {
 
   loadTemplate(orgId: string, templateID: string): Observable<EventTemplateModel> {
     return this.http.get<EventTemplateModel>(
-      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/eventtemplates/' + templateID,
+      BACKEND_API + 'api/v1/organization/' + orgId + '/events/eventtemplates/' + templateID,
       httpOptions
     )
   }
 
   safeTemplate(orgId: string, template: EventTemplateModel): Observable<EventTemplateModel> {
     return this.http.post<EventTemplateModel>(
-      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/eventtemplates',
+      BACKEND_API + 'api/v1/organization/' + orgId + '/events/eventtemplates',
       template,
       httpOptions
     )
@@ -202,7 +202,7 @@ export class DataService {
 
   getAvailableTemplates(orgaId: string): Observable<AvailableTemplateList[]> {
     return this.http.get<AvailableTemplateList[]>(
-      BACKEND_API + 'api/v1/organizations/' + orgaId + '/events/eventtemplates',
+      BACKEND_API + 'api/v1/organization/' + orgaId + '/events/eventtemplates',
       httpOptions
     )
   }
@@ -317,14 +317,14 @@ export class DataService {
 
   getEmailTemplates(orgId: string): Observable<any> {
     return this.http.get<EmailTemplateModel[]>(
-      BACKEND_API + 'api/v1/organizations/' + orgId + '/emailtemplates',
+      BACKEND_API + 'api/v1/organization/' + orgId + '/emailtemplates',
       httpOptions
     )
   }
 
   postMailTemplate(mailName: string, orgaId: string, mailSubject: string, mailText: string): Observable<any> {
     return this.http.post<OrganizationModel>(
-      BACKEND_API + 'api/v1/organizations/' + orgaId + '/emailtemplates',
+      BACKEND_API + 'api/v1/organization/' + orgaId + '/emailtemplates',
       {
         'name': mailName,
         'organizationId': orgaId,
@@ -337,7 +337,7 @@ export class DataService {
 
   saveEmailTemplate(orgId: string, templateId: string, emailTemplate: EmailTemplateModel): Observable<string> {
     return this.http.put<string>(
-      BACKEND_API + 'api/v1/organization/' + orgId + '/emailtemplates/' + templateId,
+      BACKEND_API + 'api/v1/organization/' + orgId + '/emailtemplate/' + templateId,
       {
         id: templateId,
         name: emailTemplate.name,
@@ -354,7 +354,7 @@ export class DataService {
 
   deleteMailTemplate(orgId: string, templateId: string): Observable<any> {
     return this.http.delete<any>(
-      BACKEND_API + 'api/v1/organizations' + orgId + 'emailtemplates' + templateId,
+      BACKEND_API + 'api/v1/organization' + orgId + 'emailtemplate' + templateId,
       httpOptions
     )
   }
