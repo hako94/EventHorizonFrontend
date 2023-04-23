@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {Location} from "@angular/common";
 import {ActivatedRoute, Params, Router} from "@angular/router";
-import {map, tap} from "rxjs";
+import {StorageService} from "../../services/StorageService";
 
 @Component({
   selector: 'app-organizationview',
@@ -13,14 +13,16 @@ export class OrganizationviewComponent {
   eventViewParam : Params = {'view' : 'events'};
 
   memberViewParam : Params = {'view' : 'member'};
+  invitesViewParam : Params = {'view' : 'invites'};
+  mailsViewParam : Params = {'view' : 'mails'};
+  settingsViewParam : Params = {'view' : 'settings'};
   upcommingViewParam : Params = {'view' : 'upcomming'};
   presetViewParam : Params = {'view' : 'presetView'};
-  settingsViewParam : Params = {'view' : 'settings'};
   currentOrganization : string = '';
 
   currentParam : Params = this.eventViewParam;
 
-  constructor(private location : Location, private router : Router, private activatedRoute : ActivatedRoute) {
+  constructor(private location : Location, private router : Router, private activatedRoute : ActivatedRoute, private storageService : StorageService) {
 
     let orga = this.location.path().split('/').at(2)?.toString()
 
@@ -42,7 +44,7 @@ export class OrganizationviewComponent {
       [],
       {
         relativeTo: this.activatedRoute,
-        queryParams: this.eventViewParam,
+        queryParams: this.currentParam,
         queryParamsHandling: 'merge',
       });
   }
@@ -60,4 +62,16 @@ export class OrganizationviewComponent {
       });
   }
 
+  /**
+   * Checks if the current user has the given role in the current organization
+   *
+   * @param role
+   */
+  hasRole(roleId: number) : boolean {
+    if (this.storageService.getRoleInCurrentOrganization(this.currentOrganization) == roleId) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

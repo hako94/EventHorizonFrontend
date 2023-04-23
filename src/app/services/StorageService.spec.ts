@@ -1,6 +1,6 @@
-import { StorageService } from './StorageService';
-import { TestBed } from '@angular/core/testing';
-import { LoginResponse } from '../models/LoginResponse';
+import {StorageService} from './StorageService';
+import {TestBed} from '@angular/core/testing';
+import {LoginResponse} from '../models/LoginResponse';
 
 describe('StorageService', () => {
   let service: StorageService;
@@ -44,27 +44,43 @@ describe('StorageService', () => {
     expect(service.getCsrfKey()).toEqual(csrfKey);
   });
 
-  // it('sollte saveUser() verwenden, um den Benutzer im sessionStorage zu speichern', () => {
-  //   //given
-  //   const loginResponse: { token: string } = { token: 'abcdefg' };
-  //   //when
-  //   service.saveUser(loginResponse);
-  //   //then
-  //   expect(window.sessionStorage.getItem('auth-user')).toEqual(loginResponse.token);
-  // });
+  it('sollte saveUser() verwenden, um den Benutzer im sessionStorage zu speichern', () => {
+    //given
+    const loginResponse: LoginResponse = {
+      token: "hello",
+      type: "user",
+      id: "123",
+      username: "test",
+      email: "test@test.de",
+      organizations: {orgId: "123", role: {id: 1, role: "admin"}},
+      plattformAdmin: "test"
+    };
+    //when
+    service.saveUser(loginResponse);
+    //then
+    expect(window.sessionStorage.getItem('auth-user')).toEqual(loginResponse.token);
+  });
 
   it('should use getUser() to retrieve the user from the sessionStorage', () => {
     //given
-    const loginResponse: { token: string } = { token: 'abcdefg' };
+    const loginResponse: LoginResponse = {
+      token: "hello",
+      type: "user",
+      id: "123",
+      username: "test",
+      email: "test@test.de",
+      organizations: {orgId: "123", role: {id: 1, role: "admin"}},
+      plattformAdmin: "test"
+    };
     //when
-    window.sessionStorage.setItem('auth-user', loginResponse.token);
+    window.sessionStorage.setItem('auth-user', "hello");
     //then
     expect(service.getUser()).toEqual(loginResponse.token);
   });
 
   it('should use isLoggedIn() to check if a user is logged in', () => {
     //given
-    const loginResponse: { token: string } = { token: 'abcdefg' };
+    const loginResponse: { token: string } = {token: 'abcdefg'};
     //when
     window.sessionStorage.setItem('auth-user', loginResponse.token);
     //then

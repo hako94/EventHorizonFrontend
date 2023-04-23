@@ -1,0 +1,80 @@
+<div class="mx-3">
+  <br>
+  <h2>Einstellungen für Plattformbetreiber</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 overflow-y-auto overflow-x-hidden max-h-[80vh]">
+    <div>
+      <mat-card class="sm:mr-1.5 pb-2 pr-2">
+        <div class="ml-2">
+          <h3>Organisation anlegen</h3>
+          <p>Organisations-Name und E-Mail Adresse des ersten Organisations-Admins müssen angegeben werden, eine Beschreibung der Organisation ist optional.</p>
+          <br>
+            <div class="grid grid-cols-1 sm:grid-cols-2">
+              <div class="sm:mr-2">
+                <mat-form-field class="sm:mr-2 w-full">
+                  <mat-label>Org-Name*</mat-label>
+                  <input matInput [(ngModel)]="orgaName">
+                </mat-form-field>
+              </div>
+              <div>
+                <mat-form-field class="w-full">
+                  <mat-label>E-Mail Org-Admin*</mat-label>
+                  <input matInput [(ngModel)]="orgaAdminMail">
+                </mat-form-field>
+              </div>
+              <div class="sm:cols-span-2 sm:pr-2">
+                <mat-form-field class="w-full">
+                  <mat-label>Beschreibung</mat-label>
+                  <textarea matInput [(ngModel)]="orgaDescription"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+          <span class="mb-2 mr-2">
+            <button mat-raised-button color="primary" (click)="createOrganization()"><mat-icon>add</mat-icon>Anlegen</button>
+          </span>
+        </div>
+      </mat-card>
+      <br>
+      <mat-card class="sm:mr-1.5 pb-2">
+        <div class="ml-2">
+          <h3>Organisation löschen</h3>
+          <p>Durch einen Klick auf den Button wird die angegebene Organisation gelöscht.</p>
+          <p><strong>Achtung:</strong> Alle zugehörigen Daten (z.B. Events und Dateien) gehen hierbei <strong>unwiderruflich verloren!</strong></p>
+          <br>
+          <mat-form-field appearance="fill" class="mr-2 w-full pr-2">
+            <mat-label>Organisations-ID*</mat-label>
+            <input matInput [(ngModel)]="toDeleteOrga">
+          </mat-form-field>
+          <span class="mb-2">
+            <button mat-raised-button color="warn" (click)="deleteOrga(this.toDeleteOrga)"><mat-icon>delete</mat-icon>Löschen</button>
+          </span>
+        </div>
+      </mat-card>
+      <br class="sm:hidden">
+    </div>
+    <div>
+      <mat-card class="sm:ml-1.5">
+        <div class="ml-2">
+          <h3>Datenbank leeren</h3>
+          <p>Durch einen Klick auf den Button wird die Datenbank zurückgesetzt.</p>
+          <p><strong>Achtung:</strong> Alle vorhandenen Daten gehen hierbei <strong>unwiderruflich verloren!</strong></p>
+          <span>
+            <button class="mb-2" mat-raised-button color="warn" (click)="clearDB()"><mat-icon>delete</mat-icon>Daten löschen</button>
+          </span>
+          <br>
+        </div>
+      </mat-card>
+      <br>
+      <mat-card class="sm:ml-1.5">
+        <div class="ml-2">
+          <h3>Testdaten anlegen</h3>
+          <p>Durch einen Klick auf den Button wird die Datenbank zurückgesetzt und neu mit Testdaten befüllt.</p>
+          <p><strong>Achtung:</strong> Alle vorhandenen Daten gehen hierbei <strong>unwiderruflich verloren!</strong></p>
+          <span>
+            <button class="mb-2" mat-raised-button color="warn" (click)="resetDB()"><mat-icon>replay</mat-icon>Neu generieren</button>
+          </span>
+          <br>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

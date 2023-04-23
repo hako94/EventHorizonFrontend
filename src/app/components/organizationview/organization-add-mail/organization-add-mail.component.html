@@ -1,0 +1,42 @@
+<div class="mx-3">
+  <br>
+  <h2>Neue Mail-Vorlage erstellen</h2>
+  <mat-card class="p-2 max-h-[80vh] overflow-y-auto max-w-full overflow-x-hidden">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="lg:col-span-2">
+        <h3>Bezeichnung der Vorlage</h3>
+        <mat-form-field class="sm:mr-2 w-full">
+          <mat-label>Vorlagenbezeichnung*</mat-label>
+          <input matInput [(ngModel)]="mailName">
+        </mat-form-field>
+        <h3>Betreff der Mail</h3>
+        <mat-form-field class="sm:mr-2 w-full">
+          <mat-label>Mailbetreff*</mat-label>
+          <input matInput [(ngModel)]="mailSubject">
+        </mat-form-field>
+      </div>
+      <div class="col-span-1">
+        <div class="max-sm:hidden ">
+          <mat-card class="sm:ml-2 px-2 pb-2 h-max max-h-[24vh] truncate">
+            <span class="flex flex-auto"><mat-icon>info</mat-icon><span class="ml-1"><h3>Hinweis zur Nutzung von Variablen</h3></span></span>
+            <p><strong>#ORGNAME#</strong> - Name der Organisation</p>
+            <p><strong>#EVENTNAME#</strong> - Name des Events</p>
+            <p><strong>#START#</strong> - Startzeitpunkt des Events</p>
+            <p><strong>#ENDE#</strong> - Endzeitpunkt des Events</p>
+            <p><strong>#ORT#</strong> - Veranstaltungsort des Events</p>
+            <p><strong>#TEILNEHMER#</strong> - Name des Mailempfängers</p>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+    <h3>Inhalt der Mail</h3>
+    <mat-form-field class="w-full min-h-[40vh] max-h-[40vh]">
+      <mat-label>Mailtext*</mat-label>
+      <textarea matInput [(ngModel)]="mailText" class="min-h-[35vh] max-h-[35vh]"></textarea>
+    </mat-form-field>
+    <span class="mb-2 mr-2">
+      <button mat-raised-button color="primary" (click)="saveTemplate()"><mat-icon>save</mat-icon>Speichern</button>
+      <button mat-raised-button color="warn" class="ml-5" (click)="discardTemplate()"><mat-icon>delete</mat-icon>Verwerfen</button>
+    </span>
+  </mat-card>
+</div>

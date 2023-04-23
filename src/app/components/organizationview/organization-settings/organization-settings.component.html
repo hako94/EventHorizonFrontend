@@ -1,8 +1,10 @@
-<p>organization-settings works!</p>
-<h1>Current Image: </h1>
-<img [src]="shownimage">
+<div class="mx-3">
+  <p>organization-settings works!</p>
+  <h1>Current Image: </h1>
+  <img [src]="shownimage">
 
-<br><br>
-<h1>Upload image</h1>
-<label>Upload a File</label>
-<input (change)="onFileSelected($event)" type="file" #fileUpload>
+  <br><br>
+  <h1>Upload image</h1>
+  <label>Upload a File</label>
+  <input (change)="onFileSelected($event)" type="file" #fileUpload>
+</div>

@@ -1,7 +1,11 @@
+import {UserOrganizationModel} from "./UserOrganizationModel";
+
 export interface LoginResponse {
-  token : String;
-  type : String;
-  id : String;
-  username : String;
-  email : String;
+  token : string;
+  type : string;
+  id : string;
+  username : string;
+  email : string;
+  organizations: UserOrganizationModel;
+  plattformAdmin: string;
 }

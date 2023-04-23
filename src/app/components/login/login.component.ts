@@ -3,6 +3,7 @@ import {AuthService} from "../../services/AuthService";
 import {StorageService} from "../../services/StorageService";
 import {Router} from "@angular/router";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-login',
@@ -37,7 +38,7 @@ export class LoginComponent {
 
   loading : boolean = false;
 
-  constructor(private authService : AuthService, private storageService : StorageService, private router : Router) {
+  constructor(private authService : AuthService, private storageService : StorageService, private router : Router, private snackBar : MatSnackBar) {
 
   }
 
@@ -46,12 +47,28 @@ export class LoginComponent {
 
     this.authService.login(this.form.email, this.form.password).subscribe(sucess => {
 
-      this.storageService.saveUser(sucess)
+      this.storageService.saveUser(sucess);
       this.storageService.saveEmail(sucess.email.toString());
+      this.storageService.saveOrganizationList(sucess.organizations);
+      this.storageService.savePlattformAdmin(sucess.plattformAdmin)
 
       this.router.navigate(['/dashboard']);
+    }, error => {
+      this.snackBar.open('Die eingegebenen Zugangsdaten sind nicht korrekt', 'OK', {duration: 5000});
+      this.loading = false;
     })
 
   }
 
+  forgotPassword(): void{
+    console.log('upsi');
+    if (this.form.email == null){
+      this.snackBar.open('Bitte Email eingeben', 'OK', {duration: 3500});
+    } else {
+      this.snackBar.open('Sie haben eine Email mit einem Link zum Zurücksetzen ihres Passworts erhalten', 'OK', {duration: 5000});
+      //TODO send email
+    }
+  }
+
+    protected readonly onkeydown = onkeydown;
 }

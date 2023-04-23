@@ -18,10 +18,9 @@ import {
   OrganizationEventViewComponent
 } from "./components/organizationview/organization-event-view/organization-event-view.component";
 import { OrganizationmemberviewComponent } from './components/organizationview/organization-member-view/organizationmemberview.component';
-import { OrganizationAddeventComponent } from './components/organizationview/organization-addevent/organization-addevent.component';
+import { OrganizationAddeventComponent } from './components/organizationview/organization-add-event/organization-addevent.component';
 import { OrganizationSettingsComponent } from './components/organizationview/organization-settings/organization-settings.component';
-import { EventComponent } from './components/organizationview/event/event.component';
-import {RxStomp} from "@stomp/rx-stomp";
+import { EventItemComponent } from './components/organizationview/event-item/event-item.component';
 import {rxStompServiceFactory, SocketService} from "./services/SocketService";
 import { EventQuestionnairesComponent } from './components/organizationview/event-questionnaires/event-questionnaires.component';
 import {DatePipe, registerLocaleData} from "@angular/common";
@@ -42,6 +41,21 @@ import {MatStepperModule} from "@angular/material/stepper";
 import {MatGridListModule} from "@angular/material/grid-list";
 import { EventradarItemComponent } from './components/dashboard/eventradar-item/eventradar-item.component';
 import {MatMenuModule} from "@angular/material/menu";
+import { OrganizationinviteviewComponent } from './components/organizationview/organizationinviteview/organizationinviteview.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
+import { ResetPasswordComponent } from './components/login/reset-password/reset-password.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { OrganizationMailsViewComponent } from './components/organizationview/organization-mails-view/organization-mails-view.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from '@angular/material/core';
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { PlattformAdminComponent } from './components/plattform-admin/plattform-admin.component';
+import {MatExpansionModule} from "@angular/material/expansion";
+import { EventViewMainComponent } from './components/event-view/event-view-main/event-view-main.component';
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import { OrganizationAddMailComponent } from './components/organizationview/organization-add-mail/organization-add-mail.component';
+import { InfoSnackbarComponent } from './components/organizationview/organization-mails-view/info-snackbar/info-snackbar.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 registerLocaleData(localeDe);
 
@@ -58,33 +72,49 @@ registerLocaleData(localeDe);
     OrganizationmemberviewComponent,
     OrganizationAddeventComponent,
     OrganizationSettingsComponent,
-    EventComponent,
+    EventItemComponent,
     EventQuestionnairesComponent,
     EventUserMangamentComponent,
-    EventradarItemComponent
+    EventradarItemComponent,
+    OrganizationinviteviewComponent,
+    ResetPasswordComponent,
+    OrganizationMailsViewComponent,
+    PlattformAdminComponent,
+    EventViewMainComponent,
+    OrganizationAddMailComponent,
+    InfoSnackbarComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        FormsModule,
-        BrowserAnimationsModule,
-        ReactiveFormsModule,
-        MatToolbarModule,
-        MatInputModule,
-        MatSelectModule,
-        MatButtonModule,
-        MatCardModule,
-        MatRadioModule,
-        MatCheckboxModule,
-        MatProgressSpinnerModule,
-        MatIconModule,
-        MatTabsModule,
-        MatDividerModule,
-        MatStepperModule,
-        MatGridListModule,
-        MatMenuModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    MatToolbarModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatCardModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatTabsModule,
+    MatDividerModule,
+    MatStepperModule,
+    MatGridListModule,
+    MatMenuModule,
+    MatPaginatorModule,
+    MatSnackBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    NgxDropzoneModule,
+    MatExpansionModule,
+    MatButtonToggleModule,
+    MatTooltipModule,
+
+  ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de-DE' },
     httpInterceptorProviders,
