@@ -13,6 +13,7 @@ import {UserAtEventModel} from "../models/UserAtEventModel";
 import {environment} from "../../environments/environment";
 import {OrganizationInviteModel} from "../models/OrganizationInviteModel";
 import {UserRoleModel} from "../models/UserRoleModel";
+import {EmailTemplateModel} from "../models/EmailTemplateModel";
 
 //const BACKEND_API = 'http://localhost:8080/'
 //const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
@@ -314,15 +315,46 @@ export class DataService {
     )
   }
 
+  getEmailTemplates(orgId: string): Observable<any> {
+    return this.http.get<EmailTemplateModel[]>(
+      BACKEND_API + 'api/v1/organizations/' + orgId + '/emailtemplates',
+      httpOptions
+    )
+  }
+
   postMailTemplate(mailName: string, orgaId: string, mailSubject: string, mailText: string): Observable<any> {
     return this.http.post<OrganizationModel>(
-      BACKEND_API + 'api/v1/organizations' + orgaId + '/emailtemplates',
+      BACKEND_API + 'api/v1/organizations/' + orgaId + '/emailtemplates',
       {
         'name': mailName,
         'organizationId': orgaId,
         'subject': mailSubject,
         'text': mailText
       },
+      httpOptions
+    )
+  }
+
+  saveEmailTemplate(orgId: string, templateId: string, emailTemplate: EmailTemplateModel): Observable<string> {
+    return this.http.put<string>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/emailtemplates/' + templateId,
+      {
+        id: templateId,
+        name: emailTemplate.name,
+        subject: emailTemplate.subject,
+        text: emailTemplate.text,
+        created: emailTemplate.created,
+        lastModified: emailTemplate.lastModified
+      },
+      {
+        headers: {'Content-Type': 'application/json'}
+      }
+    )
+  }
+
+  deleteMailTemplate(orgId: string, templateId: string): Observable<any> {
+    return this.http.delete<any>(
+      BACKEND_API + 'api/v1/organizations' + orgId + 'emailtemplates' + templateId,
       httpOptions
     )
   }

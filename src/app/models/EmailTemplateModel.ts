@@ -1,7 +1,8 @@
 export interface EmailTemplateModel {
   id: string;
   name: string;
-  organizationId: string;
   subject: string;
-  text: string
+  text: string;
+  created: string;
+  lastModified: string;
 }
