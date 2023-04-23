@@ -5,10 +5,6 @@
     <span class="mx-3 pt-2.5"><button *ngIf="isLoggedInPlatformAdmin()"><mat-icon routerLink="/platform-settings" class="cursor-pointer">settings</mat-icon></button></span>
     <span style="flex-grow: 4"></span>
     <div *ngIf="!foundSession()">
-      <button mat-raised-button aria-label="Register" routerLink="/register" class="mr-3">
-        <mat-icon>login</mat-icon>
-        Register
-      </button>
       <button mat-raised-button aria-label="Login" routerLink="/login">
         <mat-icon>login</mat-icon>
         Login
