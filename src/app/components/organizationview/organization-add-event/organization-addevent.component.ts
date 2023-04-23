@@ -123,6 +123,10 @@ export class OrganizationAddeventComponent {
     this.dataService.getAvailableTemplates(this.currentOrganization).subscribe(success => {
       this.availableTemplates = success;
     })
+
+    //TODO remove both lines
+    this.singleStartDate.value?.setDate(this.singleStartDate.value?.getMilliseconds())
+    this.singleEndDate.value?.setDate(this.singleEndDate.value?.getMilliseconds())
   }
   onSelect(event: any) {
     console.log(event);
@@ -167,7 +171,7 @@ export class OrganizationAddeventComponent {
         }
     }
 
-    let modelExtended : RequestModel;
+    let modelExtended;
 
     if (this.form.eventType == "single") {
       if (this.singleStartDate.value != null && this.singleEndDate.value != null) {
@@ -209,7 +213,7 @@ export class OrganizationAddeventComponent {
               ]
           }
       }
-    } else if (this.form.eventType == "multi") {
+    } else {
       modelExtended =
         {
           ...model,
@@ -218,28 +222,36 @@ export class OrganizationAddeventComponent {
         }
     }
 
-    this.persistFiles().subscribe(file => {
+    this.dataService.postEventInOrganizationAndPersist(this.currentOrganization, modelExtended).subscribe(response => {
+      console.log(this.extractIdFromUrl(response.body.toString()))
 
-      this.persistImage().subscribe(image => {
+      this.persistImage(this.extractIdFromUrl(response.body.toString())).subscribe(success => {
 
-        console.log(file + " " + image)
+        this.persistFiles().subscribe(success => {
+          console.log("request vollständig")
+        }, error => {
+          //TODO rollback
+          console.log("konnte die Dateien nicht hochladen")
+        }, ()=> {
+          console.log("finishing request ...")
+          this.router.navigate(['/organizations/' + this.currentOrganization], {queryParams: {view: 'events'}});
+        })
 
-        this.dataService.postEventInOrganizationAndPersist(this.currentOrganization, modelExtended).subscribe();
-
-      })
-
-    })
-
+      }, error => { console.log(error) })
+    });
+  }
+  extractIdFromUrl(url: string): string {
+    const parts = url.split('/');
+    return parts[parts.length - 1];
   }
 
-  persistImage() : Observable<any> {
-    return of("done")
-    //TODO unterscheiden zwischen Bild und anderen Dateien
-    /*if (this.filesToPersist.length > 0 && this.filesToPersist.at(0)) {
-      return this.dataService.storeEventImage(this.filesToPersist[0], this.currentOrganization);
+
+  persistImage(id : string) : Observable<any> {
+    if (this.filesToPersist.length > 0 && this.filesToPersist.at(0)) {
+      return this.dataService.storeEventImage(this.filesToPersist[0], this.currentOrganization, id);
     } else {
-      return of("No files to persist found");
-    }*/
+      throw new Error()
+    }
   }
 
   persistFiles() : Observable<any> {

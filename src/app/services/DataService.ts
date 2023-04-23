@@ -57,11 +57,14 @@ export class DataService {
     )
   }
 
-  postEventInOrganizationAndPersist(orgaId: string, model: any): Observable<any> {
+  postEventInOrganizationAndPersist(orgaId: string, model: any): Observable<HttpResponse<any>> {
     return this.http.post(
       BACKEND_API + 'api/v1/organization/' + orgaId + '/events',
       model,
-      httpOptions
+      {
+        observe: 'response',
+        headers: {'Content-Type': 'application/json'}
+      }
     )
   }
 
@@ -176,7 +179,7 @@ export class DataService {
     )
   }
 
-  storeEventImage(formData: FormData, orgId: string): Observable<HttpResponse<any>> {
+  storeEventImage(formData: FormData, orgId: string, id : string): Observable<HttpResponse<any>> {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/files',
       formData,
@@ -184,6 +187,8 @@ export class DataService {
         observe: 'response',
         params: {
           'orgId': orgId,
+          'eventId' : id,
+          'isEventPicture' : true
         }
       }
     )
@@ -196,6 +201,19 @@ export class DataService {
         responseType: "blob",
         params: {'orgId': orgId}
 
+      }
+    )
+  }
+
+  getImageForEvent(orgId: string, fileId: string, eventId : string): Observable<any> {
+    return this.http.get(
+      BACKEND_API + 'api/v1/files/' + fileId,
+      {
+        responseType: "blob",
+        params: {
+          'orgId': orgId,
+          'eventId' : eventId
+        }
       }
     )
   }

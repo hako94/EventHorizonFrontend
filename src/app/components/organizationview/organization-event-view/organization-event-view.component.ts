@@ -12,14 +12,20 @@ export class OrganizationEventViewComponent implements OnInit{
   @Input() orgaID = '';
 
   events : OrganizationEventModel[] = [];
+  filteredEvents : OrganizationEventModel[] = [];
 
   constructor(private dataService : DataService) {
-
   }
 
   ngOnInit(): void {
     this.dataService.getOrganizationEvents(this.orgaID).subscribe(success => {
       this.events = success;
+      this.filteredEvents = [... this.events];
     })
+  }
+
+
+  filter() : void {
+
   }
 }

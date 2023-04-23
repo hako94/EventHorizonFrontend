@@ -10,7 +10,6 @@ import {DomSanitizer} from "@angular/platform-browser";
 export class OrganizationSettingsComponent implements OnInit{
 
   @Input() orgaID : string = '';
-  image : string = '';
   shownimage : any;
 
   constructor(private dataService : DataService, private sanitizer: DomSanitizer) {
@@ -18,7 +17,6 @@ export class OrganizationSettingsComponent implements OnInit{
 
   ngOnInit(): void {
     this.dataService.getOrganizationInfos(this.orgaID).subscribe(success => {
-      this.image = success.logoId;
       console.log(success)
 
       this.dataService.getImage(this.orgaID, success.logoId).subscribe(success => {
