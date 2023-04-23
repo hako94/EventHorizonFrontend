@@ -28,6 +28,7 @@ export class OrganizationmemberviewComponent implements OnInit{
   editedUser : string = '';
 
   inviteLoading : boolean = false;
+  ownRoleInOrg : number = this.storageService.getRoleInCurrentOrganization(this.orgaID);
 
   constructor(private dataService : DataService, private storageService : StorageService, private snackBar : MatSnackBar) {
 

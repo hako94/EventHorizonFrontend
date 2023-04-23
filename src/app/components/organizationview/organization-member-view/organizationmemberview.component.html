@@ -1,20 +1,25 @@
 <div class="mx-3">
   <br>
-  <h2>Mitglied einladen</h2>
-  <mat-form-field class="example-full-width m-2 w-1/4">
-    <mat-label>Email-Adresse</mat-label>
-    <input [(ngModel)]="invitedEmail" matInput placeholder="muster@mail.de">
-  </mat-form-field>
-  <mat-form-field appearance="fill" class="m-2 w-36">
-    <mat-label>Rolle</mat-label>
-    <mat-select [(value)]="selected">
-      <mat-option value="gast">Gast</mat-option>
-      <mat-option value="teilnehmer">Teilnehmer</mat-option>
-      <mat-option value="organisator" *ngIf="hasRole(2) || hasRole(1)">Organisator</mat-option>
-      <mat-option value="admin" *ngIf="hasRole(2) || hasRole(1)">Admin</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <button class="ml-1 mb-4" mat-raised-button color="primary" (click)="inviteSubmit()" [disabled]="inviteLoading"><mat-icon>person_add</mat-icon> Einladen</button>
+  <div *ngIf="ownRoleInOrg > 0 && ownRoleInOrg < 3">
+    <h2>Mitglied einladen</h2>
+    <mat-form-field class="example-full-width m-2 w-1/4">
+      <mat-label>Email-Adresse</mat-label>
+      <input [(ngModel)]="invitedEmail" matInput placeholder="muster@mail.de">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="m-2 w-36">
+      <mat-label>Rolle</mat-label>
+      <mat-select [(value)]="selected">
+        <mat-option value="gast">Gast</mat-option>
+        <mat-option value="teilnehmer">Teilnehmer</mat-option>
+        <mat-option value="organisator" *ngIf="hasRole(2) || hasRole(1)">Organisator</mat-option>
+        <mat-option value="admin" *ngIf="hasRole(2) || hasRole(1)">Admin</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button class="ml-1 mb-4" mat-raised-button color="primary" (click)="inviteSubmit()" [disabled]="inviteLoading">
+      <mat-icon>person_add</mat-icon>
+      Einladen
+    </button>
+  </div>
   <h2>Mitglieder-Übersicht</h2>
   <mat-card>
     <mat-card-content class="overflow-y-auto max-h-[60vh]">
