@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Location} from "@angular/common";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {StorageService} from "../../services/StorageService";
@@ -8,10 +8,9 @@ import {StorageService} from "../../services/StorageService";
   templateUrl: './organizationview.component.html',
   styleUrls: ['./organizationview.component.scss']
 })
-export class OrganizationviewComponent {
+export class OrganizationviewComponent implements OnInit{
 
   eventViewParam : Params = {'view' : 'events'};
-
   memberViewParam : Params = {'view' : 'member'};
   invitesViewParam : Params = {'view' : 'invites'};
   mailsViewParam : Params = {'view' : 'mails'};
@@ -20,15 +19,13 @@ export class OrganizationviewComponent {
   presetViewParam : Params = {'view' : 'presetView'};
   currentOrganization : string = '';
 
-  currentParam : Params = this.eventViewParam;
+  currentParam? : Params;
 
   constructor(private location : Location, private router : Router, private activatedRoute : ActivatedRoute, private storageService : StorageService) {
 
     let orga = this.location.path().split('/').at(2)?.toString()
 
     if (orga) {
-      console.log("Orga index " + orga.indexOf('?'))
-
       if (orga.indexOf('?') > 0) {
         this.currentOrganization = orga.slice(0,orga.indexOf('?'));
       } else {
@@ -37,19 +34,26 @@ export class OrganizationviewComponent {
     } else {
       this.currentOrganization = '';
     }
+  }
 
-    console.log(this.currentOrganization)
 
-    this.router.navigate(
-      [],
-      {
-        relativeTo: this.activatedRoute,
-        queryParams: this.currentParam,
-        queryParamsHandling: 'merge',
-      });
+  ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe(params => {
+
+      //TODO direkte Übersetzung ohne if / else Block
+      if (params['view'] == "mails")
+        this.currentParam = this.mailsViewParam;
+      else if (params['view'] == "events") {
+        this.currentParam = this.eventViewParam
+      }
+
+
+    });
   }
 
   updateURLWithParam(param : Params) : void {
+
+    console.log(this.currentParam)
 
     this.currentParam = param;
 
@@ -60,6 +64,8 @@ export class OrganizationviewComponent {
         queryParams: this.currentParam,
         queryParamsHandling: 'merge',
       });
+
+    console.log(this.currentParam)
   }
 
   /**

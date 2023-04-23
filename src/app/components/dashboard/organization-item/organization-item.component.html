@@ -1,5 +1,7 @@
 <div>
-  <mat-card class="h-32 w-32 min-w-0 truncate cursor-pointer" routerLink="/organizations/{{id}}">
+  <mat-card class="h-32 w-32 min-w-0 truncate cursor-pointer"
+            [routerLink]="['/organizations',id]"
+            [queryParams]="{ view : 'events'}">
     <mat-card-content>
       <h3 class="text-center">{{name}}</h3>
     </mat-card-content>
