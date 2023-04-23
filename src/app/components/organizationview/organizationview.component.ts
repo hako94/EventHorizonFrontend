@@ -43,11 +43,14 @@ export class OrganizationviewComponent implements OnInit{
       //TODO direkte Übersetzung ohne if / else Block
       if (params['view'] == "mails")
         this.currentParam = this.mailsViewParam;
-      else if (params['view'] == "events") {
-        this.currentParam = this.eventViewParam
-      }
-
-
+      else if (params['view'] == "events")
+        this.currentParam = this.eventViewParam;
+      else if (params['view'] == "member")
+        this.currentParam = this.memberViewParam;
+      else if (params['view'] == "invites")
+        this.currentParam = this.invitesViewParam;
+      else if (params['view'] == "presetView")
+        this.currentParam = this.presetViewParam;
     });
   }
 
