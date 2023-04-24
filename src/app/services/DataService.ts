@@ -14,6 +14,7 @@ import {environment} from "../../environments/environment";
 import {OrganizationInviteModel} from "../models/OrganizationInviteModel";
 import {UserRoleModel} from "../models/UserRoleModel";
 import {EmailTemplateModel} from "../models/EmailTemplateModel";
+import {EventTemplatePrefillModel} from "../models/EventTemplatePrefillModel";
 
 //const BACKEND_API = 'http://localhost:8080/'
 //const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
@@ -156,16 +157,23 @@ export class DataService {
     )
   }
 
-  loadTemplate(orgId: string, templateID: string): Observable<EventTemplateModel> {
-    return this.http.get<EventTemplateModel>(
-      BACKEND_API + 'api/v1/organization/' + orgId + '/events/eventtemplates/' + templateID,
+  loadTemplates(orgId: string): Observable<EventTemplateModel[]> {
+    return this.http.get<EventTemplateModel[]>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/eventtemplates',
       httpOptions
     )
   }
 
-  safeTemplate(orgId: string, template: EventTemplateModel): Observable<EventTemplateModel> {
-    return this.http.post<EventTemplateModel>(
-      BACKEND_API + 'api/v1/organization/' + orgId + '/events/eventtemplates',
+  loadTemplateBasedOnId(orgId: string, templateId : string): Observable<EventTemplatePrefillModel> {
+    return this.http.get<EventTemplatePrefillModel>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/eventtemplate/' + templateId,
+      httpOptions
+    )
+  }
+
+  safeTemplate(orgId: string, template: EventTemplatePrefillModel): Observable<EventTemplatePrefillModel> {
+    return this.http.post<EventTemplatePrefillModel>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/eventtemplates',
       template,
       httpOptions
     )

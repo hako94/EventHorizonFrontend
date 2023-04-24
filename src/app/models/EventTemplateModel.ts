@@ -2,9 +2,11 @@ import {VariableTemplate} from "./VariableTemplate";
 
 export interface EventTemplateModel {
 
+  id : string;
+
   name : string;
 
-  variables : VariableTemplate[];
+  description: string;
 
-  organizationId: string;
+  pictureId: string;
 }

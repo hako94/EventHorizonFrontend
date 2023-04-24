@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit {
             //TODO: Das logische ODER zu einem logischen UND machen, um nur Events innerhalb der nächsten 2 wochen anzuzeigen
             if (new Date(child.eventStart) <= new Date( Date.now() + (6.048e+8 * 2)) || new Date(child.eventStart) >= new Date( Date.now())) {
               this.currentEvents.push(new class implements EventRadarItemModel {
-                childId: string = child.childId;
+                childId: string = child.childId || '0';
                 name: string = success[j].name;
                 description: string = success[j].description;
                 location: string = success[j].location;

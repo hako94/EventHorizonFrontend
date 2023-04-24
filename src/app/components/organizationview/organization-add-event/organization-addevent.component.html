@@ -1,4 +1,22 @@
-<mat-stepper style="height: calc(100% - 64px)">
+<mat-stepper style="height: calc(100% - 64px)" class="mat-typography">
+  <mat-step>
+    <ng-template matStepLabel>Templates</ng-template>
+    <br>
+    <h2>Templates</h2>
+    <p>Lade ein Template eines zuvor erstellen Events - oder gehe direkt zu Schritt 2</p>
+    <br><hr><br>
+    <div>
+      <ng-container *ngFor="let template of eventTemplates">
+        <div class="grid grid-cols-4 grid-rows-1">
+          <p>{{template.id}}</p>
+          <p>{{template.name}}</p>
+          <p>{{template.description}}</p>
+          <button class="justify-self-end flex" (click)="loadTemplateWithId(template.id)" mat-raised-button><mat-icon>publish</mat-icon>Laden</button>
+          <br><br><br>
+        </div>
+      </ng-container>
+    </div>
+  </mat-step>
   <mat-step>
     <ng-template matStepLabel>Grundlegende Informationen</ng-template>
     <br>
@@ -113,9 +131,9 @@
               <br>
               <mat-divider></mat-divider>
               <br>
-              <h1>{{child.id+1}}. Datum</h1>
+              <h1>{{child.childId}}. Datum</h1>
               <p>von {{child.eventStart}} bis {{child.eventEnd}}</p>
-              <button mat-raised-button (click)="deleteChildEvent(child.id)" color="warn">
+              <button mat-raised-button (click)="deleteChildEvent(child.childId || '0')" color="warn">
                 <mat-icon>delete</mat-icon>
                 Löschen
               </button>
@@ -204,19 +222,31 @@
   <mat-step>
     <ng-template matStepLabel>Abschluss</ng-template>
     <br>
-    <h2>Erstelle das Event</h2>
-    <button mat-raised-button color="primary" (click)="persistData()" type="submit" formaction="">Erstellen</button>
+    <div class="border-l-2 p-2 mb-6">
+      <h2>Speichere Das Event als Template</h2>
+      <button mat-raised-button color="primary" (click)="persistTemplate()" type="submit" formaction="" [disabled]="disabledTemplateSafe">Speichern</button>
+    </div>
+    <hr>
+    <div class="flex mt-6">
+      <div class="border-l-2 p-2">
+        <h2>Erstelle das Event</h2>
+        <button mat-raised-button color="primary" (click)="persistData()" type="submit" formaction="">Erstellen</button>
+      </div>
+      <div class="border-l-2 ml-10 p-2">
+        <h2>Abbrechen und verwerfen</h2>
+        <button style="margin-left: 5px" mat-raised-button color="warn" (click)="goBack()">Abbrechen</button>
+      </div>
+    </div>
     <mat-divider></mat-divider>
     <br>
     <h3>Vorschau</h3>
     <br>
-    <div><br><br><br><br><br><br>
+    <div>
       <div style="position: absolute; background-color: rgba(1,1,1,0.2); width: 96%; height: 43%; z-index: 100; overflow:hidden;"></div>
       <h3 style="position: absolute; z-index: 100; font-size: 120px; text-align: center; width: 96%; margin-top: 180px; color: grey; transform: rotate(-20deg);"> Vorschau </h3>
     </div>
     <br>
     <mat-divider></mat-divider>
     <br>
-    <button style="margin-left: 5px" mat-raised-button color="warn" (click)="goBack()">Abbrechen</button>
   </mat-step>
 </mat-stepper>
