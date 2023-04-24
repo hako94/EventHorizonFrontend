@@ -1,6 +1,5 @@
 
 export interface EventRadarItemModel {
-
   childId: string;
   name: string;
   description: string;
@@ -13,5 +12,4 @@ export interface EventRadarItemModel {
   attender: boolean;
   organisator: boolean;
   tutor: boolean;
-
 }

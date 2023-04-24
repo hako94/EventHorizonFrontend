@@ -298,14 +298,14 @@ export class DataService {
 
   getUserManagementList(orgId: string, eventId: string): Observable<UserAtEventModel[]> {
     return this.http.get<UserAtEventModel[]>(
-      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/attendees',
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/attendees',
       httpOptions
     )
   }
 
   saveUserManagementList(orgId: string, eventId: string, users: UserAtEventModel[]): Observable<any> {
     return this.http.post<any>(
-      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/attendees',
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/attendees',
       users,
       httpOptions
     )
