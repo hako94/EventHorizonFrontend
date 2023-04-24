@@ -13,16 +13,18 @@ export class OrganizationEventViewComponent implements OnInit{
 
   @Input() orgaID = '';
 
+
+  selectedTyp: string = '' ;
   selected = '';
 
   events : OrganizationEventModel[] = [];
+
   filteredEvents : OrganizationEventModel[] = [];
 
   range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
   });
-
   searchText: string = '';
 
 
@@ -55,10 +57,17 @@ export class OrganizationEventViewComponent implements OnInit{
       this.filteredEvents = this.filteredEvents.filter(val => { return val.tutor})
     }
 
-    this.filteredEvents = this.filteredEvents.slice(0,5);
+    if (this.selectedTyp == 'single') {
+      this.filteredEvents = this.filteredEvents.filter(val => { return !val.serial })
+    }
+    if (this.selectedTyp == 'multi') {
+      this.filteredEvents = this.filteredEvents.filter(val => { return val.serial })
+    }
+
+    this.filteredEvents = this.filteredEvents.slice(0,10);
   }
 
   defaultFilter() : void {
-    this.filteredEvents = this.events.slice(0,5);
+    this.filteredEvents = this.events.slice(0,10);
   }
 }

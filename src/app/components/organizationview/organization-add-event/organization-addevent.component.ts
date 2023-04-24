@@ -247,6 +247,7 @@ export class OrganizationAddeventComponent {
     if (this.filesToPersist.length > 0 && this.filesToPersist.at(0)) {
       return this.dataService.storeEventImage(this.filesToPersist[0], this.currentOrganization, id);
     } else {
+      console.log(this.filesToPersist.length + " i " + this.filesToPersist.at(0))
       throw new Error()
     }
   }
