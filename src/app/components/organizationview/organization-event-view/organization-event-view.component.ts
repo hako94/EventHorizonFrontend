@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {DataService} from "../../../services/DataService";
 import {OrganizationEventModel} from "../../../models/OrganizationEventModel";
 import {take, toArray} from "rxjs";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-organizationeventview',
@@ -17,6 +18,12 @@ export class OrganizationEventViewComponent implements OnInit{
   events : OrganizationEventModel[] = [];
   filteredEvents : OrganizationEventModel[] = [];
 
+  range = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
+
+
   constructor(private dataService : DataService) {
   }
 
@@ -28,6 +35,9 @@ export class OrganizationEventViewComponent implements OnInit{
   }
 
   onFilterChange() : void {
+
+    console.log(this.range.controls["start"].value + " - " + this.range.controls['end'].value)
+
     this.filteredEvents = this.events.slice();
 
     if (this.selected  == 'attende') {
