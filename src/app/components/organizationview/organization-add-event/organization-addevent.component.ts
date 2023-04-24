@@ -9,6 +9,7 @@ import {AvailableTemplateList} from "../../../models/AvailableTemplateList";
 import {Router} from "@angular/router";
 import {ChildEvent} from "../../../models/ChildEventModel";
 import {EventTemplatePrefillModel} from "../../../models/EventTemplatePrefillModel";
+import {EmailTemplateModel} from "../../../models/EmailTemplateModel";
 
 export interface createInterfaceTemplateBasic {
   eventName : string,
@@ -60,8 +61,6 @@ export interface RequestModel extends baseModel{
 })
 export class OrganizationAddeventComponent {
 
-  eventTemplates : EventTemplateModel[] = [];
-
   disabledTemplateSafe : boolean = false;
 
   serialEvent : eventRepeatScheme = {
@@ -70,20 +69,24 @@ export class OrganizationAddeventComponent {
   };
 
   singleStartDate = new FormControl(new Date());
-  singleEndDate = new FormControl(new Date());
 
+  singleEndDate = new FormControl(new Date());
   shownPreviewImage : any;
 
   filesToPersist : FormData[] = [];
 
   startDate = new FormControl(new Date());
-  endDate = new FormControl(new Date());
 
+  endDate = new FormControl(new Date());
   currentOrganization : string = '';
 
+  emailTemplates: EmailTemplateModel[] = [];
+  emailTemplatesInUse : EmailTemplateModel[] = [];
   availableTemplates : AvailableTemplateList[] = []
+  eventTemplates : EventTemplateModel[] = [];
 
   customFields : Array<AddEventCustomField> = [];
+
   customFieldData : Array<string> = [];
 
   files : File[] = [];
@@ -94,7 +97,6 @@ export class OrganizationAddeventComponent {
     location : '',
     eventType: 'single'
   }
-
   childs : ChildEvent[] = [];
 
   constructor(private dataService : DataService,
@@ -120,6 +122,7 @@ export class OrganizationAddeventComponent {
     }
 
     this.loadTemplates()
+    this.loadEmails()
 
     //TODO remove both lines
     this.singleStartDate.value?.setDate(this.singleStartDate.value?.getMilliseconds())
@@ -255,6 +258,12 @@ export class OrganizationAddeventComponent {
   persistFiles() : Observable<any> {
     //TODO unterscheiden zwischen Bild und anderen Dateien
     return of("No files to persist found");
+  }
+
+  loadEmails() : void {
+    this.dataService.getEmailTemplates(this.currentOrganization).subscribe(templates => {
+      this.emailTemplates = templates;
+    })
   }
 
   loadTemplates() {
@@ -396,5 +405,15 @@ export class OrganizationAddeventComponent {
         }
       }
     })
+  }
+
+  removeValueFromInUseEmails(id: string) {
+    this.emailTemplatesInUse = this.emailTemplatesInUse.filter(val => { return val.id != id })
+  }
+
+  addValueToInUseEmails(emailTemplate: EmailTemplateModel) {
+    if (!this.emailTemplatesInUse.includes(emailTemplate)) {
+      this.emailTemplatesInUse.push(emailTemplate);
+    }
   }
 }

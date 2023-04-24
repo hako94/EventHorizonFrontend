@@ -1,21 +1,28 @@
 <mat-stepper style="height: calc(100% - 64px)" class="mat-typography">
-  <mat-step>
+  <mat-step optional>
     <ng-template matStepLabel>Templates</ng-template>
     <br>
     <h2>Templates</h2>
     <p>Lade ein Template eines zuvor erstellen Events - oder gehe direkt zu Schritt 2</p>
-    <br><hr><br>
+    <hr><br><br>
     <div>
+      <div class="grid grid-cols-4 grid-rows-1">
+        <h2>Vorlagen-ID</h2>
+        <h2>Name</h2>
+        <h2>Beschreibung</h2>
+      </div>
       <ng-container *ngFor="let template of eventTemplates">
         <div class="grid grid-cols-4 grid-rows-1">
           <p>{{template.id}}</p>
           <p>{{template.name}}</p>
           <p>{{template.description}}</p>
-          <button class="justify-self-end flex" (click)="loadTemplateWithId(template.id)" mat-raised-button><mat-icon>publish</mat-icon>Laden</button>
-          <br><br><br>
+          <button class="justify-self-end flex" (click)="loadTemplateWithId(template.id)" mat-raised-button matStepperNext><mat-icon>publish</mat-icon>Laden</button>
+          <br>
         </div>
       </ng-container>
     </div>
+    <hr><br>
+    <button color="primary" matStepperNext mat-raised-button>Weiter ohne Template</button>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Grundlegende Informationen</ng-template>
@@ -196,7 +203,52 @@
       </div>
     </div>
   </mat-step>
-  <mat-step>
+  <mat-step optional>
+    <ng-template matStepLabel>Emails</ng-template>
+    <br>
+    <h2>mögliche Email-Vorlagen</h2>
+    <p>Hier sind alle Email-Vorlagen der Organisation aufgelistet. Klicken sie auf der + um die Vorlage zum Event hinzu zu fügen</p>
+    <br><br>
+    <div class="grid grid-cols-4">
+      <h2>Vorlagen-ID</h2>
+      <h2>Name</h2>
+      <h2>Email-Titel</h2>
+    </div>
+    <ng-container *ngFor="let emailTemplate of emailTemplates">
+      <div class="grid grid-cols-4">
+        <p>{{emailTemplate.id}}</p>
+        <p>{{emailTemplate.name}}</p>
+        <p>{{emailTemplate.subject}}</p>
+        <button class="justify-self-end flex" color="primary" mat-raised-button
+                (click)="addValueToInUseEmails(emailTemplate)"
+                [disabled]="emailTemplatesInUse.includes(emailTemplate)">
+          <mat-icon>add</mat-icon>Verwenden
+        </button>
+        <br>
+      </div>
+    </ng-container>
+    <br><hr><br><br>
+    <h2>Verwendet</h2>
+    <p>Hier werden alle Email-Vorlagen aufgelistet, die für das aktuelle Event verwendet werden</p>
+    <br><br>
+    <div class="grid grid-cols-4">
+      <h2>Vorlagen-ID</h2>
+      <h2>Name</h2>
+      <h2>Email-Titel</h2>
+    </div>
+    <ng-container *ngFor="let emailTemplate of emailTemplatesInUse">
+      <div class="grid grid-cols-4">
+        <p>{{emailTemplate.id}}</p>
+        <p>{{emailTemplate.name}}</p>
+        <p>{{emailTemplate.subject}}</p>
+        <button class="justify-self-end flex" color="warn" mat-raised-button (click)="removeValueFromInUseEmails(emailTemplate.id)">
+          <mat-icon>remove</mat-icon>Entfernen
+        </button>
+        <br>
+      </div>
+    </ng-container>
+  </mat-step>
+  <mat-step optional>
     <ng-template matStepLabel>Dateien hochladen</ng-template>
     <br>
     <h2>Datei Upload</h2>
