@@ -5,7 +5,7 @@
       <div class="flex">
         <mat-form-field>
           <mat-label>Suchen</mat-label>
-          <input matInput>
+          <input [(ngModel)]="searchText" matInput>
         </mat-form-field>
         <mat-form-field class="ml-2" appearance="fill">
           <mat-label>Enter a date range</mat-label>
@@ -28,7 +28,7 @@
         </mat-form-field>
       </div>
     </div>
-    <ng-container *ngFor="let event of filteredEvents">
+    <ng-container *ngFor="let event of filteredEvents | appFilter: searchText">
       <app-event [orgEvent]="event" [orgId]="orgaID"></app-event>
     </ng-container>
   </div>

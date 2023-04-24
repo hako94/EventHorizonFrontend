@@ -23,6 +23,8 @@ export class OrganizationEventViewComponent implements OnInit{
     end: new FormControl<Date | null>(null),
   });
 
+  searchText: string = '';
+
 
   constructor(private dataService : DataService) {
   }

@@ -56,6 +56,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import { OrganizationAddMailComponent } from './components/organizationview/organization-add-mail/organization-add-mail.component';
 import { InfoSnackbarComponent } from './components/organizationview/organization-mails-view/info-snackbar/info-snackbar.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {FilterPipe} from "./pipes/FilterPipe";
 
 registerLocaleData(localeDe);
 
@@ -82,7 +83,8 @@ registerLocaleData(localeDe);
     PlattformAdminComponent,
     EventViewMainComponent,
     OrganizationAddMailComponent,
-    InfoSnackbarComponent
+    InfoSnackbarComponent,
+    FilterPipe,
   ],
   imports: [
     BrowserModule,
