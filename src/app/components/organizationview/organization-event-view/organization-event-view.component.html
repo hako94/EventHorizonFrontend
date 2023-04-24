@@ -5,9 +5,9 @@
       <div class="flex">
         <mat-form-field appearance="fill">
           <mat-label>Enter a date range</mat-label>
-          <mat-date-range-input [rangePicker]="picker">
-            <input (dateChange)="onFilterChange()" matStartDate placeholder="Start date">
-            <input (dateChange)="onFilterChange()" matEndDate placeholder="End date">
+          <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+            <input (dateChange)="onFilterChange()" formControlName="start" matStartDate placeholder="Start date">
+            <input (dateChange)="onFilterChange()" formControlName="end" matEndDate placeholder="End date">
           </mat-date-range-input>
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-date-range-picker #picker></mat-date-range-picker>
