@@ -58,6 +58,7 @@ import { InfoSnackbarComponent } from './components/organizationview/organizatio
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {FilterPipe} from "./pipes/FilterPipe";
 import { OrganizationPresetViewComponent } from './components/organizationview/organization-preset-view/organization-preset-view.component';
+import { OrganizationEventDetailsViewComponent } from './components/organizationview/organization-event-details-view/organization-event-details-view.component';
 
 registerLocaleData(localeDe);
 
@@ -87,6 +88,7 @@ registerLocaleData(localeDe);
     InfoSnackbarComponent,
     FilterPipe,
     OrganizationPresetViewComponent,
+    OrganizationEventDetailsViewComponent,
   ],
   imports: [
     BrowserModule,

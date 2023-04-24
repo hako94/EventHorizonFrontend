@@ -17,6 +17,9 @@ import {PlattformAdminComponent} from "./components/plattform-admin/plattform-ad
 import {
   OrganizationAddMailComponent
 } from "./components/organizationview/organization-add-mail/organization-add-mail.component";
+import {
+  OrganizationEventDetailsViewComponent
+} from "./components/organizationview/organization-event-details-view/organization-event-details-view.component";
 
 const routes: Routes = [
   { path: "register", component: RegisterComponent },
@@ -25,6 +28,7 @@ const routes: Routes = [
   { path: "dashboard", component: DashboardComponent},
   { path: "organizations/:id/event/:eventid/questionnaires", component: EventQuestionnairesComponent},
   { path: "organizations/:id/event/:eventid/eventusermanagment", component: EventUserMangamentComponent},
+  { path: "organizations/:id/event/:eventid/details", component: OrganizationEventDetailsViewComponent},
   { path: "organizations/:id", component: OrganizationviewComponent},
   { path: "organizations/:id/addEvent", component: OrganizationAddeventComponent},
   { path: "organizations/:id/addMail", component: OrganizationAddMailComponent},
