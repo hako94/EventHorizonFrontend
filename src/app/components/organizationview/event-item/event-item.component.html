@@ -1,32 +1,42 @@
 <ng-container *ngIf="orgEvent">
-  <mat-card>
-    <div class="flex">
-      <div>
-        <img class="w-32 h-32" [src]="shownimage">
-      </div>
-      <div class="flex-grow">
-        <mat-card-title>{{orgEvent.name}}</mat-card-title>
-        <br>
-        <mat-card-content>
-          <p>{{orgEvent.location}}</p>
-          <p>{{orgEvent.childs[0].eventStart}}</p>
-        </mat-card-content>
-      </div>
-      <div>
-        <div>
-          <!-- siehe https://fonts.google.com/icons?hl=de -->
-          <mat-icon *ngIf="orgEvent.tutor">Mic</mat-icon>
-          <mat-icon *ngIf="orgEvent.organisator">man</mat-icon>
+  <mat-card class="h-48">
+    <mat-card-content>
+      <div class="flex">
+        <div class="shrink-0">
+          <img class="w-40 h-40" [src]="shownimage">
         </div>
-        <mat-card-actions>
-          <div class="flex">
-            <button mat-raised-button>Details</button>
-            <button style="margin: 5px" *ngIf="!orgEvent.attender" mat-raised-button color="primary" (click)="book()">Teilnehmen</button>
-            <button style="margin: 5px" *ngIf="orgEvent.attender" mat-raised-button color="primary" (click)="signOff()">Abmelden</button>
+        <div class="ml-8 shrink-0">
+          <mat-card-title>{{orgEvent.name}}</mat-card-title>
+          <br>
+          <mat-card-subtitle>
+            <label>Ort</label>
+            <p>{{orgEvent.location}}</p>
+          </mat-card-subtitle>
+          <mat-card-subtitle>
+            <label>Datum</label>
+            <p>{{orgEvent.childs[0].eventStart}}</p>
+          </mat-card-subtitle>
+        </div>
+        <div class="hidden lg:flex shrink pl-8 pr-8">
+          <p class="overflow-ellipsis">{{orgEvent.description}}</p>
+        </div>
+        <div class="flex flex-col ml-auto justify-between justify-end">
+          <div class="flex ml-auto">
+            <!-- siehe https://fonts.google.com/icons?hl=de -->
+            <mat-icon *ngIf="orgEvent.tutor">mic</mat-icon>
+            <mat-icon *ngIf="orgEvent.organisator">man</mat-icon>
           </div>
-        </mat-card-actions>
+          <div class="flex flex-grow"></div>
+          <div>
+              <div class="flex">
+                <button *ngIf="!orgEvent.attender" mat-raised-button color="primary" (click)="book()">Teilnehmen</button>
+                <button *ngIf="orgEvent.attender" mat-raised-button color="primary" (click)="signOff()">Abmelden</button>
+                <button class="ml-6" mat-raised-button>Details</button>
+              </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </mat-card-content>
   </mat-card>
 </ng-container>
 <br>

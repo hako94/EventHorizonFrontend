@@ -1,15 +1,31 @@
 <div>
-  <h1>Filter</h1>
-</div>
-<div class="mx-3">
-  <div class="max-h-[80vh] overflow-y-auto">
-    <br>
-    <h2>Events</h2>
+  <div class="min-h-0 h-[calc(100vh-120px)] overflow-x-hidden overflow-y-scroll">
+    <div class="mt-2">
+      <h1>Filter</h1>
+      <div class="flex">
+        <mat-form-field appearance="fill">
+          <mat-label>Enter a date range</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input (dateChange)="onFilterChange()" matStartDate placeholder="Start date">
+            <input (dateChange)="onFilterChange()" matEndDate placeholder="End date">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+        <mat-form-field class="ml-2" appearance="fill">
+          <mat-label>Rolle</mat-label>
+          <mat-select [(value)]="selected" (selectionChange)="onFilterChange()">
+            <mat-option [value]="'all'">Alle</mat-option>
+            <mat-option [value]="'organizer'">Organisator</mat-option>
+            <mat-option [value]="'tutor'">Tutor</mat-option>
+            <mat-option [value]="'attende'">Teilnehmer</mat-option>
+            <mat-option [value]="'noattende'">Offen</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
     <ng-container *ngFor="let event of filteredEvents">
       <app-event [orgEvent]="event" [orgId]="orgaID"></app-event>
     </ng-container>
-    <br>
   </div>
-  <br>
-  <button mat-raised-button color="primary" routerLink="/organizations/{{orgaID}}/addEvent"><mat-icon>add</mat-icon> Event</button>
 </div>
