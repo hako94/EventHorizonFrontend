@@ -51,3 +51,7 @@
   <app-organization-settings [orgaID]="currentOrganization">
   </app-organization-settings>
 </ng-container>
+<ng-container *ngIf="currentParam == presetViewParam" class="mx-3">
+  <app-organization-preset-view [orgaID]="currentOrganization">
+  </app-organization-preset-view>
+</ng-container>

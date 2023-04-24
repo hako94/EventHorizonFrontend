@@ -382,4 +382,14 @@ export class DataService {
       httpOptions
     )
   }
+
+  deleteTemplate(orgaID: string, templateId: string) : Observable<HttpResponse<any>> {
+    return this.http.delete<HttpResponse<any>>(
+      BACKEND_API + 'api/v1/organization/' + orgaID + '/eventtemplate/' + templateId,
+      {
+        observe: 'response',
+        headers: {'Content-Type': 'application/json'}
+      }
+    )
+  }
 }

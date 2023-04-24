@@ -57,6 +57,7 @@ import { OrganizationAddMailComponent } from './components/organizationview/orga
 import { InfoSnackbarComponent } from './components/organizationview/organization-mails-view/info-snackbar/info-snackbar.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {FilterPipe} from "./pipes/FilterPipe";
+import { OrganizationPresetViewComponent } from './components/organizationview/organization-preset-view/organization-preset-view.component';
 
 registerLocaleData(localeDe);
 
@@ -85,6 +86,7 @@ registerLocaleData(localeDe);
     OrganizationAddMailComponent,
     InfoSnackbarComponent,
     FilterPipe,
+    OrganizationPresetViewComponent,
   ],
   imports: [
     BrowserModule,
