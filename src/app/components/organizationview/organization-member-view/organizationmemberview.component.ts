@@ -28,7 +28,7 @@ export class OrganizationmemberviewComponent implements OnInit{
   editedUser : string = '';
 
   inviteLoading : boolean = false;
-  ownRoleInOrg : number = this.storageService.getRoleInCurrentOrganization(this.orgaID);
+  ownRoleInOrg : number = -1;
 
   constructor(private dataService : DataService, private storageService : StorageService, private snackBar : MatSnackBar) {
 
@@ -43,7 +43,8 @@ export class OrganizationmemberviewComponent implements OnInit{
             this.members.push(member)
           }
       });
-    })
+    });
+    this.ownRoleInOrg = this.storageService.getRoleInCurrentOrganization(this.orgaID);
   }
 
   inviteSubmit() : void {
