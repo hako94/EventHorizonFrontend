@@ -32,14 +32,6 @@
       <ng-container *ngFor="let event of filteredEvents | appFilter: searchText">
         <app-event [orgEvent]="event" [orgId]="orgaID"></app-event>
       </ng-container>
-
-      <ng-container *ngFor="let event of filteredEvents | appFilter: searchText">
-        <app-event [orgEvent]="event" [orgId]="orgaID"></app-event>
-      </ng-container>
-
-      <ng-container *ngFor="let event of filteredEvents | appFilter: searchText">
-        <app-event [orgEvent]="event" [orgId]="orgaID"></app-event>
-      </ng-container>
     </div>
     <br>
     <button mat-raised-button color="primary" [routerLink]="'/organizations/' + orgaID + '/addEvent'"><mat-icon>add</mat-icon>Event</button>

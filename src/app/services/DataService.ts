@@ -15,6 +15,7 @@ import {OrganizationInviteModel} from "../models/OrganizationInviteModel";
 import {UserRoleModel} from "../models/UserRoleModel";
 import {EmailTemplateModel} from "../models/EmailTemplateModel";
 import {EventTemplatePrefillModel} from "../models/EventTemplatePrefillModel";
+import {EventInviteModel} from "../models/EventInviteModel";
 
 //const BACKEND_API = 'http://localhost:8080/'
 //const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
@@ -97,6 +98,8 @@ export class DataService {
       return 'admin';
     } else if (id == 2){
       return 'organisator';
+    } else if (id == 3){
+      return 'tutor';
     } else if (id == 4){
       return 'teilnehmer';
     } else if (id == 5) {
@@ -388,6 +391,39 @@ export class DataService {
       BACKEND_API + 'api/v1/organization/' + orgaID + '/eventtemplate/' + templateId,
       {
         observe: 'response',
+        headers: {'Content-Type': 'application/json'}
+      }
+    )
+  }
+
+  getEventInvites(orgId: string, eventId: string): Observable<any> {
+    return this.http.get<EventInviteModel[]>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/events/' + eventId + '/invites',
+      httpOptions
+    )
+  }
+
+  deleteEventInvite(orgaID: string, eventID: string, inviteId: string) : Observable<HttpResponse<any>> {
+    return this.http.delete<HttpResponse<any>>(
+      BACKEND_API + 'api/v1/organization/' + orgaID + '/events/' + eventID + '/invites/' + inviteId,
+      {
+        observe: 'response',
+        headers: {'Content-Type': 'application/json'}
+      }
+    )
+  }
+
+  changeEventInviteRole(orgId: string, eventId: string, inviteId: string, roleId: number): Observable<string> {
+    return this.http.put<string>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/events/' + eventId + '/invites/' + inviteId,
+      {
+        id: inviteId,
+        role: {
+          id: roleId,
+          role: this.mapRoleIdToString(roleId)
+        }
+      },
+      {
         headers: {'Content-Type': 'application/json'}
       }
     )
