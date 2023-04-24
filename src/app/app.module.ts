@@ -59,6 +59,11 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {FilterPipe} from "./pipes/FilterPipe";
 import { OrganizationPresetViewComponent } from './components/organizationview/organization-preset-view/organization-preset-view.component';
 import { OrganizationEventDetailsViewComponent } from './components/organizationview/organization-event-details-view/organization-event-details-view.component';
+import { EventDescriptionViewComponent } from './components/organizationview/organization-event-details-view/event-description-view/event-description-view.component';
+import { EventChatViewComponent } from './components/organizationview/organization-event-details-view/event-chat-view/event-chat-view.component';
+import { EventAttenderViewComponent } from './components/organizationview/organization-event-details-view/event-attender-view/event-attender-view.component';
+import { EventInvitesViewComponent } from './components/organizationview/organization-event-details-view/event-invites-view/event-invites-view.component';
+import { EventMailsettingsViewComponent } from './components/organizationview/organization-event-details-view/event-mailsettings-view/event-mailsettings-view.component';
 
 registerLocaleData(localeDe);
 
@@ -89,6 +94,11 @@ registerLocaleData(localeDe);
     FilterPipe,
     OrganizationPresetViewComponent,
     OrganizationEventDetailsViewComponent,
+    EventDescriptionViewComponent,
+    EventChatViewComponent,
+    EventAttenderViewComponent,
+    EventInvitesViewComponent,
+    EventMailsettingsViewComponent,
   ],
   imports: [
     BrowserModule,

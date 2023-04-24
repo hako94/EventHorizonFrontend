@@ -9,6 +9,7 @@ import {ChatModel} from "../../../models/ChatModel";
 import {DatePipe} from "@angular/common";
 import {ImageGetServiceService} from "../../../services/image-get-service.service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -21,7 +22,8 @@ export class EventItemComponent implements OnInit {
   constructor(private storageService: StorageService,
               private dataService: DataService,
               private imageService: ImageGetServiceService,
-              private sanitizer : DomSanitizer) {
+              private sanitizer : DomSanitizer,
+              private router : Router) {
 
   }
 
@@ -97,5 +99,13 @@ export class EventItemComponent implements OnInit {
       })
 
     }
+  }
+
+  /**
+   * routes to the details component of the selected event
+   */
+  routeToEventDetails() {
+    // @ts-ignore
+    this.router.navigate(['/organizations/' + this.orgId + '/event/' + this.orgEvent.id + '/details'], {queryParams: {view: 'description'}});
   }
 }

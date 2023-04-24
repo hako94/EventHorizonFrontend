@@ -1,7 +1,7 @@
 <div>
-  <div class="min-h-0 h-[calc(100vh-120px)] overflow-x-hidden overflow-y-scroll">
+  <div class="mx-3"> <!-- min-h-0 h-[calc(100vh-120px)] overflow-x-hidden overflow-y-scroll -->
     <div class="mt-2">
-      <h1 class="ml-2 mb-2">Filter</h1>
+      <h2 class="ml-2 mb-2">Event-Übersicht</h2>
       <div class="flex">
         <mat-form-field>
           <mat-label>Suchen</mat-label>
@@ -28,8 +28,20 @@
         </mat-form-field>
       </div>
     </div>
-    <ng-container *ngFor="let event of filteredEvents | appFilter: searchText">
-      <app-event [orgEvent]="event" [orgId]="orgaID"></app-event>
-    </ng-container>
+    <div class="max-h-[65vh] overflow-y-auto">
+      <ng-container *ngFor="let event of filteredEvents | appFilter: searchText">
+        <app-event [orgEvent]="event" [orgId]="orgaID"></app-event>
+      </ng-container>
+
+      <ng-container *ngFor="let event of filteredEvents | appFilter: searchText">
+        <app-event [orgEvent]="event" [orgId]="orgaID"></app-event>
+      </ng-container>
+
+      <ng-container *ngFor="let event of filteredEvents | appFilter: searchText">
+        <app-event [orgEvent]="event" [orgId]="orgaID"></app-event>
+      </ng-container>
+    </div>
+    <br>
+    <button mat-raised-button color="primary" [routerLink]="'/organizations/' + orgaID + '/addEvent'"><mat-icon>add</mat-icon>Event</button>
   </div>
 </div>

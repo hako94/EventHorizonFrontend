@@ -1,1 +1,53 @@
-<p>organization-event-details-view works!</p>
+<nav mat-tab-nav-bar [tabPanel]="tabPanel" xmlns="http://www.w3.org/1999/html">
+  <div>
+    <a mat-tab-link
+       [routerLink]="'..'"><mat-icon>arrow_back</mat-icon> Zurück</a>
+  </div>
+  <div>
+    <a mat-tab-link
+       [active]="currentParam == descriptionViewParam"
+       (click)="updateURLWithParam(descriptionViewParam)">Beschreibung</a>
+  </div>
+  <div>
+    <a mat-tab-link
+       [active]="currentParam == chatViewParam"
+       (click)="updateURLWithParam(chatViewParam)">Chat</a>
+  </div>
+  <div *ngIf="!hasRole(5)">
+    <a mat-tab-link
+       [active]="currentParam == attenderViewParam"
+    (click)="updateURLWithParam(attenderViewParam)">Teilnehmer</a>
+  </div>
+  <div *ngIf="hasRole(1) || hasRole(2) || hasRole(3)">
+    <a mat-tab-link
+       [active]="currentParam == invitesViewParam"
+       (click)="updateURLWithParam(invitesViewParam)">Einladungen</a>
+  </div>
+  <div *ngIf="hasRole(1) || hasRole(2)">
+    <a mat-tab-link
+       [active]="currentParam == mailsViewParam"
+       (click)="updateURLWithParam(mailsViewParam)">Mailversand</a>
+  </div>
+</nav>
+<mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+<ng-container *ngIf="currentParam == descriptionViewParam" class="mx-3">
+  <app-event-description-view [orgaID]="currentOrganization" [eventID]="currentEvent">
+  </app-event-description-view>
+</ng-container>
+<ng-container *ngIf="currentParam == attenderViewParam" class="mx-3">
+  <app-event-attender-view [orgaID]="currentOrganization" [eventID]="currentEvent">
+  </app-event-attender-view>
+</ng-container>
+<ng-container *ngIf="currentParam == chatViewParam" class="mx-3">
+  <app-event-chat-view [orgaID]="currentOrganization" [eventID]="currentEvent">
+  </app-event-chat-view>
+</ng-container>
+<ng-container *ngIf="currentParam == invitesViewParam" class="mx-3">
+  <app-event-invites-view [orgaID]="currentOrganization" [eventID]="currentEvent">
+  </app-event-invites-view>
+</ng-container>
+<ng-container *ngIf="currentParam == mailsViewParam" class="mx-3">
+  <app-event-mailsettings-view [orgaID]="currentOrganization" [eventID]="currentEvent">
+  </app-event-mailsettings-view>
+</ng-container>
+

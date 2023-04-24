@@ -31,7 +31,7 @@
               <div class="flex">
                 <button *ngIf="!orgEvent.attender" mat-raised-button color="primary" (click)="book()">Teilnehmen</button>
                 <button *ngIf="orgEvent.attender" mat-raised-button color="primary" (click)="signOff()">Abmelden</button>
-                <button class="ml-6" [routerLink]="['/organizations/' + orgId + '/event/' + orgEvent.id + '/details']" mat-raised-button>Details</button>
+                <button class="ml-6" (click)="routeToEventDetails()" mat-raised-button>Details</button>
               </div>
           </div>
         </div>
