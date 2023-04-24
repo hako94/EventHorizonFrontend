@@ -61,6 +61,9 @@ export interface RequestModel extends baseModel{
 })
 export class OrganizationAddeventComponent {
 
+  singleStartTime : string = '';
+  singleEndTime : string = '';
+
   disabledTemplateSafe : boolean = false;
 
   serialEvent : eventRepeatScheme = {
@@ -387,6 +390,9 @@ export class OrganizationAddeventComponent {
 
           this.singleStartDate.setValue(new Date(template.childs[0].eventStart));
           this.singleEndDate.setValue(new Date(template.childs[0].eventEnd))
+
+          this.singleEndTime = (template.childs[0].eventEnd.split('T').at(1) || "0").slice(0, 5);
+          this.singleStartTime = (template.childs[0].eventStart.split('T').at(1) || "0").slice(0, 5);
 
         } else if (template.childs.length == 2) {
           this.form.eventType = "multi";

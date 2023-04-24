@@ -81,7 +81,7 @@
             </mat-form-field>
             <mat-form-field class="ml-2">
               <mat-label>Start-Uhrzeit</mat-label>
-              <input #singleStart (input)="attachTimeToDate(singleStartDate, singleStart.value)" matInput>
+              <input #singleStart [(ngModel)]="singleStartTime" (input)="attachTimeToDate(singleStartDate, singleStart.value)" matInput>
               <mat-hint>hh:mm</mat-hint>
             </mat-form-field>
             <br>
@@ -94,7 +94,7 @@
             </mat-form-field>
             <mat-form-field class="ml-2">
               <mat-label>End-Uhrzeit</mat-label>
-              <input #singleEnd (input)="attachTimeToDate(singleStartDate, singleEnd.value)" matInput>
+              <input #singleEnd [(ngModel)]="singleEndTime" (input)="attachTimeToDate(singleStartDate, singleEnd.value)" matInput>
               <mat-hint>hh:mm</mat-hint>
             </mat-form-field>
           </div>
