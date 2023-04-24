@@ -32,21 +32,21 @@
       <p>Der Name des Events der auch in der Übersicht ganz oben angezeigt wird</p>
       <mat-form-field class="w-96">
         <mat-label>Event Name</mat-label>
-        <input  matInput id="eventname" name="eventname" [(ngModel)]="form.eventName">
+        <input required matInput id="eventname" name="eventname" [(ngModel)]="form.eventName">
       </mat-form-field>
     </div>
     <div class="mt-4">
       <p>Die ausführliche Beschreibung des Events, sie erscheint nicht in der Übersicht, sondern nur in den Details</p>
       <mat-form-field class="w-[600px]">
         <mat-label>Event Beschreibung</mat-label>
-        <textarea style="height: 300px" matInput id="description" name="description" [(ngModel)]="form.eventDescription"></textarea>
+        <textarea required style="height: 300px" matInput id="description" name="description" [(ngModel)]="form.eventDescription"></textarea>
       </mat-form-field>
     </div>
     <div class="mt-4">
       <p>Der Ort, an dem das Event statt finden soll</p>
       <mat-form-field class="w-96">
         <mat-label>Ort</mat-label>
-        <input matInput [(ngModel)]="form.location">
+        <input required matInput [(ngModel)]="form.location">
       </mat-form-field>
     </div>
   </mat-step>
@@ -81,7 +81,7 @@
             </mat-form-field>
             <mat-form-field class="ml-2">
               <mat-label>Start-Uhrzeit</mat-label>
-              <input matInput>
+              <input #singleStart (input)="attachTimeToDate(singleStartDate, singleStart.value)" matInput>
               <mat-hint>hh:mm</mat-hint>
             </mat-form-field>
             <br>
@@ -94,7 +94,7 @@
             </mat-form-field>
             <mat-form-field class="ml-2">
               <mat-label>End-Uhrzeit</mat-label>
-              <input matInput>
+              <input #singleEnd (input)="attachTimeToDate(singleStartDate, singleEnd.value)" matInput>
               <mat-hint>hh:mm</mat-hint>
             </mat-form-field>
           </div>

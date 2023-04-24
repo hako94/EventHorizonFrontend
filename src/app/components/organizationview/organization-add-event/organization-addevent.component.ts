@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {DataService} from "../../../services/DataService";
 import {Location} from "@angular/common";
 import {AddEventCustomField} from "../../../dataobjects/AddEventCustomField";
-import {Observable, of} from "rxjs";
+import {min, Observable, of} from "rxjs";
 import {FormControl} from "@angular/forms";
 import {EventTemplateModel} from "../../../models/EventTemplateModel";
 import {AvailableTemplateList} from "../../../models/AvailableTemplateList";
@@ -69,8 +69,8 @@ export class OrganizationAddeventComponent {
   };
 
   singleStartDate = new FormControl(new Date());
-
   singleEndDate = new FormControl(new Date());
+
   shownPreviewImage : any;
 
   filesToPersist : FormData[] = [];
@@ -123,10 +123,6 @@ export class OrganizationAddeventComponent {
 
     this.loadTemplates()
     this.loadEmails()
-
-    //TODO remove both lines
-    this.singleStartDate.value?.setDate(this.singleStartDate.value?.getMilliseconds())
-    this.singleEndDate.value?.setDate(this.singleEndDate.value?.getMilliseconds())
   }
   onSelect(event: any) {
     console.log(event);
@@ -158,7 +154,7 @@ export class OrganizationAddeventComponent {
 
   persistData() : void {
 
-    console.log("found " + this.childs.length + " child elements to persist")
+    console.warn(this.singleStartDate.value)
 
     let model : baseModel = {
       name : this.form.eventName,
@@ -190,8 +186,6 @@ export class OrganizationAddeventComponent {
       }
 
     } else if (this.form.eventType == "serial") {
-
-      console.log("serial " + this.startDate.value)
 
       if (this.startDate.value != null && this.endDate.value != null) {
         modelExtended =
@@ -416,4 +410,20 @@ export class OrganizationAddeventComponent {
       this.emailTemplatesInUse.push(emailTemplate);
     }
   }
+
+  protected readonly Number = Number;
+
+  attachTimeToDate(date: FormControl<Date | null>, time: string) {
+
+    let hours = Number(time.split(':').at(0));
+    let minutes = Number(time.split(':').at(1));
+
+    if (hours) {
+      date.value?.setHours(hours);
+    }
+    if (minutes) {
+      date.value?.setMinutes(minutes)
+    }
+  }
+
 }
