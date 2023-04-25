@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
-  backendApi: 'http://localhost:8080/',
-  authApi: 'http://localhost:8080/api/v1/auth/',
-  wsBrokerUrl: 'ws://127.0.0.1:8080/ws',
+  backendApi: 'https://eventhorizonbackenddev.azurewebsites.net/',
+  authApi: 'https://eventhorizonbackenddev.azurewebsites.net/api/v1/auth/',
+  wsBrokerUrl: 'wss://eventhorizonbackenddev.azurewebsites.net/ws',
   isLocal: true
 };
