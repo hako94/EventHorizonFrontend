@@ -1,6 +1,6 @@
 <div class="mx-3">
   <br>
-  <div *ngIf="ownRoleInOrg > 0 && ownRoleInOrg < 3">
+  <div *ngIf="hasRole(1) || hasRole(2)">
     <h2>Mitglied einladen</h2>
     <mat-form-field class="example-full-width m-2 w-1/4">
       <mat-label>Email-Adresse</mat-label>
