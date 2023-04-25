@@ -22,7 +22,7 @@
               </mat-card-subtitle>
               <mat-card-subtitle class="whitespace-nowrap">
                 <label><strong>Datum</strong></label>
-                <p>{{orgEvent.childs[0].eventStart.replace('T', ', ').slice(0, 17)}}</p>
+                <p>{{orgEvent.childs[0].eventStart | date:'dd.MM.yyyy, hh:mm'}}</p>
               </mat-card-subtitle>
             </div>
             <br>
@@ -38,7 +38,8 @@
           <div class="flex ml-auto">
             <!-- siehe https://fonts.google.com/icons?hl=de -->
             <mat-icon *ngIf="orgEvent.tutor">mic</mat-icon>
-            <mat-icon *ngIf="orgEvent.organisator">man</mat-icon>
+            <mat-icon *ngIf="orgEvent.organisator">star</mat-icon>
+            <mat-icon *ngIf="orgEvent.attender">man</mat-icon>
           </div>
           <div class="flex flex-grow"></div>
           <div>
