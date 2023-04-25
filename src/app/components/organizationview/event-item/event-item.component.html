@@ -5,20 +5,29 @@
         <div class="shrink-0">
           <img class="w-40 h-40" [src]="shownimage">
         </div>
-        <div class="ml-8 shrink-0">
-          <mat-card-title>{{orgEvent.name}}</mat-card-title>
-          <br>
-          <mat-card-subtitle>
-            <label>Ort</label>
-            <p>{{orgEvent.location}}</p>
-          </mat-card-subtitle>
-          <mat-card-subtitle>
-            <label>Datum</label>
-            <p>{{orgEvent.childs[0].eventStart}}</p>
-          </mat-card-subtitle>
-        </div>
-        <div class="hidden lg:flex shrink pl-8 pr-8">
-          <p class="overflow-ellipsis">{{orgEvent.description}}</p>
+        <div class="flex-col">
+          <div class="ml-8 mb-4">
+            <mat-card-title class="grow">{{orgEvent.name}}</mat-card-title>
+          </div>
+          <div class="ml-8 shrink-0 flex">
+            <div>
+              <mat-card-subtitle>
+                <label><strong>Ort</strong></label>
+                <p>{{orgEvent.location}}</p>
+              </mat-card-subtitle>
+              <mat-card-subtitle class="whitespace-nowrap">
+                <label><strong>Datum</strong></label>
+                <p>{{orgEvent.childs[0].eventStart.replace('T', ', ').slice(0, 17)}}</p>
+              </mat-card-subtitle>
+            </div>
+            <br>
+            <div class="hidden lg:flex shrink pl-8 pr-8">
+              <mat-card-subtitle>
+                <label><strong>Beschreibung</strong></label>
+                <p class="overflow-ellipsis">{{orgEvent.description}}</p>
+              </mat-card-subtitle>
+            </div>
+          </div>
         </div>
         <div class="flex flex-col ml-auto justify-between justify-end">
           <div class="flex ml-auto">
