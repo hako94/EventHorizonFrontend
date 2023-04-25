@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {UserAtEventModel} from "../../../../models/UserAtEventModel";
 import {DataService} from "../../../../services/DataService";
 import {StorageService} from "../../../../services/StorageService";
+import {MatCheckboxChange} from "@angular/material/checkbox";
 
 @Component({
   selector: 'app-event-attender-view',
@@ -27,5 +28,16 @@ export class EventAttenderViewComponent {
       });
     });
     this.ownRoleInOrg = this.storageService.getRoleInCurrentOrganization(this.orgaID);
+  }
+
+  /**
+   * sets boolean value for attendance correct and sends update via data service
+   * @param event
+   * @param attenderId
+   */
+  saveAttendeeList(event: MatCheckboxChange, attenderId: string): void {
+    const editedAttenderIndex = this.attendee.findIndex(i => i.id === attenderId);
+    this.attendee[editedAttenderIndex].here = event.checked;
+    this.dataService.saveUserManagementList(this.orgaID, this.eventID, this.attendee).subscribe();
   }
 }
