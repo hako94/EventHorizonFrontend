@@ -1,7 +1,7 @@
 <nav mat-tab-nav-bar [tabPanel]="tabPanel" xmlns="http://www.w3.org/1999/html">
   <div>
     <a mat-tab-link
-       [routerLink]="'..'"><mat-icon>arrow_back</mat-icon> Zurück</a>
+       [routerLink]="'/organizations/' + currentOrganization" [queryParams]="{view: 'events'}"><mat-icon>arrow_back</mat-icon> Zurück</a>
   </div>
   <div>
     <a mat-tab-link

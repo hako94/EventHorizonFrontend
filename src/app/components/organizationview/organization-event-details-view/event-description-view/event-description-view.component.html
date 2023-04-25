@@ -1,7 +1,9 @@
 <ng-container *ngIf="eventModel">
   <mat-card class="p-4 m-4">
     <div>
-      <h1>{{eventModel.name}}</h1>
+      <mat-card-title>
+        <h1><mat-icon *ngIf="!eventModel.serial">event</mat-icon><mat-icon *ngIf="eventModel.serial">event_repeat</mat-icon> {{eventModel.name}}</h1>
+      </mat-card-title>
       <img [src]="shownimage" class="w-64 h-64">
       <br>
       <p>{{eventModel.description}}</p>
