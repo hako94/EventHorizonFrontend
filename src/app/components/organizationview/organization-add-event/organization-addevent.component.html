@@ -49,6 +49,8 @@
         <input required matInput [(ngModel)]="form.location">
       </mat-form-field>
     </div>
+    <br>
+    <button color="primary" matStepperNext mat-raised-button>Weiter</button>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Zeit Planung</ng-template>
@@ -202,6 +204,8 @@
         </div>
       </div>
     </div>
+    <br><br>
+    <button color="primary" matStepperNext mat-raised-button>Weiter</button>
   </mat-step>
   <mat-step optional>
     <ng-template matStepLabel>Emails</ng-template>
@@ -247,6 +251,8 @@
         <br>
       </div>
     </ng-container>
+    <br><br>
+    <button color="primary" matStepperNext mat-raised-button>Weiter</button>
   </mat-step>
   <mat-step optional>
     <ng-template matStepLabel>Dateien hochladen</ng-template>
@@ -270,6 +276,8 @@
       <h3>Weitere Dateien</h3>
       <input (change)="onFileSelected($event)" type="file" #fileUpload multiple>
     </div>
+    <br>
+    <button color="primary" matStepperNext mat-raised-button>Weiter</button>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Abschluss</ng-template>
