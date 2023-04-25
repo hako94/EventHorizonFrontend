@@ -76,28 +76,30 @@
             <h3>Einzelevent-Details</h3>
             <mat-form-field appearance="fill">
               <mat-label>Start-Datum</mat-label>
-              <input matInput [matDatepicker]="startPicker" [formControl]="singleStartDate">
-              <mat-hint>MM/DD/YYYY</mat-hint>
+              <input [min]="minDate" matInput [matDatepicker]="startPicker" [formControl]="singleStartDate">
+              <mat-hint>DD.MM.YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
               <mat-datepicker #startPicker></mat-datepicker>
             </mat-form-field>
             <mat-form-field class="ml-2">
               <mat-label>Start-Uhrzeit</mat-label>
-              <input #singleStart [(ngModel)]="singleStartTime" (input)="attachTimeToDate(singleStartDate, singleStart.value)" matInput>
+              <input required #singleStart [(ngModel)]="singleStartTime" (input)="attachTimeToDate(singleStartDate, singleStart.value)" matInput>
               <mat-hint>hh:mm</mat-hint>
             </mat-form-field>
             <br>
             <mat-form-field appearance="fill" class="mt-4">
               <mat-label>End-Datum</mat-label>
-              <input matInput [matDatepicker]="endPicker" [formControl]="singleEndDate">
-              <mat-hint>MM/DD/YYYY</mat-hint>
+              <input matInput [min]="singleStartDate.value" [matDatepicker]="endPicker" [formControl]="singleEndDate">
+              <mat-hint>DD.MM.YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+              <mat-error>Das End-Datum muss gültig sein und nach dem Startdatum liegen</mat-error>
               <mat-datepicker #endPicker></mat-datepicker>
             </mat-form-field>
             <mat-form-field class="ml-2">
               <mat-label>End-Uhrzeit</mat-label>
-              <input #singleEnd [(ngModel)]="singleEndTime" (input)="attachTimeToDate(singleStartDate, singleEnd.value)" matInput>
+              <input required #singleEnd [(ngModel)]="singleEndTime" (input)="attachTimeToDate(singleEndDate, singleEnd.value)" matInput>
               <mat-hint>hh:mm</mat-hint>
+              <mat-error></mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -274,7 +276,7 @@
     <br><mat-divider></mat-divider><br>
     <div>
       <h3>Weitere Dateien</h3>
-      <input (change)="onFileSelected($event)" type="file" #fileUpload multiple>
+      <input type="file" #fileUpload multiple>
     </div>
     <br>
     <button color="primary" matStepperNext mat-raised-button>Weiter</button>
@@ -319,6 +321,7 @@
             }
           ],
           serial: false,
+          organizationName: "none",
           location: form.location,
           parentId: "none",
           pictureId: "none",

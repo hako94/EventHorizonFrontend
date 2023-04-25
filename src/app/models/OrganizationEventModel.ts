@@ -3,6 +3,7 @@ import {ChildEvent} from "./ChildEventModel";
 export interface OrganizationEventModel {
   id : string;
   name : string;
+  organizationName : string;
   description : string;
   childs : ChildEvent[];
   parentId : string;

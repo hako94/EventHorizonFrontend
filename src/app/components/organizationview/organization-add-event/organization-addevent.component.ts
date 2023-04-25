@@ -3,13 +3,14 @@ import {DataService} from "../../../services/DataService";
 import {Location} from "@angular/common";
 import {AddEventCustomField} from "../../../dataobjects/AddEventCustomField";
 import {min, Observable, of} from "rxjs";
-import {FormControl} from "@angular/forms";
+import {FormControl, FormGroupDirective, NgForm} from "@angular/forms";
 import {EventTemplateModel} from "../../../models/EventTemplateModel";
 import {AvailableTemplateList} from "../../../models/AvailableTemplateList";
 import {Router} from "@angular/router";
 import {ChildEvent} from "../../../models/ChildEventModel";
 import {EventTemplatePrefillModel} from "../../../models/EventTemplatePrefillModel";
 import {EmailTemplateModel} from "../../../models/EmailTemplateModel";
+import {ErrorStateMatcher} from "@angular/material/core";
 
 export interface createInterfaceTemplateBasic {
   eventName : string,
@@ -71,6 +72,8 @@ export class OrganizationAddeventComponent {
     repeatCycle: 0
   };
 
+  minDate = new Date();
+
   singleStartDate = new FormControl(new Date());
   singleEndDate = new FormControl(new Date());
 
@@ -127,32 +130,10 @@ export class OrganizationAddeventComponent {
     this.loadTemplates()
     this.loadEmails()
   }
-  onSelect(event: any) {
-    console.log(event);
-    this.files.push(...event.addedFiles);
-  }
 
-  onRemove(event: any) {
-    console.log(event);
-    this.files.splice(this.files.indexOf(event), 1);
-  }
-
-  removeValueFromCustomFields(index : number) : void {
-    //TODO test: gut möglich das er hier mit den indizes mal durcheinander kommmt
-      delete this.customFields[index];
-      delete this.customFieldData[index]
-      this.customFields = this.customFields.filter(el => {return el != null});
-    this.customFieldData = this.customFieldData.filter(el => {return el != null});
-  }
-
-  addCustomField(name : string) : void {
-    this.customFields.push({ id: this.customFields.length.toString(), name: name})
-  }
-
-  updateField(i: number, $event: any) {
-    this.customFieldData[i] = $event.target.value;
-
-    console.log(this.customFieldData)
+  validateTimeInput(input : string): boolean {
+    const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/; // Regular expression for hh:mm format
+    return timeRegex.test(input);
   }
 
   persistData() : void {
@@ -394,6 +375,9 @@ export class OrganizationAddeventComponent {
           this.singleEndTime = (template.childs[0].eventEnd.split('T').at(1) || "0").slice(0, 5);
           this.singleStartTime = (template.childs[0].eventStart.split('T').at(1) || "0").slice(0, 5);
 
+          this.attachTimeToDate(this.singleStartDate, this.singleStartTime);
+          this.attachTimeToDate(this.singleEndDate, this.singleEndTime);
+
         } else if (template.childs.length == 2) {
           this.form.eventType = "multi";
 
@@ -432,4 +416,5 @@ export class OrganizationAddeventComponent {
     }
   }
 
+  protected readonly Date = Date;
 }
