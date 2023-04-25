@@ -1,13 +1,11 @@
-<div>
-  <mat-card class="h-32 w-32 min-w-0 truncate cursor-pointer"
+<div class="h-40 w-44 min-w-0">
+  <mat-card
             [routerLink]="['/organizations',id]"
             [queryParams]="{ view : 'events'}">
     <mat-card-content>
       <h3 class="text-center truncate">{{name}}</h3>
-      <img [src]="shownimage">
+      <img [src]="shownimage" class="w-32 h-32">
     </mat-card-content>
-    <mat-card-actions>
-    </mat-card-actions>
   </mat-card>
 </div>
 

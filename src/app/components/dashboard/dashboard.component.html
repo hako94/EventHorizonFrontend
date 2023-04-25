@@ -1,26 +1,27 @@
 <div class="mat-typography">
   <br>
-  <div class="flex sm:flex-row flex-col gap-4 md:ml-4">
-    <div class="w-full sm:w-1/2">
-      <div class="max-sm:ml-3"><h1>Deine Organisationen</h1></div>
-      <div class="overflow-x-hidden overflow-y-auto max-h-[40vh] sm:max-h-[85vh]">
-        <div class="grid lg:grid-cols-4 grid-cols-2 gap-4 justify-start justify-items-center">
-          <div *ngFor="let organization of organizations">
-            <app-organizationitem
-              [id]="organization.id"
-              [description]="organization.description"
-              [name]="organization.name">
-            </app-organizationitem>
-            <br>
-          </div>
+  <div class="block lg:flex gap-4">
+
+    <div class="ml-10 mb-10">
+      <h1 class="ml-10">Deine Organisationen</h1>
+      <div class="flex gap-4 flex-wrap gap-y-4">
+        <div class="mb-6" *ngFor="let organization of organizations">
+          <app-organizationitem
+            [id]="organization.id"
+            [description]="organization.description"
+            [name]="organization.name">
+          </app-organizationitem>
+          <br>
         </div>
       </div>
-
     </div>
-    <div class="w-full sm:w-1/2">
-      <div class="max-sm:ml-3"><h1>Event-Radar</h1></div>
-      <div class="overflow-y-auto max-h-[40vh] sm:max-h-[85vh]">
-        <div *ngFor="let event of currentEvents" class="mx-4 sm:ml-0 mb-4">
+
+    <div class="flex-grow"></div>
+
+    <div class="mr-10 ml-10 shrink-0">
+      <h1>Event-Radar</h1>
+
+        <ng-container *ngFor="let event of currentEvents">
           <app-eventradar-item
             [name]="event.name"
             [location]="event.location"
@@ -35,9 +36,9 @@
             [attender]="event.attender">
           </app-eventradar-item>
           <br>
-        </div>
+        </ng-container>
       </div>
-    </div>
+
   </div>
 </div>
 
