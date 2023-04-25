@@ -24,7 +24,6 @@ export class EventItemComponent implements OnInit {
               private imageService: ImageGetServiceService,
               private sanitizer : DomSanitizer,
               private router : Router) {
-
   }
 
   shownimage : any;
@@ -33,10 +32,6 @@ export class EventItemComponent implements OnInit {
   @Input() orgId: string = '';
 
   @Input() mock : boolean = false;
-
-  chatSubscription?: Subscription;
-  chatMessages: string[] = [];
-  private readonly MAX_CHAT_MESSAGES = 50;
 
   ngOnInit(): void {
 

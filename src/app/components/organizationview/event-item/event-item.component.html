@@ -1,6 +1,11 @@
+<br>
 <ng-container *ngIf="orgEvent">
-  <mat-card class="h-48">
-    <mat-card-content>
+  <mat-card class="h-48 ml-2">
+    <div class="absolute" style="margin-top: -10px; margin-left: -10px">
+      <mat-icon *ngIf="!orgEvent.serial">event</mat-icon>
+      <mat-icon *ngIf="orgEvent.serial">event_repeat</mat-icon>
+    </div>
+    <mat-card-content class="mt-4">
       <div class="flex">
         <div class="shrink-0">
           <img class="w-40 h-40" [src]="shownimage">
@@ -48,4 +53,3 @@
     </mat-card-content>
   </mat-card>
 </ng-container>
-<br>
