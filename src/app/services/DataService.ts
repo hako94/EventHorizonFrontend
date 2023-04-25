@@ -428,4 +428,10 @@ export class DataService {
       }
     )
   }
+
+  getSingleEvent(orgaID: string, eventID: string) : Observable<OrganizationEventModel> {
+    return this.http.get<OrganizationEventModel>(
+      BACKEND_API + 'api/v1/organization/' + orgaID + '/event/' + eventID
+    )
+  }
 }

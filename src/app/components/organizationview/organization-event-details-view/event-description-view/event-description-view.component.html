@@ -1,1 +1,10 @@
-<p>event-description-view works! orga: {{this.orgaID}} event: {{this.eventID}}</p>
+<ng-container *ngIf="eventModel">
+  <mat-card class="p-4 m-4">
+    <div>
+      <h1>{{eventModel.name}}</h1>
+      <img [src]="shownimage" class="w-64 h-64">
+      <br>
+      <p>{{eventModel.description}}</p>
+    </div>
+  </mat-card>
+</ng-container>
