@@ -1,1 +1,19 @@
-<p>event-chat-view works!</p>
+<mat-card class="p-4 m-4">
+  <h1>
+    Live-Chat <mat-icon *ngIf="!connected" color="warn">link_off</mat-icon><mat-icon  *ngIf="connected">link</mat-icon>
+    <mat-icon color="warn" *ngIf="!connected">warning</mat-icon>
+  </h1>
+  <h4>Event-Guide</h4>
+  <div class="chat-window" style="height: 200px; overflow-y: scroll;">
+    <div *ngFor="let message of chatMessages">
+      {{message}}
+    </div>
+  </div>
+  <div class="mt-10">
+    <mat-form-field>
+      <mat-label>Nachricht</mat-label>
+      <input matInput #socketInput [disabled]="!subscription.closed">
+    </mat-form-field>
+    <button [disabled]="!subscription.closed" class="ml-2" mat-raised-button (click)="pushMessageToBackend(socketInput.value)">Absenden</button>
+  </div>
+</mat-card>

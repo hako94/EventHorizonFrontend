@@ -22,25 +22,29 @@ export class EventDescriptionViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getSingleEvent(this.orgaID, this.eventID).subscribe(el => this.eventModel = el);
+    this.dataService.getSingleEvent(this.orgaID, this.eventID).subscribe(el => {
 
-    this.dataService.getImageForEvent(this.orgaID, "//TODO", this.eventID).subscribe(success => {
+      this.eventModel = el
 
-      let objectURL = URL.createObjectURL(success);
-      this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+      this.dataService.getImageForEvent(this.orgaID, this.eventModel?.pictureId || 'error', this.eventID).subscribe(success => {
 
-    }, error => {
+        let objectURL = URL.createObjectURL(success);
+        this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
 
-      console.warn("Cant fetch Image for OrgID " + this.orgaID + " EventID " + this.eventID +  " : " + error.status + " using default Organization Image")
+      }, error => {
 
-      this.dataService.getOrganizationInfos(this.orgaID).subscribe(success => {
+        console.warn("Cant fetch Image for OrgID " + this.orgaID + " EventID " + this.eventID +  " : " + error.status + " using default Organization Image")
 
-        this.dataService.getImage(this.orgaID, success.logoId).subscribe(success => {
+        this.dataService.getOrganizationInfos(this.orgaID).subscribe(success => {
 
-          let objectURL = URL.createObjectURL(success);
-          this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+          this.dataService.getImage(this.orgaID, success.logoId).subscribe(success => {
+
+            let objectURL = URL.createObjectURL(success);
+            this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+          })
         })
       })
-    })
+
+    });
   }
 }
