@@ -12,6 +12,7 @@ export class OrganizationEventDetailsViewComponent {
 
   descriptionViewParam : Params = {'view' : 'description'};
   chatViewParam : Params = {'view' : 'chat'};
+  filesViewParam : Params = {'view' : 'files'};
   attenderViewParam : Params = {'view' : 'attender'};
   invitesViewParam : Params = {'view' : 'invites'};
   mailsViewParam : Params = {'view' : 'mails'};
@@ -62,6 +63,8 @@ export class OrganizationEventDetailsViewComponent {
         this.currentParam = this.invitesViewParam;
       else if (params['view'] == "chat")
         this.currentParam = this.chatViewParam;
+      else if (params['view'] == "files")
+        this.currentParam = this.filesViewParam;
     });
   }
 

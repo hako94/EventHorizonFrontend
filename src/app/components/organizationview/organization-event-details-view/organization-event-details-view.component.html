@@ -13,6 +13,11 @@
        [active]="currentParam == chatViewParam"
        (click)="updateURLWithParam(chatViewParam)">Chat</a>
   </div>
+  <div>
+    <a mat-tab-link
+       [active]="currentParam == filesViewParam"
+       (click)="updateURLWithParam(filesViewParam)">Dateien</a>
+  </div>
   <div *ngIf="!hasRole(5)">
     <a mat-tab-link
        [active]="currentParam == attenderViewParam"
@@ -41,6 +46,10 @@
 <ng-container *ngIf="currentParam == chatViewParam" class="mx-3">
   <app-event-chat-view [orgaID]="currentOrganization" [eventID]="currentEvent">
   </app-event-chat-view>
+</ng-container>
+<ng-container *ngIf="currentParam == filesViewParam" class="mx-3">
+  <app-event-files-view [orgaID]="currentOrganization" [eventID]="currentEvent">
+  </app-event-files-view>
 </ng-container>
 <ng-container *ngIf="currentParam == invitesViewParam" class="mx-3">
   <app-event-invites-view [orgaID]="currentOrganization" [eventID]="currentEvent">

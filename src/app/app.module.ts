@@ -64,6 +64,7 @@ import { EventChatViewComponent } from './components/organizationview/organizati
 import { EventAttenderViewComponent } from './components/organizationview/organization-event-details-view/event-attender-view/event-attender-view.component';
 import { EventInvitesViewComponent } from './components/organizationview/organization-event-details-view/event-invites-view/event-invites-view.component';
 import { EventMailsettingsViewComponent } from './components/organizationview/organization-event-details-view/event-mailsettings-view/event-mailsettings-view.component';
+import { EventFilesViewComponent } from './components/organizationview/organization-event-details-view/event-files-view/event-files-view.component';
 
 registerLocaleData(localeDe);
 
@@ -99,6 +100,7 @@ registerLocaleData(localeDe);
     EventAttenderViewComponent,
     EventInvitesViewComponent,
     EventMailsettingsViewComponent,
+    EventFilesViewComponent,
   ],
   imports: [
     BrowserModule,
