@@ -11,6 +11,7 @@ import {StorageService} from "../../../services/StorageService";
 export class OrganizationEventDetailsViewComponent {
 
   descriptionViewParam : Params = {'view' : 'description'};
+  surveyViewParam : Params = {'view': 'survey'}
   chatViewParam : Params = {'view' : 'chat'};
   filesViewParam : Params = {'view' : 'files'};
   attenderViewParam : Params = {'view' : 'attender'};

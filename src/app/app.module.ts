@@ -22,7 +22,6 @@ import { OrganizationAddeventComponent } from './components/organizationview/org
 import { OrganizationSettingsComponent } from './components/organizationview/organization-settings/organization-settings.component';
 import { EventItemComponent } from './components/organizationview/event-item/event-item.component';
 import {rxStompServiceFactory, SocketService} from "./services/SocketService";
-import { EventQuestionnairesComponent } from './components/organizationview/event-questionnaires/event-questionnaires.component';
 import {DatePipe, registerLocaleData} from "@angular/common";
 import {StorageService} from "./services/StorageService";
 import localeDe from '@angular/common/locales/de';
@@ -65,6 +64,7 @@ import { EventAttenderViewComponent } from './components/organizationview/organi
 import { EventInvitesViewComponent } from './components/organizationview/organization-event-details-view/event-invites-view/event-invites-view.component';
 import { EventMailsettingsViewComponent } from './components/organizationview/organization-event-details-view/event-mailsettings-view/event-mailsettings-view.component';
 import { EventFilesViewComponent } from './components/organizationview/organization-event-details-view/event-files-view/event-files-view.component';
+import { EventSurveyComponent } from './components/organizationview/organization-event-details-view/event-survey/event-survey.component';
 
 registerLocaleData(localeDe);
 
@@ -82,7 +82,6 @@ registerLocaleData(localeDe);
     OrganizationAddeventComponent,
     OrganizationSettingsComponent,
     EventItemComponent,
-    EventQuestionnairesComponent,
     EventUserMangamentComponent,
     EventradarItemComponent,
     OrganizationinviteviewComponent,
@@ -101,6 +100,7 @@ registerLocaleData(localeDe);
     EventInvitesViewComponent,
     EventMailsettingsViewComponent,
     EventFilesViewComponent,
+    EventSurveyComponent,
   ],
   imports: [
     BrowserModule,

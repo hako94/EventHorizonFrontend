@@ -15,6 +15,11 @@
   </div>
   <div>
     <a mat-tab-link
+       [active]="currentParam == surveyViewParam"
+       (click)="updateURLWithParam(surveyViewParam)">Umfragen</a>
+  </div>
+  <div>
+    <a mat-tab-link
        [active]="currentParam == filesViewParam"
        (click)="updateURLWithParam(filesViewParam)">Dateien</a>
   </div>
@@ -42,6 +47,10 @@
 <ng-container *ngIf="currentParam == attenderViewParam" class="mx-3">
   <app-event-attender-view [orgaID]="currentOrganization" [eventID]="currentEvent">
   </app-event-attender-view>
+</ng-container>
+<ng-container *ngIf="currentParam == surveyViewParam" class="mx3">
+  <app-event-survey [orgaID]="currentOrganization" [eventID]="currentEvent">
+  </app-event-survey>
 </ng-container>
 <ng-container *ngIf="currentParam == chatViewParam" class="mx-3">
   <app-event-chat-view [orgaID]="currentOrganization" [eventID]="currentEvent">

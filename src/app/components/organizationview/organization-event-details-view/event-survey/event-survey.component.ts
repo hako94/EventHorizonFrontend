@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {EventQuestionnairesModel} from "../../../../models/EventQuestionnairesModel";
+import {QuestionModel} from "../../../../models/QuestionModel";
 import {Location} from "@angular/common";
-import {DataService} from "../../../services/DataService";
-import {EventQuestionnairesModel} from "../../../models/EventQuestionnairesModel";
-import {QuestionModel} from "../../../models/QuestionModel";
+import {DataService} from "../../../../services/DataService";
+
 
 //TODO wtf typscript
 export interface FormIn {
@@ -15,15 +16,15 @@ interface SwitchView {
   viewValue: string;
 }
 
-
-
-//TODO: split container i 2 seperate Components
 @Component({
-  selector: 'app-event-questionnaires',
-  templateUrl: './event-questionnaires.component.html',
-  styleUrls: ['./event-questionnaires.component.scss']
+  selector: 'app-event-survey',
+  templateUrl: './event-survey.component.html',
+  styleUrls: ['./event-survey.component.scss']
 })
-export class EventQuestionnairesComponent implements OnInit{
+export class EventSurveyComponent implements OnInit{
+
+  @Input() orgaID = '';
+  @Input() eventID = '';
 
   availableQuestionnaires : EventQuestionnairesModel[] = [];
   switchView: SwitchView[] = [];
