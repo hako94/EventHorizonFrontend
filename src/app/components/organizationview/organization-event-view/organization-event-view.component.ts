@@ -58,7 +58,7 @@ export class OrganizationEventViewComponent implements OnInit{
     }
 
     if (this.selectedTyp == 'single') {
-      this.filteredEvents = this.filteredEvents.filter(val => { return !val.serial })
+      this.filteredEvents = this.filteredEvents.filter(val => { return !val.serial && val.parentId == null })
     }
     if (this.selectedTyp == 'multi') {
       this.filteredEvents = this.filteredEvents.filter(val => { return val.serial })
