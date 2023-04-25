@@ -276,7 +276,7 @@
     <br>
     <div class="border-l-2 p-2 mb-6">
       <h2>Speichere Das Event als Template</h2>
-      <button mat-raised-button color="primary" (click)="persistTemplate()" type="submit" formaction="" [disabled]="disabledTemplateSafe">Speichern</button>
+      <button mat-raised-button color="primary" (click)="persistTemplate()" type="submit" formaction="" [disabled]="disabledTemplateSafe">{{ disabledTemplateSafe ? 'Gespeichert' : 'Speichern'}}</button>
     </div>
     <hr>
     <div class="flex mt-6">
