@@ -28,5 +28,25 @@
       </div>
     </div>
     <p>{{eventModel.description}}</p>
+    <div *ngIf="eventModel.serial">
+      <br><mat-divider></mat-divider><br><br>
+      <h3>Wiederholungen</h3>
+      <p>Es handelt sich um ein Serienevent, das zu folgenden Zeitpunkten wiederholt wird</p>
+      <div class="flex whitespace-nowrap flex-wrap">
+        <ng-container *ngFor="let child of eventModel.childs">
+          <div class="mr-10 mt-4">
+            <h2>Event-Termin</h2>
+            <mat-card-subtitle>
+              <label><strong>Start-Datum</strong></label>
+              <p>{{child.eventStart.replace('T', ', ').slice(0, 17)}}</p>
+            </mat-card-subtitle>
+            <mat-card-subtitle>
+              <label><strong>End-Datum</strong></label>
+              <p>{{child.eventEnd.replace('T', ', ').slice(0, 17)}}</p>
+            </mat-card-subtitle>
+          </div>
+        </ng-container>
+      </div>
+    </div>
   </mat-card>
 </ng-container>
