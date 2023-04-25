@@ -16,7 +16,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
  *
  */
 export class OrganizationmemberviewComponent implements OnInit{
-  selectedRole : number = -1;
+  selectedRole : number = 5;
   invitedEmail : string = '';
   invitedUser : string = '';
 
@@ -83,7 +83,7 @@ export class OrganizationmemberviewComponent implements OnInit{
     })
     this.editMode = false;
     this.editedUser = '';
-    this.selectedRole = -1;
+    this.selectedRole = 5;
   }
 
   deleteMember(userId: string) {

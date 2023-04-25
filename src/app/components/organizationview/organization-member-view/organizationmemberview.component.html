@@ -38,11 +38,11 @@
           <div *ngIf="editMode && editedUser == member.id" class="p-2 pt-3">
             <mat-form-field appearance="fill">
               <mat-label>Rolle bearbeiten</mat-label>
-              <mat-select [(value)]="selectedRole">
-                <mat-option value=5>Gast</mat-option>
-                <mat-option value=4>Teilnehmer</mat-option>
-                <mat-option value=2 *ngIf="hasRole(2) || hasRole(1)">Organisator</mat-option>
-                <mat-option value=1 *ngIf="hasRole(2) || hasRole(1)">Admin</mat-option>
+              <mat-select [required]="true" [(value)]="selectedRole">
+                <mat-option [value]=5>Gast</mat-option>
+                <mat-option [value]=4>Teilnehmer</mat-option>
+                <mat-option [value]=2 *ngIf="hasRole(2) || hasRole(1)">Organisator</mat-option>
+                <mat-option [value]=1 *ngIf="hasRole(2) || hasRole(1)">Admin</mat-option>
               </mat-select>
             </mat-form-field>
           </div>

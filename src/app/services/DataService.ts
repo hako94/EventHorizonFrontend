@@ -146,6 +146,18 @@ export class DataService {
     )
   }
 
+  getAllEventsForUser(dateFrom: string, dateTo: string): Observable<OrganizationEventModel[]> {
+    return this.http.get<OrganizationEventModel[]>(
+      BACKEND_API + 'api/v1/organizations/events',
+      {
+        params: {
+          'dateFrom' : dateFrom,
+          'dateTo' : dateTo
+        }
+      }
+    )
+  }
+
   inviteUser(email: string, orgId: string, asRole: string): Observable<string> {
     return this.http.post<string>(
       BACKEND_API + 'api/v1/authenticatedUser/invite',
