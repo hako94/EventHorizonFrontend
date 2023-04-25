@@ -15,8 +15,8 @@
           <div class="p-2 pt-3 ">{{attender.nachname}}, {{attender.vorname}}</div>
           <div class="p-2 pt-3 ">{{attender.email}}</div>
           <div class="p-2 pt-3 ">{{attender.email}}</div>
-          <div class="p-2 pt-3">
-            <mat-checkbox>anwesend</mat-checkbox>
+          <div class="p-2 pt-3" *ngIf="ownRoleInOrg < 3 && ownRoleInOrg > 0">
+            <mat-checkbox [checked]="attender.here" (change)="saveAttendeeList($event, attender.id)">anwesend</mat-checkbox>
           </div>
         </div>
       </ng-container>
