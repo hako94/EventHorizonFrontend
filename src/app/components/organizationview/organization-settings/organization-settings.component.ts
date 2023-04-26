@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DataService} from "../../../services/DataService";
 import {DomSanitizer} from "@angular/platform-browser";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-organization-settings',
@@ -12,7 +13,7 @@ export class OrganizationSettingsComponent implements OnInit{
   @Input() orgaID : string = '';
   shownimage : any;
 
-  constructor(private dataService : DataService, private sanitizer: DomSanitizer) {
+  constructor(private dataService : DataService, private sanitizer: DomSanitizer, private snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -39,7 +40,13 @@ export class OrganizationSettingsComponent implements OnInit{
 
       formData.append("file", file);
 
-      this.dataService.storeFile(formData, this.orgaID).subscribe(sucess => {console.log(sucess)})
+      this.dataService.storeFile(formData, this.orgaID).subscribe(sucess => {
+        console.log(sucess);
+        this.snackBar.open('Bild erfolgreich hochgeladen', 'OK', {duration: 3000});
+        this.ngOnInit();
+      }, error => {
+        this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
+      })
     }
   }
 
