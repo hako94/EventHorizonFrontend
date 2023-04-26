@@ -2,8 +2,8 @@
 <ng-container *ngIf="orgEvent">
   <mat-card class="h-48 ml-2">
     <div class="absolute" style="margin-top: -10px; margin-left: -10px">
-      <mat-icon *ngIf="!orgEvent.serial">event</mat-icon>
-      <mat-icon *ngIf="orgEvent.serial">event_repeat</mat-icon>
+      <mat-icon matTooltip="Einzelevent" *ngIf="!orgEvent.serial">event</mat-icon>
+      <mat-icon matTooltip="Serienevent" *ngIf="orgEvent.serial">event_repeat</mat-icon>
     </div>
     <mat-card-content class="mt-4">
       <div class="flex">
@@ -37,9 +37,9 @@
         <div class="flex flex-col ml-auto justify-between justify-end">
           <div class="flex ml-auto">
             <!-- siehe https://fonts.google.com/icons?hl=de -->
-            <mat-icon *ngIf="orgEvent.tutor">mic</mat-icon>
-            <mat-icon *ngIf="orgEvent.organisator">star</mat-icon>
-            <mat-icon *ngIf="orgEvent.attender">man</mat-icon>
+            <mat-icon matTooltip="Sie sind Tutor" *ngIf="orgEvent.tutor">mic</mat-icon>
+            <mat-icon matTooltip="Sie sind Organisator" *ngIf="orgEvent.organisator">star</mat-icon>
+            <mat-icon matTooltip="Sie sind Teilnehmer" *ngIf="orgEvent.attender">man</mat-icon>
           </div>
           <div class="flex flex-grow"></div>
           <div>
