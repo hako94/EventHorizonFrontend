@@ -20,6 +20,9 @@ export class EventAttenderViewComponent {
   editMode : boolean = false;
   editedUser : string = '';
   selectedRole : number = 12;
+  invitedEmail : string = '';
+  invitedUser : string = '';
+  inviteLoading : boolean = false;
 
   constructor(private dataService: DataService, private storageService: StorageService, private snackBar: MatSnackBar) {
   }
@@ -65,13 +68,26 @@ export class EventAttenderViewComponent {
     this.selectedRole = 12;
   }
 
-  deleteAttender(attenderId: string) {
-    console.log("deleted attender " + attenderId);
-    //this.dataService.deleteOrganizationMember(this.orgaID, userId).subscribe(() => {
-    //  this.snackBar.open('Teilnehmer abgemeldet', 'OK', {duration: 3000});
-    //  this.ngOnInit();
-    //}, error => {
-    //  this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
-    //});
+  deleteAttender(attenderEmail: string) : void {
+    console.log("deleted attender " + attenderEmail);
+    this.dataService.deleteAttenderFromEvent(this.orgaID, this.eventID, attenderEmail).subscribe(() => {
+      this.snackBar.open('Teilnehmer abgemeldet', 'OK', {duration: 3000});
+      this.ngOnInit();
+    }, error => {
+      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
+    });
+  }
+
+  inviteSubmit() : void {
+    this.inviteLoading = true;
+    console.log(this.selectedRole)
+    this.dataService.inviteUserToEvent(this.orgaID, this.eventID, this.editedUser, this.selectedRole).subscribe(success => {
+      this.invitedUser = success;
+      this.snackBar.open('Einladung wurde erfolgreich versandt', 'OK', {duration: 3000});
+      this.inviteLoading = false;
+    }, error => {
+      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
+      this.inviteLoading = false;
+    })
   }
 }

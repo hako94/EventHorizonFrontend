@@ -17,6 +17,7 @@ import {EmailTemplateModel} from "../models/EmailTemplateModel";
 import {EventTemplatePrefillModel} from "../models/EventTemplatePrefillModel";
 import {EventInviteModel} from "../models/EventInviteModel";
 import {UserForEventWithRoleModel} from "../models/UserForEventWithRoleModel";
+import {UserEventInviteModel} from "../models/UserEventInviteModel";
 
 //const BACKEND_API = 'http://localhost:8080/'
 //const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
@@ -343,6 +344,32 @@ export class DataService {
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/personrole',
       {
         id: attenderId,
+        role: {
+          id: role,
+          role: this.mapRoleIdToString(role),
+        }
+      },
+      httpOptions
+    )
+  }
+
+  deleteAttenderFromEvent(orgId: string, eventId: string, email: string): Observable<HttpResponse<any>> {
+    return this.http.post<any>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/signoff',
+      {},
+      {
+        observe: 'response',
+        headers: {'Content-Type': 'application/json'},
+        params: {'orgId': orgId, 'eventId': eventId, 'email': email}
+      }
+    )
+  }
+
+  inviteUserToEvent(orgId: string, eventId: string, userId: string, role: number): Observable<any> {
+    return this.http.post<any>(
+      BACKEND_API + 'api/v1/organization' + orgId + 'event' + eventId + 'invite',
+      {
+        userId: userId,
         role: {
           id: role,
           role: this.mapRoleIdToString(role),
