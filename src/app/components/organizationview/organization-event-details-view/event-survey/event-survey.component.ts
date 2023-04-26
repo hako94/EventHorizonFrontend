@@ -3,6 +3,7 @@ import {EventQuestionnairesModel} from "../../../../models/EventQuestionnairesMo
 import {QuestionModel} from "../../../../models/QuestionModel";
 import {Location} from "@angular/common";
 import {DataService} from "../../../../services/DataService";
+import {StorageService} from "../../../../services/StorageService";
 
 
 //TODO wtf typscript
@@ -36,7 +37,7 @@ export class EventSurveyComponent implements OnInit{
   orgId : string = '';
   eventId : string = '';
 
-  currentView: string = '';
+  currentView: string = 'answer';
 
   formIn : FormIn = {
     titeln : '',
@@ -45,7 +46,7 @@ export class EventSurveyComponent implements OnInit{
 
   questions : Array<QuestionModel> = [];
 
-  constructor(private location : Location, private dataService : DataService) {
+  constructor(private location : Location, private dataService : DataService, private storageService : StorageService) {
 
     const regex = /\/organizations\/(\w+)\/event\/(\w+)\//;
     const matches = regex.exec(location.path());
@@ -70,9 +71,14 @@ export class EventSurveyComponent implements OnInit{
     })
   }
 
+  hasRole(roleId: number) : boolean {
+    return this.storageService.getRoleInCurrentOrganization(this.orgaID) == roleId;
+  }
 
   ngOnInit(): void {
-
+    if (!this.hasRole(2) && !this.hasRole(1)) {
+      this.currentView == 'answer'
+    }
   }
 
   removeValueFromCustomFields(index : number) : void {

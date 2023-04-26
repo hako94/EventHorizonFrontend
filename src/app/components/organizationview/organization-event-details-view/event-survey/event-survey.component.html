@@ -1,4 +1,4 @@
-<div class="ml-4 mt-4">
+<div class="ml-4 mt-4" *ngIf="hasRole(1) || hasRole(2)">
   <mat-button-toggle-group [(ngModel)]="currentView" name="event-time-type">
     <mat-button-toggle value="single">Übersicht</mat-button-toggle>
     <mat-button-toggle value="create">Fragebogen erstellen</mat-button-toggle>
