@@ -66,6 +66,7 @@ import { EventMailsettingsViewComponent } from './components/organizationview/or
 import { EventFilesViewComponent } from './components/organizationview/organization-event-details-view/event-files-view/event-files-view.component';
 import { EventSurveyComponent } from './components/organizationview/organization-event-details-view/event-survey/event-survey.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { EventAttendanceListViewComponent } from './components/organizationview/organization-event-details-view/event-attendance-list-view/event-attendance-list-view.component';
 
 registerLocaleData(localeDe);
 
@@ -102,6 +103,7 @@ registerLocaleData(localeDe);
     EventMailsettingsViewComponent,
     EventFilesViewComponent,
     EventSurveyComponent,
+    EventAttendanceListViewComponent,
   ],
   imports: [
     BrowserModule,

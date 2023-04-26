@@ -38,6 +38,11 @@
        [active]="currentParam == mailsViewParam"
        (click)="updateURLWithParam(mailsViewParam)">Mailversand</a>
   </div>
+  <div *ngIf="hasRole(1) || hasRole(2)">
+    <a mat-tab-link
+       [active]="currentParam == attendanceViewParam"
+       (click)="updateURLWithParam(attendanceViewParam)">Anwesenheit</a>
+  </div>
 </nav>
 <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
 <ng-container *ngIf="currentParam == descriptionViewParam" class="mx-3">
@@ -67,5 +72,9 @@
 <ng-container *ngIf="currentParam == mailsViewParam" class="mx-3">
   <app-event-mailsettings-view [orgaID]="currentOrganization" [eventID]="currentEvent">
   </app-event-mailsettings-view>
+</ng-container>
+<ng-container *ngIf="currentParam == attendanceViewParam" class="mx-3">
+  <app-event-attendance-list-view [orgaID]="currentOrganization" [eventID]="currentEvent">
+  </app-event-attendance-list-view>
 </ng-container>
 

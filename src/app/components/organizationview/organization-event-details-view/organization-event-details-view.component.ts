@@ -17,6 +17,7 @@ export class OrganizationEventDetailsViewComponent {
   attenderViewParam : Params = {'view' : 'attender'};
   invitesViewParam : Params = {'view' : 'invites'};
   mailsViewParam : Params = {'view' : 'mails'};
+  attendanceViewParam : Params = {'view' : 'attendance'};
   currentOrganization : string = '';
   currentEvent : string = '';
 
@@ -91,7 +92,7 @@ export class OrganizationEventDetailsViewComponent {
   /**
    * Checks if the current user has the given role in the current organization
    *
-   * @param role
+   * @param roleId
    */
   hasRole(roleId: number) : boolean {
     return this.storageService.getRoleInCurrentOrganization(this.currentOrganization) == roleId;

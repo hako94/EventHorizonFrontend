@@ -16,6 +16,7 @@ import {UserRoleModel} from "../models/UserRoleModel";
 import {EmailTemplateModel} from "../models/EmailTemplateModel";
 import {EventTemplatePrefillModel} from "../models/EventTemplatePrefillModel";
 import {EventInviteModel} from "../models/EventInviteModel";
+import {UserForEventWithRoleModel} from "../models/UserForEventWithRoleModel";
 
 //const BACKEND_API = 'http://localhost:8080/'
 //const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
@@ -104,6 +105,12 @@ export class DataService {
       return 'teilnehmer';
     } else if (id == 5) {
       return 'gast';
+    } else if (id == 10) {
+      return 'Organisator';
+    } else if (id == 11){
+      return 'Tutor';
+    } else if (id == 12){
+      return 'Teilnehmer';
     } else {
       return 'error';
     }
@@ -308,17 +315,39 @@ export class DataService {
     )
   }
 
-  getUserManagementList(orgId: string, eventId: string): Observable<UserAtEventModel[]> {
+  getAttendeesWithPresence(orgId: string, eventId: string): Observable<UserAtEventModel[]> {
     return this.http.get<UserAtEventModel[]>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/attendees',
       httpOptions
     )
   }
 
-  saveUserManagementList(orgId: string, eventId: string, users: UserAtEventModel[]): Observable<any> {
+  saveAttendeesWithPresence(orgId: string, eventId: string, users: UserAtEventModel[]): Observable<any> {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/attendees',
       users,
+      httpOptions
+    )
+  }
+
+  getAttendeesWithRole(orgId: string, eventId: string): Observable<UserForEventWithRoleModel[]> {
+    return this.http.get<UserForEventWithRoleModel[]>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/persons',
+      httpOptions
+    )
+  }
+
+
+  saveAttenderRole(orgId: string, eventId: string, attenderId: string, role: number): Observable<any> {
+    return this.http.put<any>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/personrole',
+      {
+        id: attenderId,
+        role: {
+          id: role,
+          role: this.mapRoleIdToString(role),
+        }
+      },
       httpOptions
     )
   }
