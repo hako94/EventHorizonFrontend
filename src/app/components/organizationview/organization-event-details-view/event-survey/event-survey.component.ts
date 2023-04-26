@@ -4,6 +4,7 @@ import {QuestionModel} from "../../../../models/QuestionModel";
 import {Location} from "@angular/common";
 import {DataService} from "../../../../services/DataService";
 import {StorageService} from "../../../../services/StorageService";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 
 
 //TODO wtf typscript
@@ -27,6 +28,8 @@ export class EventSurveyComponent implements OnInit{
   @Input() orgaID = '';
   @Input() eventID = '';
 
+  currentParam? : Params;
+
   availableQuestionnaires : EventQuestionnairesModel[] = [];
   switchView: SwitchView[] = [];
 
@@ -46,7 +49,11 @@ export class EventSurveyComponent implements OnInit{
 
   questions : Array<QuestionModel> = [];
 
-  constructor(private location : Location, private dataService : DataService, private storageService : StorageService) {
+  constructor(private location : Location,
+              private dataService : DataService,
+              private storageService : StorageService,
+              private activatedRoute : ActivatedRoute,
+              private router : Router) {
 
     const regex = /\/organizations\/(\w+)\/event\/(\w+)\//;
     const matches = regex.exec(location.path());
@@ -69,6 +76,19 @@ export class EventSurveyComponent implements OnInit{
       })
 
     })
+  }
+
+  updateURLWithParam(param : Params) : void {
+
+    this.currentParam = param;
+
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.activatedRoute,
+        queryParams: this.currentParam,
+        queryParamsHandling: 'merge',
+      });
   }
 
   hasRole(roleId: number) : boolean {
