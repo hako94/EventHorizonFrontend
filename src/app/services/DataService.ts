@@ -17,6 +17,7 @@ import {EmailTemplateModel} from "../models/EmailTemplateModel";
 import {EventTemplatePrefillModel} from "../models/EventTemplatePrefillModel";
 import {EventInviteModel} from "../models/EventInviteModel";
 import {UserForEventWithRoleModel} from "../models/UserForEventWithRoleModel";
+import {NotificationInfoModel} from "../models/NotificationInfoModel";
 import {UserEventInviteModel} from "../models/UserEventInviteModel";
 
 //const BACKEND_API = 'http://localhost:8080/'
@@ -412,7 +413,7 @@ export class DataService {
     )
   }
 
-  getEmailTemplates(orgId: string): Observable<any> {
+  getEmailTemplates(orgId: string): Observable<EmailTemplateModel[]> {
     return this.http.get<EmailTemplateModel[]>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/emailtemplates',
       httpOptions
@@ -450,6 +451,13 @@ export class DataService {
   deleteMailTemplate(orgId: string, templateId: string): Observable<any> {
     return this.http.delete<any>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/emailtemplate/' + templateId,
+      httpOptions
+    )
+  }
+
+  getNotificationInfos(orgId: string, eventId: string): Observable<any> {
+    return this.http.get<NotificationInfoModel[]>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/notifications',
       httpOptions
     )
   }
