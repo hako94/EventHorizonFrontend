@@ -1,12 +1,12 @@
 <div class="ml-4 mt-4" *ngIf="hasRole(1) || hasRole(2)">
   <mat-button-toggle-group [(ngModel)]="currentView" name="event-time-type">
-    <mat-button-toggle value="single">Übersicht</mat-button-toggle>
+    <mat-button-toggle value="view">Übersicht</mat-button-toggle>
     <mat-button-toggle value="create">Fragebogen erstellen</mat-button-toggle>
     <mat-button-toggle value="answer">Fragebogen beantworten</mat-button-toggle>
-    <mat-button-toggle value="sdads">Fragebogen auswerten</mat-button-toggle>
+    <mat-button-toggle value="collect">Fragebogen auswerten</mat-button-toggle>
   </mat-button-toggle-group>
 </div>
-<div class="overflow-y-scroll max-h-[75vh]">
+<div *ngIf="currentView == 'create' || currentView == 'answer' || currentView == 'collect'" class="overflow-y-scroll max-h-[75vh]">
   <mat-card class="p-4 my-4 ml-4 min-h-0">
     <div *ngIf="currentView == 'create'">
       <h1>Einen Fragebogen erstellen</h1>
@@ -128,5 +128,35 @@
 
       </ng-container>
     </div>
+  </mat-card>
+</div>
+<div class="mx-3" *ngIf="currentView == 'view'">
+  <br>
+  <h2>Fragebogen-Übersicht</h2>
+  <mat-card>
+    <mat-card-content class="overflow-y-auto max-h-[60vh]">
+      <div class="hidden md:grid md:grid-cols-4 font-bold">
+        <span class="p-2 pt-3">Name</span>
+        <span class="p-2 pt-3">Beschreibung</span>
+        <span class="p-2 pt-3">Anzahl Fragen</span>
+        <span class="p-2 pt-3"></span>
+      </div>
+      <ng-container *ngFor="let survey of availableQuestionnaires">
+        <mat-divider></mat-divider>
+        <div class="grid grid-cols-1 md:grid-cols-4">
+          <div class="p-2 pt-3"><p class="truncate">{{survey.title}}</p></div>
+          <div class="p-2 pt-3"><p class="truncate">{{survey.description}}</p></div>
+          <div class="p-2 pt-3">{{survey.questions.length}}</div>
+          <div>
+            <button mat-icon-button color="primary">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </mat-card-content>
   </mat-card>
 </div>

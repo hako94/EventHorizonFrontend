@@ -182,4 +182,6 @@ export class EventSurveyComponent implements OnInit{
     })
     return mistake;
   }
+
+  protected readonly isSecureContext = isSecureContext;
 }
