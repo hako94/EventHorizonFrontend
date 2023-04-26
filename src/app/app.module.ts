@@ -65,6 +65,7 @@ import { EventInvitesViewComponent } from './components/organizationview/organiz
 import { EventMailsettingsViewComponent } from './components/organizationview/organization-event-details-view/event-mailsettings-view/event-mailsettings-view.component';
 import { EventFilesViewComponent } from './components/organizationview/organization-event-details-view/event-files-view/event-files-view.component';
 import { EventSurveyComponent } from './components/organizationview/organization-event-details-view/event-survey/event-survey.component';
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 registerLocaleData(localeDe);
 
@@ -131,6 +132,7 @@ registerLocaleData(localeDe);
     MatExpansionModule,
     MatButtonToggleModule,
     MatTooltipModule,
+    MatSlideToggleModule,
 
   ],
   providers: [

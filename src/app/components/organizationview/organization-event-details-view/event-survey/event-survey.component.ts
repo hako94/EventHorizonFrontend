@@ -31,10 +31,12 @@ export class EventSurveyComponent implements OnInit{
 
   questionsView : QuestionModel[] = [];
 
-  currentVire : number = 0;
+  currentSurvey? : SwitchView;
 
   orgId : string = '';
   eventId : string = '';
+
+  currentView: string = '';
 
   formIn : FormIn = {
     titeln : '',
@@ -68,22 +70,22 @@ export class EventSurveyComponent implements OnInit{
     })
   }
 
+
   ngOnInit(): void {
 
   }
-
 
   removeValueFromCustomFields(index : number) : void {
     delete this.questions[index]
     this.questions = this.questions.filter(el => {return el != null});
   }
 
-  addCustomField(name : string) : void {
+  addCustomField(name : string, selected : string) : void {
     this.questions.push({
       answerOptions: [],
       questionNumber: 0,
       questionText: name,
-      type: "MULTIPLE_CHOICE",
+      type: selected == "single" ?  "SINGLE_CHOICE" : "MULTIPLE_CHOICE",
     })
     console.log(this.questions)
   }
@@ -109,7 +111,6 @@ export class EventSurveyComponent implements OnInit{
 
     return model;
   }
-
   addAnswerOption(value: string, answerIndex : number) {
 
     if (this.questions.at(answerIndex)) {
@@ -156,9 +157,23 @@ export class EventSurveyComponent implements OnInit{
   }
 
   getQuestions() : QuestionModel[] {
-    if (this.availableQuestionnaires.at(this.currentVire)) {
-      return this.availableQuestionnaires[this.currentVire].questions
+    if (this.availableQuestionnaires.at(this.currentSurvey?.value || 0)) {
+      return this.availableQuestionnaires[this.currentSurvey?.value || 0].questions
     }
     return []
+  }
+
+  valideDateQuestions() : boolean {
+    let mistake = false;
+
+    if (this.questions.length < 1) {
+      mistake = true;
+    }
+    this.questions.forEach(question => {
+      if (question.answerOptions.length < 1) {
+        mistake = true;
+      }
+    })
+    return mistake;
   }
 }
