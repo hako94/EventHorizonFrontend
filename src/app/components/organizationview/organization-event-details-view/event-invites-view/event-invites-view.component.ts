@@ -92,6 +92,12 @@ export class EventInvitesViewComponent {
    */
   hasRole(roleId: number) : boolean {
     return this.storageService.getRoleInCurrentOrganization(this.orgaID) == roleId;
-    //TODO: Prüfen, ob derjenige im Event entsprechende Rechte hat (->Excel Tabelle)
+  }
+
+  /**
+   * Checks if current user is tutor in current event
+   */
+  isTutor() : boolean {
+    return this.roleIdInEvent == 11;
   }
 }
