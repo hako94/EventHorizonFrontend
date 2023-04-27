@@ -25,29 +25,51 @@
   <br>
   <h2>Verwendete Mail-Vorlagen</h2>
   <mat-card class="p-2 max-h-[45vh] overflow-y-auto">
-    <div class="max-sm:hidden grid md:grid-cols-2">
-      <div><p><strong>Vorlagenbezeichnung</strong></p></div>
-      <div><p><strong>Versandzeitpunkt</strong></p></div>
+    <div class="max-sm:hidden grid md:grid-cols-5">
+      <div class="md:col-span-2"><p><strong>Vorlagenbezeichnung</strong></p></div>
+      <div class="md:col-span-2"><p><strong>Versandzeitpunkt</strong></p></div>
     </div>
     <mat-divider></mat-divider>
     <div *ngFor="let template of usedMailTemplates">
-      <div class="grid grid-cols-1 md:grid-cols-2">
-        <div><p class="pt-3">{{template.templateName}}</p></div>
-        <div class="justify-self-end flex">
-          <div class="mr-5"><p class="pt-3">{{template.triggerTime}}</p></div>
-          <div class="flex">
-            <div *ngIf="!editMode || editedId!=template.templateId"><button mat-icon-button color="primary" class="mr-5" [disabled]="editMode" (click)="edit(template.templateId)">
-              <mat-icon matTooltip="Bearbeiten">edit</mat-icon>
-            </button></div>
-            <div *ngIf="editMode && editedId==template.templateId"><button mat-icon-button color="primary" class="mr-5" (click)="saveRule()">
-              <mat-icon matTooltip="Speichern">save</mat-icon>
-            </button></div>
-            <button mat-icon-button color="warn" [disabled]="editMode">
-              <mat-icon matTooltip="Entfernen">delete</mat-icon>
-            </button>
+      <div class="grid grid-cols-1 md:grid-cols-5">
+        <div class="md:col-span-2"><p class="pt-3">{{template.templateName}}</p></div>
+        <div class="flex md:col-span-2">
+          <div *ngIf="editedId!=template.templateId" class="mr-5"><p class="pt-3">{{template.triggerTime | date:'dd.MM.yyyy, hh:mm'}}</p></div>
+          <div *ngIf="editMode && editedId==template.templateId">
+            <mat-form-field class="max-w-[90px] mr-5">
+              <mat-label>Anzahl*</mat-label>
+              <input matInput type="number" min="0" max="999" [(ngModel)]="timeAmount" oninput="validity.valid||(value='');">
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="max-w-[120px] mr-5">
+              <mat-label>Einheit*</mat-label>
+              <mat-select [(value)]="timeUnit">
+                <mat-option value="D">Tage</mat-option>
+                <mat-option value="H">Stunden</mat-option>
+                <mat-option value="M">Minuten</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="max-w-[150px]">
+              <mat-label>Zeitpunkt*</mat-label>
+              <mat-select [(value)]="timeSlot">
+                <mat-option value="before">vor Event</mat-option>
+                <mat-option value="after">nach Event</mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
         </div>
+        <div class="justify-end flex">
+            <div *ngIf="!editMode || editedId!=template.templateId"><button mat-icon-button color="primary" class="mr-3" [disabled]="editMode" (click)="edit(template.templateId)">
+              <mat-icon matTooltip="Bearbeiten">edit</mat-icon>
+            </button></div>
+            <div *ngIf="editMode && editedId==template.templateId"><button mat-icon-button color="primary" class="mr-3" (click)="saveRule(template.templateId, template.id)">
+              <mat-icon matTooltip="Speichern">save</mat-icon>
+            </button></div>
+            <div class="justify-self-end"><button mat-icon-button color="warn" [disabled]="editMode" (click)="delete(template.id)">
+              <mat-icon matTooltip="Entfernen">delete</mat-icon>
+            </button></div>
+        </div>
       </div>
+      <mat-divider></mat-divider>
     </div>
   </mat-card>
 </div>

@@ -22,22 +22,26 @@ export class EventMailsettingsViewComponent {
   editMode : boolean = false;
   editedId : string = "";
 
+  timeAmount : number = 3;
+  timeUnit: string = "D";
+  timeSlot: string = "before";
+
   constructor(private dataService : DataService, private snackBar : MatSnackBar, private storageService : StorageService, private router : Router) {
 
   }
 
   ngOnInit(): void {
-    this.dataService.getNotificationInfos(this.orgaID, this.eventID).subscribe(success => {
-      this.usedMailTemplates = success;
-    }, error => {
-      this.snackBar.open('Fehler beim Laden der Versandregeln', 'OK', {duration: 3000});
-    })
     this.dataService.getEmailTemplates(this.orgaID).subscribe(success => {
       this.availableMailTemplates = success;
-      console.log('Available success is...')
+    }, error => {
+      //this.snackBar.open('Fehler beim Laden der Mail-Vorlagen', 'OK', {duration: 3000});
+    })
+    this.dataService.getNotificationInfos(this.orgaID, this.eventID).subscribe(success => {
+      this.usedMailTemplates = success;
+      console.log('Used success is...')
       console.log(success)
     }, error => {
-      this.snackBar.open('Fehler beim Laden der Mail-Vorlagen', 'OK', {duration: 3000});
+      //this.snackBar.open('Fehler beim Laden der Versandregeln', 'OK', {duration: 3000});
     })
   }
 
@@ -49,7 +53,6 @@ export class EventMailsettingsViewComponent {
     // @ts-ignore
     this.usedMailTemplates.forEach(usedTemplate => {
       if (usedTemplate.templateId == templateId) {
-        console.log('IS USED with id: ' + templateId);
         return true;
       }
     })
@@ -76,8 +79,48 @@ export class EventMailsettingsViewComponent {
 
   /**
    * Saves a new rule and leaves editMode
+   *
+   * @param templateId
+   * @param notificationId
    */
-  saveRule() {
+  saveRule(templateId: string, notificationId: string) {
+    if (this.timeAmount == null || undefined) {
+      this.snackBar.open('Bitte füllen Sie alle Pflichtfelder aus', 'OK', {duration: 3000});
+      return;
+    }
+
+    let timeScheme : string = 'PT';
+    if (this.timeUnit=='D') {
+      timeScheme += ((this.timeAmount*24) + 'H');
+    } else {
+      timeScheme += '' + this.timeAmount + this.timeUnit;
+    }
+
+    let isBefore : boolean = (this.timeSlot == 'before');
+
+    console.log(notificationId)
+
+    if (notificationId == "") {
+      this.dataService.postNotificationInfo(this.orgaID, this.eventID, templateId, timeScheme, isBefore).subscribe(() => {
+        this.snackBar.open('Versandregel erfolgreich geändert', 'OK', {duration: 3000});
+        this.ngOnInit();
+      }, error => {
+        this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
+      })
+    } else {
+      this.dataService.deleteNotificationInfo(this.orgaID, this.eventID, notificationId).subscribe(success => {
+        this.dataService.postNotificationInfo(this.orgaID, this.eventID, templateId, timeScheme, isBefore).subscribe(() => {
+          this.snackBar.open('Versandregel erfolgreich geändert', 'OK', {duration: 3000});
+          this.ngOnInit();
+        }, error => {
+          this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
+        })
+      }, error => {
+        this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
+      })
+    }
+
+    console.log(timeScheme);
     this.editMode = false;
     this.editedId = "";
   }
@@ -90,5 +133,19 @@ export class EventMailsettingsViewComponent {
   edit(templateId: string) {
     this.editMode = true;
     this.editedId = templateId;
+  }
+
+  /**
+   * Deletes the mail-rule of the given id
+   *
+   * @param id
+   */
+  delete(id: string) {
+    this.dataService.deleteNotificationInfo(this.orgaID, this.eventID, id).subscribe(() => {
+      this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
+      this.ngOnInit();
+    }, error => {
+      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
+    })
   }
 }

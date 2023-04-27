@@ -462,6 +462,28 @@ export class DataService {
     )
   }
 
+  deleteNotificationInfo(orgaID: string, eventID: string, notificationId: string) : Observable<HttpResponse<any>> {
+    return this.http.delete<HttpResponse<any>>(
+      BACKEND_API + 'api/v1/organization/' + orgaID + '/event/' + eventID + '/notification/' + notificationId,
+      {
+        observe: 'response',
+        headers: {'Content-Type': 'application/json'}
+      }
+    )
+  }
+
+  postNotificationInfo(orgaId: string, eventId: string, templateId: string, time: string, isBefore: boolean): Observable<any> {
+    return this.http.post<any>(
+      BACKEND_API + 'api/v1/organization/' + orgaId + '/event/' + eventId + '/notifications',
+      {
+        'templateId': templateId,
+        'time': time,
+        'before': isBefore
+      },
+      httpOptions
+    )
+  }
+
   deleteTemplate(orgaID: string, templateId: string) : Observable<HttpResponse<any>> {
     return this.http.delete<HttpResponse<any>>(
       BACKEND_API + 'api/v1/organization/' + orgaID + '/eventtemplate/' + templateId,
