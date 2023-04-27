@@ -35,17 +35,27 @@ export class EventMailsettingsViewComponent {
     if (this.roleIdInEvent != 10) {
       this.router.navigate(['/organizations/' + this.orgaID + '/event/' + this.eventID + '/details'], {queryParams: {view: 'description'}});
     }
-    this.dataService.getEmailTemplates(this.orgaID).subscribe(success => {
-      this.availableMailTemplates = success;
-    }, error => {
-      //this.snackBar.open('Fehler beim Laden der Mail-Vorlagen', 'OK', {duration: 3000});
-    })
+
+    this.availableMailTemplates = [];
+
     this.dataService.getNotificationInfos(this.orgaID, this.eventID).subscribe(success => {
       this.usedMailTemplates = success;
       console.log('Used success is...')
       console.log(success)
-    }, error => {
-      //this.snackBar.open('Fehler beim Laden der Versandregeln', 'OK', {duration: 3000});
+    })
+
+    this.dataService.getEmailTemplates(this.orgaID).subscribe(success => {
+      success.forEach(availableTemplate => {
+        let alreadyUsed : boolean = false;
+        this.usedMailTemplates.forEach(usedTemplate => {
+          if (availableTemplate.id == usedTemplate.templateId) {
+            alreadyUsed = true;
+          }
+        })
+        if (!alreadyUsed) {
+          this.availableMailTemplates.push(availableTemplate);
+        }
+      })
     })
   }
 
@@ -107,17 +117,21 @@ export class EventMailsettingsViewComponent {
     if (notificationId == "") {
       this.dataService.postNotificationInfo(this.orgaID, this.eventID, templateId, timeScheme, isBefore).subscribe(() => {
         this.snackBar.open('Versandregel erfolgreich geändert', 'OK', {duration: 3000});
+        this.editMode = false;
+        this.editedId = "";
         this.ngOnInit();
       }, error => {
-        this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
+        this.snackBar.open('Fehler: Sendezeitpunkt darf nicht in der Vergangenheit liegen', 'OK', {duration: 3000});
       })
     } else {
       this.dataService.deleteNotificationInfo(this.orgaID, this.eventID, notificationId).subscribe(success => {
         this.dataService.postNotificationInfo(this.orgaID, this.eventID, templateId, timeScheme, isBefore).subscribe(() => {
           this.snackBar.open('Versandregel erfolgreich geändert', 'OK', {duration: 3000});
+          this.editMode = false;
+          this.editedId = "";
           this.ngOnInit();
         }, error => {
-          this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
+          this.snackBar.open('Fehler: Sendezeitpunkt darf nicht in der Vergangenheit liegen', 'OK', {duration: 3000});
         })
       }, error => {
         this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
@@ -125,8 +139,6 @@ export class EventMailsettingsViewComponent {
     }
 
     console.log(timeScheme);
-    this.editMode = false;
-    this.editedId = "";
   }
 
   /**
