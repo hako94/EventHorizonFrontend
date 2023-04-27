@@ -5,6 +5,7 @@ import {StorageService} from "../../../services/StorageService";
 import {UserRoleModel} from "../../../models/UserRoleModel";
 import {DataService} from "../../../services/DataService";
 import {lastValueFrom} from "rxjs";
+import {EventStatusModel} from "../../../models/EventStatusModel";
 
 @Component({
   selector: 'app-organization-event-details-view',
@@ -14,7 +15,7 @@ import {lastValueFrom} from "rxjs";
 export class OrganizationEventDetailsViewComponent {
 
   descriptionViewParam : Params = {'view' : 'description'};
-  surveyViewParam : Params = {'view': 'survey'}
+  surveyViewParam : Params = {'view': 'survey'};
   chatViewParam : Params = {'view' : 'chat'};
   filesViewParam : Params = {'view' : 'files'};
   attenderViewParam : Params = {'view' : 'attender'};
@@ -23,6 +24,7 @@ export class OrganizationEventDetailsViewComponent {
   attendanceViewParam : Params = {'view' : 'attendance'};
   currentOrganization : string = '';
   currentEvent : string = '';
+  currentEventStatusId : number = 0;
   roleInCurrentEvent: UserRoleModel = new class implements UserRoleModel {
     id: number = 12;
     role: string = 'Teilnehmer';
@@ -80,21 +82,13 @@ export class OrganizationEventDetailsViewComponent {
       else if (params['view'] == "mails")
         this.currentParam = this.mailsViewParam;
     });
-    //this.dataService.getUserRoleForEvent(this.currentOrganization,this.currentEvent).subscribe( success => {
-    //  this.roleInCurrentEvent = success;
-    //  console.log('Rolle von Backend');
-    //  console.log(success);
-    //});
-    //this.dataService.getUserRoleForEvent(this.currentOrganization, this.currentEvent).toPromise().then(success => {
-    //  this.roleInCurrentEvent = success;
-    //  console.log('Rolle von Backend');
-    //  console.log(success);
-    //});
     this.loadRoleInCurrentEvent();
+    this.dataService.getEventStatus(this.currentOrganization, this.currentEvent).subscribe( success => {
+      this.currentEventStatusId = success.id;
+    })
   }
 
   updateURLWithParam(param : Params) : void {
-
     console.log(this.currentParam)
 
     this.currentParam = param;

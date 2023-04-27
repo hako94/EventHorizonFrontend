@@ -40,7 +40,7 @@
        [active]="currentParam == mailsViewParam"
        (click)="updateURLWithParam(mailsViewParam)">Mailversand</a>
   </div>
-  <div *ngIf="hasRole(1) || hasRole(2)">
+  <div *ngIf="hasRole(1) || hasRole(2)"> <!--[disabled]="this.currentEventStatusId == 3" oder ngIf-->
     <a mat-tab-link
        *ngIf="roleInCurrentEvent.id != 12"
        [active]="currentParam == attendanceViewParam"

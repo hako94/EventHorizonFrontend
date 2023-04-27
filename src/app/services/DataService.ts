@@ -20,6 +20,7 @@ import {UserForEventWithRoleModel} from "../models/UserForEventWithRoleModel";
 import {NotificationInfoModel} from "../models/NotificationInfoModel";
 import {UserEventInviteModel} from "../models/UserEventInviteModel";
 import {ChatAnswerModel} from "../models/ChatAnswerModel";
+import {EventStatusModel} from "../models/EventStatusModel";
 
 //const BACKEND_API = 'http://localhost:8080/'
 //const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
@@ -537,6 +538,14 @@ export class DataService {
   getUserRoleForEvent(orgId: string, eventId: string): Observable<UserRoleModel>{
     return this.http.get<UserRoleModel>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/role',
+      httpOptions
+    )
+  }
+
+  getEventStatus(orgId: string, eventId: string): Observable<EventStatusModel>{
+    return this.http.put<any>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/status',
+      {},
       httpOptions
     )
   }
