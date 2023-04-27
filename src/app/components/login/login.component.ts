@@ -65,6 +65,7 @@ export class LoginComponent {
     if (this.form.email == ''){
       this.snackBar.open('Bitte Email eingeben', 'OK', {duration: 3500});
     } else {
+      this.snackBar.open('Eine Mail zum Zurücketzen wird gesendet...', 'OK', {duration: 300});
       this.authService.sendResetEmail(email).subscribe(success => {
         this.snackBar.open('Sie haben eine Email mit einem Link zum Zurücksetzen ihres Passworts erhalten', 'OK', {duration: 5000});
       }, error => {

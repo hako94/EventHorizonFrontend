@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Location} from "@angular/common";
 import {StorageService} from "../../../services/StorageService";
+import {UserRoleModel} from "../../../models/UserRoleModel";
+import {DataService} from "../../../services/DataService";
+import {lastValueFrom} from "rxjs";
 
 @Component({
   selector: 'app-organization-event-details-view',
@@ -20,16 +23,20 @@ export class OrganizationEventDetailsViewComponent {
   attendanceViewParam : Params = {'view' : 'attendance'};
   currentOrganization : string = '';
   currentEvent : string = '';
+  roleInCurrentEvent: UserRoleModel = new class implements UserRoleModel {
+    id: number = 12;
+    role: string = 'Teilnehmer';
+  };
 
   currentParam? : Params;
 
-  constructor(private location : Location, private router : Router, private activatedRoute : ActivatedRoute, private storageService : StorageService) {
+  constructor(private location: Location, private router: Router, private activatedRoute: ActivatedRoute, private storageService: StorageService, private dataService: DataService) {
 
     let orga = this.location.path().split('/').at(2)?.toString();
 
     if (orga) {
       if (orga.indexOf('?') > 0) {
-        this.currentOrganization = orga.slice(0,orga.indexOf('?'));
+        this.currentOrganization = orga.slice(0, orga.indexOf('?'));
       } else {
         this.currentOrganization = orga;
       }
@@ -41,7 +48,7 @@ export class OrganizationEventDetailsViewComponent {
 
     if (event) {
       if (event.indexOf('?') > 0) {
-        this.currentEvent = event.slice(0,event.indexOf('?'));
+        this.currentEvent = event.slice(0, event.indexOf('?'));
       } else {
         this.currentEvent = event;
       }
@@ -50,6 +57,9 @@ export class OrganizationEventDetailsViewComponent {
     }
   }
 
+  async loadRoleInCurrentEvent() {
+    this.roleInCurrentEvent = await lastValueFrom(this.dataService.getUserRoleForEvent(this.currentOrganization, this.currentEvent));
+  }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
@@ -70,6 +80,17 @@ export class OrganizationEventDetailsViewComponent {
       else if (params['view'] == "mails")
         this.currentParam = this.mailsViewParam;
     });
+    //this.dataService.getUserRoleForEvent(this.currentOrganization,this.currentEvent).subscribe( success => {
+    //  this.roleInCurrentEvent = success;
+    //  console.log('Rolle von Backend');
+    //  console.log(success);
+    //});
+    //this.dataService.getUserRoleForEvent(this.currentOrganization, this.currentEvent).toPromise().then(success => {
+    //  this.roleInCurrentEvent = success;
+    //  console.log('Rolle von Backend');
+    //  console.log(success);
+    //});
+    this.loadRoleInCurrentEvent();
   }
 
   updateURLWithParam(param : Params) : void {

@@ -1,9 +1,10 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, SimpleChange} from '@angular/core';
 import {UserAtEventModel} from "../../../../models/UserAtEventModel";
 import {DataService} from "../../../../services/DataService";
 import {StorageService} from "../../../../services/StorageService";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatCheckboxChange} from "@angular/material/checkbox";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-event-attendance-list-view',
@@ -13,12 +14,16 @@ import {MatCheckboxChange} from "@angular/material/checkbox";
 export class EventAttendanceListViewComponent {
   @Input() orgaID = '';
   @Input() eventID = '';
+  @Input() roleIdInEvent!: number;
   attendee: UserAtEventModel[] = [];
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private router: Router) {
   }
 
   ngOnInit(): void {
+    if (this.roleIdInEvent == 12) {
+      this.router.navigate(['/organizations/' + this.orgaID + '/event/' + this.eventID + '/details'], {queryParams: {view: 'description'}});
+    }
     this.attendee = [];
     this.dataService.getAttendeesWithPresence(this.orgaID, this.eventID).subscribe(success => {
       success.forEach(attender => {
@@ -28,6 +33,7 @@ export class EventAttendanceListViewComponent {
       });
     });
   }
+
 
   /**
    * sets boolean value for attendance correct and sends update via data service

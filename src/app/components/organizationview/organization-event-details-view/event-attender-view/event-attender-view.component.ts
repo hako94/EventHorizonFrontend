@@ -14,6 +14,7 @@ import {UserForEventWithRoleModel} from "../../../../models/UserForEventWithRole
 export class EventAttenderViewComponent {
   @Input() orgaID = '';
   @Input() eventID = '';
+  @Input() roleIdInEvent!: number;
 
   ownRoleInOrg : number = -1;
   attendee : UserForEventWithRoleModel[] = [];
@@ -27,6 +28,7 @@ export class EventAttenderViewComponent {
   constructor(private dataService: DataService, private storageService: StorageService, private snackBar: MatSnackBar) {
   }
   ngOnInit(): void {
+    console.log("ngonoinit");
     this.attendee = [];
     this.dataService.getAttendeesWithRole(this.orgaID, this.eventID).subscribe(success => {
       success.forEach(attender => {
@@ -36,6 +38,7 @@ export class EventAttenderViewComponent {
       });
     });
     this.ownRoleInOrg = this.storageService.getRoleInCurrentOrganization(this.orgaID);
+    console.log("Rolle:" + this.roleIdInEvent);
   }
 
 
@@ -49,6 +52,7 @@ export class EventAttenderViewComponent {
   }
 
   enableEdit(id: string) {
+    console.log("RolleEnableEdit:" + this.roleIdInEvent);
     if (!this.editMode) {
       this.editMode = true;
       this.editedUser = id;

@@ -18,6 +18,7 @@ export class EventChatViewComponent implements OnInit, OnDestroy {
 
   @Input() orgaID = '';
   @Input() eventID = '';
+  @Input() roleIdInEvent!: number;
 
   chatSubscription?: Subscription;
   chatMessages: string[] = [];

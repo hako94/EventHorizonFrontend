@@ -15,6 +15,7 @@ export class EventMailsettingsViewComponent {
 
   @Input() orgaID = '';
   @Input() eventID = '';
+  @Input() roleIdInEvent!: number;
 
   availableMailTemplates : EmailTemplateModel[] = [];
   usedMailTemplates : NotificationInfoModel[] = [];
@@ -31,6 +32,9 @@ export class EventMailsettingsViewComponent {
   }
 
   ngOnInit(): void {
+    if (this.roleIdInEvent != 10) {
+      this.router.navigate(['/organizations/' + this.orgaID + '/event/' + this.eventID + '/details'], {queryParams: {view: 'description'}});
+    }
     this.dataService.getEmailTemplates(this.orgaID).subscribe(success => {
       this.availableMailTemplates = success;
     }, error => {

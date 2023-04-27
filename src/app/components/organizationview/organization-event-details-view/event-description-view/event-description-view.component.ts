@@ -12,6 +12,7 @@ export class EventDescriptionViewComponent implements OnInit {
 
   @Input() orgaID = '';
   @Input() eventID = '';
+  @Input() roleIdInEvent!: number;
 
   shownimage: any;
   eventModel? : OrganizationEventModel;

@@ -3,6 +3,7 @@ import {DataService} from "../../../../services/DataService";
 import {StorageService} from "../../../../services/StorageService";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {EventInviteModel} from "../../../../models/EventInviteModel";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-event-invites-view',
@@ -19,14 +20,17 @@ export class EventInvitesViewComponent {
 
   @Input() orgaID = '';
   @Input() eventID = '';
+  @Input() roleIdInEvent!: number;
 
   invitedUsers : EventInviteModel[] = [];
 
-  constructor(private dataService : DataService, private storageService : StorageService, private snackBar : MatSnackBar) {
-
+  constructor(private dataService : DataService, private storageService : StorageService, private snackBar : MatSnackBar, private router: Router) {
   }
 
   ngOnInit(): void {
+    if (this.roleIdInEvent == 12) {
+      this.router.navigate(['/organizations/' + this.orgaID + '/event/' + this.eventID + '/details'], {queryParams: {view: 'description'}});
+    }
     this.dataService.getEventInvites(this.orgaID, this.eventID).subscribe(success => {
       this.invitedUsers = success;
       console.log(this.invitedUsers);

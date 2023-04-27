@@ -368,7 +368,7 @@ export class DataService {
 
   inviteUserToEvent(orgId: string, eventId: string, userId: string, role: number): Observable<any> {
     return this.http.post<any>(
-      BACKEND_API + 'api/v1/organization' + orgId + 'event' + eventId + 'invite',
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/invite',
       {
         userId: userId,
         role: {
@@ -530,6 +530,13 @@ export class DataService {
   getSingleEvent(orgaID: string, eventID: string) : Observable<OrganizationEventModel> {
     return this.http.get<OrganizationEventModel>(
       BACKEND_API + 'api/v1/organization/' + orgaID + '/event/' + eventID
+    )
+  }
+
+  getUserRoleForEvent(orgId: string, eventId: string): Observable<UserRoleModel>{
+    return this.http.get<UserRoleModel>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/role',
+      httpOptions
     )
   }
 }

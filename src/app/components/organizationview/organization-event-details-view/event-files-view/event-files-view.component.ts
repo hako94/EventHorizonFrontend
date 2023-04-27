@@ -9,5 +9,6 @@ export class EventFilesViewComponent {
 
   @Input() orgaID = '';
   @Input() eventID = '';
+  @Input() roleIdInEvent!: number;
 
 }

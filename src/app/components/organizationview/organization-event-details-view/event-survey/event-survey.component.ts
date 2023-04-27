@@ -27,6 +27,7 @@ export class EventSurveyComponent implements OnInit{
 
   @Input() orgaID = '';
   @Input() eventID = '';
+  @Input() roleIdInEvent!: number;
 
   currentParam? : Params;
 
