@@ -1,9 +1,10 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ChatModel} from "../../../../models/ChatModel";
+import {ChatAnswerModel} from "../../../../models/ChatAnswerModel";
 import {SocketService} from "../../../../services/SocketService";
 import {DataService} from "../../../../services/DataService";
 import {DatePipe} from "@angular/common";
-import {interval, of, Subscription} from "rxjs";
+import {interval, Subscription} from "rxjs";
 import {Message} from "@stomp/stompjs";
 import {StorageService} from "../../../../services/StorageService";
 
@@ -14,17 +15,17 @@ import {StorageService} from "../../../../services/StorageService";
 })
 export class EventChatViewComponent implements OnInit, OnDestroy {
 
-  connected : boolean = false;
+  connected: boolean = false;
 
   @Input() orgaID = '';
   @Input() eventID = '';
   @Input() roleIdInEvent!: number;
 
   chatSubscription?: Subscription;
-  chatMessages: string[] = [];
+  chatMessages: ChatAnswerModel[] = [];
   private readonly MAX_CHAT_MESSAGES = 50;
 
-  subscription : Subscription;
+  subscription: Subscription;
 
   constructor(private socketService: SocketService, private storageService: StorageService, private dataService: DataService, private datepipe: DatePipe) {
     const source = interval(900);
@@ -36,16 +37,20 @@ export class EventChatViewComponent implements OnInit, OnDestroy {
     this.watchSocket()
     this.dataService.getChatHistory(this.orgaID, this.eventID).subscribe(success => {
       for (const chatMessage of success) {
-        const formattedMessage = "[" + new DatePipe('de-DE').transform(chatMessage.timestamp, 'dd.MM.yyyy HH:mm:ss') + " | " + chatMessage.sender + "] " + chatMessage.message;
-        this.chatMessages.push(formattedMessage);
+        const chatAnswer: ChatAnswerModel = {
+          priority: chatMessage.priority,
+          timestamp: chatMessage.timestamp,
+          sender: chatMessage.sender,
+          message: chatMessage.message
+        };
 
-        if (this.chatSubscription) {
-          this.subscription.unsubscribe()
-          this.connected = true;
-        }
+        this.chatMessages.push(chatAnswer);
+      }
+      if (this.chatSubscription) {
+        this.subscription.unsubscribe()
+        this.connected = true;
       }
     })
-
   }
 
   ngOnDestroy(): void {
@@ -54,16 +59,26 @@ export class EventChatViewComponent implements OnInit, OnDestroy {
 
   watchSocket() {
     this.chatSubscription = this.socketService.watch('/topic/' + this.orgaID + '/' + this.eventID).subscribe((message: Message) => {
-      //this.socketValue = message.body;
-      this.addChatMessage(message.body);
+      const messageData = JSON.parse(message.body);
+      const chatMessage: ChatAnswerModel = {
+        sender: messageData.sender,
+        message: messageData.message,
+        priority: messageData.priority,
+        timestamp: messageData.message
+      };
+      this.addChatMessage(chatMessage);
     });
   }
 
-  addChatMessage(message: string) {
+  addChatMessage(message: ChatAnswerModel) {
     this.chatMessages.push(message); // Fügt die neue Nachricht am Ende des Arrays an
     if (this.chatMessages.length > this.MAX_CHAT_MESSAGES) {
       this.chatMessages.shift(); // Entfernt die älteste Nachricht, wenn das Array die maximale Größe erreicht
     }
+  }
+
+  getUserEmail() : string {
+    return this.storageService.getEmail()
   }
 
   unWatchSocjet() {
@@ -77,6 +92,7 @@ export class EventChatViewComponent implements OnInit, OnDestroy {
     const model: ChatModel = {
       orgId: this.orgaID,
       eventId: this.eventID,
+      priority: false,
       message: chat
     }
     const message = JSON.stringify(model);

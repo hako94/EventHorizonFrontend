@@ -19,6 +19,7 @@ import {EventInviteModel} from "../models/EventInviteModel";
 import {UserForEventWithRoleModel} from "../models/UserForEventWithRoleModel";
 import {NotificationInfoModel} from "../models/NotificationInfoModel";
 import {UserEventInviteModel} from "../models/UserEventInviteModel";
+import {ChatAnswerModel} from "../models/ChatAnswerModel";
 
 //const BACKEND_API = 'http://localhost:8080/'
 //const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
@@ -310,8 +311,8 @@ export class DataService {
     )
   }
 
-  getChatHistory(orgId: string, eventId: string | undefined): Observable<ChatHistoryModel[]> {
-    return this.http.get<ChatHistoryModel[]>(
+  getChatHistory(orgId: string, eventId: string | undefined): Observable<ChatAnswerModel[]> {
+    return this.http.get<ChatAnswerModel[]>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/chat',
       httpOptions
     )
