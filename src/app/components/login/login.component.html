@@ -12,7 +12,7 @@
         <input matInput name="password" type="password" [(ngModel)]="form.password"><br>
       </mat-form-field>
       <br>
-      <button mat-button class="mr-2" (click)="forgotPassword()" type="button">
+      <button mat-button class="mr-2" (click)="forgotPassword(form.email)" type="button">
         Passwort zurücksetzen
       </button>
       <button [@openClose]="loading ? 'open' : 'closed'" [ngClass]="loading ? 'loadingState' : ''" mat-raised-button
