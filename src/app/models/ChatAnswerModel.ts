@@ -1,6 +1,7 @@
 export interface ChatAnswerModel {
-  sender: string
-  message: string
-  timestamp: string | null
-  priority: boolean
+  sender: string;
+  message: string;
+  username: string;
+  timestamp: string | undefined;
+  priority: boolean;
 }

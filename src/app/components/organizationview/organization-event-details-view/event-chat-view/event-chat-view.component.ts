@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ChatModel} from "../../../../models/ChatModel";
 import {ChatAnswerModel} from "../../../../models/ChatAnswerModel";
 import {SocketService} from "../../../../services/SocketService";
@@ -20,14 +20,18 @@ export class EventChatViewComponent implements OnInit, OnDestroy {
   @Input() orgaID = '';
   @Input() eventID = '';
   @Input() roleIdInEvent!: number;
+  @ViewChild('chatWindow') chatWindow!: ElementRef;
+  @ViewChild('importantWindow') importantWindow!: ElementRef;
 
   chatSubscription?: Subscription;
   chatMessages: ChatAnswerModel[] = [];
   private readonly MAX_CHAT_MESSAGES = 50;
 
   subscription: Subscription;
+  isImportant: boolean = false;
+  selectedTabIndex: number = 0;
 
-  constructor(private socketService: SocketService, private storageService: StorageService, private dataService: DataService, private datepipe: DatePipe) {
+  constructor(private socketService: SocketService, private storageService: StorageService, private dataService: DataService) {
     const source = interval(900);
     const text = 'Your Text Here';
     this.subscription = source.subscribe(val => this.connected = !this.connected);
@@ -40,12 +44,14 @@ export class EventChatViewComponent implements OnInit, OnDestroy {
         const chatAnswer: ChatAnswerModel = {
           priority: chatMessage.priority,
           timestamp: chatMessage.timestamp,
+          username: chatMessage.username,
           sender: chatMessage.sender,
           message: chatMessage.message
         };
 
         this.chatMessages.push(chatAnswer);
       }
+
       if (this.chatSubscription) {
         this.subscription.unsubscribe()
         this.connected = true;
@@ -59,12 +65,15 @@ export class EventChatViewComponent implements OnInit, OnDestroy {
 
   watchSocket() {
     this.chatSubscription = this.socketService.watch('/topic/' + this.orgaID + '/' + this.eventID).subscribe((message: Message) => {
-      const messageData = JSON.parse(message.body);
+      let messageData = JSON.parse(message.body) as string;
+      let jsonString = JSON.parse(messageData);
+
       const chatMessage: ChatAnswerModel = {
-        sender: messageData.sender,
-        message: messageData.message,
-        priority: messageData.priority,
-        timestamp: messageData.message
+        sender: jsonString.sender,
+        message: jsonString.message,
+        username: jsonString.username,
+        priority: jsonString.priority,
+        timestamp: jsonString.timestamp
       };
       this.addChatMessage(chatMessage);
     });
@@ -77,6 +86,17 @@ export class EventChatViewComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom() {
+    try {
+      this.chatWindow.nativeElement.scrollTop = this.chatWindow.nativeElement.scrollHeight;
+      this.importantWindow.nativeElement.scrollTop = this.importantWindow.nativeElement.scrollHeight;
+    } catch (err) {}
+  }
   getUserEmail() : string {
     return this.storageService.getEmail()
   }
@@ -87,12 +107,17 @@ export class EventChatViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  getImportantMessages() {
+    return this.chatMessages.filter(message => message.priority);
+  }
+
   //DANGER ZONE
-  pushMessageToBackend(chat: string) {
+  pushMessageToBackend(chat: string, isImportant: boolean) {
+    const priority = isImportant || (this.selectedTabIndex === 1);
     const model: ChatModel = {
       orgId: this.orgaID,
       eventId: this.eventID,
-      priority: false,
+      priority: priority,
       message: chat
     }
     const message = JSON.stringify(model);
