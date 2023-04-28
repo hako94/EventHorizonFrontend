@@ -1,56 +1,61 @@
-<mat-card class="p-4 m-4">
-  <h1>
-    Live-Chat
-    <mat-icon *ngIf="!connected" color="warn">link_off</mat-icon>
-    <mat-icon *ngIf="connected">link</mat-icon>
-    <mat-icon color="warn" *ngIf="!connected">warning</mat-icon>
-  </h1>
-  <mat-tab-group (selectedTabChange)="selectedTabIndex = $event.index">
-    <mat-tab label="Alle Nachrichten">
-      <div #chatWindow class="chat-window h-48 mb-4 overflow-y-scroll">
-        <div *ngFor="let message of chatMessages" class="bg-gray-200 rounded-lg p-4 mb-4"
-             [ngClass]="{'bg-blue-200': message.sender === getUserEmail(), 'bg-gray-200': message.sender !== getUserEmail()}">
-          <div class="flex justify-between items-center mb-2">
-            <div class="font-bold">{{ message.username }}</div>
-            <div class="flex items-center">
-              <div *ngIf="message.priority"
-                   class="bg-red-100 border border-red-500 text-red-500 px-2 py-1 rounded-lg mr-2 text-xs">Wichtig
+  <mat-card class="p-4 my-4 ml-4 min-h-0">
+    <h1>
+      Live-Chat
+      <mat-icon *ngIf="!connected" color="warn">link_off</mat-icon>
+      <mat-icon *ngIf="connected">link</mat-icon>
+      <mat-icon color="warn" *ngIf="!connected">warning</mat-icon>
+    </h1>
+    <mat-tab-group (selectedTabChange)="selectedTabIndex = $event.index">
+      <mat-tab label="Alle Nachrichten">
+        <div class="chat-window h-48 mb-4 overflow-y-scroll">
+          <div *ngFor="let message of chatMessages" class="bg-gray-200 rounded-lg p-4 mb-4"
+               [ngClass]="{'bg-blue-200': message.sender === getUserEmail(), 'bg-gray-200': message.sender !== getUserEmail()}">
+            <div class="flex justify-between items-center mb-2">
+              <div class="font-bold">{{ message.username }}</div>
+              <div class="flex items-center">
+                <div *ngIf="message.priority"
+                     class="bg-red-100 border border-red-500 text-red-500 px-2 py-1 rounded-lg mr-2 text-xs">Wichtig
+                </div>
+                <div
+                  class="col-6 text-right text-xs text-gray-500">{{ message.timestamp | date:'dd.MM.yyyy HH:mm' }}</div>
               </div>
-              <div class="col-6 text-right text-xs text-gray-500">{{ message.timestamp | date:'dd.MM.yyyy HH:mm' }}</div>            </div>
+            </div>
+            <div class="text-sm break-all">{{ message.message }}</div>
           </div>
-          <div class="text-sm break-all">{{ message.message }}</div>
         </div>
-      </div>
-      <div class="flex items-center">
-        <mat-form-field class="flex-grow mr-2">
-          <mat-label>Nachricht</mat-label>
-          <input matInput #socketInput [disabled]="!subscription.closed">
-        </mat-form-field>
-        <mat-checkbox class="mr-2 h-8 w-8" *ngIf="roleIdInEvent !== 12" [(ngModel)]="isImportant">Priorität
-        </mat-checkbox>
-        <button [disabled]="!subscription.closed" mat-raised-button
-                (click)="pushMessageToBackend(socketInput.value, isImportant)">Absenden
-        </button>
-      </div>
-    </mat-tab>
-    <mat-tab label="Wichtige Nachrichten">
-      <div #importantWindow class="chat-window h-48 mb-4 overflow-y-scroll">
-        <div *ngFor="let message of getImportantMessages()" class="bg-gray-200 rounded-lg p-4 mb-4" [ngClass]="{'bg-blue-200': message.sender === getUserEmail(), 'bg-gray-200': message.sender !== getUserEmail()}">
-          <div class="flex justify-between items-center mb-2">
-            <div class="font-bold">{{ message.username }}</div>
-            <div class="col-6 text-right text-xs text-gray-500">{{ message.timestamp | date:'dd.MM.yyyy HH:mm' }}</div>          </div>
-          <div class="text-sm break-all">{{ message.message }}</div>
+        <div class="flex items-center">
+          <mat-form-field class="flex-grow mr-2">
+            <mat-label>Nachricht</mat-label>
+            <input matInput #socketInput [disabled]="!subscription.closed">
+          </mat-form-field>
+          <mat-checkbox class="mr-2 h-8 w-8" *ngIf="roleIdInEvent !== 12" [(ngModel)]="isImportant">Priorität
+          </mat-checkbox>
+          <button [disabled]="!subscription.closed" mat-raised-button
+                  (click)="pushMessageToBackend(socketInput.value, isImportant)">Absenden
+          </button>
         </div>
-      </div>
-      <div class="flex items-center" *ngIf="roleIdInEvent !== 12">
-        <mat-form-field class="flex-grow mr-2">
-          <mat-label>Nachricht</mat-label>
-          <input matInput #socketInput [disabled]="!subscription.closed">
-        </mat-form-field>
-        <button [disabled]="!subscription.closed" mat-raised-button
-                (click)="pushMessageToBackend(socketInput.value, true)">Absenden
-        </button>
-      </div>
-    </mat-tab>
-  </mat-tab-group>
-</mat-card>
+      </mat-tab>
+      <mat-tab label="Wichtige Nachrichten">
+        <div class="chat-window h-48 mb-4 overflow-y-scroll">
+          <div *ngFor="let message of getImportantMessages()" class="bg-gray-200 rounded-lg p-4 mb-4"
+               [ngClass]="{'bg-blue-200': message.sender === getUserEmail(), 'bg-gray-200': message.sender !== getUserEmail()}">
+            <div class="flex justify-between items-center mb-2">
+              <div class="font-bold">{{ message.username }}</div>
+              <div
+                class="col-6 text-right text-xs text-gray-500">{{ message.timestamp | date:'dd.MM.yyyy HH:mm' }}</div>
+            </div>
+            <div class="text-sm break-all">{{ message.message }}</div>
+          </div>
+        </div>
+        <div class="flex items-center" *ngIf="roleIdInEvent !== 12">
+          <mat-form-field class="flex-grow mr-2">
+            <mat-label>Nachricht</mat-label>
+            <input matInput #socketInput [disabled]="!subscription.closed">
+          </mat-form-field>
+          <button [disabled]="!subscription.closed" mat-raised-button
+                  (click)="pushMessageToBackend(socketInput.value, true)">Absenden
+          </button>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card>

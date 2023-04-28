@@ -1,9 +1,8 @@
-import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ChatModel} from "../../../../models/ChatModel";
 import {ChatAnswerModel} from "../../../../models/ChatAnswerModel";
 import {SocketService} from "../../../../services/SocketService";
 import {DataService} from "../../../../services/DataService";
-import {DatePipe} from "@angular/common";
 import {interval, Subscription} from "rxjs";
 import {Message} from "@stomp/stompjs";
 import {StorageService} from "../../../../services/StorageService";
@@ -20,8 +19,9 @@ export class EventChatViewComponent implements OnInit, OnDestroy {
   @Input() orgaID = '';
   @Input() eventID = '';
   @Input() roleIdInEvent!: number;
-  @ViewChild('chatWindow') chatWindow!: ElementRef;
-  @ViewChild('importantWindow') importantWindow!: ElementRef;
+  @ViewChild('chatWindow') chatWindow!: any;
+  @ViewChild('importantWindow') importantWindow!: any;
+  @ViewChild('socketInput') socketInput!: any;
 
   chatSubscription?: Subscription;
   chatMessages: ChatAnswerModel[] = [];
@@ -93,9 +93,15 @@ export class EventChatViewComponent implements OnInit, OnDestroy {
 
   scrollToBottom() {
     try {
-      this.chatWindow.nativeElement.scrollTop = this.chatWindow.nativeElement.scrollHeight;
-      this.importantWindow.nativeElement.scrollTop = this.importantWindow.nativeElement.scrollHeight;
-    } catch (err) {}
+      const chatWindow = document.querySelector('.chat-window');
+      const importantWindow = document.querySelector('.important-window');
+      if (chatWindow) {
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      }
+      if (importantWindow) {
+        importantWindow.scrollTop = importantWindow.scrollHeight;
+      }
+    } catch (err) { }
   }
   getUserEmail() : string {
     return this.storageService.getEmail()
@@ -113,6 +119,10 @@ export class EventChatViewComponent implements OnInit, OnDestroy {
 
   //DANGER ZONE
   pushMessageToBackend(chat: string, isImportant: boolean) {
+    if (!chat.trim()) { // prüft, ob die Nachricht leer oder nur aus Leerzeichen besteht
+      return; // beendet die Methode, wenn die Nachricht leer ist
+    }
+
     const priority = isImportant || (this.selectedTabIndex === 1);
     const model: ChatModel = {
       orgId: this.orgaID,
@@ -122,6 +132,9 @@ export class EventChatViewComponent implements OnInit, OnDestroy {
     }
     const message = JSON.stringify(model);
     this.socketService.publish({destination: '/app/events/chats', body: message});
+
+    this.socketInput.nativeElement.value = '';
+    this.isImportant = false;
   }
 
 }
