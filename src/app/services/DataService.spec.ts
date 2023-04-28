@@ -3,16 +3,12 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import {DataService} from './DataService';
 import {OrganizationModel} from '../models/OrganizationModel';
 import {OrganizationEventModel} from '../models/OrganizationEventModel';
-import {CreateEventModel} from '../models/CreateEventModel';
 import {OrganizationUserModel} from '../models/OrganizationUserModel';
 import {EventTemplateModel} from '../models/EventTemplateModel';
 import {AvailableTemplateList} from '../models/AvailableTemplateList';
-import {ChatHistoryModel} from '../models/ChatHistoryModel';
 import {EventQuestionnairesModel} from '../models/EventQuestionnairesModel';
 import {UserAtEventModel} from '../models/UserAtEventModel';
 import {environment} from '../../environments/environment';
-import {UserRoleModel} from "../models/UserRoleModel";
-import {ChildEvent} from "../models/ChildEventModel";
 import {EventTemplatePrefillModel} from "../models/EventTemplatePrefillModel";
 
 describe('DataService', () => {
@@ -79,7 +75,6 @@ describe('DataService', () => {
 
   it('should post event in organization', () => {
     const orgId = 'dummyOrgId';
-    const dummyCreateEventModel: {} = {};
 
     service.postEventInOrganizationAndPersist(orgId, {
       name: "hello",
@@ -157,7 +152,7 @@ describe('DataService', () => {
       expect(template).toEqual(mockResponse);
     });
 
-    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/events/eventtemplates/${templateId}`);
+    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/eventtemplate/${templateId}`);
     expect(req.request.method).toBe('GET');
     req.flush(mockResponse);
   });
@@ -184,7 +179,7 @@ describe('DataService', () => {
       expect(savedTemplate).toEqual(mockResponse);
     });
 
-    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/events/eventtemplates`);
+    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/eventtemplates`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(template);
     req.flush(mockResponse);
@@ -321,7 +316,7 @@ describe('DataService', () => {
 
     service.getChatHistory(orgId, eventId).subscribe();
 
-    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organizations/${orgId}/events/${eventId}/chat`);
+    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/event/${eventId}/chat`);
     expect(req.request.method).toBe('GET');
     req.flush([]);
   });
@@ -329,7 +324,7 @@ describe('DataService', () => {
   it('should get user management list', () => {
     const orgId = 'org123';
     const eventId = 'event456';
-    const expectedUrl = `${BACKEND_API}api/v1/organizations/${orgId}/events/${eventId}/attendees`;
+    const expectedUrl = `${BACKEND_API}api/v1/organization/${orgId}/event/${eventId}/attendees`;
 
     const expectedUsers: UserAtEventModel[] = [
       {id: 'user1', email: 'test@test.de', vorname: 'Max', nachname: 'Mustermann', here: true},
@@ -353,7 +348,7 @@ describe('DataService', () => {
       {id: 'user1', email: 'test@test.de', vorname: 'Max', nachname: 'Mustermann', here: true},
       {id: 'user2', email: 'test1@test.de', vorname: 'Olaf', nachname: 'Mustermann', here: false},
     ];
-    const expectedUrl = `${BACKEND_API}api/v1/organizations/${orgId}/events/${eventId}/attendees`;
+    const expectedUrl = `${BACKEND_API}api/v1/organization/${orgId}/event/${eventId}/attendees`;
 
     service.saveAttendeesWithPresence(orgId, eventId, users).subscribe(response => {
       expect(response).toBeTruthy();
