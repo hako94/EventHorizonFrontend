@@ -1,4 +1,5 @@
 import {ChildEvent} from "./ChildEventModel";
+import {EventStatusModel} from "./EventStatusModel";
 
 export interface OrganizationEventModel {
   id : string;
@@ -10,6 +11,7 @@ export interface OrganizationEventModel {
   serial : boolean;
   location: string;
   pictureId: string;
+  eventStatus: EventStatusModel;
   organizationId : string;
   organisator : boolean;
   tutor : boolean;

@@ -14,7 +14,6 @@ export class ResetPasswordComponent {
     password: null,
     repeatPassword: null
   };
-
   loading : boolean = false;
 
   constructor(private snackBar : MatSnackBar, private location : Location, private authService : AuthService) {
@@ -26,11 +25,14 @@ export class ResetPasswordComponent {
     if (this.form.password != this.form.repeatPassword){
       this.snackBar.open('Die beiden Felder stimmen nicht überein, bitte nochmal überprüfen!', 'OK', {duration: 5500});
       this.loading = false;
+    } else if (!this.form.password || !this.form.repeatPassword){
+      this.snackBar.open('Alle Felder müssen ausgefüllt sein!', 'OK', {duration: 3500});
+      this.loading = false;
     } else {
-      let resetToken = this.location.path().split('=').at(2)?.toString();
-      console.log(resetToken);
-      //this.authService.resetPassword(email, resetToken, password);
-      //Token string token aus url nach ?
+      let resetToken = this.location.path().split('=').at(1)?.toString();
+      if (resetToken){
+        this.authService.resetPassword(this.form.email, resetToken, this.form.password);
+      }
     }
   }
 }

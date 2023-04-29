@@ -1,6 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {OrganizationEventModel} from "../../../models/OrganizationEventModel";
-import {Subscription} from "rxjs";
 import {SocketService} from "../../../services/SocketService";
 import {Message} from "@stomp/stompjs";
 import {DataService} from "../../../services/DataService";
@@ -18,20 +17,19 @@ import {Router} from "@angular/router";
   styleUrls: ['./event-item.component.scss']
 })
 export class EventItemComponent implements OnInit {
-
-  constructor(private storageService: StorageService,
-              private dataService: DataService,
-              private imageService: ImageGetServiceService,
-              private sanitizer : DomSanitizer,
-              private router : Router) {
-  }
-
-  shownimage : any;
+  shownimage: any;
 
   @Input() orgEvent?: OrganizationEventModel;
   @Input() orgId: string = '';
 
-  @Input() mock : boolean = false;
+  @Input() mock: boolean = false;
+
+  constructor(private storageService: StorageService,
+              private dataService: DataService,
+              private imageService: ImageGetServiceService,
+              private sanitizer: DomSanitizer,
+              private router: Router) {
+  }
 
   ngOnInit(): void {
 
@@ -45,7 +43,7 @@ export class EventItemComponent implements OnInit {
 
       }, error => {
 
-        console.warn("Cant fetch Image for OrgID " + this.orgId + " EventID " + this.orgEvent +  " : " + error.status + " using default Organization Image")
+        console.warn("Cant fetch Image for OrgID " + this.orgId + " EventID " + this.orgEvent + " : " + error.status + " using default Organization Image")
 
         this.dataService.getOrganizationInfos(this.orgId).subscribe(success => {
 
@@ -67,7 +65,7 @@ export class EventItemComponent implements OnInit {
             this.orgEvent.attender = true;
           }
         }
-    });
+      });
   }
 
   signOff() {
@@ -78,7 +76,7 @@ export class EventItemComponent implements OnInit {
             this.orgEvent.attender = false;
           }
         }
-    });
+      });
   }
 
   //DANGER ZONE

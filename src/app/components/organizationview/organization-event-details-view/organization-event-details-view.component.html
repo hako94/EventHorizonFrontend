@@ -40,11 +40,14 @@
        [active]="currentParam == mailsViewParam"
        (click)="updateURLWithParam(mailsViewParam)">Mailversand</a>
   </div>
-  <div *ngIf="hasRole(1) || hasRole(2)"> <!--[disabled]="this.currentEventStatusId == 3" oder ngIf-->
+  <div *ngIf="(hasRole(1) || hasRole(2)) && this.currentEventStatusId == 3">
     <a mat-tab-link
        *ngIf="roleInCurrentEvent.id != 12"
        [active]="currentParam == attendanceViewParam"
        (click)="updateURLWithParam(attendanceViewParam)">Anwesenheit</a>
+  </div>
+  <div *ngIf="(hasRole(1) || hasRole(2)) && this.currentEventStatusId != 3">
+    <a mat-tab-link matTooltip="Anwesenheitsliste nur für gestartete Events verfügbar" disabled>Anwesenheit</a>
   </div>
 </nav>
 <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>

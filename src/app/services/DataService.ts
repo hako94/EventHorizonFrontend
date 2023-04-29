@@ -543,9 +543,8 @@ export class DataService {
   }
 
   getEventStatus(orgId: string, eventId: string): Observable<EventStatusModel>{
-    return this.http.put<any>(
+    return this.http.get<EventStatusModel>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/status',
-      {},
       httpOptions
     )
   }

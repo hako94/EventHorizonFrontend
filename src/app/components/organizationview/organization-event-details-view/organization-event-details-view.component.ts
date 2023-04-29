@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Location} from "@angular/common";
 import {StorageService} from "../../../services/StorageService";
 import {UserRoleModel} from "../../../models/UserRoleModel";
 import {DataService} from "../../../services/DataService";
-import {lastValueFrom} from "rxjs";
-import {EventStatusModel} from "../../../models/EventStatusModel";
+import {lastValueFrom, Subscription} from "rxjs";
+import {EventItemComponent} from "../event-item/event-item.component";
 
 @Component({
   selector: 'app-organization-event-details-view',
@@ -14,23 +14,23 @@ import {EventStatusModel} from "../../../models/EventStatusModel";
 })
 export class OrganizationEventDetailsViewComponent {
 
-  descriptionViewParam : Params = {'view' : 'description'};
-  surveyViewParam : Params = {'view': 'survey'};
-  chatViewParam : Params = {'view' : 'chat'};
-  filesViewParam : Params = {'view' : 'files'};
-  attenderViewParam : Params = {'view' : 'attender'};
-  invitesViewParam : Params = {'view' : 'invites'};
-  mailsViewParam : Params = {'view' : 'mails'};
-  attendanceViewParam : Params = {'view' : 'attendance'};
-  currentOrganization : string = '';
-  currentEvent : string = '';
-  currentEventStatusId : number = 0;
+  descriptionViewParam: Params = {'view': 'description'};
+  surveyViewParam: Params = {'view': 'survey'};
+  chatViewParam: Params = {'view': 'chat'};
+  filesViewParam: Params = {'view': 'files'};
+  attenderViewParam: Params = {'view': 'attender'};
+  invitesViewParam: Params = {'view': 'invites'};
+  mailsViewParam: Params = {'view': 'mails'};
+  attendanceViewParam: Params = {'view': 'attendance'};
+  currentOrganization: string = '';
+  currentEvent: string = '';
+  currentEventStatusId: number = 0;
   roleInCurrentEvent: UserRoleModel = new class implements UserRoleModel {
     id: number = 12;
     role: string = 'Teilnehmer';
   };
 
-  currentParam? : Params;
+  currentParam?: Params;
 
   constructor(private location: Location, private router: Router, private activatedRoute: ActivatedRoute, private storageService: StorageService, private dataService: DataService) {
 
@@ -83,12 +83,13 @@ export class OrganizationEventDetailsViewComponent {
         this.currentParam = this.mailsViewParam;
     });
     this.loadRoleInCurrentEvent();
-    this.dataService.getEventStatus(this.currentOrganization, this.currentEvent).subscribe( success => {
-      this.currentEventStatusId = success.id;
-    })
+    //this.dataService.getEventStatus(this.currentOrganization, this.currentEvent).subscribe(success => {
+    //  this.currentEventStatusId = success.id;
+    //})
+    console.log('Status: ' + this.currentEventStatusId);
   }
 
-  updateURLWithParam(param : Params) : void {
+  updateURLWithParam(param: Params): void {
     console.log(this.currentParam)
 
     this.currentParam = param;
@@ -109,7 +110,7 @@ export class OrganizationEventDetailsViewComponent {
    *
    * @param roleId
    */
-  hasRole(roleId: number) : boolean {
+  hasRole(roleId: number): boolean {
     return this.storageService.getRoleInCurrentOrganization(this.currentOrganization) == roleId;
   }
 }
