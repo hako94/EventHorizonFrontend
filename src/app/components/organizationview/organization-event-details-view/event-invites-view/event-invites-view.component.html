@@ -1,0 +1,52 @@
+<div class="mx-3">
+  <br>
+  <h2>Einladungs-Übersicht</h2>
+  <mat-card>
+    <mat-card-content class="overflow-y-auto max-h-[60vh]">
+      <div class="hidden md:grid md:grid-cols-4 font-bold">
+        <span class="p-2 pt-3">Nachname, Vorname</span>
+        <span class="p-2 pt-3">E-Mail</span>
+        <span class="p-2 pt-3">Rolle</span>
+        <span class="p-2 pt-3"></span>
+      </div>
+      <ng-container *ngFor="let invitedUser of invitedUsers">
+        <mat-divider></mat-divider>
+        <div class="grid grid-cols-1 md:grid-cols-4">
+          <div class="p-2 pt-3 ">{{invitedUser.lastName}}, {{invitedUser.firstName}}</div>
+          <div class="p-2 pt-3 ">{{invitedUser.email}}</div>
+          <div *ngIf="!editMode || editedUser!=invitedUser.id" class="p-2 pt-3">{{invitedUser.role.role}}</div>
+          <div *ngIf="editMode && editedUser==invitedUser.id" class="p-2 pt-3">
+            <mat-form-field appearance="fill">
+              <mat-label>Rolle bearbeiten</mat-label>
+              <mat-select [(value)]="selectedRole">
+                <mat-option value=5>Gast</mat-option>
+                <mat-option value=4>Teilnehmer</mat-option>
+                <mat-option *ngIf="hasRole(2) || hasRole(1) || isTutor()" value=3>Tutor</mat-option>
+                <mat-option *ngIf="hasRole(2) || hasRole(1)" value=2>Organisator</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="justify-self-end flex">
+            <div *ngIf="this.editMode && this.editedUser==invitedUser.id">
+              <button mat-icon-button color="primary" (click)="this.edit(invitedUser.id)">
+                <mat-icon>save</mat-icon>
+              </button>
+            </div>
+            <div *ngIf="!(this.editedUser==invitedUser.id)">
+              <button mat-icon-button color="primary" (click)="this.edit(invitedUser.id)" [disabled]="editMode">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+            <div>
+              <button mat-icon-button color="warn" (click)="deleteInvite(invitedUser.id)" [disabled]="editMode">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <mat-divider></mat-divider>
+    </mat-card-content>
+  </mat-card>
+</div>
+

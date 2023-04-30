@@ -1,41 +1,35 @@
-<br>
-
-<div class="flex sm:flex-row flex-col gap-4 md:ml-4">
-  <div class="w-full sm:w-1/2">
-    <div class="max-sm:ml-3"><h1>Deine Organisationen</h1></div>
-    <div class="overflow-x-hidden overflow-y-auto max-h-[40vh] sm:max-h-screen">
-      <div class="grid lg:grid-cols-4 grid-cols-2 gap-4 justify-start justify-items-center">
-        <div *ngFor="let organization of organizations">
-          <app-organizationitem
-            [id]="organization.id"
-            [description]="organization.description"
-            [name]="organization.name">
-          </app-organizationitem>
-          <br>
-        </div>
-      </div>
-    </div>
-
-  </div>
-  <div class="w-full sm:w-1/2">
-    <div class="max-sm:ml-3"><h1>Event-Radar</h1></div>
-    <div class="overflow-y-auto max-h-[40vh] lg:max-h-screen">
-      <div *ngFor="let event of currentEvents" class="mx-4 sm:ml-0 mb-4">
-        <app-eventradar-item
-          [name]="event.name"
-          [location]="event.location"
-          [id]="event.childId"
-          [organization]="this.getOrganizationNameById(event.organizationId)"
-          [startTime]="event.eventStart"
-          [endTime]="event.eventEnd">
-          <!-- //TODO -->
-        </app-eventradar-item>
+<div class="block lg:flex gap-4 mt-8">
+  <div class="ml-10 mb-10">
+    <h1 class="ml-10">Deine Organisationen</h1>
+    <div class="flex gap-4 flex-wrap gap-y-4">
+      <div class="mb-6" *ngFor="let organization of organizations">
+        <app-organizationitem
+          [id]="organization.id"
+          [description]="organization.description"
+          [name]="organization.name">
+        </app-organizationitem>
         <br>
       </div>
     </div>
   </div>
+  <div class="flex-grow"></div>
+  <div class="mr-10 ml-10 shrink-0">
+    <h1>Event-Radar</h1>
+    <ng-container *ngFor="let event of currentEvents">
+      <app-eventradar-item
+        [name]="event.name"
+        [location]="event.location"
+        [id]="event.id"
+        [organizationId]="event.organizationId"
+        [organizationName]="event.organizationName"
+        [startTime]="event.childs.at(0)?.eventStart || ''"
+        [endTime]="event.childs.at(0)?.eventEnd || ''"
+        [serial]="event.serial"
+        [organisator]="event.organisator"
+        [tutor]="event.tutor"
+        [attender]="event.attender">
+      </app-eventradar-item>
+      <br>
+    </ng-container>
+  </div>
 </div>
-
-
-
-

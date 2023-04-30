@@ -1,10 +1,19 @@
-<div class="mx-3">
-  <p>organization-settings works!</p>
-  <h1>Current Image: </h1>
-  <img [src]="shownimage">
+<div class="mx-3 max-h-[85vh] overflow-y-auto">
+  <br>
+  <h2>Organisations-Logo</h2>
+  <div *ngIf="shownimage!=undefined" class="max-h-[45vh]"><img class="max-h-[20vh]" [src]="shownimage"></div>
+  <div *ngIf="shownimage==undefined"><p>Kein Organisations-Logo ausgewählt</p></div>
 
   <br><br>
-  <h1>Upload image</h1>
-  <label>Upload a File</label>
-  <input (change)="onFileSelected($event)" type="file" #fileUpload>
+  <h2>Logo hochladen</h2>
+
+  <div class="mb-8 max-w-[400px] h-[200px] border-2 relative" >
+    <label style="color: #e5e7eb">Drag and Drop</label>
+    <div class="h-full flex flex-col items-center justify-center z-0">
+      <mat-icon class="w-32 h-32 scale-[3]">upload</mat-icon>
+      <label class="mt-8">Dateien hier ablegen oder klicken zum auswählen</label>
+    </div>
+    <input class="max-w-[400px] max-h-[200px] opacity-0 z-20 absolute top-0" (change)="onFileSelected($event)" type="file" #fileUpload>
+  </div>
 </div>
+

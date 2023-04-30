@@ -3,16 +3,13 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import {DataService} from './DataService';
 import {OrganizationModel} from '../models/OrganizationModel';
 import {OrganizationEventModel} from '../models/OrganizationEventModel';
-import {CreateEventModel} from '../models/CreateEventModel';
 import {OrganizationUserModel} from '../models/OrganizationUserModel';
 import {EventTemplateModel} from '../models/EventTemplateModel';
 import {AvailableTemplateList} from '../models/AvailableTemplateList';
-import {ChatHistoryModel} from '../models/ChatHistoryModel';
 import {EventQuestionnairesModel} from '../models/EventQuestionnairesModel';
 import {UserAtEventModel} from '../models/UserAtEventModel';
 import {environment} from '../../environments/environment';
-import {UserRoleModel} from "../models/UserRoleModel";
-import {ChildEvent} from "../models/ChildEventModel";
+import {EventTemplatePrefillModel} from "../models/EventTemplatePrefillModel";
 
 describe('DataService', () => {
   let service: DataService;
@@ -48,22 +45,23 @@ describe('DataService', () => {
   it('should retrieve organization events', () => {
     const orgId = 'dummyOrgId';
     const dummyOrganizationEvents: OrganizationEventModel[] = [{
-      id : '123',
-      name : 'testname',
-      description : 'testbeschreibung',
-      childs : [{
-        childId : '456',
-        eventStart : '219203',
-        eventEnd : '23456',
+      id: '123',
+      name: 'testname',
+      organizationName: 'testorganisation',
+      description: 'testbeschreibung',
+      childs: [{
+        childId: '456',
+        eventStart: '219203',
+        eventEnd: '23456',
       }],
-      parentId : '789',
-      serial : false,
+      parentId: '789',
+      serial: false,
       location: 'hier',
       pictureId: 'tz76',
-      organizationId : '654',
-      organisator : true,
-      tutor : false,
-      attender : false,
+      organizationId: '654',
+      organisator: true,
+      tutor: false,
+      attender: false,
     }];
 
     service.getOrganizationEvents(orgId).subscribe((events) => {
@@ -77,7 +75,6 @@ describe('DataService', () => {
 
   it('should post event in organization', () => {
     const orgId = 'dummyOrgId';
-    const dummyCreateEventModel: {} = {};
 
     service.postEventInOrganizationAndPersist(orgId, {
       name: "hello",
@@ -145,34 +142,44 @@ describe('DataService', () => {
     const orgId = '123';
     const templateId = '456';
     const mockResponse: EventTemplateModel = {
+      id: templateId,
       name: templateId,
-      organizationId: orgId,
-      variables: [{name: 'one', label: 'two'}]
+      description: 'test',
+      pictureId: 'pic',
     };
 
-    service.loadTemplate(orgId, templateId).subscribe((template) => {
+    service.loadTemplateBasedOnId(orgId, templateId).subscribe((template) => {
       expect(template).toEqual(mockResponse);
     });
 
-    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/events/eventtemplates/${templateId}`);
+    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/eventtemplate/${templateId}`);
     expect(req.request.method).toBe('GET');
     req.flush(mockResponse);
   });
 
   it('should save event template', () => {
     const orgId = '123';
-    const template: EventTemplateModel = {name: '123', organizationId: orgId, variables: [{name: 'one', label: 'two'}]};
-    const mockResponse: EventTemplateModel = {
-      name: '456',
-      organizationId: orgId,
-      variables: [{name: 'one', label: 'two'}]
+    const templateId = '456';
+    const template: EventTemplatePrefillModel = {
+      name: templateId,
+      location: 'hier',
+      description: 'test',
+      eventType: 'single',
+      childs: [],
+    };
+    const mockResponse: EventTemplatePrefillModel = {
+      name: templateId,
+      location: 'hier',
+      description: 'test',
+      eventType: 'single',
+      childs: [],
     };
 
     service.safeTemplate(orgId, template).subscribe((savedTemplate) => {
       expect(savedTemplate).toEqual(mockResponse);
     });
 
-    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/events/eventtemplates`);
+    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/eventtemplates`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(template);
     req.flush(mockResponse);
@@ -309,7 +316,7 @@ describe('DataService', () => {
 
     service.getChatHistory(orgId, eventId).subscribe();
 
-    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organizations/${orgId}/events/${eventId}/chat`);
+    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/event/${eventId}/chat`);
     expect(req.request.method).toBe('GET');
     req.flush([]);
   });
@@ -317,14 +324,14 @@ describe('DataService', () => {
   it('should get user management list', () => {
     const orgId = 'org123';
     const eventId = 'event456';
-    const expectedUrl = `${BACKEND_API}api/v1/organizations/${orgId}/events/${eventId}/attendees`;
+    const expectedUrl = `${BACKEND_API}api/v1/organization/${orgId}/event/${eventId}/attendees`;
 
     const expectedUsers: UserAtEventModel[] = [
       {id: 'user1', email: 'test@test.de', vorname: 'Max', nachname: 'Mustermann', here: true},
       {id: 'user2', email: 'test1@test.de', vorname: 'Olaf', nachname: 'Mustermann', here: false},
     ];
 
-    service.getUserManagementList(orgId, eventId).subscribe(users => {
+    service.getAttendeesWithPresence(orgId, eventId).subscribe(users => {
       expect(users).toEqual(expectedUsers);
     });
 
@@ -341,9 +348,9 @@ describe('DataService', () => {
       {id: 'user1', email: 'test@test.de', vorname: 'Max', nachname: 'Mustermann', here: true},
       {id: 'user2', email: 'test1@test.de', vorname: 'Olaf', nachname: 'Mustermann', here: false},
     ];
-    const expectedUrl = `${BACKEND_API}api/v1/organizations/${orgId}/events/${eventId}/attendees`;
+    const expectedUrl = `${BACKEND_API}api/v1/organization/${orgId}/event/${eventId}/attendees`;
 
-    service.saveUserManagementList(orgId, eventId, users).subscribe(response => {
+    service.saveAttendeesWithPresence(orgId, eventId, users).subscribe(response => {
       expect(response).toBeTruthy();
     });
 

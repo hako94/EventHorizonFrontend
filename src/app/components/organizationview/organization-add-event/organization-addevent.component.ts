@@ -2,24 +2,21 @@ import {Component} from '@angular/core';
 import {DataService} from "../../../services/DataService";
 import {Location} from "@angular/common";
 import {AddEventCustomField} from "../../../dataobjects/AddEventCustomField";
-import {Observable, of} from "rxjs";
-import {FormControl} from "@angular/forms";
+import {min, Observable, of} from "rxjs";
+import {FormControl, FormGroupDirective, NgForm} from "@angular/forms";
 import {EventTemplateModel} from "../../../models/EventTemplateModel";
-import {VariableTemplate} from "../../../models/VariableTemplate";
 import {AvailableTemplateList} from "../../../models/AvailableTemplateList";
 import {Router} from "@angular/router";
+import {ChildEvent} from "../../../models/ChildEventModel";
+import {EventTemplatePrefillModel} from "../../../models/EventTemplatePrefillModel";
+import {EmailTemplateModel} from "../../../models/EmailTemplateModel";
+import {ErrorStateMatcher} from "@angular/material/core";
 
 export interface createInterfaceTemplateBasic {
   eventName : string,
   eventDescription : string,
   location : string,
   eventType : string
-}
-
-export interface childEventTemplate {
-  id: number,
-  eventStart : string,
-  eventEnd : string
 }
 
 export interface dateSlotHolder {
@@ -65,10 +62,17 @@ export interface RequestModel extends baseModel{
 })
 export class OrganizationAddeventComponent {
 
+  singleStartTime : string = '';
+  singleEndTime : string = '';
+
+  disabledTemplateSafe : boolean = false;
+
   serialEvent : eventRepeatScheme = {
     repeatTimes: "0",
     repeatCycle: 0
   };
+
+  minDate = new Date();
 
   singleStartDate = new FormControl(new Date());
   singleEndDate = new FormControl(new Date());
@@ -78,13 +82,17 @@ export class OrganizationAddeventComponent {
   filesToPersist : FormData[] = [];
 
   startDate = new FormControl(new Date());
-  endDate = new FormControl(new Date());
 
+  endDate = new FormControl(new Date());
   currentOrganization : string = '';
 
+  emailTemplates: EmailTemplateModel[] = [];
+  emailTemplatesInUse : EmailTemplateModel[] = [];
   availableTemplates : AvailableTemplateList[] = []
+  eventTemplates : EventTemplateModel[] = [];
 
   customFields : Array<AddEventCustomField> = [];
+
   customFieldData : Array<string> = [];
 
   files : File[] = [];
@@ -95,8 +103,7 @@ export class OrganizationAddeventComponent {
     location : '',
     eventType: 'single'
   }
-
-  childs : childEventTemplate[] = [];
+  childs : ChildEvent[] = [];
 
   constructor(private dataService : DataService,
               private location : Location,
@@ -120,41 +127,18 @@ export class OrganizationAddeventComponent {
       this.currentOrganization = '';
     }
 
-    this.dataService.getAvailableTemplates(this.currentOrganization).subscribe(success => {
-      this.availableTemplates = success;
-    })
-  }
-  onSelect(event: any) {
-    console.log(event);
-    this.files.push(...event.addedFiles);
+    this.loadTemplates()
+    this.loadEmails()
   }
 
-  onRemove(event: any) {
-    console.log(event);
-    this.files.splice(this.files.indexOf(event), 1);
-  }
-
-  removeValueFromCustomFields(index : number) : void {
-    //TODO test: gut möglich das er hier mit den indizes mal durcheinander kommmt
-      delete this.customFields[index];
-      delete this.customFieldData[index]
-      this.customFields = this.customFields.filter(el => {return el != null});
-    this.customFieldData = this.customFieldData.filter(el => {return el != null});
-  }
-
-  addCustomField(name : string) : void {
-    this.customFields.push({ id: this.customFields.length.toString(), name: name})
-  }
-
-  updateField(i: number, $event: any) {
-    this.customFieldData[i] = $event.target.value;
-
-    console.log(this.customFieldData)
+  validateTimeInput(input : string): boolean {
+    const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/; // Regular expression for hh:mm format
+    return timeRegex.test(input);
   }
 
   persistData() : void {
 
-    console.log("found " + this.childs.length + " child elements to persist")
+    console.warn(this.singleStartDate.value)
 
     let model : baseModel = {
       name : this.form.eventName,
@@ -167,7 +151,7 @@ export class OrganizationAddeventComponent {
         }
     }
 
-    let modelExtended : RequestModel;
+    let modelExtended;
 
     if (this.form.eventType == "single") {
       if (this.singleStartDate.value != null && this.singleEndDate.value != null) {
@@ -186,8 +170,6 @@ export class OrganizationAddeventComponent {
       }
 
     } else if (this.form.eventType == "serial") {
-
-      console.log("serial " + this.startDate.value)
 
       if (this.startDate.value != null && this.endDate.value != null) {
         modelExtended =
@@ -209,7 +191,7 @@ export class OrganizationAddeventComponent {
               ]
           }
       }
-    } else if (this.form.eventType == "multi") {
+    } else {
       modelExtended =
         {
           ...model,
@@ -218,28 +200,37 @@ export class OrganizationAddeventComponent {
         }
     }
 
-    this.persistFiles().subscribe(file => {
+    this.dataService.postEventInOrganizationAndPersist(this.currentOrganization, modelExtended).subscribe(response => {
+      console.log(this.extractIdFromUrl(response.body.toString()))
 
-      this.persistImage().subscribe(image => {
+      this.persistImage(this.extractIdFromUrl(response.body.toString())).subscribe(success => {
 
-        console.log(file + " " + image)
+        this.persistFiles().subscribe(success => {
+          console.log("request vollständig")
+        }, error => {
+          //TODO rollback
+          console.log("konnte die Dateien nicht hochladen")
+        }, ()=> {
+          console.log("finishing request ...")
+          this.router.navigate(['/organizations/' + this.currentOrganization], {queryParams: {view: 'events'}});
+        })
 
-        this.dataService.postEventInOrganizationAndPersist(this.currentOrganization, modelExtended).subscribe();
-
-      })
-
-    })
-
+      }, error => { console.log(error) })
+    });
+  }
+  extractIdFromUrl(url: string): string {
+    const parts = url.split('/');
+    return parts[parts.length - 1];
   }
 
-  persistImage() : Observable<any> {
-    return of("done")
-    //TODO unterscheiden zwischen Bild und anderen Dateien
-    /*if (this.filesToPersist.length > 0 && this.filesToPersist.at(0)) {
-      return this.dataService.storeEventImage(this.filesToPersist[0], this.currentOrganization);
+
+  persistImage(id : string) : Observable<any> {
+    if (this.filesToPersist.length > 0 && this.filesToPersist.at(0)) {
+      return this.dataService.storeEventImage(this.filesToPersist[0], this.currentOrganization, id);
     } else {
-      return of("No files to persist found");
-    }*/
+      console.log(this.filesToPersist.length + " i " + this.filesToPersist.at(0))
+      throw new Error()
+    }
   }
 
   persistFiles() : Observable<any> {
@@ -247,31 +238,17 @@ export class OrganizationAddeventComponent {
     return of("No files to persist found");
   }
 
-  loadTemplate(value: string) {
-    this.dataService.loadTemplate(this.currentOrganization,value).subscribe(success => {
-        success.variables.forEach(template => {
-          this.customFields.push({id: this.customFields.length.toString(), name: template.name})
-        })
-      }
-    )
+  loadEmails() : void {
+    this.dataService.getEmailTemplates(this.currentOrganization).subscribe(templates => {
+      this.emailTemplates = templates;
+    })
   }
 
-  onSubmitTemplate(name : string) {
-    const variableTemplate : Array<VariableTemplate> = []
-
-    this.customFields.forEach(field => {
-      variableTemplate.push({name: field.name, label: field.name})
-    })
-
-    const submitedTemplate : EventTemplateModel = {
-        name: name,
-        organizationId: this.currentOrganization,
-        variables: variableTemplate
-    }
-
-    this.dataService.safeTemplate(this.currentOrganization, submitedTemplate).subscribe(success => {
-      console.log(success)
-    })
+  loadTemplates() {
+    this.dataService.loadTemplates(this.currentOrganization).subscribe(templates => {
+        this.eventTemplates = templates;
+      }
+    )
   }
 
   onFileSelected(event : any) {
@@ -324,7 +301,7 @@ export class OrganizationAddeventComponent {
     if (eventStart != null && eventEnd != null) {
       this.childs.push(
         {
-          id: this.childs.length,
+          childId: this.childs.length + "",
           eventStart: this.dateToLocalDateTimeString(eventStart),
           eventEnd: this.dateToLocalDateTimeString(eventEnd)
         }
@@ -333,14 +310,111 @@ export class OrganizationAddeventComponent {
     console.log(this.childs)
   }
 
-  deleteChildEvent(id: number) {
-    delete this.childs[id];
+  deleteChildEvent(id: string) {
     this.childs = this.childs
-        .filter(el => {return el != null})
-        .map((el, index) => {return { ...el, id: index}})
+      .filter(el => {return el.childId != id})
+      .filter(el => {return el != null})
+      .map((el, index) => {return { ...el, id: index}})
   }
 
   goBack() : void {
     this.location.back()
   }
+
+  persistTemplate() {
+    this.disabledTemplateSafe = true;
+
+    if (this.form.eventType == "single" && this.singleStartDate != null && this.singleEndDate != null) {
+
+      let template : EventTemplatePrefillModel = {
+        name : this.form.eventName,
+        description : this.form.eventDescription,
+        location : this.form.location,
+        eventType : this.form.eventType,
+        childs:
+          [
+            {
+              eventStart: this.dateToLocalDateTimeString(this.singleStartDate.value || new Date()),
+              eventEnd: this.dateToLocalDateTimeString(this.singleEndDate.value || new Date())
+            }
+          ],
+        serial: (this.childs.length > 1)
+      }
+
+      this.dataService.safeTemplate(this.currentOrganization, template).subscribe()
+
+    } else {
+
+      let template : EventTemplatePrefillModel = {
+        name : this.form.eventName,
+        description : this.form.eventDescription,
+        location : this.form.location,
+        eventType : this.form.eventType,
+        childs : this.childs,
+        serial: (this.childs.length > 1)
+      }
+
+      this.dataService.safeTemplate(this.currentOrganization, template).subscribe()
+
+    }
+  }
+
+  loadTemplateWithId(id: string) {
+    this.dataService.loadTemplateBasedOnId(this.currentOrganization,id).subscribe(template => {
+      this.form.eventName = template.name;
+      this.form.location = template.location;
+      this.form.eventDescription = template.description;
+
+      if (template.childs != null) {
+        if (template.childs.length == 1) {
+          this.form.eventType = "single";
+
+          this.singleStartDate.setValue(new Date(template.childs[0].eventStart));
+          this.singleEndDate.setValue(new Date(template.childs[0].eventEnd))
+
+          this.singleEndTime = (template.childs[0].eventEnd.split('T').at(1) || "0").slice(0, 5);
+          this.singleStartTime = (template.childs[0].eventStart.split('T').at(1) || "0").slice(0, 5);
+
+          this.attachTimeToDate(this.singleStartDate, this.singleStartTime);
+          this.attachTimeToDate(this.singleEndDate, this.singleEndTime);
+
+        } else if (template.childs.length == 2) {
+          this.form.eventType = "multi";
+
+          this.childs = [];
+
+          template.childs.forEach(childDate => {
+            this.childs.push(childDate)
+          })
+        }
+      }
+    })
+  }
+
+  removeValueFromInUseEmails(id: string) {
+    this.emailTemplatesInUse = this.emailTemplatesInUse.filter(val => { return val.id != id })
+  }
+
+  addValueToInUseEmails(emailTemplate: EmailTemplateModel) {
+    if (!this.emailTemplatesInUse.includes(emailTemplate)) {
+      this.emailTemplatesInUse.push(emailTemplate);
+    }
+  }
+
+  protected readonly Number = Number;
+
+  attachTimeToDate(date: FormControl<Date | null>, time: string) {
+
+    let hours = Number(time.split(':').at(0));
+    let minutes = Number(time.split(':').at(1));
+
+    if (hours) {
+      date.value?.setHours(hours);
+    }
+    if (minutes) {
+      date.value?.setMinutes(minutes)
+    }
+  }
+
+  protected readonly Date = Date;
 }

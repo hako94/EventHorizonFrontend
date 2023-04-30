@@ -18,7 +18,6 @@ export class AppComponent implements OnInit{
               private csrfService : CsrfService,
               private router: Router,
               private activeRoute : ActivatedRoute,
-
               private location : Location) { }
 
   ngOnInit(): void {
@@ -27,7 +26,8 @@ export class AppComponent implements OnInit{
     //TODO: safe check
     if (!this.storageService.getUser() &&
         !this.location.path().includes("newUser") &&
-        !this.location.path().includes("register")) {
+        !this.location.path().includes("register") &&
+        !this.location.path().includes("resetpassword")) {
 
       this.router.navigate(['/login']);
 

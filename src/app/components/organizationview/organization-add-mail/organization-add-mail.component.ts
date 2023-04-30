@@ -47,7 +47,7 @@ export class OrganizationAddMailComponent {
     } else {
       this.dataService.postMailTemplate(this.mailName, this.orgaID, this.mailSubject, this.mailText).subscribe(() => {
         this.snackBar.open('Mail-Vorlage erfolgreich abgespeichert', 'OK', {duration: 3500});
-        this.router.navigateByUrl('/organizations/' + this.orgaID);
+        this.router.navigate(['/organizations/' + this.orgaID], {queryParams: {view: 'mails'}});
       }, error => {
         this.snackBar.open('Fehler: Vorlage konnte nicht gespeichert werden', 'OK', {duration: 3500});
       });
@@ -59,6 +59,6 @@ export class OrganizationAddMailComponent {
    */
   discardTemplate() {
     this.snackBar.open('Vorlage verworfen', 'OK', {duration: 3000});
-    this.router.navigateByUrl('/organizations/' + this.orgaID);
+    this.router.navigate(['/organizations/' + this.orgaID], {queryParams: {view: 'mails'}});
   }
 }

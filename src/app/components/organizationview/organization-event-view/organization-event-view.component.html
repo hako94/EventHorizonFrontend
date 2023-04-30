@@ -1,15 +1,50 @@
 <div>
-  <h1>Filter</h1>
-</div>
-<div class="mx-3">
-  <div class="max-h-[80vh] overflow-y-auto">
+  <div class="mx-3"> <!-- min-h-0 h-[calc(100vh-120px)] overflow-x-hidden overflow-y-scroll -->
+    <div class="mt-6">
+      <h2>Event-Übersicht</h2>
+      <div class="flex">
+        <mat-form-field>
+          <mat-label>Suchen</mat-label>
+          <input [(ngModel)]="searchText" matInput>
+        </mat-form-field>
+        <mat-form-field class="ml-2" appearance="fill">
+          <mat-label>Datum</mat-label>
+          <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+            <input (dateChange)="onFilterChange()" formControlName="start" matStartDate placeholder="Start date">
+            <input (dateChange)="onFilterChange()" formControlName="end" matEndDate placeholder="End date">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+        <mat-form-field class="ml-2" appearance="fill">
+          <mat-label>Rolle</mat-label>
+          <mat-select [(value)]="selected" (selectionChange)="onFilterChange()">
+            <mat-option [value]="'all'">Alle</mat-option>
+            <mat-option [value]="'organizer'">Organisator</mat-option>
+            <mat-option [value]="'tutor'">Tutor</mat-option>
+            <mat-option [value]="'attende'">Teilnehmer</mat-option>
+            <mat-option [value]="'noattende'">Offen</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="ml-2" appearance="fill">
+          <mat-label>Event-Typ</mat-label>
+          <mat-select [(value)]="selectedTyp" (selectionChange)="onFilterChange()">
+            <mat-option [value]="'all'">Alle</mat-option>
+            <mat-option [value]="'single'">EinzelEvents</mat-option>
+            <mat-option [value]="'multi'">Serienevents</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="max-h-[65vh] overflow-y-auto">
+      <ng-container *ngFor="let event of filteredEvents | appFilter: searchText">
+        <app-event [orgEvent]="event" [orgId]="orgaID"></app-event>
+      </ng-container>
+    </div>
     <br>
-    <h2>Events</h2>
-    <ng-container *ngFor="let event of events">
-      <app-event [orgEvent]="event" [orgId]="orgaID"></app-event>
-    </ng-container>
-    <br>
+    <button mat-raised-button color="primary"
+            [routerLink]="'/organizations/' + orgaID + '/addEvent'"
+            [queryParams]=" { 'origin' : 'event-view', 'methode' : 'create' } ">
+      <mat-icon>add</mat-icon>Event</button>
   </div>
-  <br>
-  <button mat-raised-button color="primary" routerLink="/organizations/{{orgaID}}/addEvent"><mat-icon>add</mat-icon> Event</button>
 </div>

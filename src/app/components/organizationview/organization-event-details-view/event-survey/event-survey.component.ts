@@ -1,8 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {EventQuestionnairesModel} from "../../../../models/EventQuestionnairesModel";
+import {QuestionModel} from "../../../../models/QuestionModel";
 import {Location} from "@angular/common";
-import {DataService} from "../../../services/DataService";
-import {EventQuestionnairesModel} from "../../../models/EventQuestionnairesModel";
-import {QuestionModel} from "../../../models/QuestionModel";
+import {DataService} from "../../../../services/DataService";
+import {StorageService} from "../../../../services/StorageService";
+import {ActivatedRoute, Params, Router} from "@angular/router";
+
 
 //TODO wtf typscript
 export interface FormIn {
@@ -15,25 +18,30 @@ interface SwitchView {
   viewValue: string;
 }
 
-
-
-//TODO: split container i 2 seperate Components
 @Component({
-  selector: 'app-event-questionnaires',
-  templateUrl: './event-questionnaires.component.html',
-  styleUrls: ['./event-questionnaires.component.scss']
+  selector: 'app-event-survey',
+  templateUrl: './event-survey.component.html',
+  styleUrls: ['./event-survey.component.scss']
 })
-export class EventQuestionnairesComponent implements OnInit{
+export class EventSurveyComponent implements OnInit{
+
+  @Input() orgaID = '';
+  @Input() eventID = '';
+  @Input() roleIdInEvent!: number;
+
+  currentParam? : Params;
 
   availableQuestionnaires : EventQuestionnairesModel[] = [];
   switchView: SwitchView[] = [];
 
   questionsView : QuestionModel[] = [];
 
-  currentVire : number = 0;
+  currentSurvey? : SwitchView;
 
   orgId : string = '';
   eventId : string = '';
+
+  currentView: string = 'answer';
 
   formIn : FormIn = {
     titeln : '',
@@ -42,7 +50,11 @@ export class EventQuestionnairesComponent implements OnInit{
 
   questions : Array<QuestionModel> = [];
 
-  constructor(private location : Location, private dataService : DataService) {
+  constructor(private location : Location,
+              private dataService : DataService,
+              private storageService : StorageService,
+              private activatedRoute : ActivatedRoute,
+              private router : Router) {
 
     const regex = /\/organizations\/(\w+)\/event\/(\w+)\//;
     const matches = regex.exec(location.path());
@@ -67,22 +79,40 @@ export class EventQuestionnairesComponent implements OnInit{
     })
   }
 
-  ngOnInit(): void {
+  updateURLWithParam(param : Params) : void {
 
+    this.currentParam = param;
+
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.activatedRoute,
+        queryParams: this.currentParam,
+        queryParamsHandling: 'merge',
+      });
   }
 
+  hasRole(roleId: number) : boolean {
+    return this.storageService.getRoleInCurrentOrganization(this.orgaID) == roleId;
+  }
+
+  ngOnInit(): void {
+    if (!this.hasRole(2) && !this.hasRole(1)) {
+      this.currentView == 'answer'
+    }
+  }
 
   removeValueFromCustomFields(index : number) : void {
     delete this.questions[index]
     this.questions = this.questions.filter(el => {return el != null});
   }
 
-  addCustomField(name : string) : void {
+  addCustomField(name : string, selected : string) : void {
     this.questions.push({
       answerOptions: [],
       questionNumber: 0,
       questionText: name,
-      type: "MULTIPLE_CHOICE",
+      type: selected == "single" ?  "SINGLE_CHOICE" : "MULTIPLE_CHOICE",
     })
     console.log(this.questions)
   }
@@ -108,7 +138,6 @@ export class EventQuestionnairesComponent implements OnInit{
 
     return model;
   }
-
   addAnswerOption(value: string, answerIndex : number) {
 
     if (this.questions.at(answerIndex)) {
@@ -155,9 +184,25 @@ export class EventQuestionnairesComponent implements OnInit{
   }
 
   getQuestions() : QuestionModel[] {
-    if (this.availableQuestionnaires.at(this.currentVire)) {
-      return this.availableQuestionnaires[this.currentVire].questions
+    if (this.availableQuestionnaires.at(this.currentSurvey?.value || 0)) {
+      return this.availableQuestionnaires[this.currentSurvey?.value || 0].questions
     }
     return []
   }
+
+  valideDateQuestions() : boolean {
+    let mistake = false;
+
+    if (this.questions.length < 1) {
+      mistake = true;
+    }
+    this.questions.forEach(question => {
+      if (question.answerOptions.length < 1) {
+        mistake = true;
+      }
+    })
+    return mistake;
+  }
+
+  protected readonly isSecureContext = isSecureContext;
 }

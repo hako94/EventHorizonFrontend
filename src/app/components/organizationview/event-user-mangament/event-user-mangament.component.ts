@@ -62,7 +62,7 @@ export class EventUserMangamentComponent {
       this.eventId = nums[2];
     }
 
-    this.dataService.getUserManagementList(this.orgId, this.eventId).subscribe(success => {
+    this.dataService.getAttendeesWithPresence(this.orgId, this.eventId).subscribe(success => {
       this.attendees = success;
     })
 
@@ -78,7 +78,7 @@ export class EventUserMangamentComponent {
   sendChanges() {
     this.animationState = "open";
     this.loading = true;
-    this.dataService.saveUserManagementList(this.orgId, this.eventId, this.attendees).subscribe(success => {
+    this.dataService.saveAttendeesWithPresence(this.orgId, this.eventId, this.attendees).subscribe(success => {
     this.animationState = "finished"
       this.loading = false;
       setTimeout(() => {

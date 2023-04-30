@@ -22,7 +22,6 @@ import { OrganizationAddeventComponent } from './components/organizationview/org
 import { OrganizationSettingsComponent } from './components/organizationview/organization-settings/organization-settings.component';
 import { EventItemComponent } from './components/organizationview/event-item/event-item.component';
 import {rxStompServiceFactory, SocketService} from "./services/SocketService";
-import { EventQuestionnairesComponent } from './components/organizationview/event-questionnaires/event-questionnaires.component';
 import {DatePipe, registerLocaleData} from "@angular/common";
 import {StorageService} from "./services/StorageService";
 import localeDe from '@angular/common/locales/de';
@@ -56,6 +55,18 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import { OrganizationAddMailComponent } from './components/organizationview/organization-add-mail/organization-add-mail.component';
 import { InfoSnackbarComponent } from './components/organizationview/organization-mails-view/info-snackbar/info-snackbar.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {FilterPipe} from "./pipes/FilterPipe";
+import { OrganizationPresetViewComponent } from './components/organizationview/organization-preset-view/organization-preset-view.component';
+import { OrganizationEventDetailsViewComponent } from './components/organizationview/organization-event-details-view/organization-event-details-view.component';
+import { EventDescriptionViewComponent } from './components/organizationview/organization-event-details-view/event-description-view/event-description-view.component';
+import { EventChatViewComponent } from './components/organizationview/organization-event-details-view/event-chat-view/event-chat-view.component';
+import { EventAttenderViewComponent } from './components/organizationview/organization-event-details-view/event-attender-view/event-attender-view.component';
+import { EventInvitesViewComponent } from './components/organizationview/organization-event-details-view/event-invites-view/event-invites-view.component';
+import { EventMailsettingsViewComponent } from './components/organizationview/organization-event-details-view/event-mailsettings-view/event-mailsettings-view.component';
+import { EventFilesViewComponent } from './components/organizationview/organization-event-details-view/event-files-view/event-files-view.component';
+import { EventSurveyComponent } from './components/organizationview/organization-event-details-view/event-survey/event-survey.component';
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { EventAttendanceListViewComponent } from './components/organizationview/organization-event-details-view/event-attendance-list-view/event-attendance-list-view.component';
 
 registerLocaleData(localeDe);
 
@@ -73,7 +84,6 @@ registerLocaleData(localeDe);
     OrganizationAddeventComponent,
     OrganizationSettingsComponent,
     EventItemComponent,
-    EventQuestionnairesComponent,
     EventUserMangamentComponent,
     EventradarItemComponent,
     OrganizationinviteviewComponent,
@@ -82,7 +92,18 @@ registerLocaleData(localeDe);
     PlattformAdminComponent,
     EventViewMainComponent,
     OrganizationAddMailComponent,
-    InfoSnackbarComponent
+    InfoSnackbarComponent,
+    FilterPipe,
+    OrganizationPresetViewComponent,
+    OrganizationEventDetailsViewComponent,
+    EventDescriptionViewComponent,
+    EventChatViewComponent,
+    EventAttenderViewComponent,
+    EventInvitesViewComponent,
+    EventMailsettingsViewComponent,
+    EventFilesViewComponent,
+    EventSurveyComponent,
+    EventAttendanceListViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -113,6 +134,7 @@ registerLocaleData(localeDe);
     MatExpansionModule,
     MatButtonToggleModule,
     MatTooltipModule,
+    MatSlideToggleModule,
 
   ],
   providers: [

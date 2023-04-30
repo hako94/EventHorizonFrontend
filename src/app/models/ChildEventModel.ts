@@ -1,5 +1,5 @@
 export interface ChildEvent {
-  childId : string;
+  childId? : string;
   eventStart : string;
   eventEnd : string;
 }

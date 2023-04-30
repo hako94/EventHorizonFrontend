@@ -1,6 +1,6 @@
 <div class="mx-3">
   <br>
-  <div *ngIf="ownRoleInOrg > 0 && ownRoleInOrg < 3">
+  <div *ngIf="hasRole(1) || hasRole(2)">
     <h2>Mitglied einladen</h2>
     <mat-form-field class="example-full-width m-2 w-1/4">
       <mat-label>Email-Adresse</mat-label>
@@ -38,11 +38,11 @@
           <div *ngIf="editMode && editedUser == member.id" class="p-2 pt-3">
             <mat-form-field appearance="fill">
               <mat-label>Rolle bearbeiten</mat-label>
-              <mat-select [(value)]="selectedRole">
-                <mat-option value=5>Gast</mat-option>
-                <mat-option value=4>Teilnehmer</mat-option>
-                <mat-option value=2 *ngIf="hasRole(2) || hasRole(1)">Organisator</mat-option>
-                <mat-option value=1 *ngIf="hasRole(2) || hasRole(1)">Admin</mat-option>
+              <mat-select [required]="true" [(value)]="selectedRole">
+                <mat-option [value]=5>Gast</mat-option>
+                <mat-option [value]=4>Teilnehmer</mat-option>
+                <mat-option [value]=2 *ngIf="hasRole(2) || hasRole(1)">Organisator</mat-option>
+                <mat-option [value]=1 *ngIf="hasRole(2) || hasRole(1)">Admin</mat-option>
               </mat-select>
             </mat-form-field>
           </div>

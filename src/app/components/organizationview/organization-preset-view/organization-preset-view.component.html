@@ -1,0 +1,16 @@
+<div class="mat-typography p-4">
+  <br>
+  <h1>EventTemplates</h1>
+  <hr><br><br>
+  <div>
+    <ng-container *ngFor="let template of eventTemplates">
+      <div class="grid grid-cols-4 grid-rows-1">
+        <p>{{template.id}}</p>
+        <p>{{template.name}}</p>
+        <p>{{template.description}}</p>
+        <button class="justify-self-end flex" color="warn" (click)="deleteTemplate(template.id)" mat-raised-button><mat-icon>delete</mat-icon>Löschen</button>
+        <br><br><br>
+      </div>
+    </ng-container>
+  </div>
+</div>

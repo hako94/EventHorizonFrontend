@@ -74,4 +74,27 @@ export class AuthService {
   logout(): Observable<any> {
     return this.http.post(BACKEND_AUTH_API + 'signout', { }, defaultHttpOptions);
   }
+
+  sendResetEmail(email: string): Observable<any> {
+    return this.http.post(
+      BACKEND_AUTH_API + 'forgotpassword',
+      {},
+      {
+        headers: {'Content-Type': 'application/json'},
+        params: {'email': email}
+      }
+    );
+  }
+
+  resetPassword(email: string, resetToken: string, password: string): Observable<any> {
+    return this.http.post(
+      BACKEND_AUTH_API + 'resetpassword',
+      {
+        email,
+        resetToken,
+        password,
+      },
+      defaultHttpOptions
+    );
+  }
 }

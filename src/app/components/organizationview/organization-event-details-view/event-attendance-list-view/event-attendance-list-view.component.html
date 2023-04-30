@@ -1,0 +1,30 @@
+<div class="mx-3">
+  <br>
+  <h2>Teilnehmer-Übersicht</h2>
+  <mat-card>
+    <mat-card-content class="overflow-y-auto max-h-[60vh]">
+      <div class="hidden md:grid md:grid-cols-4 font-bold">
+        <span class="p-2 pt-3">Nachname, Vorname</span>
+        <span class="p-2 pt-3">E-Mail</span>
+        <span class="p-2 pt-3">Rolle</span>
+        <span class="p-2 pt-3"></span>
+      </div>
+      <ng-container *ngFor="let attender of attendee">
+        <mat-divider></mat-divider>
+        <div class="grid grid-cols-1 md:grid-cols-4">
+          <div class="p-2 pt-3">{{attender.nachname}}, {{attender.vorname}}</div>
+          <div class="p-2 pt-3">{{attender.email}}</div>
+          <div class="p-2 pt-3 flex">
+            "ROLLE"
+          </div>
+          <div class="p-2 pt-3 justify-self-end flex">
+            <mat-checkbox [checked]="attender.here" (change)="saveAttendeeList($event, attender.id)">
+              anwesend
+            </mat-checkbox>
+          </div>
+        </div>
+      </ng-container>
+      <mat-divider></mat-divider>
+    </mat-card-content>
+  </mat-card>
+</div>

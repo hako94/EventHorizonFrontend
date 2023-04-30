@@ -1,53 +1,57 @@
 <nav mat-tab-nav-bar [tabPanel]="tabPanel" xmlns="http://www.w3.org/1999/html">
   <div>
     <a mat-tab-link
-       [active]="currentParam === eventViewParam"
+       [active]="currentParam == eventViewParam"
        (click)="updateURLWithParam(eventViewParam)">Events</a>
   </div>
   <div  *ngIf="!hasRole(5)">
     <a mat-tab-link
-       [active]="currentParam === memberViewParam"
+       [active]="currentParam == memberViewParam"
        (click)="updateURLWithParam(memberViewParam)">Mitglieder</a>
   </div>
   <div *ngIf="hasRole(1) || hasRole(2)">
     <a mat-tab-link
-       [active]="currentParam === invitesViewParam"
+       [active]="currentParam == invitesViewParam"
        (click)="updateURLWithParam(invitesViewParam)">Einladungen</a>
   </div>
   <div *ngIf="hasRole(1) || hasRole(2)">
     <a mat-tab-link
-       [active]="currentParam === mailsViewParam"
+       [active]="currentParam == mailsViewParam"
        (click)="updateURLWithParam(mailsViewParam)">Mail-Vorlagen</a>
   </div>
   <div *ngIf="hasRole(1) || hasRole(2)">
     <a mat-tab-link
-    [active]="currentParam === presetViewParam"
+    [active]="currentParam == presetViewParam"
     (click)="updateURLWithParam(presetViewParam)">Event-Vorlagen</a>
   </div>
   <div *ngIf="hasRole(1) || hasRole(2)">
     <a mat-tab-link
-       [active]="currentParam === settingsViewParam"
-       (click)="updateURLWithParam(settingsViewParam)">Settings</a>
+       [active]="currentParam == settingsViewParam"
+       (click)="updateURLWithParam(settingsViewParam)">Logo</a>
   </div>
 </nav>
 <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
-<ng-container *ngIf="currentParam === eventViewParam" class="mx-3">
+<ng-container *ngIf="currentParam == eventViewParam" class="mx-3">
   <app-organizationeventview [orgaID]="currentOrganization">
   </app-organizationeventview>
 </ng-container>
-<ng-container *ngIf="currentParam === memberViewParam" class="mx-3">
+<ng-container *ngIf="currentParam == memberViewParam" class="mx-3">
   <app-organizationmemberview [orgaID]="currentOrganization">
   </app-organizationmemberview>
 </ng-container>
-<ng-container *ngIf="currentParam === invitesViewParam" class="mx-3">
+<ng-container *ngIf="currentParam == invitesViewParam" class="mx-3">
   <app-organizationinviteview [orgaID]="currentOrganization">
   </app-organizationinviteview>
 </ng-container>
-<ng-container *ngIf="currentParam === mailsViewParam" class="mx-3">
+<ng-container *ngIf="currentParam == mailsViewParam" class="mx-3">
   <app-organization-mails-view [orgaID]="currentOrganization">
   </app-organization-mails-view>
 </ng-container>
-<ng-container *ngIf="currentParam === settingsViewParam" class="mx-3">
+<ng-container *ngIf="currentParam == settingsViewParam" class="mx-3">
   <app-organization-settings [orgaID]="currentOrganization">
   </app-organization-settings>
+</ng-container>
+<ng-container *ngIf="currentParam == presetViewParam" class="mx-3">
+  <app-organization-preset-view [orgaID]="currentOrganization">
+  </app-organization-preset-view>
 </ng-container>
