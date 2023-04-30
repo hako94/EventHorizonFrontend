@@ -6,6 +6,7 @@ import {UserRoleModel} from "../../../models/UserRoleModel";
 import {DataService} from "../../../services/DataService";
 import {lastValueFrom, Subscription} from "rxjs";
 import {EventItemComponent} from "../event-item/event-item.component";
+import {EventRoleStatusModel} from "../../../models/EventRoleStatusModel";
 
 @Component({
   selector: 'app-organization-event-details-view',
@@ -24,12 +25,17 @@ export class OrganizationEventDetailsViewComponent {
   attendanceViewParam: Params = {'view': 'attendance'};
   currentOrganization: string = '';
   currentEvent: string = '';
-  currentEventStatusId: number = 0;
-  roleInCurrentEvent: UserRoleModel = new class implements UserRoleModel {
-    id: number = 12;
-    role: string = 'Teilnehmer';
-  };
 
+  currentRoleAndStatus: EventRoleStatusModel = {
+    role: {
+      id: 12,
+      role: 'Teilnehmer'
+    },
+    status: {
+      id: 1,
+      status: 'erstellt'
+    }
+  };
   currentParam?: Params;
 
   constructor(private location: Location, private router: Router, private activatedRoute: ActivatedRoute, private storageService: StorageService, private dataService: DataService) {
@@ -59,10 +65,6 @@ export class OrganizationEventDetailsViewComponent {
     }
   }
 
-  async loadRoleInCurrentEvent() {
-    this.roleInCurrentEvent = await lastValueFrom(this.dataService.getUserRoleForEvent(this.currentOrganization, this.currentEvent));
-  }
-
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
 
@@ -82,11 +84,9 @@ export class OrganizationEventDetailsViewComponent {
       else if (params['view'] == "mails")
         this.currentParam = this.mailsViewParam;
     });
-    this.loadRoleInCurrentEvent();
-    //this.dataService.getEventStatus(this.currentOrganization, this.currentEvent).subscribe(success => {
-    //  this.currentEventStatusId = success.id;
-    //})
-    console.log('Status: ' + this.currentEventStatusId);
+    this.dataService.getUserRoleAndEventStatus(this.currentOrganization, this.currentEvent).subscribe(success => {
+      this.currentRoleAndStatus = success;
+    });
   }
 
   updateURLWithParam(param: Params): void {
@@ -112,5 +112,9 @@ export class OrganizationEventDetailsViewComponent {
    */
   hasRole(roleId: number): boolean {
     return this.storageService.getRoleInCurrentOrganization(this.currentOrganization) == roleId;
+  }
+
+  test() {
+    console.log(this.currentRoleAndStatus);
   }
 }

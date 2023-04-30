@@ -74,7 +74,7 @@ export class EventAttenderViewComponent {
 
   deleteAttender(attenderEmail: string) : void {
     console.log("deleted attender " + attenderEmail);
-    this.dataService.deleteAttenderFromEvent(this.orgaID, this.eventID, attenderEmail).subscribe(() => {
+    this.dataService.deleteAttenderFromEvent(this.orgaID, this.eventID, attenderEmail).subscribe(success => {
       this.snackBar.open('Teilnehmer abgemeldet', 'OK', {duration: 3000});
       this.ngOnInit();
     }, error => {
@@ -85,7 +85,7 @@ export class EventAttenderViewComponent {
   inviteSubmit() : void {
     this.inviteLoading = true;
     console.log(this.selectedRole)
-    this.dataService.inviteUserToEvent(this.orgaID, this.eventID, this.editedUser, this.selectedRole).subscribe(success => {
+    this.dataService.inviteUserToEvent(this.orgaID, this.eventID, this.invitedEmail, this.selectedRole).subscribe(success => {
       this.invitedUser = success;
       this.snackBar.open('Einladung wurde erfolgreich versandt', 'OK', {duration: 3000});
       this.inviteLoading = false;
