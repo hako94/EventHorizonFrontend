@@ -9,7 +9,7 @@ import { NO_ERRORS_SCHEMA } from "@angular/core";
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
-  let dataServiceMock: { getOrganizations: jest.Mock<any, any, any> };
+  let dataServiceMock: { getOrganizations: jest.Mock<any, any, any>, getAllEventsForUser: jest.Mock };
 
   const organizations: OrganizationModel[] = [
     {
@@ -34,7 +34,8 @@ describe('DashboardComponent', () => {
 
   beforeEach(() => {
     dataServiceMock = {
-      getOrganizations: jest.fn().mockReturnValue(of(organizations))
+      getOrganizations: jest.fn().mockReturnValue(of(organizations)),
+      getAllEventsForUser: jest.fn().mockReturnValue(of(null))
     };
 
     TestBed.configureTestingModule({

@@ -62,6 +62,10 @@ describe('DataService', () => {
       organisator: true,
       tutor: false,
       attender: false,
+      eventStatus: {
+        id: 1,
+        status: 'erstellt'
+      }
     }];
 
     service.getOrganizationEvents(orgId).subscribe((events) => {
