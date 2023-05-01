@@ -28,8 +28,10 @@
             <mat-label>Nachricht</mat-label>
             <input matInput #socketInput [disabled]="!subscription.closed">
           </mat-form-field>
-          <mat-checkbox class="mr-2 h-8 w-8" *ngIf="roleIdInEvent !== 12" [(ngModel)]="isImportant">Priorität
+          <mat-checkbox class="mr-2 h-8 w-8" *ngIf="roleIdInEvent !== 12" [(ngModel)]="isImportant"
+                        matTooltip="Als wichtige Nachricht kennzeichnen">Priorität
           </mat-checkbox>
+
           <button [disabled]="!subscription.closed" mat-raised-button
                   (click)="pushMessageToBackend(socketInput.value, isImportant)">Absenden
           </button>

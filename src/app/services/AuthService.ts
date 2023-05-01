@@ -104,8 +104,8 @@ export class AuthService {
     );
   }
 
-  refreshToken(refreshToken: string): Observable<RefreshResponse> {
-    const tokenRequest = { refreshToken };
+  refreshToken(refresh_token: string): Observable<RefreshResponse> {
+    const tokenRequest = { refresh_token };
     return this.http.post<RefreshResponse>(
       BACKEND_AUTH_API + 'refreshtoken',
       tokenRequest,
