@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import {LoginResponse} from "../models/LoginResponse";
 import {UserOrganizationModel} from "../models/UserOrganizationModel";
+import {RefreshResponse} from "../models/RefreshResponse";
 
 
 const SESSION_STORAGE_KEY = "auth-user";
+const REFRESH_STORAGE_KEY = "refresh-token";
 const EMAIL_STORAGE_KEY = "auth-user_email";
 const CSRF_KEY = "XSRF-TOKEN";
 const ORGANIZATIONS_STORAGE_KEY = "auth-orgs";
@@ -83,13 +85,30 @@ export class StorageService {
 
   public saveUser(loginResponse: LoginResponse): void {
     window.sessionStorage.removeItem(SESSION_STORAGE_KEY);
+    window.sessionStorage.removeItem(REFRESH_STORAGE_KEY);
     window.sessionStorage.setItem(SESSION_STORAGE_KEY, loginResponse.token.toString());
+    window.sessionStorage.setItem(REFRESH_STORAGE_KEY, loginResponse.refreshToken.toString());
   }
 
   public getUser(): String | null{
     const user = window.sessionStorage.getItem(SESSION_STORAGE_KEY);
     if (user) {
       return user;
+    }
+    return null;
+  }
+
+  public saveRefreshSession(refreshResponse: RefreshResponse): void {
+    window.sessionStorage.removeItem(SESSION_STORAGE_KEY);
+    window.sessionStorage.removeItem(REFRESH_STORAGE_KEY);
+    window.sessionStorage.setItem(SESSION_STORAGE_KEY, refreshResponse.accessToken.toString());
+    window.sessionStorage.setItem(REFRESH_STORAGE_KEY, refreshResponse.refreshToken.toString());
+  }
+
+  public getRefreshToken(): string | null{
+    const token = window.sessionStorage.getItem(REFRESH_STORAGE_KEY);
+    if (token) {
+      return token;
     }
     return null;
   }

@@ -38,14 +38,4 @@ export class AppComponent implements OnInit{
     })
   }
 
-  logout(): void {
-    this.authService.logout().subscribe(success => {
-        this.storageService.clear();
-        window.location.reload();
-      },
-      error => {
-        console.log(error);
-      }
-    );
-  }
 }

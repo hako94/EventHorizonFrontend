@@ -1,8 +1,9 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {catchError, map, Observable, throwError} from "rxjs";
 import {LoginResponse} from "../models/LoginResponse";
 import {environment} from "../../environments/environment";
+import {RefreshResponse} from "../models/RefreshResponse";
 
 //const BACKEND_AUTH_API = 'http://localhost:8080/api/v1/auth/'
 //const BACKEND_AUTH_API = 'https://eventhorizonbackend.azurewebsites.net/api/v1/auth/';
@@ -71,8 +72,13 @@ export class AuthService {
     );
   }
 
-  logout(): Observable<any> {
-    return this.http.post(BACKEND_AUTH_API + 'signout', { }, defaultHttpOptions);
+  logout(refresh_token : string | null): Observable<any> {
+    return this.http.post(
+      BACKEND_AUTH_API + 'logout',
+      {
+        refresh_token
+      },
+      defaultHttpOptions);
   }
 
   sendResetEmail(email: string): Observable<any> {
@@ -94,6 +100,15 @@ export class AuthService {
         resetToken,
         password,
       },
+      defaultHttpOptions
+    );
+  }
+
+  refreshToken(refreshToken: string): Observable<RefreshResponse> {
+    const tokenRequest = { refreshToken };
+    return this.http.post<RefreshResponse>(
+      BACKEND_AUTH_API + 'refreshtoken',
+      tokenRequest,
       defaultHttpOptions
     );
   }
