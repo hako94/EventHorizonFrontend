@@ -2,22 +2,31 @@
   <br>
   <div *ngIf="hasRole(1) || hasRole(2)">
     <h2>Mitglied einladen</h2>
-    <mat-form-field class="example-full-width m-2 w-1/4">
-      <mat-label>Email-Adresse</mat-label>
-      <input [(ngModel)]="invitedEmail" matInput placeholder="muster@mail.de">
-    </mat-form-field>
-    <mat-form-field appearance="fill" class="m-2 w-36">
-      <mat-label>Rolle</mat-label>
-      <mat-select [(value)]="selectedRole">
-        <mat-option [value]="10">Teilnehmer</mat-option>
-        <mat-option [value]="11">Tutor</mat-option>
-        <mat-option [value]="12">Organisator</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button class="ml-1 mb-4" mat-raised-button color="primary" (click)="inviteSubmit()" [disabled]="inviteLoading">
-      <mat-icon>person_add</mat-icon>
-      Einladen
-    </button>
+    <form>
+      <mat-form-field class="example-full-width m-2 w-1/4">
+        <mat-label>Email-Adresse</mat-label>
+        <input type="text" matInput [formControl]="eventInviteControl" [matAutocomplete]="auto"
+               [(ngModel)]="invitedEmail"
+               placeholder="muster@mail.de" (click)="loadOptions()">
+        <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption [displayWith]="displayMemberEmail">
+          <mat-option *ngFor="let filteredMember of filteredUsersForEventInvite | async" [value]="filteredMember">
+            {{filteredMember.email}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="m-2 w-36">
+        <mat-label>Rolle</mat-label>
+        <mat-select [(value)]="selectedRole">
+          <mat-option [value]="10">Teilnehmer</mat-option>
+          <mat-option [value]="11">Tutor</mat-option>
+          <mat-option [value]="12">Organisator</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button class="ml-1 mb-4" mat-raised-button color="primary" (click)="inviteSubmit()" [disabled]="inviteLoading">
+        <mat-icon>person_add</mat-icon>
+        Einladen
+      </button>
+    </form>
   </div>
   <h2>Teilnehmer-Übersicht</h2>
   <mat-card>
@@ -46,7 +55,8 @@
           </div>
           <div *ngIf="hasRole(1) || hasRole(2)" class="justify-self-end flex">
             <div *ngIf="this.editMode && this.editedUser == attender.id">
-              <button mat-icon-button color="primary" (click)="this.saveAttenderRole(orgaID, attender.id, selectedRole)">
+              <button mat-icon-button color="primary"
+                      (click)="this.saveAttenderRole(orgaID, attender.id, selectedRole)">
                 <mat-icon>save</mat-icon>
               </button>
             </div>
