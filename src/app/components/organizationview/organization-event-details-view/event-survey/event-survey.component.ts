@@ -5,9 +5,11 @@ import {Location} from "@angular/common";
 import {DataService} from "../../../../services/DataService";
 import {StorageService} from "../../../../services/StorageService";
 import {ActivatedRoute, Params, Router} from "@angular/router";
+// @ts-ignore
+import {QuestionnairePostModel} from "../../../../models/QuestionnairePostModel";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {QuestionnaireInfoModel} from "../../../../models/QuestionnaireInfoModel";
 
-
-//TODO wtf typscript
 export interface FormIn {
   titeln : string,
   descriptionn : string;
@@ -31,7 +33,7 @@ export class EventSurveyComponent implements OnInit{
 
   currentParam? : Params;
 
-  availableQuestionnaires : EventQuestionnairesModel[] = [];
+  availableQuestionnaires : QuestionnaireInfoModel[] = [];
   switchView: SwitchView[] = [];
 
   questionsView : QuestionModel[] = [];
@@ -48,13 +50,17 @@ export class EventSurveyComponent implements OnInit{
     descriptionn : ''
   }
 
+  addQuestionName : string = '';
+  addQuestionType : string = 'multi';
+
   questions : Array<QuestionModel> = [];
 
   constructor(private location : Location,
               private dataService : DataService,
               private storageService : StorageService,
               private activatedRoute : ActivatedRoute,
-              private router : Router) {
+              private router : Router,
+              private snackBar : MatSnackBar) {
 
     const regex = /\/organizations\/(\w+)\/event\/(\w+)\//;
     const matches = regex.exec(location.path());
@@ -64,19 +70,6 @@ export class EventSurveyComponent implements OnInit{
       this.orgId = nums[1];
       this.eventId = nums[2];
     }
-
-    this.dataService.loadAvailableEventQuestionnaires(this.orgId, this.eventId).subscribe(sucess => {
-      this.availableQuestionnaires = sucess
-
-      let index = 0;
-
-      sucess.forEach(elem => {
-        console.log("load Questionna" + elem.id)
-        this.switchView.push({value: index, viewValue: elem.title})
-        index++;
-      })
-
-    })
   }
 
   updateURLWithParam(param : Params) : void {
@@ -100,6 +93,19 @@ export class EventSurveyComponent implements OnInit{
     if (!this.hasRole(2) && !this.hasRole(1)) {
       this.currentView == 'answer'
     }
+
+    this.dataService.loadAvailableEventQuestionnaires(this.orgId, this.eventId).subscribe(success => {
+      this.availableQuestionnaires = success
+
+      let index = 0;
+
+      success.forEach(elem => {
+        console.log("load Questionna" + elem.id)
+        this.switchView.push({value: index, viewValue: elem.title})
+        index++;
+      })
+
+    })
   }
 
   removeValueFromCustomFields(index : number) : void {
@@ -108,13 +114,18 @@ export class EventSurveyComponent implements OnInit{
   }
 
   addCustomField(name : string, selected : string) : void {
+    if (this.addQuestionName == '') {
+      this.snackBar.open('Bitte geben Sie eine Frage ein', 'OK', {duration: 3000})
+      return;
+    }
     this.questions.push({
       answerOptions: [],
       questionNumber: 0,
-      questionText: name,
-      type: selected == "single" ?  "SINGLE_CHOICE" : "MULTIPLE_CHOICE",
+      questionText: this.addQuestionName,
+      type: this.addQuestionType == "single" ?  "SINGLE_CHOICE" : "MULTIPLE_CHOICE",
     })
     console.log(this.questions)
+    this.addQuestionName = '';
   }
 
   //Methode ins Backend verschoben und kann entfernt werden
@@ -141,16 +152,20 @@ export class EventSurveyComponent implements OnInit{
   }
 
 
-  addAnswerOption(value: string, answerIndex : number) {
-
+  addAnswerOption(inputForm: HTMLInputElement, answerIndex : number) {
+    if (inputForm.value == '') {
+      this.snackBar.open('Bitte geben Sie eine mögliche Antwort an', 'OK', {duration: 3000})
+      return;
+    }
     if (this.questions.at(answerIndex)) {
       this.questions.at(answerIndex)?.answerOptions.push(
         {
           answerNumber: 0,
-          answerText : value
+          answerText : inputForm.value
         }
       )
     }
+    inputForm.value = '';
   }
 
 
@@ -168,30 +183,33 @@ export class EventSurveyComponent implements OnInit{
 
   submitQuestionnaire() {
 
-    let eventQuestionnairesModel : EventQuestionnairesModel =
+    let eventQuestionnairesModel : QuestionnairePostModel =
       {
-        id: undefined,
-        description: this.formIn.descriptionn,
         title: this.formIn.titeln,
-        eventId : this.eventId,
-        questions : this.questions
+        description: this.formIn.descriptionn,
+        questions: this.questions,
+        eventId: this.eventId,
+        status: {id: 1, status: 'erstellt'}
       };
 
-    eventQuestionnairesModel = this.writeIndices(eventQuestionnairesModel);
-
-    this.dataService.createEventQuestionnaires(this.orgId,this.eventId, eventQuestionnairesModel).subscribe()
+    this.dataService.createEventQuestionnaires(this.orgId,this.eventId, eventQuestionnairesModel).subscribe(success => {
+      this.snackBar.open('Umfragebogen erfolgreich erstellt', 'OK', {duration: 3000})
+      this.ngOnInit();
+      this.currentView = 'view';
+    })
   }
 
   goBack() {
     this.location.back()
   }
 
+  /*
   getQuestions() : QuestionModel[] {
     if (this.availableQuestionnaires.at(this.currentSurvey?.value || 0)) {
       return this.availableQuestionnaires[this.currentSurvey?.value || 0].questions
     }
     return []
-  }
+  } */
 
   valideDateQuestions() : boolean {
     let mistake = false;
@@ -208,4 +226,31 @@ export class EventSurveyComponent implements OnInit{
   }
 
   protected readonly isSecureContext = isSecureContext;
+
+  /**
+   * Checks if the question numer i is a single-choice question with already one assigned answer
+   * @param i
+   */
+  isSingleChoiceComplete(i: number): boolean {
+    let disable : boolean = false
+    // @ts-ignore
+    if (this.questions.at(i).type == 'SINGLE_CHOICE') {
+      // @ts-ignore
+      if (this.questions.at(i).answerOptions.length >= 1) {
+        disable = true;
+      }
+    }
+    return disable;
+  }
+
+  /**
+   * Calls the DataService to delete the survey with the given id
+   * @param id
+   */
+  deleteSurvey(id: string) {
+    this.dataService.deleteEventQuestionnaire(this.orgId, this.eventId, id).subscribe(() => {
+      this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
+      this.ngOnInit();
+    })
+  }
 }

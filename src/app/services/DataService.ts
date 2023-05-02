@@ -22,6 +22,8 @@ import {UserEventInviteModel} from "../models/UserEventInviteModel";
 import {ChatAnswerModel} from "../models/ChatAnswerModel";
 import {EventStatusModel} from "../models/EventStatusModel";
 import {EventRoleStatusModel} from "../models/EventRoleStatusModel";
+import {QuestionnairePostModel} from "../models/QuestionnairePostModel";
+import {QuestionnaireInfoModel} from "../models/QuestionnaireInfoModel";
 
 //const BACKEND_API = 'http://localhost:8080/'
 //const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
@@ -298,17 +300,24 @@ export class DataService {
     )
   }
 
-  createEventQuestionnaires(orgId: string, eventId: string, eventQuestionnairesModel: EventQuestionnairesModel): Observable<any> {
+  createEventQuestionnaires(orgId: string, eventId: string, eventQuestionnairesModel: QuestionnairePostModel): Observable<any> {
     return this.http.post<any>(
-      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/questionnaires',
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/questionnaires',
       eventQuestionnairesModel,
       httpOptions
     )
   }
 
-  loadAvailableEventQuestionnaires(orgId: string, eventId: string): Observable<EventQuestionnairesModel[]> {
-    return this.http.get<EventQuestionnairesModel[]>(
-      BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId + '/questionnaires',
+  loadAvailableEventQuestionnaires(orgId: string, eventId: string): Observable<QuestionnaireInfoModel[]> {
+    return this.http.get<QuestionnaireInfoModel[]>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/questionnaires',
+      httpOptions
+    )
+  }
+
+  deleteEventQuestionnaire(orgId: string, eventId: string, id: string): Observable<any> {
+    return this.http.delete<any>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/questionnaire/' + id,
       httpOptions
     )
   }

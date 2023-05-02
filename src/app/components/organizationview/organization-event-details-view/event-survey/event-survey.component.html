@@ -31,19 +31,19 @@
       <p>Hier kann eine beliebige Anzahl an Fragen hinzugefügt werden</p>
       <br>
 
-      <mat-form-field>
+      <mat-form-field >
         <mat-label>Frage</mat-label>
-        <input matInput #inputt id="add">
+        <input matInput [(ngModel)]="addQuestionName" #inputt id="add">
       </mat-form-field>
       <mat-form-field class="ml-2">
         <mat-label>Fragen-Typ</mat-label>
-        <mat-select #select>
+        <mat-select #select [(ngModel)]="addQuestionType">
           <mat-option [value]="'single'">Single-Choice</mat-option>
           <mat-option [value]="'multi'">Multiple-Choice</mat-option>
         </mat-select>
       </mat-form-field>
 
-      <button class="ml-2" mat-raised-button (click)="addCustomField(inputt.value, select.value)">Frage hinzufügen</button>
+      <button class="ml-2" mat-raised-button (click)="addCustomField(inputt.value, select.value)"><mat-icon>add</mat-icon>Frage hinzufügen</button>
       <br>
       <br>
 
@@ -65,16 +65,15 @@
                   <input matInput #inputAntwort id="addAntwort">
                 </mat-form-field>
 
-                <button mat-raised-button class="ml-2" (click)="addAnswerOption(inputAntwort.value, i)">Antwort hinzufügen</button>
+                <button [disabled]="isSingleChoiceComplete(i)" mat-raised-button class="ml-2" (click)="addAnswerOption(inputAntwort, i)"><mat-icon>add</mat-icon>Antwort hinzufügen</button>
               </div>
               <div class="ml-16">
                 <h2 *ngIf="field.answerOptions.length > 0">Antwortmöglichkeiten</h2>
                 <div class="grid grid-cols-2">
                   <ng-container *ngFor="let answer of field.answerOptions; let j = index">
                     <label class="mt-2">{{answer.answerText}}</label>
-                    <button class="max-w-[100px] mb-2" mat-raised-button color="warn" (click)="removeAnswerOption(i, j)">
+                    <button mat-raised-button class="max-w-[20px] mb-2" color="warn" (click)="removeAnswerOption(i, j)">
                       <mat-icon>delete</mat-icon>
-                      Löschen
                     </button>
                   </ng-container>
                 </div>
@@ -85,8 +84,9 @@
         </div>
       </div>
       <h2>Abschluss</h2>
-      <button [disabled]="valideDateQuestions()" mat-raised-button color="primary" (click)="submitQuestionnaire()">Fragebogen erstellen</button>
+      <button [disabled]="valideDateQuestions()" mat-raised-button color="primary" (click)="submitQuestionnaire()"><mat-icon>save</mat-icon>Fragebogen erstellen</button>
     </div>
+<!--
     <div *ngIf="currentView == 'answer'">
       <h1>Einen Fragebogen beantworten</h1>
       <mat-form-field appearance="fill">
@@ -128,7 +128,7 @@
         <button mat-raised-button color="primary">Absenden</button>
 
       </ng-container>
-    </div>
+    </div>  -->
   </mat-card>
 </div>
 <div class="mx-3" *ngIf="currentView == 'view'">
@@ -136,23 +136,21 @@
   <h2>Fragebogen-Übersicht</h2>
   <mat-card>
     <mat-card-content class="overflow-y-auto max-h-[60vh]">
-      <div class="hidden md:grid md:grid-cols-4 font-bold">
+      <div class="hidden md:grid md:grid-cols-3 font-bold">
         <span class="p-2 pt-3">Name</span>
-        <span class="p-2 pt-3">Beschreibung</span>
-        <span class="p-2 pt-3">Anzahl Fragen</span>
+        <span class="p-2 pt-3">Status</span>
         <span class="p-2 pt-3"></span>
       </div>
       <ng-container *ngFor="let survey of availableQuestionnaires">
         <mat-divider></mat-divider>
-        <div class="grid grid-cols-1 md:grid-cols-4">
+        <div class="grid grid-cols-1 md:grid-cols-3">
           <div class="p-2 pt-3"><p class="truncate">{{survey.title}}</p></div>
-          <div class="p-2 pt-3"><p class="truncate">{{survey.description}}</p></div>
-          <div class="p-2 pt-3">{{survey.questions.length}}</div>
+          <div class="p-2 pt-3"><p class="truncate">{{survey.status.status}}</p></div>
           <div>
-            <button mat-icon-button color="primary">
+            <button mat-icon-button color="primary" [disabled]="true">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn">
+            <button mat-icon-button color="warn" (click)="deleteSurvey(survey.id)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
