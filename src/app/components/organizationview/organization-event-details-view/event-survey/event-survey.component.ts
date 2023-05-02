@@ -117,6 +117,7 @@ export class EventSurveyComponent implements OnInit{
     console.log(this.questions)
   }
 
+  //Methode ins Backend verschoben und kann entfernt werden
   writeIndices(model : EventQuestionnairesModel) : EventQuestionnairesModel {
 
     let questionCounter = 0;
@@ -138,6 +139,8 @@ export class EventSurveyComponent implements OnInit{
 
     return model;
   }
+
+
   addAnswerOption(value: string, answerIndex : number) {
 
     if (this.questions.at(answerIndex)) {
@@ -149,7 +152,7 @@ export class EventSurveyComponent implements OnInit{
       )
     }
   }
-  //TODO wtf typscript
+
 
   removeAnswerOption(questionIndex: number, answerIndex : number) {
     if (this.questions.at(questionIndex)) {
