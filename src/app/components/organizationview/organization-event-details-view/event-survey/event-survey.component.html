@@ -145,14 +145,27 @@
         <mat-divider></mat-divider>
         <div class="grid grid-cols-1 md:grid-cols-3">
           <div class="p-2 pt-3"><p class="truncate">{{survey.title}}</p></div>
-          <div class="p-2 pt-3"><p class="truncate">{{survey.status.status}}</p></div>
-          <div>
-            <button mat-icon-button color="primary" [disabled]="true">
+          <div *ngIf="editedSurvey!=survey.id" class="p-2 pt-3"><p class="truncate">{{survey.status.status}}</p></div>
+          <div *ngIf="editMode && editedSurvey==survey.id" class="pt-3">
+            <mat-form-field class="ml-2">
+              <mat-label>Status setzen</mat-label>
+              <mat-select #select [(ngModel)]="surveyStatus">
+                <mat-option [value]=1>Erstellt</mat-option>
+                <mat-option [value]=2>Freigegeben</mat-option>
+                <mat-option [value]=3>Geschlossen</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex justify-end">
+            <div *ngIf="editedSurvey!=survey.id"><button matTooltip="Freigabestatus ändern" mat-icon-button color="primary" (click)="editSurveyStatus(survey.id)" [disabled]="editMode">
               <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="deleteSurvey(survey.id)">
+            </button></div>
+            <div *ngIf="editMode && editedSurvey==survey.id"><button matTooltip="Speichern" mat-icon-button color="primary" (click)="saveSurveyStatus(survey.id)">
+              <mat-icon>save</mat-icon>
+            </button></div>
+            <div><button matTooltip="Umfragebogen löschen" mat-icon-button color="warn" (click)="deleteSurvey(survey.id)" [disabled]="editMode">
               <mat-icon>delete</mat-icon>
-            </button>
+            </button></div>
           </div>
         </div>
       </ng-container>

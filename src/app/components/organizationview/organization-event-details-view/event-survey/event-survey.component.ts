@@ -31,6 +31,9 @@ export class EventSurveyComponent implements OnInit{
   @Input() eventID = '';
   @Input() roleIdInEvent!: number;
 
+  editMode : boolean = false;
+  editedSurvey : string = '';
+
   currentParam? : Params;
 
   availableQuestionnaires : QuestionnaireInfoModel[] = [];
@@ -49,6 +52,8 @@ export class EventSurveyComponent implements OnInit{
     titeln : '',
     descriptionn : ''
   }
+
+  surveyStatus : number = 1;
 
   addQuestionName : string = '';
   addQuestionType : string = 'multi';
@@ -90,8 +95,8 @@ export class EventSurveyComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    if (!this.hasRole(2) && !this.hasRole(1)) {
-      this.currentView == 'answer'
+    if (this.roleIdInEvent == 12) {
+      this.currentView = 'answer';
     }
 
     this.dataService.loadAvailableEventQuestionnaires(this.orgId, this.eventId).subscribe(success => {
@@ -252,5 +257,38 @@ export class EventSurveyComponent implements OnInit{
       this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
       this.ngOnInit();
     })
+  }
+
+  /**
+   * enters edit mode to change status of survey
+   * @param id
+   */
+  editSurveyStatus(id: string) {
+    this.editMode = true;
+    this.editedSurvey = id;
+  }
+
+  /**
+   * leaves editMode and saves new status of survey
+   * @param id
+   */
+  saveSurveyStatus(id: string) {
+    let statusId : number = this.surveyStatus;
+    let statusText = '';
+
+    if (statusId == 1) {
+      statusText = 'erstellt';
+    } else if (statusId == 2) {
+      statusText = 'freigabe';
+    } else if (statusId == 3) {
+      statusText = 'geschlossen';
+    }
+
+    this.dataService.changeQuestionnaireStatus(this.orgId, this.eventId, id, statusId, statusText).subscribe(() => {
+      this.snackBar.open('Status geändert', 'OK', {duration: 3000})
+      this.ngOnInit();
+    })
+    this.editMode = false;
+    this.editedSurvey = '';
   }
 }

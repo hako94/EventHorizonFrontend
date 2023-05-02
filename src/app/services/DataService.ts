@@ -322,6 +322,17 @@ export class DataService {
     )
   }
 
+  changeQuestionnaireStatus(orgId: string, eventId: string, surveyId: string, statusId: number, status: string): Observable<any> {
+    return this.http.put<any>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/questionnaire/' + surveyId + '/status',
+      {
+        id: statusId,
+        status: status
+      },
+      httpOptions
+    )
+  }
+
   getChatHistory(orgId: string, eventId: string | undefined): Observable<ChatAnswerModel[]> {
     return this.http.get<ChatAnswerModel[]>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/chat',
