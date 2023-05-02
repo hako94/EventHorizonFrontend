@@ -21,20 +21,23 @@ export class HttpRequestInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    let jwtString = "Bearer " + this.storageService.getUser();
+    if (!req.url.includes('refreshtoken')) {
+      let jwtString = "Bearer " + this.storageService.getUser();
 
-    req = req.clone({
-      headers: req.headers.set('Authorization', jwtString)
-    });
+      req = req.clone({
+        headers: req.headers.set('Authorization', jwtString)
+      });
 
-    return next.handle(req).pipe(
-      catchError(error => {
-        if (error instanceof HttpErrorResponse && error.status == 401 && !req.url.includes("login")) {
-          return this.handle401Error(req, next);
-        }
-        return throwError(() => error);
-      })
-    );
+      return next.handle(req).pipe(
+        catchError(error => {
+          if (error instanceof HttpErrorResponse && error.status == 401 && !req.url.includes("login")) {
+            return this.handle401Error(req, next);
+          }
+          return throwError(() => error);
+        })
+      );
+    }
+    return next.handle(req);
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
