@@ -35,15 +35,7 @@ export class EventItemComponent implements OnInit {
 
     if (this.orgEvent) {
 
-      this.dataService.getImageForEvent("10", this.orgEvent.pictureId, this.orgEvent.id).subscribe(success => {
-        console.warn(success)
-
-        let objectURL = URL.createObjectURL(success);
-        this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-
-      }, error => {
-
-        console.warn("Cant fetch Image for OrgID " + this.orgId + " EventID " + this.orgEvent + " : " + error.status + " using default Organization Image")
+      if(this.orgEvent.pictureId == null) {
 
         this.dataService.getOrganizationInfos(this.orgId).subscribe(success => {
 
@@ -53,7 +45,28 @@ export class EventItemComponent implements OnInit {
             this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
           })
         })
-      })
+
+      } else {
+
+        this.dataService.getImageForEvent(this.orgId, this.orgEvent.pictureId, this.orgEvent.id).subscribe(success => {
+
+          let objectURL = URL.createObjectURL(success);
+          this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+
+        }, error => {
+
+          console.warn("Cant fetch Image for OrgID " + this.orgId + " EventID " + this.orgEvent + " : " + error.status + " using default Organization Image")
+
+          this.dataService.getOrganizationInfos(this.orgId).subscribe(success => {
+
+            this.dataService.getImage(this.orgId, success.logoId).subscribe(success => {
+
+              let objectURL = URL.createObjectURL(success);
+              this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            })
+          })
+        })
+      }
     }
   }
 
