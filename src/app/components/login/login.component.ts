@@ -48,6 +48,7 @@ export class LoginComponent {
     this.authService.login(this.form.email, this.form.password).subscribe(sucess => {
 
       this.storageService.saveUser(sucess);
+      this.storageService.saveUserId(sucess.id.toString());
       this.storageService.saveEmail(sucess.email.toString());
       this.storageService.saveOrganizationList(sucess.organizations);
       this.storageService.savePlattformAdmin(sucess.plattformAdmin)
