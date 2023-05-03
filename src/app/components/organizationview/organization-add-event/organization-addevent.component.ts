@@ -346,7 +346,6 @@ export class OrganizationAddeventComponent {
     if (eventStart != null && eventEnd != null) {
       this.childs.push(
         {
-          childId: this.childs.length + "",
           eventStart: this.dateToLocalDateTimeString(eventStart),
           eventEnd: this.dateToLocalDateTimeString(eventEnd)
         }
@@ -395,7 +394,7 @@ export class OrganizationAddeventComponent {
         description : this.form.eventDescription,
         location : this.form.location,
         eventType : this.form.eventType,
-        childs : this.childs,
+        childs : this.childs.slice(0,1),
         serial: (this.childs.length > 1)
       }
 
