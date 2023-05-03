@@ -519,14 +519,14 @@ export class DataService {
 
   getEventInvites(orgId: string, eventId: string): Observable<any> {
     return this.http.get<EventInviteModel[]>(
-      BACKEND_API + 'api/v1/organization/' + orgId + '/events/' + eventId + '/invites',
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/invites',
       httpOptions
     )
   }
 
   deleteEventInvite(orgaID: string, eventID: string, inviteId: string) : Observable<HttpResponse<any>> {
     return this.http.delete<HttpResponse<any>>(
-      BACKEND_API + 'api/v1/organization/' + orgaID + '/events/' + eventID + '/invites/' + inviteId,
+      BACKEND_API + 'api/v1/organization/' + orgaID + '/event/' + eventID + '/invite/' + inviteId,
       {
         observe: 'response',
         headers: {'Content-Type': 'application/json'}
@@ -536,7 +536,7 @@ export class DataService {
 
   changeEventInviteRole(orgId: string, eventId: string, inviteId: string, roleId: number): Observable<string> {
     return this.http.put<string>(
-      BACKEND_API + 'api/v1/organization/' + orgId + '/events/' + eventId + '/invites/' + inviteId,
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/invite/' + inviteId,
       {
         id: inviteId,
         role: {
