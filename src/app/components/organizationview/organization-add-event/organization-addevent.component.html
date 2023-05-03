@@ -120,7 +120,7 @@
             </mat-form-field>
             <mat-form-field class="ml-2">
               <mat-label>Start-Uhrzeit</mat-label>
-              <input type="time" matInput>
+              <input type="time" matInput #multiStart (input)="attachTimeToDate(startDate, multiStart.value)">
               <mat-hint>hh:mm</mat-hint>
             </mat-form-field>
             <br>
@@ -133,19 +133,19 @@
             </mat-form-field>
             <mat-form-field class="ml-2">
               <mat-label>End-Uhrzeit</mat-label>
-              <input type="time" matInput>
+              <input type="time" matInput #multiEnd (input)="attachTimeToDate(endDate, multiEnd.value)">
               <mat-hint>hh:mm</mat-hint>
             </mat-form-field>
             <button class="ml-2" mat-raised-button color="primary"
                     (click)='addChildEvent(startDate.value,endDate.value)'>Termin hinzufügen</button>
-            <ng-container *ngFor="let child of childs">
+            <ng-container *ngFor="let child of childs; let i = index">
               <div>
                 <br>
                 <mat-divider></mat-divider>
                 <br>
-                <h1>{{child.childId}}. Datum</h1>
-                <p>von {{child.eventStart}} bis {{child.eventEnd}}</p>
-                <button mat-raised-button (click)="deleteChildEvent(child.childId || '0')" color="warn">
+                <h1>{{ i+1 }}. Datum</h1>
+                <p>von {{child.eventStart | date:'dd.MM.yyyy HH:mm' }} bis {{child.eventEnd | date:'dd.MM.yyyy HH:mm'}}</p>
+                <button mat-raised-button (click)="deleteChildEvent(child.eventStart, child.eventEnd)" color="warn">
                   <mat-icon>delete</mat-icon>
                   Löschen
                 </button>

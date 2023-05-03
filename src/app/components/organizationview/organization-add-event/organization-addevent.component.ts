@@ -354,11 +354,10 @@ export class OrganizationAddeventComponent {
     console.log(this.childs)
   }
 
-  deleteChildEvent(id: string) {
+  deleteChildEvent(start: string, end : string) {
     this.childs = this.childs
-      .filter(el => {return el.childId != id})
+      .filter(el => {return (el.eventEnd != end || el.eventStart != start)})
       .filter(el => {return el != null})
-      .map((el, index) => {return { ...el, id: index}})
   }
 
   goBack() : void {
@@ -394,8 +393,8 @@ export class OrganizationAddeventComponent {
         description : this.form.eventDescription,
         location : this.form.location,
         eventType : this.form.eventType,
-        childs : this.childs.slice(0,1),
-        serial: (this.childs.length > 1)
+        serial: (this.childs.length > 1),
+        childs : this.childs.slice(0,1)
       }
 
       this.dataService.safeTemplate(this.currentOrganization, template).subscribe()
