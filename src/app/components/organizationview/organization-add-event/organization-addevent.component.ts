@@ -261,7 +261,7 @@ export class OrganizationAddeventComponent {
       return this.dataService.storeEventImage(this.imageToPersist, this.currentOrganization, id);
     } else {
       console.log(this.filesToPersist)
-      throw new Error()
+      return of("default image");
     }
   }
 

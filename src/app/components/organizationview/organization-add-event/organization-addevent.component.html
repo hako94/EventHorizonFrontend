@@ -262,6 +262,7 @@
     <h2>Datei Upload</h2>
     <div>
       <h3>Event-Bild</h3>
+      <p>Hier kann ein Event bild hochgeladen werden - alternativ kann dieses Feld leer gelassen werden, dann wird das Bild der Organisation verwendet</p>
       <div class="mb-8 w-[400px] h-[200px] border-2 relative" >
         <label style="color: #e5e7eb">Drag and Drop</label>
         <div class="h-full flex flex-col items-center justify-center z-0">
@@ -276,6 +277,7 @@
     <br><mat-divider></mat-divider><br>
     <div>
       <h3>Weitere Dateien</h3>
+      <p>Hier können bis zu 20 weitere, auf das Event bezogene Dateien hochgeladen werden</p>
       <input type="file" #fileUpload multiple (change)="onFileSelected($event)">
     </div>
     <br><br>

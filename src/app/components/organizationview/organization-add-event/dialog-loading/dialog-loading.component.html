@@ -17,6 +17,11 @@
     <mat-icon *ngIf="data.mEventFilesUploaded">done</mat-icon>
     <p> Event-Dateien werden hochgeladen</p>
   </div>
+  <div class="flex">
+    <mat-spinner *ngIf="!data.mEventFilesUploaded" [diameter]="20"></mat-spinner>
+    <mat-icon *ngIf="data.mEventFilesUploaded">done</mat-icon>
+    <p> Fertig stellen</p>
+  </div>
 </div>
 <div mat-dialog-actions>
   <button mat-button color="warn" (click)="onNoClick()">Abbrechen</button>
