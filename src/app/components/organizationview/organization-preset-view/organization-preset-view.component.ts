@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DataService} from "../../../services/DataService";
 import {EventTemplateModel} from "../../../models/EventTemplateModel";
+import {EventTemplatePrefillModel} from "../../../models/EventTemplatePrefillModel";
 
 @Component({
   selector: 'app-organization-preset-view',
@@ -13,6 +14,10 @@ export class OrganizationPresetViewComponent implements OnInit{
   orgaID : string = ''
 
   eventTemplates : EventTemplateModel[] = [];
+  eventeTemplatePrefillModel? : EventTemplatePrefillModel;
+
+  isLoading : boolean = false;
+  editMode : boolean = false;
 
   constructor(private dataService : DataService) {
   }
@@ -34,4 +39,16 @@ export class OrganizationPresetViewComponent implements OnInit{
     )
   }
 
+  openPanel(id: string) {
+    this.eventeTemplatePrefillModel = undefined;
+    this.isLoading = true;
+    this.dataService.loadTemplateBasedOnId(this.orgaID, id).subscribe(model => {
+      this.isLoading = false;
+      this.eventeTemplatePrefillModel = model;
+    })
+  }
+
+  persistData() : void {
+    this.editMode = false;
+  }
 }

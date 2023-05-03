@@ -1,16 +1,54 @@
-<div class="mat-typography p-4">
+<div class="mx-3">
   <br>
   <h1>EventTemplates</h1>
   <hr><br><br>
-  <div>
-    <ng-container *ngFor="let template of eventTemplates">
-      <div class="grid grid-cols-4 grid-rows-1">
-        <p>{{template.id}}</p>
-        <p>{{template.name}}</p>
-        <p>{{template.description}}</p>
-        <button class="justify-self-end flex" color="warn" (click)="deleteTemplate(template.id)" mat-raised-button><mat-icon>delete</mat-icon>Löschen</button>
-        <br><br><br>
-      </div>
-    </ng-container>
-  </div>
+  <mat-accordion>
+    <div class="mt-1 overflow-y-auto max-h-[70vh] pb-1" *ngFor="let template of eventTemplates">
+      <mat-expansion-panel (opened)="openPanel(template.id)" class="grid">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="pt-2">
+            <p>{{template.name}}</p>
+          </mat-panel-title>
+          <mat-panel-description>
+            <p class="truncate">{{template.description}}</p>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div *ngIf="isLoading" class="my-5">
+          <mat-spinner></mat-spinner>
+        </div>
+        <div *ngIf="!isLoading && eventeTemplatePrefillModel">
+          <hr><br>
+          <mat-form-field>
+            <mat-label>Event-Name</mat-label>
+            <input [disabled]="!editMode" matInput value="{{eventeTemplatePrefillModel.name}}">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill" class="w-[80%]">
+            <mat-label>Event-Beschreibung</mat-label>
+            <textarea matInput
+                      cdkTextareaAutosize
+                      cdkAutosizeMinRows="10"
+                      cdkAutosizeMaxRows="30"
+                      [disabled]="!editMode">{{eventeTemplatePrefillModel.description}}</textarea>
+          </mat-form-field><br>
+          <mat-form-field>
+            <mat-label>Event-Ort</mat-label>
+            <input matInput [disabled]="!editMode" value="{{eventeTemplatePrefillModel.location}}">
+          </mat-form-field>
+        </div>
+        <div class="flex justify-self-end">
+          <button *ngIf="!editMode" (click)="editMode = true" class="flex-col" mat-icon-button color="primary">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button *ngIf="editMode" (click)="persistData()" class="flex-col" mat-icon-button
+                  color="primary">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button (click)="deleteTemplate(template.id)" mat-icon-button color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </mat-expansion-panel>
+    </div>
+  </mat-accordion>
 </div>
