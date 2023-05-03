@@ -276,7 +276,7 @@
     <br><mat-divider></mat-divider><br>
     <div>
       <h3>Weitere Dateien</h3>
-      <input type="file" #fileUpload multiple>
+      <input type="file" #fileUpload multiple (change)="onFileSelected($event)">
     </div>
     <br>
     <button color="primary" matStepperNext mat-raised-button>Weiter</button>

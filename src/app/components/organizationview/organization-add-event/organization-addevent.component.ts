@@ -254,19 +254,27 @@ export class OrganizationAddeventComponent {
 
   onFileSelected(event : any) {
 
-    const file:File = event.target.files[0];
+    const files : Array<File> = event.target.files;
 
-    if (file) {
+    console.log(files)
 
-      const formData = new FormData();
+    files.forEach(file => {
 
-      formData.append("file", file, file.name);
+      if (file) {
 
-      this.filesToPersist.push(formData);
-    }
+        const formData = new FormData();
+
+        formData.append("file", file, file.name);
+
+        this.filesToPersist.push(formData);
+
+        console.log(this.filesToPersist)
+
+      }
+
+    })
   }
 
-  //TODO unterscheiden
 
   onEventImageFileSelected(event: any) {
 
