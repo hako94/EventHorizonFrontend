@@ -256,9 +256,9 @@ export class OrganizationAddeventComponent {
 
     const files : Array<File> = event.target.files;
 
-    console.log(files)
+    console.log(files);
 
-    files.forEach(file => {
+    [...files].forEach(file => {
 
       if (file) {
 
@@ -267,11 +267,7 @@ export class OrganizationAddeventComponent {
         formData.append("file", file, file.name);
 
         this.filesToPersist.push(formData);
-
-        console.log(this.filesToPersist)
-
       }
-
     })
   }
 
