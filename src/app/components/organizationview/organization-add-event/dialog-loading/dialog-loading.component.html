@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Eventerstellung</h1>
+<div mat-dialog-content>
+  <p>Das Event wird erstellt, bitte warten</p>
+  <hr><br>
+  <div class="flex">
+    <mat-spinner *ngIf="!data.mEventCreated" [diameter]="20"></mat-spinner>
+    <mat-icon *ngIf="data.mEventCreated">done</mat-icon>
+    <p> Event wird angelegt</p>
+  </div>
+  <div class="flex">
+    <mat-spinner *ngIf="!data.mEventPictureUploaded" [diameter]="20"></mat-spinner>
+    <mat-icon *ngIf="data.mEventPictureUploaded">done</mat-icon>
+    <p> Event-Bild wir hochgeladen</p>
+  </div>
+  <div class="flex">
+    <mat-spinner *ngIf="!data.mEventFilesUploaded" [diameter]="20"></mat-spinner>
+    <mat-icon *ngIf="data.mEventFilesUploaded">done</mat-icon>
+    <p> Event-Dateien werden hochgeladen</p>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="onNoClick()">Abbrechen</button>
+  <button mat-button (click)="onNoClick()" [disabled]="data.mEventFilesUploaded">Fertig</button>
+</div>

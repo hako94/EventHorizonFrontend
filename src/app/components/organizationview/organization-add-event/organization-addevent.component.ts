@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {DataService} from "../../../services/DataService";
 import {Location} from "@angular/common";
 import {AddEventCustomField} from "../../../dataobjects/AddEventCustomField";
-import {min, Observable, of} from "rxjs";
+import {delay, forkJoin, min, Observable, of} from "rxjs";
 import {FormControl, FormGroupDirective, NgForm} from "@angular/forms";
 import {EventTemplateModel} from "../../../models/EventTemplateModel";
 import {AvailableTemplateList} from "../../../models/AvailableTemplateList";
@@ -11,6 +11,8 @@ import {ChildEvent} from "../../../models/ChildEventModel";
 import {EventTemplatePrefillModel} from "../../../models/EventTemplatePrefillModel";
 import {EmailTemplateModel} from "../../../models/EmailTemplateModel";
 import {ErrorStateMatcher} from "@angular/material/core";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {DialogLoadingComponent} from "./dialog-loading/dialog-loading.component";
 
 export interface createInterfaceTemplateBasic {
   eventName : string,
@@ -58,9 +60,15 @@ export interface RequestModel extends baseModel{
 @Component({
   selector: 'app-organization-addevent',
   templateUrl: './organization-addevent.component.html',
-  styleUrls: ['./organization-addevent.component.scss']
+  styleUrls: ['./organization-addevent.component.scss'],
 })
 export class OrganizationAddeventComponent {
+
+  private dialogRef?: MatDialogRef<DialogLoadingComponent>
+
+  eventCreated : boolean = false;
+  pictureUploaded : boolean = false
+  filesUploaded : boolean = false
 
   singleStartTime : string = '';
   singleEndTime : string = '';
@@ -108,7 +116,8 @@ export class OrganizationAddeventComponent {
 
   constructor(private dataService : DataService,
               private location : Location,
-              private router : Router) {
+              private router : Router,
+              public dialog: MatDialog) {
 
     this.customFields.push({ id: "1", name: "test0"})
     this.customFields.push({ id: "2", name: "test1"})
@@ -130,6 +139,13 @@ export class OrganizationAddeventComponent {
 
     this.loadTemplates()
     this.loadEmails()
+  }
+
+  openDialog(): void {
+    this.dialogRef = this.dialog.open(DialogLoadingComponent, {
+      width: '400px',
+      data: { mEventCreated: this.eventCreated, mEventPictureUploaded : this.pictureUploaded, mEventFilesUploaded : this.filesUploaded }
+    });
   }
 
   validateTimeInput(input : string): boolean {
@@ -201,13 +217,28 @@ export class OrganizationAddeventComponent {
         }
     }
 
-    this.dataService.postEventInOrganizationAndPersist(this.currentOrganization, modelExtended).subscribe(response => {
+    this.openDialog();
+
+    this.dataService.postEventInOrganizationAndPersist(this.currentOrganization, modelExtended).pipe(delay(2000)).subscribe(response => {
+
+      if (this.dialogRef) {
+        this.dialogRef.componentInstance.data = {mEventCreated : true, mEventPictureUploaded : false, mEventFilesUploaded : false};
+      }
       console.log(this.extractIdFromUrl(response.body.toString()))
 
-      this.persistImage(this.extractIdFromUrl(response.body.toString())).subscribe(success => {
+      this.persistImage(this.extractIdFromUrl(response.body.toString())).pipe(delay(2000)).subscribe(success => {
 
-        this.persistFiles().subscribe(success => {
-          console.log("request vollständig")
+        if (this.dialogRef) {
+          this.dialogRef.componentInstance.data = {mEventCreated : true, mEventPictureUploaded : true, mEventFilesUploaded : false};
+        }
+
+        this.persistFiles().pipe(delay(2000)).subscribe(success => {
+          console.log("request vollständig + " + success)
+
+          if (this.dialogRef) {
+            this.dialogRef.componentInstance.data = {mEventCreated : true, mEventPictureUploaded : true, mEventFilesUploaded : true};
+          }
+
         }, error => {
           //TODO rollback
           console.log("konnte die Dateien nicht hochladen")
@@ -229,13 +260,22 @@ export class OrganizationAddeventComponent {
     if (this.imageToPersist) {
       return this.dataService.storeEventImage(this.imageToPersist, this.currentOrganization, id);
     } else {
-      console.log(this.filesToPersist.length + " i " + this.filesToPersist.at(0))
+      console.log(this.filesToPersist)
       throw new Error()
     }
   }
 
   persistFiles() : Observable<any> {
-    //TODO unterscheiden zwischen Bild und anderen Dateien
+    if (this.filesToPersist.length > 0) {
+
+      const observables: Observable<any>[] = [];
+
+      for (let i = 0; i < this.filesToPersist.length; i++) {
+        observables.push(this.dataService.storeFile(this.filesToPersist[i], this.currentOrganization));
+      }
+
+      return forkJoin(observables);
+    }
     return of("No files to persist found");
   }
 
