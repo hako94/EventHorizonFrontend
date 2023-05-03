@@ -20,5 +20,5 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button color="warn" (click)="onNoClick()">Abbrechen</button>
-  <button mat-button (click)="onNoClick()" [disabled]="data.mEventFilesUploaded">Fertig</button>
+  <button mat-button (click)="onNoClick()" [disabled]="!data.mEventFilesUploaded">Fertig</button>
 </div>
