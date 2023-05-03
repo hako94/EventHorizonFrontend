@@ -79,11 +79,12 @@ export class OrganizationAddeventComponent {
 
   shownPreviewImage : any;
 
+  imageToPersist? : FormData;
   filesToPersist : FormData[] = [];
 
   startDate = new FormControl(new Date());
-
   endDate = new FormControl(new Date());
+
   currentOrganization : string = '';
 
   emailTemplates: EmailTemplateModel[] = [];
@@ -225,8 +226,8 @@ export class OrganizationAddeventComponent {
 
 
   persistImage(id : string) : Observable<any> {
-    if (this.filesToPersist.length > 0 && this.filesToPersist.at(0)) {
-      return this.dataService.storeEventImage(this.filesToPersist[0], this.currentOrganization, id);
+    if (this.imageToPersist) {
+      return this.dataService.storeEventImage(this.imageToPersist, this.currentOrganization, id);
     } else {
       console.log(this.filesToPersist.length + " i " + this.filesToPersist.at(0))
       throw new Error()
@@ -277,7 +278,7 @@ export class OrganizationAddeventComponent {
       const formData = new FormData();
       formData.append("file", file, file.name);
 
-      this.filesToPersist.push(formData);
+      this.imageToPersist = formData;
 
       fileReader.readAsDataURL(file);
 

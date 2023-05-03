@@ -26,10 +26,10 @@ export class ErrorInterceptor implements HttpInterceptor {
             }
           }
 
-          this.snackBar.open(errorMessage, 'OK', {
-            duration: 5000,
-            panelClass: ['mat-toolbar', 'mat-warn']
-          });
+          //this.snackBar.open(errorMessage, 'OK', {
+          //  duration: 5000,
+          //  panelClass: ['mat-toolbar', 'mat-warn']
+          //});
 
           return throwError(error);
         })
