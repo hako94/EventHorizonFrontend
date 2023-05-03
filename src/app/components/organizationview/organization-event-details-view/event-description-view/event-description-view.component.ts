@@ -27,7 +27,7 @@ export class EventDescriptionViewComponent implements OnInit {
 
       this.eventModel = el
 
-      this.dataService.getImageForEvent(this.orgaID, this.eventModel?.pictureId || 'error', this.eventID).subscribe(success => {
+      this.dataService.getFileForEvent(this.orgaID, this.eventModel?.pictureId || 'error', this.eventID).subscribe(success => {
 
         let objectURL = URL.createObjectURL(success);
         this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);

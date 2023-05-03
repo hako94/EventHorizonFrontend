@@ -48,7 +48,7 @@ export class EventItemComponent implements OnInit {
 
       } else {
 
-        this.dataService.getImageForEvent(this.orgId, this.orgEvent.pictureId, this.orgEvent.id).subscribe(success => {
+        this.dataService.getFileForEvent(this.orgId, this.orgEvent.pictureId, this.orgEvent.id).subscribe(success => {
 
           let objectURL = URL.createObjectURL(success);
           this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);

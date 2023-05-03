@@ -1,1 +1,25 @@
-<p>event-files-view works!</p>
+<div class="mx-3 max-h-[85vh] overflow-y-auto">
+  <div class="flex flex-row">
+    <div class="w-1/2">
+      <br>
+      <h2>Datei hochladen</h2>
+      <div class="mb-8 w-[400px] h-[200px] border-2 relative">
+        <label style="color: #e5e7eb">Drag and Drop</label>
+        <div class="h-full flex flex-col items-center justify-center z-0">
+          <mat-icon class="w-32 h-32 scale-[3]">upload</mat-icon>
+          <label class="mt-8">Dateien hier ablegen oder klicken zum auswählen</label>
+        </div>
+        <input #fileUpload class="w-[400px] h-[200px] opacity-0 z-20 absolute top-0" (change)="onFileSelected($event)"
+               type="file" multiple>
+      </div>
+    </div>
+    <div class="w-1/2 mt-7">
+      <h2>Verfügbare Dateien zum Download</h2>
+      <mat-list>
+        <mat-list-item class="fileItem hover:bg-gray-300" *ngFor="let file of availableFilesInfos" (click)="downloadFile(file.id, file.fileName)">
+          {{file.fileName}}
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+</div>

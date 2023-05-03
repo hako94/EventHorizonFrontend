@@ -104,21 +104,21 @@ export class DataService {
   }
 
   mapRoleIdToString(id: number): string {
-    if (id == 1){
+    if (id == 1) {
       return 'admin';
-    } else if (id == 2){
+    } else if (id == 2) {
       return 'organisator';
-    } else if (id == 3){
+    } else if (id == 3) {
       return 'tutor';
-    } else if (id == 4){
+    } else if (id == 4) {
       return 'teilnehmer';
     } else if (id == 5) {
       return 'gast';
     } else if (id == 10) {
       return 'Organisator';
-    } else if (id == 11){
+    } else if (id == 11) {
       return 'Tutor';
-    } else if (id == 12){
+    } else if (id == 12) {
       return 'Teilnehmer';
     } else {
       return 'error';
@@ -167,8 +167,8 @@ export class DataService {
       BACKEND_API + 'api/v1/organizations/events',
       {
         params: {
-          'dateFrom' : dateFrom,
-          'dateTo' : dateTo
+          'dateFrom': dateFrom,
+          'dateTo': dateTo
         }
       }
     )
@@ -195,7 +195,7 @@ export class DataService {
     )
   }
 
-  loadTemplateBasedOnId(orgId: string, templateId : string): Observable<EventTemplatePrefillModel> {
+  loadTemplateBasedOnId(orgId: string, templateId: string): Observable<EventTemplatePrefillModel> {
     return this.http.get<EventTemplatePrefillModel>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/eventtemplate/' + templateId,
       httpOptions
@@ -218,7 +218,20 @@ export class DataService {
     )
   }
 
-  storeEventImage(formData: FormData, orgId: string, id : string): Observable<HttpResponse<any>> {
+  storeFileForEvent(formData: FormData, orgId: string, eventId: string): Observable<any> {
+    return this.http.post<any>(
+      BACKEND_API + 'api/v1/files',
+      formData,
+      {
+        params: {
+          'orgId': orgId,
+          'eventId': eventId
+        }
+      }
+    )
+  }
+
+  storeEventImage(formData: FormData, orgId: string, id: string): Observable<HttpResponse<any>> {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/files',
       formData,
@@ -226,8 +239,8 @@ export class DataService {
         observe: 'response',
         params: {
           'orgId': orgId,
-          'eventId' : id,
-          'isEventPicture' : true
+          'eventId': id,
+          'isEventPicture': true
         }
       }
     )
@@ -239,21 +252,33 @@ export class DataService {
       {
         responseType: "blob",
         params: {'orgId': orgId}
-
       }
     )
   }
 
-  getImageForEvent(orgId: string, fileId: string, eventId : string): Observable<any> {
+  getFileInfosForEvent(orgId: string, eventId: string): Observable<any> {
+    return this.http.get(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/files',
+      {
+        params: {
+          'orgId': orgId,
+          'eventId': eventId
+        }
+      }
+    )
+  }
+
+  getFileForEvent(orgId: string, fileId: string, eventId: string): Observable<any> {
     return this.http.get(
       BACKEND_API + 'api/v1/files/' + fileId,
       {
         responseType: "blob",
         params: {
           'orgId': orgId,
-          'eventId' : eventId
-        }
-      }
+          'eventId': eventId
+        },
+        observe: 'response',
+      },
     )
   }
 
@@ -506,7 +531,7 @@ export class DataService {
     )
   }
 
-  deleteNotificationInfo(orgaID: string, eventID: string, notificationId: string) : Observable<HttpResponse<any>> {
+  deleteNotificationInfo(orgaID: string, eventID: string, notificationId: string): Observable<HttpResponse<any>> {
     return this.http.delete<HttpResponse<any>>(
       BACKEND_API + 'api/v1/organization/' + orgaID + '/event/' + eventID + '/notification/' + notificationId,
       {
@@ -528,7 +553,7 @@ export class DataService {
     )
   }
 
-  deleteTemplate(orgaID: string, templateId: string) : Observable<HttpResponse<any>> {
+  deleteTemplate(orgaID: string, templateId: string): Observable<HttpResponse<any>> {
     return this.http.delete<HttpResponse<any>>(
       BACKEND_API + 'api/v1/organization/' + orgaID + '/eventtemplate/' + templateId,
       {
@@ -545,7 +570,7 @@ export class DataService {
     )
   }
 
-  deleteEventInvite(orgaID: string, eventID: string, inviteId: string) : Observable<HttpResponse<any>> {
+  deleteEventInvite(orgaID: string, eventID: string, inviteId: string): Observable<HttpResponse<any>> {
     return this.http.delete<HttpResponse<any>>(
       BACKEND_API + 'api/v1/organization/' + orgaID + '/event/' + eventID + '/invite/' + inviteId,
       {
@@ -571,20 +596,20 @@ export class DataService {
     )
   }
 
-  getSingleEvent(orgaID: string, eventID: string) : Observable<OrganizationEventModel> {
+  getSingleEvent(orgaID: string, eventID: string): Observable<OrganizationEventModel> {
     return this.http.get<OrganizationEventModel>(
       BACKEND_API + 'api/v1/organization/' + orgaID + '/event/' + eventID
     )
   }
 
-  getUserRoleAndEventStatus(orgId: string, eventId: string): Observable<EventRoleStatusModel>{
+  getUserRoleAndEventStatus(orgId: string, eventId: string): Observable<EventRoleStatusModel> {
     return this.http.get<EventRoleStatusModel>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/rolestatus',
       httpOptions
     )
   }
 
-  getEventStatus(orgId: string, eventId: string): Observable<EventStatusModel>{
+  getEventStatus(orgId: string, eventId: string): Observable<EventStatusModel> {
     return this.http.get<EventStatusModel>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/status',
       httpOptions
