@@ -17,11 +17,11 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>Vorname</mat-label>
-          <input matInput>
+          <input matInput name="firstname" [(ngModel)]="form.firstname">
         </mat-form-field>
         <mat-form-field>
           <mat-label>Nachname</mat-label>
-          <input matInput>
+          <input matInput name="lastname" [(ngModel)]="form.lastname">
         </mat-form-field>
         <mat-form-field>
           <mat-label>Passwort</mat-label>

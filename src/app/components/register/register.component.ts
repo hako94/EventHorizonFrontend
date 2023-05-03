@@ -12,7 +12,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class RegisterComponent {
   form: any = {
     email: null,
-    password: null
+    password: null,
+    firstname : null,
+    lastname : null
   };
 
   withOrganizationId : boolean;
@@ -49,8 +51,6 @@ export class RegisterComponent {
       this.preparedEmail = decodeURIComponent(params['UserIdEmail']);
       this.inviteId = params['createdUserModel'];
 
-      console.log("Email " + this.preparedEmail)
-
       if (this.preparedEmail != "undefined"){
         this.form.email = this.preparedEmail;
       }
@@ -68,19 +68,18 @@ export class RegisterComponent {
 
   onSubmit(): void {
     if (this.withOrganizationId) {
-      const {email, password} = this.form;
 
       this.authService.registerWithLink(
-        email,
-        password,
-        "EinVorname",
-        "EinNachname",
+        this.form.email,
+        this.form.password,
+        this.form.firstname,
+        this.form.lastname,
         this.preparedEmail,
         this.organization,
         this.inviteId).subscribe(success => {
 
           //Auto Login
-          this.authService.login(email, password).subscribe(success => {
+          this.authService.login(this.form.email, this.form.password).subscribe(success => {
 
             this.jwtStorage.saveUser(success)
 
