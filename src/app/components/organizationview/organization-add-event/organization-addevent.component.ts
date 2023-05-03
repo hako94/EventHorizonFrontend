@@ -13,6 +13,7 @@ import {EmailTemplateModel} from "../../../models/EmailTemplateModel";
 import {ErrorStateMatcher} from "@angular/material/core";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogLoadingComponent} from "./dialog-loading/dialog-loading.component";
+import {HttpResponse} from "@angular/common/http";
 
 export interface createInterfaceTemplateBasic {
   eventName : string,
@@ -228,6 +229,8 @@ export class OrganizationAddeventComponent {
 
       this.persistImage(this.extractIdFromUrl(response.body.toString())).pipe(delay(2000)).subscribe(success => {
 
+        console.log("Pic: "+ this.extractIdFromUrl(success.body))
+
         if (this.dialogRef) {
           this.dialogRef.componentInstance.data = {mEventCreated : true, mEventPictureUploaded : true, mEventFilesUploaded : false};
         }
@@ -261,7 +264,7 @@ export class OrganizationAddeventComponent {
       return this.dataService.storeEventImage(this.imageToPersist, this.currentOrganization, id);
     } else {
       console.log(this.filesToPersist)
-      return of("default image");
+      return of("default Image");
     }
   }
 
@@ -365,6 +368,7 @@ export class OrganizationAddeventComponent {
   }
 
   persistTemplate() {
+
     this.disabledTemplateSafe = true;
 
     if (this.form.eventType == "single" && this.singleStartDate != null && this.singleEndDate != null) {

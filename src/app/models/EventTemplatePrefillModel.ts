@@ -5,6 +5,7 @@ export interface EventTemplatePrefillModel {
   location : string,
   description : string,
   eventType : string,
-  childs : ChildEvent[]
-  serial? : boolean;
+  childs : ChildEvent[],
+  serial? : boolean,
+  pictureId? : string
 }
