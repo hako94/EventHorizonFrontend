@@ -32,10 +32,6 @@ export class AppComponent implements OnInit{
       this.router.navigate(['/login']);
 
     }
-
-    this.csrfService.getCsrf().subscribe(success => {
-      this.storageService.saveCsrfKey(success.token)
-    })
   }
 
 }
