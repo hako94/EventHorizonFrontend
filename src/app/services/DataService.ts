@@ -24,6 +24,8 @@ import {EventStatusModel} from "../models/EventStatusModel";
 import {EventRoleStatusModel} from "../models/EventRoleStatusModel";
 import {QuestionnairePostModel} from "../models/QuestionnairePostModel";
 import {QuestionnaireInfoModel} from "../models/QuestionnaireInfoModel";
+import {QuestionnaireModel} from "../models/QuestionnaireModel";
+import {QuestionAnswerModel} from "../models/QuestionAnswerModel";
 
 //const BACKEND_API = 'http://localhost:8080/'
 //const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
@@ -328,6 +330,25 @@ export class DataService {
       {
         id: statusId,
         status: status
+      },
+      httpOptions
+    )
+  }
+
+  getQuestionnaire(orgId: string, eventId: string, id: string): Observable<QuestionnaireModel> {
+    return this.http.get<QuestionnaireModel>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/questionnaire/' + id,
+      httpOptions
+    )
+  }
+
+  postQuestionnaireAnswer(orgId: string, eventId: string, questionnaireId: string, userId: string, questionAnswers: QuestionAnswerModel[]): Observable<any> {
+    return this.http.post<any>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/questionnaire/' + questionnaireId + '/responses',
+      {
+        questionnaireId: questionnaireId,
+        userId: userId,
+        questionAnswers: questionAnswers
       },
       httpOptions
     )

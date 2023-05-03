@@ -1,16 +1,16 @@
 <div class="ml-4 mt-4" *ngIf="hasRole(1) || hasRole(2)">
   <mat-button-toggle-group [(ngModel)]="currentView" name="event-time-type">
     <mat-button-toggle value="view">Übersicht</mat-button-toggle>
-    <mat-button-toggle value="create">Fragebogen erstellen</mat-button-toggle>
-    <mat-button-toggle value="answer">Fragebogen beantworten</mat-button-toggle>
-    <mat-button-toggle value="collect">Fragebogen auswerten</mat-button-toggle>
+    <mat-button-toggle value="create">Erstellen</mat-button-toggle>
+    <mat-button-toggle value="answer">Beantworten</mat-button-toggle>
+    <mat-button-toggle value="collect">Auswerten</mat-button-toggle>
   </mat-button-toggle-group>
 </div>
-<div *ngIf="currentView == 'create' || currentView == 'answer' || currentView == 'collect'" class="overflow-y-scroll max-h-[75vh]">
-  <mat-card class="p-4 my-4 ml-4 min-h-0">
+<div *ngIf="currentView == 'create' || currentView == 'answer' || currentView == 'collect'" class="overflow-y-auto max-h-[80vh]">
+  <mat-card class="p-4 my-4 mx-4 min-h-0">
     <div *ngIf="currentView == 'create'">
-      <h1>Einen Fragebogen erstellen</h1>
-      <h2>Allgemeine Informationen</h2>
+      <h2>Einen Fragebogen erstellen</h2>
+      <h3><strong>Allgemeine Informationen</strong></h3>
       <p>Der Name des Fragebogens, er wird bei der Auswahl des Bogens, sowie ganz oben als Überschrift angezeigt</p>
       <mat-form-field>
         <mat-label>Name des Bogens</mat-label>
@@ -27,7 +27,7 @@
       <br><mat-divider></mat-divider><br><br>
       <!-- ---------------- -->
 
-      <h2>Fragen hinzufügen</h2>
+      <h3><strong>Fragen hinzufügen</strong></h3>
       <p>Hier kann eine beliebige Anzahl an Fragen hinzugefügt werden</p>
       <br>
 
@@ -65,7 +65,7 @@
                   <input matInput #inputAntwort id="addAntwort">
                 </mat-form-field>
 
-                <button [disabled]="isSingleChoiceComplete(i)" mat-raised-button class="ml-2" (click)="addAnswerOption(inputAntwort, i)"><mat-icon>add</mat-icon>Antwort hinzufügen</button>
+                <button mat-raised-button class="ml-2" (click)="addAnswerOption(inputAntwort, i)"><mat-icon>add</mat-icon>Antwort hinzufügen</button>
               </div>
               <div class="ml-16">
                 <h2 *ngIf="field.answerOptions.length > 0">Antwortmöglichkeiten</h2>
@@ -86,37 +86,47 @@
       <h2>Abschluss</h2>
       <button [disabled]="valideDateQuestions()" mat-raised-button color="primary" (click)="submitQuestionnaire()"><mat-icon>save</mat-icon>Fragebogen erstellen</button>
     </div>
-<!--
+
+    <!-- Answer -->
     <div *ngIf="currentView == 'answer'">
-      <h1>Einen Fragebogen beantworten</h1>
-      <mat-form-field appearance="fill">
-        <mat-label>Fragebogen</mat-label>
-        <mat-select [(value)]="currentSurvey">
-          <mat-option *ngFor="let elem of switchView" [value]="elem">
-            {{elem.viewValue}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <hr><br>
-      <h2>Fragebogen {{currentSurvey?.viewValue || ''}}</h2>
+      <h2>Fragebogen zur Beantwortung auswählen</h2>
+      <div class="flex">
+        <mat-form-field appearance="fill">
+          <mat-label>Fragebogen</mat-label>
+          <mat-select [(ngModel)]="toAnswerSurveyId">
+            <div *ngFor="let elem of availableQuestionnaires">
+              <div *ngIf="elem.status.id==2">
+                <mat-option [value]="elem.id">
+                  {{elem.title}}
+                </mat-option>
+              </div>
+            </div>
+          </mat-select>
+        </mat-form-field>
+        <div class="ml-5 mt-5"><button mat-raised-button color="primary" (click)="selectToAnswerSurvey()"><mat-icon>edit</mat-icon>Auswählen</button></div>
+        <hr><br>
+      </div>
+
+      <h2>Fragebogen {{toAnswerSurvey?.title || ''}}</h2>
       <mat-card-subtitle>
         <label><strong>Beschreibung</strong></label>
-        <p>{{availableQuestionnaires.at(currentSurvey?.value || 0)?.description || ''}}</p>
+        <p>{{toAnswerSurvey?.description || ''}}</p>
       </mat-card-subtitle>
       <hr><br>
+
       <ng-container>
-        <ng-container *ngFor="let question of getQuestions(); let i = index">
+        <ng-container *ngFor="let question of toAnswerSurvey?.questions; let i = index">
           <h3>{{i+1}}. Frage</h3>
           <p>{{question.questionText}}</p>
           <ng-container *ngIf="question.type == 'SINGLE_CHOICE'">
             <mat-radio-group aria-label="Select an option">
-              <mat-radio-button *ngFor="let answer of question.answerOptions" value="1">{{answer.answerText}}</mat-radio-button>
+              <mat-radio-button *ngFor="let answer of question.answerOptions" (click)="updateSingleChoiceAnswer(question.questionNumber, answer.answerNumber)" >{{answer.answerText}}</mat-radio-button>
             </mat-radio-group>
           </ng-container>
           <ng-container *ngIf="question.type == 'MULTIPLE_CHOICE'">
             <div *ngFor="let answer of question.answerOptions" class="flex">
               <div class="flex items-center">
-                <mat-checkbox class="flex"></mat-checkbox>
+                <mat-checkbox class="flex" (click)="updateMultipleChoiceAnswer(question.questionNumber, answer.answerNumber)"></mat-checkbox>
                 <label class="flex">{{answer.answerText}}</label>
               </div>
             </div>
@@ -125,12 +135,12 @@
         </ng-container>
 
         <br>
-        <button mat-raised-button color="primary">Absenden</button>
-
+        <button mat-raised-button color="primary" (click)="sendAnsweredSurvey()" [disabled]="missingAnswers()"><mat-icon>send</mat-icon>Absenden</button>
       </ng-container>
-    </div>  -->
+    </div>
   </mat-card>
 </div>
+
 <div class="mx-3" *ngIf="currentView == 'view'">
   <br>
   <h2>Fragebogen-Übersicht</h2>

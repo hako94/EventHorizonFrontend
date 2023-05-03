@@ -9,6 +9,8 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {QuestionnairePostModel} from "../../../../models/QuestionnairePostModel";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {QuestionnaireInfoModel} from "../../../../models/QuestionnaireInfoModel";
+import {QuestionnaireModel} from "../../../../models/QuestionnaireModel";
+import {QuestionAnswerModel} from "../../../../models/QuestionAnswerModel";
 
 export interface FormIn {
   titeln : string,
@@ -43,6 +45,9 @@ export class EventSurveyComponent implements OnInit{
 
   currentSurvey? : SwitchView;
 
+  toAnswerSurveyId: string = '';
+  toAnswerSurvey: QuestionnaireModel | undefined;
+
   orgId : string = '';
   eventId : string = '';
 
@@ -59,6 +64,8 @@ export class EventSurveyComponent implements OnInit{
   addQuestionType : string = 'multi';
 
   questions : Array<QuestionModel> = [];
+
+  questionAnswers : QuestionAnswerModel[] = [];
 
   constructor(private location : Location,
               private dataService : DataService,
@@ -201,6 +208,8 @@ export class EventSurveyComponent implements OnInit{
       this.snackBar.open('Umfragebogen erfolgreich erstellt', 'OK', {duration: 3000})
       this.ngOnInit();
       this.currentView = 'view';
+      this.questions = [];
+      this.formIn = {titeln : '', descriptionn : ''};
     })
   }
 
@@ -290,5 +299,119 @@ export class EventSurveyComponent implements OnInit{
     })
     this.editMode = false;
     this.editedSurvey = '';
+  }
+
+  /**
+   * Selects a survey that will be answered, retrieves information abut the survey from dataservice
+   */
+  selectToAnswerSurvey() {
+    if (this.toAnswerSurveyId == '') {
+      this.snackBar.open('Bitte einen Fragebogen auswählen', 'OK', {duration: 3000})
+      return;
+    }
+    this.dataService.getQuestionnaire(this.orgId, this.eventId, this.toAnswerSurveyId).subscribe(success => {
+      this.toAnswerSurvey = success;
+    })
+
+
+    this.toAnswerSurveyId = '';
+  }
+
+  /**
+   * retrieves the selected answer of a single choice question that is currently answered
+   * @param questionNumber
+   * @param answerNumber
+   */
+  updateSingleChoiceAnswer(questionNumber: number, answerNumber: number) {
+    console.log('Frage ' + questionNumber + ', Antwort ' + answerNumber);
+    let exists : boolean = false;
+    this.questionAnswers.forEach(question => {
+      if (question.questionNumber == questionNumber) {
+        exists = true;
+        question.answerNumber = [answerNumber];
+      }
+    })
+    if (!exists) {
+      this.questionAnswers.push(new class implements QuestionAnswerModel {
+        answerNumber: number[] = [answerNumber];
+        questionNumber: number = questionNumber;
+      })
+    }
+    console.log(this.questionAnswers)
+  }
+
+  /**
+   * retrieves the selected answer of a multiple choice question that is currently answered
+   * @param questionNumber
+   * @param answerNumber
+   */
+  updateMultipleChoiceAnswer(questionNumber: number, answerNumber: number) {
+    console.log('Frage ' + questionNumber + ', Antwort ' + answerNumber + ' MC');
+    let existsQuestion : boolean = false;
+    this.questionAnswers.forEach(question => {
+      if (question.questionNumber == questionNumber) {
+        existsQuestion = true;
+        let existsAnswer : boolean = false;
+        question.answerNumber.forEach(answer => {
+          if (answer == answerNumber) {
+            existsAnswer = true;
+          }
+        })
+        if (existsAnswer) {
+          let updatedAnswerNumbers : number[] = [];
+          question.answerNumber.forEach(answer => {
+            if (answer != answerNumber) {
+              updatedAnswerNumbers.push(answer);
+            }
+          })
+          question.answerNumber = updatedAnswerNumbers;
+        } else {
+          question.answerNumber.push(answerNumber);
+        }
+      }
+    })
+
+    if (!existsQuestion) {
+      this.questionAnswers.push(new class implements QuestionAnswerModel {
+        answerNumber: number[] = [answerNumber];
+        questionNumber: number = questionNumber;
+      })
+    }
+
+    console.log(this.questionAnswers);
+  }
+
+  /**
+   * Calls dataservice to send the answered survey
+   */
+  sendAnsweredSurvey() {
+    if (this.toAnswerSurvey == undefined || this.storageService.getUser() == null) {
+      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
+      return;
+    }
+    let userId : string | undefined = this.storageService.getUserId()?.toString();
+    this.dataService.postQuestionnaireAnswer(this.orgId, this.eventId, this.toAnswerSurvey?.id, userId || '', this.questionAnswers).subscribe(() => {
+      this.snackBar.open('Umfrage-Antworten erfolgreich abgesendet', 'OK', {duration: 3000});
+      this.questionAnswers = [];
+      this.toAnswerSurvey = undefined;
+    })
+  }
+
+  /**
+   * Checks if Answers are missing
+   */
+  missingAnswers() : boolean {
+    let answersMissing = false;
+    if (this.toAnswerSurvey?.questions.length != this.questionAnswers.length) {
+      answersMissing = true;
+    } else {
+      this.questionAnswers.forEach(question => {
+        if (question.answerNumber.length < 1) {
+          answersMissing = true;
+        }
+      })
+    }
+
+    return answersMissing;
   }
 }
