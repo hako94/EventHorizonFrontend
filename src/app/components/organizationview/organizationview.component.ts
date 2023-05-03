@@ -57,8 +57,6 @@ export class OrganizationviewComponent implements OnInit{
 
   updateURLWithParam(param : Params) : void {
 
-    console.log(this.currentParam)
-
     this.currentParam = param;
 
     this.router.navigate(
@@ -68,8 +66,6 @@ export class OrganizationviewComponent implements OnInit{
         queryParams: this.currentParam,
         queryParamsHandling: 'merge',
       });
-
-    console.log(this.currentParam)
   }
 
   /**
