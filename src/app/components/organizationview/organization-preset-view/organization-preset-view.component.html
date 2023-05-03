@@ -20,7 +20,7 @@
           <hr><br>
           <mat-form-field>
             <mat-label>Event-Name</mat-label>
-            <input [disabled]="!editMode" matInput value="{{eventeTemplatePrefillModel.name}}">
+            <input [disabled]="!editMode" matInput [(ngModel)]="eventeTemplatePrefillModel.name">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill" class="w-[80%]">
@@ -29,18 +29,19 @@
                       cdkTextareaAutosize
                       cdkAutosizeMinRows="10"
                       cdkAutosizeMaxRows="30"
-                      [disabled]="!editMode">{{eventeTemplatePrefillModel.description}}</textarea>
+                      [disabled]="!editMode"
+                      [(ngModel)]="eventeTemplatePrefillModel.description"></textarea>
           </mat-form-field><br>
           <mat-form-field>
             <mat-label>Event-Ort</mat-label>
-            <input matInput [disabled]="!editMode" value="{{eventeTemplatePrefillModel.location}}">
+            <input matInput [disabled]="!editMode" [(ngModel)]="eventeTemplatePrefillModel.location">
           </mat-form-field>
         </div>
         <div class="flex justify-self-end">
           <button *ngIf="!editMode" (click)="editMode = true" class="flex-col" mat-icon-button color="primary">
             <mat-icon>edit</mat-icon>
           </button>
-          <button *ngIf="editMode" (click)="persistData()" class="flex-col" mat-icon-button
+          <button *ngIf="editMode" (click)="persistData(template.id)" class="flex-col" mat-icon-button
                   color="primary">
             <mat-icon>save</mat-icon>
           </button>

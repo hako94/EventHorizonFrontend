@@ -48,7 +48,20 @@ export class OrganizationPresetViewComponent implements OnInit{
     })
   }
 
-  persistData() : void {
+  persistData(id: string) : void {
     this.editMode = false;
+    if (this.eventeTemplatePrefillModel) {
+
+      this.eventeTemplatePrefillModel.childs =
+        this.eventeTemplatePrefillModel.childs.map(el => { return { eventStart: el.eventStart, eventEnd: el.eventEnd } });
+
+      this.eventeTemplatePrefillModel.childs =
+        this.eventeTemplatePrefillModel.childs.slice(0,1)
+
+      delete this.eventeTemplatePrefillModel.created;
+      delete this.eventeTemplatePrefillModel.lastModified;
+
+      this.dataService.putEventTemplateBasedOnId(this.orgaID, id, this.eventeTemplatePrefillModel).subscribe();
+    }
   }
 }

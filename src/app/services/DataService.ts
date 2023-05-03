@@ -569,4 +569,14 @@ export class DataService {
       httpOptions
     )
   }
+
+  putEventTemplateBasedOnId(orgId : string, id: string, template : EventTemplatePrefillModel) : Observable<any> {
+    return this.http.put<any>(
+      BACKEND_API + "api/v1/organization/" + orgId + "/eventtemplate/" + id,
+      template,
+      {
+        headers: {'Content-Type': 'application/json'}
+      }
+    )
+  }
 }
