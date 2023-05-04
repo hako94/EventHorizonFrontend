@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {DataService} from "../../services/DataService";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {StorageService} from "../../services/StorageService";
@@ -19,12 +19,12 @@ import {Router} from "@angular/router";
  */
 export class PlattformAdminComponent {
 
-  orgaName : string = '';
-  orgaAdminMail : string = '';
-  orgaDescription : string = '';
-  toDeleteOrga : string = '';
+  orgaName: string = '';
+  orgaAdminMail: string = '';
+  orgaDescription: string = '';
+  toDeleteOrga: string = '';
 
-  constructor(private dataService : DataService, private snackBar : MatSnackBar, private storageService : StorageService, private router : Router) {
+  constructor(private dataService: DataService, private snackBar: MatSnackBar, private storageService: StorageService, private router: Router) {
     if (!this.storageService.isPlattformAdmin()) {
       this.router.navigateByUrl('/dashboard');
     }
@@ -41,7 +41,11 @@ export class PlattformAdminComponent {
     if (this.orgaName == '' || this.orgaAdminMail == '') {
       this.snackBar.open('Bitte füllen Sie die Pflichtfelder aus', 'OK', {duration: 3000});
     } else {
-      this.dataService.createOrganization(this.orgaName, this.orgaAdminMail, this.orgaDescription).subscribe(() => this.snackBar.open('Organisation ' + this.orgaName + ' erstellt', 'OK', {duration: 3000}))
+      this.dataService.createOrganization(this.orgaName, this.orgaAdminMail, this.orgaDescription).subscribe(() =>
+          this.snackBar.open('Organisation ' + this.orgaName + ' erstellt', 'OK', {duration: 3000})
+        , () => {
+          console.log("Organisation konnte nicht angelegt werden.")
+        })
     }
     console.log(this.orgaName);
     console.log(this.orgaAdminMail);
@@ -55,7 +59,7 @@ export class PlattformAdminComponent {
   /**
    * Calls the DataService to delete the selected Organization
    */
-  deleteOrga(orgId : string) {
+  deleteOrga(orgId: string) {
     if (orgId == '') {
       this.snackBar.open('Bitte geben Sie eine Organisations-ID an', 'OK', {duration: 3000});
     } else {

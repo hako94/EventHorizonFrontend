@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {AuthService} from "../../services/AuthService";
 import {StorageService} from "../../services/StorageService";
 import {DataService} from "../../services/DataService";
@@ -13,21 +13,21 @@ export class RegisterComponent {
   form: any = {
     email: null,
     password: null,
-    firstname : null,
-    lastname : null
+    firstname: null,
+    lastname: null
   };
 
-  withOrganizationId : boolean;
-  withNewUser : boolean;
-  organization : string;
-  preparedEmail : string;
-  inviteId : string;
+  withOrganizationId: boolean;
+  withNewUser: boolean;
+  organization: string;
+  preparedEmail: string;
+  inviteId: string;
 
   constructor(private authService: AuthService,
-              private jwtStorage : StorageService,
-              private dataService : DataService,
+              private jwtStorage: StorageService,
+              private dataService: DataService,
               private route: ActivatedRoute,
-              private router : Router) {
+              private router: Router) {
 
     this.withOrganizationId = false;
     this.withNewUser = true;
@@ -51,10 +51,20 @@ export class RegisterComponent {
       this.preparedEmail = decodeURIComponent(params['UserIdEmail']);
       this.inviteId = params['createdUserModel'];
 
-      if (this.preparedEmail != "undefined"){
+      if (this.preparedEmail != "undefined") {
         this.form.email = this.preparedEmail;
       }
     });
+
+    console.log("test" + this.organization + this.inviteId)
+
+    this.authService.checkInvite(this.withNewUser, this.organization, this.inviteId).pipe().subscribe(() => {
+    }, () => {
+      this.router.navigate(['/login'], {
+        queryParams: {
+        }
+      });
+    })
 
     console.log("withOrganizationId:" + this.withOrganizationId + " - newUser: " + this.withNewUser)
   }
@@ -82,6 +92,8 @@ export class RegisterComponent {
           this.authService.login(this.form.email, this.form.password).subscribe(success => {
 
             this.jwtStorage.saveUser(success)
+
+            this.router.navigate(['/dashboard']);
 
             console.log(success)
           }, error => {
@@ -116,5 +128,27 @@ export class RegisterComponent {
         }
       );
     }
+  }
+
+  answerInvitation(answer: string) {
+    this.authService.answerOrgInvite(
+      this.form.email,
+      this.preparedEmail,
+      this.organization,
+      this.inviteId,
+      answer).subscribe(success => {
+        this.router.navigate(['/login'], {
+          queryParams: {
+          }
+        });
+      },
+      error => {
+        console.log(error)
+        this.router.navigate(['/login'], {
+          queryParams: {
+          }
+        });
+      }
+    );
   }
 }

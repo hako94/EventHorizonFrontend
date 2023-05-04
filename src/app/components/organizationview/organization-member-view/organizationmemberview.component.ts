@@ -51,6 +51,8 @@ export class OrganizationmemberviewComponent implements OnInit{
     this.dataService.inviteUser(this.invitedEmail, this.orgaID, this.selected).subscribe(success => {
       this.invitedUser = success;
       this.snackBar.open('Einladung wurde erfolgreich versandt', 'OK', {duration: 3000});
+      this.invitedEmail = '';
+      this.selectedRole = 5;
       this.inviteLoading = false;
     }, error => {
       this.inviteLoading = false;

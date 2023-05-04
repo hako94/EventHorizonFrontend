@@ -1,24 +1,19 @@
-import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
 import {Injectable} from "@angular/core";
-import {map, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {OrganizationModel} from "../models/OrganizationModel";
 import {OrganizationEventModel} from "../models/OrganizationEventModel";
-import {CreateEventModel} from "../models/CreateEventModel";
 import {OrganizationUserModel} from "../models/OrganizationUserModel";
 import {EventTemplateModel} from "../models/EventTemplateModel";
 import {AvailableTemplateList} from "../models/AvailableTemplateList";
-import {ChatHistoryModel} from "../models/ChatHistoryModel";
-import {EventQuestionnairesModel} from "../models/EventQuestionnairesModel";
 import {UserAtEventModel} from "../models/UserAtEventModel";
 import {environment} from "../../environments/environment";
 import {OrganizationInviteModel} from "../models/OrganizationInviteModel";
-import {UserRoleModel} from "../models/UserRoleModel";
 import {EmailTemplateModel} from "../models/EmailTemplateModel";
 import {EventTemplatePrefillModel} from "../models/EventTemplatePrefillModel";
 import {EventInviteModel} from "../models/EventInviteModel";
 import {UserForEventWithRoleModel} from "../models/UserForEventWithRoleModel";
 import {NotificationInfoModel} from "../models/NotificationInfoModel";
-import {UserEventInviteModel} from "../models/UserEventInviteModel";
 import {ChatAnswerModel} from "../models/ChatAnswerModel";
 import {EventStatusModel} from "../models/EventStatusModel";
 import {EventRoleStatusModel} from "../models/EventRoleStatusModel";
@@ -106,15 +101,15 @@ export class DataService {
 
   mapRoleIdToString(id: number): string {
     if (id == 1) {
-      return 'admin';
+      return 'Admin';
     } else if (id == 2) {
-      return 'organisator';
+      return 'Organisator';
     } else if (id == 3) {
-      return 'tutor';
+      return 'Tutor';
     } else if (id == 4) {
-      return 'teilnehmer';
+      return 'Teilnehmer';
     } else if (id == 5) {
-      return 'gast';
+      return 'Gast';
     } else if (id == 10) {
       return 'Organisator';
     } else if (id == 11) {
@@ -498,8 +493,8 @@ export class DataService {
     )
   }
 
-  createOrganization(name: string, email: string, description: string): Observable<any> {
-    return this.http.post<OrganizationModel>(
+  createOrganization(name: string, email: string, description: string): Observable<string> {
+    return this.http.post<string>(
       BACKEND_API + 'api/v1/admin/organization',
       {
         'name': name,
@@ -694,7 +689,7 @@ export class DataService {
     }
   }
 
-  putEventTemplateBasedOnId(orgId : string, id: string, template : EventTemplatePrefillModel) : Observable<any> {
+  putEventTemplateBasedOnId(orgId: string, id: string, template: EventTemplatePrefillModel): Observable<any> {
     return this.http.put<any>(
       BACKEND_API + "api/v1/organization/" + orgId + "/eventtemplate/" + id,
       template,
