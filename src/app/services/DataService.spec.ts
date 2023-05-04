@@ -10,6 +10,10 @@ import {EventQuestionnairesModel} from '../models/EventQuestionnairesModel';
 import {UserAtEventModel} from '../models/UserAtEventModel';
 import {environment} from '../../environments/environment';
 import {EventTemplatePrefillModel} from "../models/EventTemplatePrefillModel";
+import {QuestionnairePostModel} from "../models/QuestionnairePostModel";
+import {QuestionModel} from "../models/QuestionModel";
+import {QuestionnaireStatusModel} from "../models/QuestionnaireStatusModel";
+import {AnswerModel} from "../models/AnswerModel";
 
 describe('DataService', () => {
   let service: DataService;
@@ -287,17 +291,28 @@ describe('DataService', () => {
   it('should create event questionnaires', () => {
     const orgId = 'orgId';
     const eventId = 'eventId';
-    const eventQuestionnairesModel: EventQuestionnairesModel = {
-      id: orgId,
-      title: 'hello',
-      description: 'description',
-      questions: [],
-      eventId: eventId
+    const eventQuestionnairesModel: QuestionnairePostModel = {
+      title : 'test',
+      description : 'descirption',
+      questions : [{
+        questionNumber : 123,
+        questionText : 'wer',
+        type : 'abc',
+        answerOptions : [{
+          answerNumber: 123,
+          answerText : 'antwort',
+        }],
+      }],
+      eventId : '1234',
+      status : {
+        id : 2,
+        status : 'test',
+      }
     };
 
     service.createEventQuestionnaires(orgId, eventId, eventQuestionnairesModel).subscribe();
 
-    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organizations/${orgId}/events/${eventId}/questionnaires`);
+    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/event/${eventId}/questionnaires`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(eventQuestionnairesModel);
     req.flush({});
@@ -309,7 +324,7 @@ describe('DataService', () => {
 
     service.loadAvailableEventQuestionnaires(orgId, eventId).subscribe();
 
-    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organizations/${orgId}/events/${eventId}/questionnaires`);
+    const req = httpMock.expectOne(`${BACKEND_API}api/v1/organization/${orgId}/event/${eventId}/questionnaires`);
     expect(req.request.method).toBe('GET');
     req.flush([]);
   });
