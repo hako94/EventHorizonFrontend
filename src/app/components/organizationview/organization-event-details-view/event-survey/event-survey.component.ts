@@ -31,23 +31,23 @@ interface SwitchView {
   templateUrl: './event-survey.component.html',
   styleUrls: ['./event-survey.component.scss']
 })
-export class EventSurveyComponent implements OnInit{
+export class EventSurveyComponent implements OnInit {
 
   @Input() orgaID = '';
   @Input() eventID = '';
   @Input() roleIdInEvent!: number;
 
-  editMode : boolean = false;
-  editedSurvey : string = '';
+  editMode: boolean = false;
+  editedSurvey: string = '';
 
-  currentParam? : Params;
+  currentParam?: Params;
 
-  availableQuestionnaires : QuestionnaireInfoModel[] = [];
+  availableQuestionnaires: QuestionnaireInfoModel[] = [];
   switchView: SwitchView[] = [];
 
-  questionsView : QuestionModel[] = [];
+  questionsView: QuestionModel[] = [];
 
-  currentSurvey? : SwitchView;
+  currentSurvey?: SwitchView;
 
   toAnswerSurveyId: string = '';
   toAnswerSurvey: QuestionnaireModel | undefined;
@@ -55,31 +55,33 @@ export class EventSurveyComponent implements OnInit{
   toEvaluateSurveyId: string = '';
   toEvaluateSurvey: QuestionnaireEvaluationModel | undefined;
 
-  orgId : string = '';
-  eventId : string = '';
+  loadingEvaluation: boolean = false;
+
+  orgId: string = '';
+  eventId: string = '';
 
   currentView: string = 'answer';
 
-  formIn : FormIn = {
-    titeln : '',
-    descriptionn : ''
+  formIn: FormIn = {
+    titeln: '',
+    descriptionn: ''
   }
 
-  surveyStatus : number = 1;
+  surveyStatus: number = 1;
 
-  addQuestionName : string = '';
-  addQuestionType : string = 'multi';
+  addQuestionName: string = '';
+  addQuestionType: string = 'multi';
 
-  questions : Array<QuestionModel> = [];
+  questions: Array<QuestionModel> = [];
 
-  questionAnswers : QuestionAnswerModel[] = [];
+  questionAnswers: QuestionAnswerModel[] = [];
 
-  constructor(private location : Location,
-              private dataService : DataService,
-              private storageService : StorageService,
-              private activatedRoute : ActivatedRoute,
-              private router : Router,
-              private snackBar : MatSnackBar) {
+  constructor(private location: Location,
+              private dataService: DataService,
+              private storageService: StorageService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router,
+              private snackBar: MatSnackBar) {
 
     const regex = /\/organizations\/(\w+)\/event\/(\w+)\//;
     const matches = regex.exec(location.path());
@@ -92,7 +94,7 @@ export class EventSurveyComponent implements OnInit{
     Chart.register(...registerables);
   }
 
-  updateURLWithParam(param : Params) : void {
+  updateURLWithParam(param: Params): void {
 
     this.currentParam = param;
 
@@ -105,7 +107,7 @@ export class EventSurveyComponent implements OnInit{
       });
   }
 
-  hasRole(roleId: number) : boolean {
+  hasRole(roleId: number): boolean {
     return this.storageService.getRoleInCurrentOrganization(this.orgaID) == roleId;
   }
 
@@ -128,12 +130,14 @@ export class EventSurveyComponent implements OnInit{
     })
   }
 
-  removeValueFromCustomFields(index : number) : void {
+  removeValueFromCustomFields(index: number): void {
     delete this.questions[index]
-    this.questions = this.questions.filter(el => {return el != null});
+    this.questions = this.questions.filter(el => {
+      return el != null
+    });
   }
 
-  addCustomField(name : string, selected : string) : void {
+  addCustomField(name: string, selected: string): void {
     if (this.addQuestionName == '') {
       this.snackBar.open('Bitte geben Sie eine Frage ein', 'OK', {duration: 3000})
       return;
@@ -142,14 +146,14 @@ export class EventSurveyComponent implements OnInit{
       answerOptions: [],
       questionNumber: 0,
       questionText: this.addQuestionName,
-      type: this.addQuestionType == "single" ?  "SINGLE_CHOICE" : "MULTIPLE_CHOICE",
+      type: this.addQuestionType == "single" ? "SINGLE_CHOICE" : "MULTIPLE_CHOICE",
     })
     console.log(this.questions)
     this.addQuestionName = '';
   }
 
   //Methode ins Backend verschoben und kann entfernt werden
-  writeIndices(model : EventQuestionnairesModel) : EventQuestionnairesModel {
+  writeIndices(model: EventQuestionnairesModel): EventQuestionnairesModel {
 
     let questionCounter = 0;
 
@@ -172,7 +176,7 @@ export class EventSurveyComponent implements OnInit{
   }
 
 
-  addAnswerOption(inputForm: HTMLInputElement, answerIndex : number) {
+  addAnswerOption(inputForm: HTMLInputElement, answerIndex: number) {
     if (inputForm.value == '') {
       this.snackBar.open('Bitte geben Sie eine mögliche Antwort an', 'OK', {duration: 3000})
       return;
@@ -181,7 +185,7 @@ export class EventSurveyComponent implements OnInit{
       this.questions.at(answerIndex)?.answerOptions.push(
         {
           answerNumber: 0,
-          answerText : inputForm.value
+          answerText: inputForm.value
         }
       )
     }
@@ -189,21 +193,23 @@ export class EventSurveyComponent implements OnInit{
   }
 
 
-  removeAnswerOption(questionIndex: number, answerIndex : number) {
+  removeAnswerOption(questionIndex: number, answerIndex: number) {
     if (this.questions.at(questionIndex)) {
       // @ts-ignore
       if (this.questions.at(questionIndex).answerOptions) {
         // @ts-ignore
         delete this.questions.at(questionIndex).answerOptions[answerIndex];
         // @ts-ignore
-        this.questions.at(questionIndex).answerOptions = this.questions.at(questionIndex).answerOptions.filter(el => {return el != null});
+        this.questions.at(questionIndex).answerOptions = this.questions.at(questionIndex).answerOptions.filter(el => {
+          return el != null
+        });
       }
     }
   }
 
   submitQuestionnaire() {
 
-    let eventQuestionnairesModel : QuestionnairePostModel =
+    let eventQuestionnairesModel: QuestionnairePostModel =
       {
         title: this.formIn.titeln,
         description: this.formIn.descriptionn,
@@ -212,12 +218,12 @@ export class EventSurveyComponent implements OnInit{
         status: {id: 1, status: 'erstellt'}
       };
 
-    this.dataService.createEventQuestionnaires(this.orgId,this.eventId, eventQuestionnairesModel).subscribe(success => {
+    this.dataService.createEventQuestionnaires(this.orgId, this.eventId, eventQuestionnairesModel).subscribe(success => {
       this.snackBar.open('Umfragebogen erfolgreich erstellt', 'OK', {duration: 3000})
       this.ngOnInit();
       this.currentView = 'view';
       this.questions = [];
-      this.formIn = {titeln : '', descriptionn : ''};
+      this.formIn = {titeln: '', descriptionn: ''};
     })
   }
 
@@ -233,7 +239,7 @@ export class EventSurveyComponent implements OnInit{
     return []
   } */
 
-  valideDateQuestions() : boolean {
+  valideDateQuestions(): boolean {
     let mistake = false;
 
     if (this.questions.length < 1) {
@@ -254,7 +260,7 @@ export class EventSurveyComponent implements OnInit{
    * @param i
    */
   isSingleChoiceComplete(i: number): boolean {
-    let disable : boolean = false
+    let disable: boolean = false
     // @ts-ignore
     if (this.questions.at(i).type == 'SINGLE_CHOICE') {
       // @ts-ignore
@@ -290,7 +296,7 @@ export class EventSurveyComponent implements OnInit{
    * @param id
    */
   saveSurveyStatus(id: string) {
-    let statusId : number = this.surveyStatus;
+    let statusId: number = this.surveyStatus;
     let statusText = '';
 
     if (statusId == 1) {
@@ -332,7 +338,7 @@ export class EventSurveyComponent implements OnInit{
    */
   updateSingleChoiceAnswer(questionNumber: number, answerNumber: number) {
     console.log('Frage ' + questionNumber + ', Antwort ' + answerNumber);
-    let exists : boolean = false;
+    let exists: boolean = false;
     this.questionAnswers.forEach(question => {
       if (question.questionNumber == questionNumber) {
         exists = true;
@@ -355,18 +361,18 @@ export class EventSurveyComponent implements OnInit{
    */
   updateMultipleChoiceAnswer(questionNumber: number, answerNumber: number) {
     console.log('Frage ' + questionNumber + ', Antwort ' + answerNumber + ' MC');
-    let existsQuestion : boolean = false;
+    let existsQuestion: boolean = false;
     this.questionAnswers.forEach(question => {
       if (question.questionNumber == questionNumber) {
         existsQuestion = true;
-        let existsAnswer : boolean = false;
+        let existsAnswer: boolean = false;
         question.answerNumber.forEach(answer => {
           if (answer == answerNumber) {
             existsAnswer = true;
           }
         })
         if (existsAnswer) {
-          let updatedAnswerNumbers : number[] = [];
+          let updatedAnswerNumbers: number[] = [];
           question.answerNumber.forEach(answer => {
             if (answer != answerNumber) {
               updatedAnswerNumbers.push(answer);
@@ -397,7 +403,7 @@ export class EventSurveyComponent implements OnInit{
       this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
       return;
     }
-    let userId : string | undefined = this.storageService.getUserId()?.toString();
+    let userId: string | undefined = this.storageService.getUserId()?.toString();
     this.dataService.postQuestionnaireAnswer(this.orgId, this.eventId, this.toAnswerSurvey?.id, userId || '', this.questionAnswers).subscribe(() => {
       this.snackBar.open('Umfrage-Antworten erfolgreich abgesendet', 'OK', {duration: 3000});
       this.questionAnswers = [];
@@ -408,7 +414,7 @@ export class EventSurveyComponent implements OnInit{
   /**
    * Checks if Answers are missing
    */
-  missingAnswers() : boolean {
+  missingAnswers(): boolean {
     let answersMissing = false;
     if (this.toAnswerSurvey?.questions.length != this.questionAnswers.length) {
       answersMissing = true;
@@ -431,43 +437,58 @@ export class EventSurveyComponent implements OnInit{
       this.snackBar.open('Bitte einen Fragebogen auswählen', 'OK', {duration: 3000})
       return;
     }
+    this.loadingEvaluation = true;
     this.dataService.getQuestionnaireEvaluation(this.orgId, this.eventId, this.toEvaluateSurveyId).pipe(
       tap(data => this.toEvaluateSurvey = data),
-      delay(1000)
-    ).subscribe(success  => {
+      delay(500)
+    ).subscribe(success => {
 
       this.createChart()
 
     }, error => console.log, () => {
-
+      this.loadingEvaluation = false;
     })
   }
 
-
-  createChart() :void {
+  /**
+   * Binds data to the chart canvas
+   */
+  createChart(): void {
     this.toEvaluateSurvey?.questionAnswers.forEach(question => {
+      let labelArray : string[] = [];
+      let dataArray : number[] = [];
+      question.answer.forEach(answer => {
+        labelArray.push(answer.answerText);
+        dataArray.push(answer.count);
+      })
       let myChart = new Chart(question.questionNumber.toString(), {
         type: 'bar',
         data: {
-          labels: ['A', 'B', 'C'],
+          labels: labelArray,
           datasets: [{
-            label: 'TestDiagramm',
-            data: [10, 35, 30]
+            label: 'Anzahl der Abstimmungen',
+            data: dataArray,
           }]
         }
       })
     })
+    this.loadingEvaluation = false;
   }
 
-}
+  /**
+   * Checks if the question with index i has already 5 answers
+   * @param i
+   */
+  hasTooManyAnswers(i: number): boolean {
+    // @ts-ignore
+    return this.questions.at(i).answerOptions.length >= 5;
+  }
 
-/*let myChart = new Chart(chartName, {
-          type: 'bar',
-          data: {
-            labels: ['A', 'B', 'C'],
-            datasets: [{
-              label: 'TestDiagramm',
-              data: [10, 35, 30]
-            }]
-          }
-        })*/
+  /**
+   * clears all data regarding the evaluation of a survey when the tab is closed
+   */
+  clearEvaluationSession() {
+    this.toEvaluateSurvey = undefined;
+    this.toEvaluateSurveyId = '';
+  }
+}
