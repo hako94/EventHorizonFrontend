@@ -49,7 +49,6 @@ export class EventInvitesViewComponent {
       this.ngOnInit();
       this.snackBar.open('Rolle erfolgreich geändert', 'OK', {duration: 3000});
     }, error => {
-      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
     });
   }
 
@@ -64,7 +63,6 @@ export class EventInvitesViewComponent {
       this.ngOnInit();
       this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
     }, error => {
-      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
     });
   }
 

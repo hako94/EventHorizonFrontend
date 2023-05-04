@@ -23,7 +23,7 @@ export class OrganizationmemberviewComponent implements OnInit{
   @Input() orgaID = '';
 
   members : OrganizationUserModel[] = [];
-  selected: any = 'guest';
+  selected: any = 'Gast';
   editMode : boolean = false;
   editedUser : string = '';
 
@@ -53,7 +53,6 @@ export class OrganizationmemberviewComponent implements OnInit{
       this.snackBar.open('Einladung wurde erfolgreich versandt', 'OK', {duration: 3000});
       this.inviteLoading = false;
     }, error => {
-      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
       this.inviteLoading = false;
     })
   }
@@ -79,7 +78,6 @@ export class OrganizationmemberviewComponent implements OnInit{
       this.ngOnInit();
       this.snackBar.open('Rolle erfolgreich geändert', 'OK', {duration: 3000});
     }, error => {
-      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
     })
     this.editMode = false;
     this.editedUser = '';
@@ -91,7 +89,6 @@ export class OrganizationmemberviewComponent implements OnInit{
       this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
       this.ngOnInit();
     }, error => {
-      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
     });
   }
 }

@@ -9,10 +9,10 @@
     <mat-form-field appearance="fill" class="m-2 w-36">
       <mat-label>Rolle</mat-label>
       <mat-select [(value)]="selected">
-        <mat-option value="gast">Gast</mat-option>
-        <mat-option value="teilnehmer">Teilnehmer</mat-option>
-        <mat-option value="organisator" *ngIf="hasRole(2) || hasRole(1)">Organisator</mat-option>
-        <mat-option value="admin" *ngIf="hasRole(2) || hasRole(1)">Admin</mat-option>
+        <mat-option value="Gast">Gast</mat-option>
+        <mat-option value="Teilnehmer">Teilnehmer</mat-option>
+        <mat-option value="Organisator" *ngIf="hasRole(2) || hasRole(1)">Organisator</mat-option>
+        <mat-option value="Admin" *ngIf="hasRole(2) || hasRole(1)">Admin</mat-option>
       </mat-select>
     </mat-form-field>
     <button class="ml-1 mb-4" mat-raised-button color="primary" (click)="inviteSubmit()" [disabled]="inviteLoading">

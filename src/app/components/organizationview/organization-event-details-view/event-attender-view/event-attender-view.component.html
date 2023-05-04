@@ -17,9 +17,9 @@
       <mat-form-field appearance="fill" class="m-2 w-36">
         <mat-label>Rolle</mat-label>
         <mat-select [(value)]="selectedRole">
-          <mat-option [value]="10">Teilnehmer</mat-option>
+          <mat-option [value]="12">Teilnehmer</mat-option>
           <mat-option [value]="11">Tutor</mat-option>
-          <mat-option [value]="12">Organisator</mat-option>
+          <mat-option [value]="10">Organisator</mat-option>
         </mat-select>
       </mat-form-field>
       <button class="ml-1 mb-4" mat-raised-button color="primary" (click)="inviteSubmit()" [disabled]="inviteLoading">
