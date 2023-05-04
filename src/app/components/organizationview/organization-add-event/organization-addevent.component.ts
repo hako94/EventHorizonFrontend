@@ -220,22 +220,20 @@ export class OrganizationAddeventComponent {
 
     this.openDialog();
 
-    this.dataService.postEventInOrganizationAndPersist(this.currentOrganization, modelExtended).pipe(delay(2000)).subscribe(response => {
+    this.dataService.postEventInOrganizationAndPersist(this.currentOrganization, modelExtended).pipe(delay(1000)).subscribe(response => {
 
       if (this.dialogRef) {
         this.dialogRef.componentInstance.data = {mEventCreated : true, mEventPictureUploaded : false, mEventFilesUploaded : false};
       }
       console.log(this.extractIdFromUrl(response.body.toString()))
 
-      this.persistImage(this.extractIdFromUrl(response.body.toString())).pipe(delay(2000)).subscribe(success => {
-
-        console.log("Pic: "+ this.extractIdFromUrl(success.body))
+      this.persistImage(this.extractIdFromUrl(response.body.toString())).pipe(delay(1000)).subscribe(successPersistImage => {
 
         if (this.dialogRef) {
           this.dialogRef.componentInstance.data = {mEventCreated : true, mEventPictureUploaded : true, mEventFilesUploaded : false};
         }
 
-        this.persistFiles().pipe(delay(2000)).subscribe(success => {
+        this.persistAllFiles(this.currentOrganization, this.extractIdFromUrl(response.body.toString())).pipe(delay(2000)).subscribe(success => {
           console.log("request vollständig + " + success)
 
           if (this.dialogRef) {
@@ -268,13 +266,13 @@ export class OrganizationAddeventComponent {
     }
   }
 
-  persistFiles() : Observable<any> {
+  persistAllFiles(orgId : string, eventId : string) : Observable<any> {
     if (this.filesToPersist.length > 0) {
 
       const observables: Observable<any>[] = [];
 
       for (let i = 0; i < this.filesToPersist.length; i++) {
-        observables.push(this.dataService.storeFile(this.filesToPersist[i], this.currentOrganization));
+        observables.push(this.dataService.storeFileForEvent(this.filesToPersist[i], orgId, eventId));
       }
 
       return forkJoin(observables);
