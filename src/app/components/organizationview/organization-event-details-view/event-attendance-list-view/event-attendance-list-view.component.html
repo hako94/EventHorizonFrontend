@@ -1,22 +1,86 @@
 <div class="mx-3">
   <br>
+  <div>
+    <h2>Mitglied einladen</h2>
+    <form>
+      <mat-form-field class="example-full-width m-2 w-1/4">
+        <mat-label>Email-Adresse</mat-label>
+        <input type="text" matInput [formControl]="eventInviteControl" [matAutocomplete]="auto"
+               [(ngModel)]="invitedEmail"
+               placeholder="muster@mail.de" (click)="loadOptions()">
+        <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption [displayWith]="displayMemberEmail">
+          <mat-option *ngFor="let filteredMember of filteredUsersForEventInvite | async" [value]="filteredMember">
+            {{filteredMember.email}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <button class="ml-1 mb-4" mat-raised-button color="primary" (click)="bookSubmit()" [disabled]="inviteLoading">
+        <mat-icon>person_add</mat-icon>
+        Hinzufügen
+      </button>
+    </form>
+  </div>
   <h2>Teilnehmer-Übersicht</h2>
-  <mat-card>
+  <mat-card class="mx-32 max-h-[55vh]">
     <mat-card-content class="overflow-y-auto max-h-[60vh]">
-      <div class="hidden md:grid md:grid-cols-4 font-bold">
+      <div class="hidden md:grid md:grid-cols-3 font-bold">
         <span class="p-2 pt-3">Nachname, Vorname</span>
         <span class="p-2 pt-3">E-Mail</span>
-        <span class="p-2 pt-3">Rolle</span>
         <span class="p-2 pt-3"></span>
       </div>
       <ng-container *ngFor="let attender of attendee">
         <mat-divider></mat-divider>
-        <div class="grid grid-cols-1 md:grid-cols-4">
+        <div class="grid grid-cols-1 md:grid-cols-3">
           <div class="p-2 pt-3">{{attender.nachname}}, {{attender.vorname}}</div>
           <div class="p-2 pt-3">{{attender.email}}</div>
-          <div class="p-2 pt-3 flex">
-            "ROLLE"
+          <div class="p-2 pt-3 justify-self-end flex">
+            <mat-checkbox [checked]="attender.here" (change)="saveAttendeeList($event, attender.id)">
+              anwesend
+            </mat-checkbox>
           </div>
+        </div>
+      </ng-container>
+      <ng-container *ngFor="let attender of attendee">
+        <mat-divider></mat-divider>
+        <div class="grid grid-cols-1 md:grid-cols-3">
+          <div class="p-2 pt-3">{{attender.nachname}}, {{attender.vorname}}</div>
+          <div class="p-2 pt-3">{{attender.email}}</div>
+          <div class="p-2 pt-3 justify-self-end flex">
+            <mat-checkbox [checked]="attender.here" (change)="saveAttendeeList($event, attender.id)">
+              anwesend
+            </mat-checkbox>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngFor="let attender of attendee">
+        <mat-divider></mat-divider>
+        <div class="grid grid-cols-1 md:grid-cols-3">
+          <div class="p-2 pt-3">{{attender.nachname}}, {{attender.vorname}}</div>
+          <div class="p-2 pt-3">{{attender.email}}</div>
+          <div class="p-2 pt-3 justify-self-end flex">
+            <mat-checkbox [checked]="attender.here" (change)="saveAttendeeList($event, attender.id)">
+              anwesend
+            </mat-checkbox>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngFor="let attender of attendee">
+        <mat-divider></mat-divider>
+        <div class="grid grid-cols-1 md:grid-cols-3">
+          <div class="p-2 pt-3">{{attender.nachname}}, {{attender.vorname}}</div>
+          <div class="p-2 pt-3">{{attender.email}}</div>
+          <div class="p-2 pt-3 justify-self-end flex">
+            <mat-checkbox [checked]="attender.here" (change)="saveAttendeeList($event, attender.id)">
+              anwesend
+            </mat-checkbox>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngFor="let attender of attendee">
+        <mat-divider></mat-divider>
+        <div class="grid grid-cols-1 md:grid-cols-3">
+          <div class="p-2 pt-3">{{attender.nachname}}, {{attender.vorname}}</div>
+          <div class="p-2 pt-3">{{attender.email}}</div>
           <div class="p-2 pt-3 justify-self-end flex">
             <mat-checkbox [checked]="attender.here" (change)="saveAttendeeList($event, attender.id)">
               anwesend
@@ -27,4 +91,10 @@
       <mat-divider></mat-divider>
     </mat-card-content>
   </mat-card>
+  <div class="flex justify-end mr-32">
+    <button class="mt-4" mat-raised-button color="secondary" (click)="pushAttendeeList()">
+      <mat-icon>save</mat-icon>
+      Anwesenheiten speichern
+    </button>
+  </div>
 </div>

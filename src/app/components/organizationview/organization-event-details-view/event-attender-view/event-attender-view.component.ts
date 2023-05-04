@@ -138,9 +138,6 @@ export class EventAttenderViewComponent implements OnInit {
         this.invitedUser = success;
         this.snackBar.open('Einladung wurde erfolgreich versandt', 'OK', {duration: 3000});
         this.inviteLoading = false;
-      }, error => {
-        this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
-        this.inviteLoading = false;
       })
     } else {
       this.snackBar.open('Email muss aus in den Vorschlägen vorhanden sein', 'Ok', {duration: 3500});
