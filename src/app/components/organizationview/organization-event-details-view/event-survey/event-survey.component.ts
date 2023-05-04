@@ -434,6 +434,7 @@ export class EventSurveyComponent implements OnInit{
       console.log(success);
       this.toEvaluateSurvey.questionAnswers.forEach(question => {
         let chartName : string = question.questionNumber.toString();
+        console.warn(chartName);
         let myChart = new Chart(chartName, {
           type: 'bar',
           data: {
@@ -445,7 +446,7 @@ export class EventSurveyComponent implements OnInit{
           }
         })
       })
+      this.toEvaluateSurveyId = '';
     })
-    this.toEvaluateSurveyId = '';
   }
 }
