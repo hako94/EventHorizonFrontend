@@ -42,9 +42,11 @@
       </ng-container>
     </div>
     <br>
-    <button mat-raised-button color="primary"
-            [routerLink]="'/organizations/' + orgaID + '/addEvent'"
-            [queryParams]=" { 'origin' : 'event-view', 'methode' : 'create' } ">
-      <mat-icon>add</mat-icon>Event</button>
+    <div *ngIf="hasAddEventRights()">
+      <button mat-raised-button color="primary"
+              [routerLink]="'/organizations/' + orgaID + '/addEvent'"
+              [queryParams]=" { 'origin' : 'event-view', 'methode' : 'create' } ">
+        <mat-icon>add</mat-icon>Event</button>
+    </div>
   </div>
 </div>

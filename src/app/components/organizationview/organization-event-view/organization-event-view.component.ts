@@ -3,6 +3,7 @@ import {DataService} from "../../../services/DataService";
 import {OrganizationEventModel} from "../../../models/OrganizationEventModel";
 import {take, toArray} from "rxjs";
 import {FormControl, FormGroup} from "@angular/forms";
+import {StorageService} from "../../../services/StorageService";
 
 @Component({
   selector: 'app-organizationeventview',
@@ -28,7 +29,7 @@ export class OrganizationEventViewComponent implements OnInit{
   searchText: string = '';
 
 
-  constructor(private dataService : DataService) {
+  constructor(private dataService : DataService, private storageStorage : StorageService) {
   }
 
   ngOnInit(): void {
@@ -69,5 +70,12 @@ export class OrganizationEventViewComponent implements OnInit{
 
   defaultFilter() : void {
     this.filteredEvents = this.events.slice(0,10);
+  }
+
+  /**
+   * Checks if the frontend user is orga-admin or organizer
+   */
+  hasAddEventRights(): boolean {
+    return (this.storageStorage.getRoleInCurrentOrganization(this.orgaID) == 1) || (this.storageStorage.getRoleInCurrentOrganization(this.orgaID) == 2);
   }
 }
