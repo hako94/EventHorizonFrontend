@@ -26,6 +26,7 @@ import {QuestionnairePostModel} from "../models/QuestionnairePostModel";
 import {QuestionnaireInfoModel} from "../models/QuestionnaireInfoModel";
 import {QuestionnaireModel} from "../models/QuestionnaireModel";
 import {QuestionAnswerModel} from "../models/QuestionAnswerModel";
+import {QuestionnaireEvaluationModel} from "../models/QuestionnaireEvaluationModel";
 
 //const BACKEND_API = 'http://localhost:8080/'
 //const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
@@ -416,6 +417,13 @@ export class DataService {
         userId: userId,
         questionAnswers: questionAnswers
       },
+      httpOptions
+    )
+  }
+
+  getQuestionnaireEvaluation(orgId: string, eventId: string, id: string): Observable<QuestionnaireEvaluationModel> {
+    return this.http.get<QuestionnaireEvaluationModel>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/questionnaire/' + id + '/evaluation',
       httpOptions
     )
   }
