@@ -665,6 +665,35 @@ export class DataService {
     )
   }
 
+  setEventStatus(orgId: string, eventId: string, statusId: number) : Observable<any>{
+    return this.http.put<any>(
+      BACKEND_API + "api/v1/organization/" + orgId + "/event/" + eventId + '/status',
+      {
+        headers: {'Content-Type': 'application/json'},
+        'id': statusId,
+        'status': this.mapStatusIdToString(statusId),
+      }
+    )
+  }
+
+  mapStatusIdToString(id: number): string {
+    if (id == 1) {
+      return 'erstellt';
+    } else if (id == 2) {
+      return 'freigegeben';
+    } else if (id == 3) {
+      return 'gestartet';
+    } else if (id == 4) {
+      return 'beendet';
+    } else if (id == 5) {
+      return 'abgesagt';
+    } else if (id == 6) {
+      return 'gelöscht';
+    } else {
+      return 'error';
+    }
+  }
+
   putEventTemplateBasedOnId(orgId : string, id: string, template : EventTemplatePrefillModel) : Observable<any> {
     return this.http.put<any>(
       BACKEND_API + "api/v1/organization/" + orgId + "/eventtemplate/" + id,

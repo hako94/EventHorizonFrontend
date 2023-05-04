@@ -31,6 +31,10 @@
                 <label><strong>Beschreibung</strong></label>
                 <p class="overflow-ellipsis">{{orgEvent.description}}</p>
               </mat-card-subtitle>
+              <mat-card-subtitle class="whitespace-nowrap pl-4">
+                <label><strong>Status</strong></label>
+                <p>{{orgEvent.eventStatus.status}}</p>
+              </mat-card-subtitle>
             </div>
           </div>
         </div>
@@ -43,11 +47,24 @@
           </div>
           <div class="flex flex-grow"></div>
           <div>
-              <div class="flex">
-                <button *ngIf="!orgEvent.attender" mat-raised-button color="primary" (click)="book()">Teilnehmen</button>
-                <button *ngIf="orgEvent.attender" mat-raised-button color="primary" (click)="signOff()">Abmelden</button>
-                <button class="ml-6" (click)="routeToEventDetails()" mat-raised-button>Details</button>
-              </div>
+            <div class="flex">
+              <button *ngIf="!orgEvent.attender" mat-raised-button color="primary" (click)="book()">Teilnehmen</button>
+              <button *ngIf="orgEvent.attender" mat-raised-button color="primary" (click)="signOff()">Abmelden</button>
+              <button class="ml-4 mr-4" (click)="routeToEventDetails()" mat-raised-button>Details</button>
+              <button *ngIf="orgEvent.eventStatus.id == 1" mat-raised-button color="primary" (click)="setStatus(2)">Freigeben</button>
+              <button *ngIf="orgEvent.eventStatus.id == 2" class="mr-4" mat-raised-button color="primary"
+                      (click)="setStatus(3)"
+                      matTooltip="Manuelles Starten eines Events erst 24h vor Eventstart möglich, Event wird automatisch 2h vor Beginn gestartet">
+                Starten
+              </button>
+              <button *ngIf="orgEvent.eventStatus.id == 2" mat-raised-button color="warn" (click)="setStatus(5)"
+                      matTooltip="Das Event wird abgesagt und für Teilnehmer nicht mehr angezeigt">Absagen
+              </button>
+              <button *ngIf="orgEvent.eventStatus.id == 3" mat-raised-button color="warn" (click)="setStatus(4)"
+                      matTooltip="Das Event wird automatisch 1h nach Schluss beendet">Beenden
+              </button>
+              <button *ngIf="orgEvent.eventStatus.id == 5" mat-raised-button color="warn" (click)="setStatus(6)">Löschen</button>
+            </div>
           </div>
         </div>
       </div>

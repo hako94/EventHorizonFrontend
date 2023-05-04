@@ -114,4 +114,10 @@ export class EventItemComponent implements OnInit {
     // @ts-ignore
     this.router.navigate(['/organizations/' + this.orgId + '/event/' + this.orgEvent.id + '/details'], {queryParams: {view: 'description'}});
   }
+
+  setStatus(id: number){
+    this.dataService.setEventStatus(this.orgId, this.orgEvent!.id, id).subscribe(success => {
+      console.log(success);
+    })
+  }
 }

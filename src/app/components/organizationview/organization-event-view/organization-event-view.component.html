@@ -26,12 +26,12 @@
             <mat-option [value]="'noattende'">Offen</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field class="ml-2" appearance="fill">
+        <mat-form-field class="ml-2 w-60" appearance="fill">
           <mat-label>Event-Typ</mat-label>
           <mat-select [(value)]="selectedTyp" (selectionChange)="onFilterChange()">
             <mat-option [value]="'all'">Alle</mat-option>
-            <mat-option [value]="'single'">EinzelEvents</mat-option>
-            <mat-option [value]="'multi'">Serienevents</mat-option>
+            <mat-option [value]="'single'">Einzelevents</mat-option>
+            <mat-option [value]="'multi'">Serien-/Mehrfachevents</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
