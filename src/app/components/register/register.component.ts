@@ -92,6 +92,10 @@ export class RegisterComponent {
           this.authService.login(this.form.email, this.form.password).subscribe(success => {
 
             this.jwtStorage.saveUser(success)
+            this.jwtStorage.saveUserId(success.id.toString());
+            this.jwtStorage.saveEmail(success.email.toString());
+            this.jwtStorage.saveOrganizationList(success.organizations);
+            this.jwtStorage.savePlattformAdmin(success.plattformAdmin)
 
             this.router.navigate(['/dashboard']);
 
@@ -113,7 +117,10 @@ export class RegisterComponent {
           this.authService.login(email, password).subscribe(success => {
 
             this.jwtStorage.saveUser(success)
+            this.jwtStorage.saveUserId(success.id.toString());
             this.jwtStorage.saveEmail(success.email.toString());
+            this.jwtStorage.saveOrganizationList(success.organizations);
+            this.jwtStorage.savePlattformAdmin(success.plattformAdmin)
 
             console.log(success)
 
