@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Location} from "@angular/common";
 import {AuthService} from "../../../services/AuthService";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-reset-password',
@@ -9,14 +10,29 @@ import {AuthService} from "../../../services/AuthService";
   styleUrls: ['./reset-password.component.scss']
 })
 export class ResetPasswordComponent {
+
+
   form: any = {
     email: null,
     password: null,
     repeatPassword: null
   };
   loading: boolean = false;
+  preparedEmail: string;
 
-  constructor(private snackBar: MatSnackBar, private location: Location, private authService: AuthService) {
+  constructor(private snackBar: MatSnackBar, private location: Location, private authService: AuthService,
+              private route: ActivatedRoute, private router: Router
+  ) {
+    this.preparedEmail = "";
+
+    this.route.queryParams.subscribe(params => {
+
+      this.preparedEmail = decodeURIComponent(params['email']);
+
+      if (this.preparedEmail != "undefined") {
+        this.form.email = this.preparedEmail;
+      }
+    });
 
   }
 
@@ -29,9 +45,11 @@ export class ResetPasswordComponent {
       this.snackBar.open('Alle Felder müssen ausgefüllt sein!', 'OK', {duration: 3500});
       this.loading = false;
     } else {
-      let resetToken = this.location.path().split('=').at(1)?.toString();
+      let resetToken = this.location.path().split('token=')[1].split('&')[0];
       if (resetToken) {
         this.authService.resetPassword(this.form.email, resetToken, this.form.password).pipe().subscribe(() => {
+          this.snackBar.open('Passwort erfolgreich zurückgesetzt!', 'OK', {duration: 3500});
+          this.router.navigate(['/login']);
         }, error => {
           console.log(error)
         });
