@@ -282,6 +282,47 @@ export class DataService {
     )
   }
 
+  getFileForEventTemplate(orgId: string, fileId: string, eventTemplateId: string): Observable<any> {
+    return this.http.get(
+      BACKEND_API + 'api/v1/files/' + fileId,
+      {
+        responseType: "blob",
+        params: {
+          'orgId': orgId,
+          'eventTemplateId': eventTemplateId
+        },
+        observe: 'response',
+      },
+    )
+  }
+
+  deleteFileFromEvent(orgId: string, eventId: string, fileId: string): Observable<any> {
+    return this.http.delete<any>(
+      BACKEND_API + 'api/v1/files/' + fileId,
+      {
+        headers: new HttpHeaders({'Content-Type': 'application/json'}),
+        params: {
+          'orgId': orgId,
+          'eventId': eventId
+        }
+      }
+    )
+  }
+
+  deleteFileFromEventTemplate(orgId: string, eventTemplateId: string, fileId: string): Observable<any> {
+    return this.http.delete<any>(
+      BACKEND_API + 'api/v1/files/' + fileId,
+      {
+        headers: new HttpHeaders({'Content-Type': 'application/json'}),
+        params: {
+          'fileId': fileId,
+          'orgId': orgId,
+          'eventTemplateId': eventTemplateId
+        }
+      }
+    )
+  }
+
   getAvailableTemplates(orgaId: string): Observable<AvailableTemplateList[]> {
     return this.http.get<AvailableTemplateList[]>(
       BACKEND_API + 'api/v1/organization/' + orgaId + '/events/eventtemplates',

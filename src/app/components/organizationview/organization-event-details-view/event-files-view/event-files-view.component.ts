@@ -24,6 +24,7 @@ export class EventFilesViewComponent implements OnInit {
       console.log(success)
       this.dataService.getFileInfosForEvent(this.orgaID, this.eventID).subscribe(success => {
         this.availableFilesInfos = success;
+        console.log(this.availableFilesInfos)
       })
     })
   }
@@ -60,4 +61,10 @@ export class EventFilesViewComponent implements OnInit {
     })
   }
 
+  deleteFile(fileId: string): void{
+    this.dataService.deleteFileFromEvent(this.orgaID, this.eventID, fileId).subscribe(success => {
+      this.snackBar.open('Datei erfolgreich gelöscht', 'OK', {duration: 3000});
+      this.ngOnInit();
+    })
+  }
 }
