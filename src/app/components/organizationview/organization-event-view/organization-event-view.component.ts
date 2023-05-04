@@ -65,11 +65,11 @@ export class OrganizationEventViewComponent implements OnInit{
       this.filteredEvents = this.filteredEvents.filter(val => { return val.serial })
     }
 
-    this.filteredEvents = this.filteredEvents.slice(0,10);
+    this.filteredEvents = this.filteredEvents.slice(0,50);
   }
 
   defaultFilter() : void {
-    this.filteredEvents = this.events.slice(0,10);
+    this.filteredEvents = this.events.slice(0,50);
   }
 
   /**
