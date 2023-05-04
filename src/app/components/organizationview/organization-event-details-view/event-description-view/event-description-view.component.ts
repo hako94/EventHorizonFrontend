@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {DataService} from "../../../../services/DataService";
 import {DomSanitizer} from "@angular/platform-browser";
 import {OrganizationEventModel} from "../../../../models/OrganizationEventModel";
@@ -16,7 +16,6 @@ export class EventDescriptionViewComponent implements OnInit {
 
   shownimage: any;
   eventModel? : OrganizationEventModel;
-
 
   constructor(private dataService : DataService, private sanitizer : DomSanitizer) {
 
@@ -49,6 +48,12 @@ export class EventDescriptionViewComponent implements OnInit {
     });
   }
 
+  setStatus(id: number){
+    this.dataService.setEventStatus(this.orgaID, this.eventID, id).subscribe(success => {
+      console.log(success);
+    })
+    window.location.reload();
+  }
 
   protected readonly event = event;
   protected readonly Date = Date;
