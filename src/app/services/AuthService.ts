@@ -141,11 +141,10 @@ export class AuthService {
     );
   }
 
-  resetPassword(email: string, resetToken: string, password: string): Observable<any> {
+  resetPassword(resetToken: string, password: string): Observable<any> {
     return this.http.post(
       BACKEND_AUTH_API + 'resetpassword',
       {
-        email,
         resetToken,
         password,
       },

@@ -18,21 +18,10 @@ export class ResetPasswordComponent {
     repeatPassword: null
   };
   loading: boolean = false;
-  preparedEmail: string;
 
   constructor(private snackBar: MatSnackBar, private location: Location, private authService: AuthService,
-              private route: ActivatedRoute, private router: Router
+              private router: Router
   ) {
-    this.preparedEmail = "";
-
-    this.route.queryParams.subscribe(params => {
-
-      this.preparedEmail = decodeURIComponent(params['email']);
-
-      if (this.preparedEmail != "undefined") {
-        this.form.email = this.preparedEmail;
-      }
-    });
 
   }
 
@@ -45,9 +34,9 @@ export class ResetPasswordComponent {
       this.snackBar.open('Alle Felder müssen ausgefüllt sein!', 'OK', {duration: 3500});
       this.loading = false;
     } else {
-      let resetToken = this.location.path().split('token=')[1].split('&')[0];
+      let resetToken = this.location.path().split('=').at(1)?.toString();
       if (resetToken) {
-        this.authService.resetPassword(this.form.email, resetToken, this.form.password).pipe().subscribe(() => {
+        this.authService.resetPassword(resetToken, this.form.password).pipe().subscribe(() => {
           this.snackBar.open('Passwort erfolgreich zurückgesetzt!', 'OK', {duration: 3500});
           this.router.navigate(['/login']);
         }, error => {
