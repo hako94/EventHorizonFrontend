@@ -11,6 +11,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {QuestionnaireInfoModel} from "../../../../models/QuestionnaireInfoModel";
 import {QuestionnaireModel} from "../../../../models/QuestionnaireModel";
 import {QuestionAnswerModel} from "../../../../models/QuestionAnswerModel";
+import {QuestionnaireEvaluationModel} from "../../../../models/QuestionnaireEvaluationModel";
+import {Chart, registerables} from "chart.js";
 
 export interface FormIn {
   titeln : string,
@@ -48,6 +50,9 @@ export class EventSurveyComponent implements OnInit{
   toAnswerSurveyId: string = '';
   toAnswerSurvey: QuestionnaireModel | undefined;
 
+  toEvaluateSurveyId: string = '';
+  toEvaluateSurvey: QuestionnaireEvaluationModel | undefined;
+
   orgId : string = '';
   eventId : string = '';
 
@@ -82,6 +87,7 @@ export class EventSurveyComponent implements OnInit{
       this.orgId = nums[1];
       this.eventId = nums[2];
     }
+    Chart.register(...registerables);
   }
 
   updateURLWithParam(param : Params) : void {
@@ -302,7 +308,7 @@ export class EventSurveyComponent implements OnInit{
   }
 
   /**
-   * Selects a survey that will be answered, retrieves information abut the survey from dataservice
+   * Selects a survey that will be answered, retrieves information about the survey from dataservice
    */
   selectToAnswerSurvey() {
     if (this.toAnswerSurveyId == '') {
@@ -413,5 +419,33 @@ export class EventSurveyComponent implements OnInit{
     }
 
     return answersMissing;
+  }
+
+  /**
+   * Selects a survey that will be evaluated, retrieves information about the survey from dataservice
+   */
+  selectToEvaluateSurvey() {
+    if (this.toEvaluateSurveyId == '') {
+      this.snackBar.open('Bitte einen Fragebogen auswählen', 'OK', {duration: 3000})
+      return;
+    }
+    this.dataService.getQuestionnaireEvaluation(this.orgId, this.eventId, this.toEvaluateSurveyId).subscribe(success => {
+      this.toEvaluateSurvey = success;
+      console.log(success);
+      this.toEvaluateSurvey.questionAnswers.forEach(question => {
+        let chartName : string = question.questionNumber.toString();
+        let myChart = new Chart(chartName, {
+          type: 'bar',
+          data: {
+            labels: ['A', 'B', 'C'],
+            datasets: [{
+              label: 'TestDiagramm',
+              data: [10, 35, 30]
+            }]
+          }
+        })
+      })
+    })
+    this.toEvaluateSurveyId = '';
   }
 }

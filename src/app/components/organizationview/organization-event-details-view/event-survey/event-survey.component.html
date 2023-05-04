@@ -6,8 +6,9 @@
     <mat-button-toggle value="collect">Auswerten</mat-button-toggle>
   </mat-button-toggle-group>
 </div>
-<div *ngIf="currentView == 'create' || currentView == 'answer' || currentView == 'collect'" class="overflow-y-auto max-h-[80vh]">
-  <mat-card class="p-4 my-4 mx-4 min-h-0">
+<div *ngIf="currentView == 'create' || currentView == 'answer' || currentView == 'collect'"
+     class="overflow-y-auto max-h-[80vh]">
+  <mat-card class="p-4 mt-4 mx-4 min-h-0">
     <div *ngIf="currentView == 'create'">
       <h2>Einen Fragebogen erstellen</h2>
       <h3><strong>Allgemeine Informationen</strong></h3>
@@ -15,23 +16,27 @@
       <mat-form-field>
         <mat-label>Name des Bogens</mat-label>
         <input matInput [(ngModel)]="formIn.titeln">
-      </mat-form-field><br>
+      </mat-form-field>
+      <br>
       <br>
       <p>Die Beschreibung des Bogens als ganzes, sie wird unter der Überschrift angezeigt</p>
       <mat-form-field class="w-96">
         <mat-label>Beschreibung des Bogens</mat-label>
         <textarea matInput [(ngModel)]="formIn.descriptionn"></textarea>
-      </mat-form-field><br>
+      </mat-form-field>
+      <br>
 
       <!-- ---------------- -->
-      <br><mat-divider></mat-divider><br><br>
+      <br>
+      <mat-divider></mat-divider>
+      <br><br>
       <!-- ---------------- -->
 
       <h3><strong>Fragen hinzufügen</strong></h3>
       <p>Hier kann eine beliebige Anzahl an Fragen hinzugefügt werden</p>
       <br>
 
-      <mat-form-field >
+      <mat-form-field>
         <mat-label>Frage</mat-label>
         <input matInput [(ngModel)]="addQuestionName" #inputt id="add">
       </mat-form-field>
@@ -43,7 +48,10 @@
         </mat-select>
       </mat-form-field>
 
-      <button class="ml-2" mat-raised-button (click)="addCustomField(inputt.value, select.value)"><mat-icon>add</mat-icon>Frage hinzufügen</button>
+      <button class="ml-2" mat-raised-button (click)="addCustomField(inputt.value, select.value)">
+        <mat-icon>add</mat-icon>
+        Frage hinzufügen
+      </button>
       <br>
       <br>
 
@@ -55,17 +63,22 @@
                 <h2>{{field.type == "SINGLE_CHOICE" ? "Single-Choice" : "Multiple-Choice "}} Frage</h2>
                 <label>{{field.questionText}}</label><br><br>
 
-                <button mat-raised-button color="warn" (click)="removeValueFromCustomFields(i)" id="{{field.questionText}}">
+                <button mat-raised-button color="warn" (click)="removeValueFromCustomFields(i)"
+                        id="{{field.questionText}}">
                   <mat-icon>delete</mat-icon>
                   Frage Löschen
-                </button><br><br>
+                </button>
+                <br><br>
 
                 <mat-form-field>
                   <mat-label>Antwort-Option</mat-label>
                   <input matInput #inputAntwort id="addAntwort">
                 </mat-form-field>
 
-                <button mat-raised-button class="ml-2" (click)="addAnswerOption(inputAntwort, i)"><mat-icon>add</mat-icon>Antwort hinzufügen</button>
+                <button mat-raised-button class="ml-2" (click)="addAnswerOption(inputAntwort, i)">
+                  <mat-icon>add</mat-icon>
+                  Antwort hinzufügen
+                </button>
               </div>
               <div class="ml-16">
                 <h2 *ngIf="field.answerOptions.length > 0">Antwortmöglichkeiten</h2>
@@ -84,7 +97,10 @@
         </div>
       </div>
       <h2>Abschluss</h2>
-      <button [disabled]="valideDateQuestions()" mat-raised-button color="primary" (click)="submitQuestionnaire()"><mat-icon>save</mat-icon>Fragebogen erstellen</button>
+      <button [disabled]="valideDateQuestions()" mat-raised-button color="primary" (click)="submitQuestionnaire()">
+        <mat-icon>save</mat-icon>
+        Fragebogen erstellen
+      </button>
     </div>
 
     <!-- Answer -->
@@ -103,8 +119,14 @@
             </div>
           </mat-select>
         </mat-form-field>
-        <div class="ml-5 mt-5"><button mat-raised-button color="primary" (click)="selectToAnswerSurvey()"><mat-icon>edit</mat-icon>Auswählen</button></div>
-        <hr><br>
+        <div class="ml-5 mt-5">
+          <button mat-raised-button color="primary" (click)="selectToAnswerSurvey()">
+            <mat-icon>edit</mat-icon>
+            Auswählen
+          </button>
+        </div>
+        <hr>
+        <br>
       </div>
 
       <h2>Fragebogen {{toAnswerSurvey?.title || ''}}</h2>
@@ -112,34 +134,98 @@
         <label><strong>Beschreibung</strong></label>
         <p>{{toAnswerSurvey?.description || ''}}</p>
       </mat-card-subtitle>
-      <hr><br>
+      <hr>
+      <br>
 
       <ng-container>
         <ng-container *ngFor="let question of toAnswerSurvey?.questions; let i = index">
-          <h3>{{i+1}}. Frage</h3>
+          <h3>{{i + 1}}. Frage</h3>
           <p>{{question.questionText}}</p>
           <ng-container *ngIf="question.type == 'SINGLE_CHOICE'">
             <mat-radio-group aria-label="Select an option">
-              <mat-radio-button *ngFor="let answer of question.answerOptions" (click)="updateSingleChoiceAnswer(question.questionNumber, answer.answerNumber)" >{{answer.answerText}}</mat-radio-button>
+              <mat-radio-button *ngFor="let answer of question.answerOptions"
+                                (click)="updateSingleChoiceAnswer(question.questionNumber, answer.answerNumber)">{{answer.answerText}}</mat-radio-button>
             </mat-radio-group>
           </ng-container>
           <ng-container *ngIf="question.type == 'MULTIPLE_CHOICE'">
             <div *ngFor="let answer of question.answerOptions" class="flex">
               <div class="flex items-center">
-                <mat-checkbox class="flex" (click)="updateMultipleChoiceAnswer(question.questionNumber, answer.answerNumber)"></mat-checkbox>
+                <mat-checkbox class="flex"
+                              (click)="updateMultipleChoiceAnswer(question.questionNumber, answer.answerNumber)"></mat-checkbox>
                 <label class="flex">{{answer.answerText}}</label>
               </div>
             </div>
           </ng-container>
-          <br><hr><br>
+          <br>
+          <hr>
+          <br>
         </ng-container>
 
         <br>
-        <button mat-raised-button color="primary" (click)="sendAnsweredSurvey()" [disabled]="missingAnswers()"><mat-icon>send</mat-icon>Absenden</button>
+        <button mat-raised-button color="primary" (click)="sendAnsweredSurvey()" [disabled]="missingAnswers()">
+          <mat-icon>send</mat-icon>
+          Absenden
+        </button>
       </ng-container>
     </div>
+
+    <!-- Auswertung -->
+    <div *ngIf="currentView == 'collect'">
+      <h2>Fragebogen zur Auswertung auswählen</h2>
+      <div class="flex">
+        <mat-form-field appearance="fill">
+          <mat-label>Fragebogen</mat-label>
+          <mat-select [(ngModel)]="toEvaluateSurveyId">
+            <div *ngFor="let elem of availableQuestionnaires">
+              <div *ngIf="elem.status.id==3">
+                <mat-option [value]="elem.id">
+                  {{elem.title}}
+                </mat-option>
+              </div>
+            </div>
+          </mat-select>
+        </mat-form-field>
+        <div class="ml-5 mt-5">
+          <button mat-raised-button color="primary" (click)="selectToEvaluateSurvey()">
+            <mat-icon>playlist_add_check</mat-icon>
+            Auswerten
+          </button>
+        </div>
+        <hr>
+        <br>
+      </div>
+
+      <h2>Fragebogen {{toEvaluateSurvey?.title || ''}}</h2>
+      <mat-card-subtitle>
+        <label><strong>Beschreibung</strong></label>
+        <p>{{toEvaluateSurvey?.description || ''}}</p>
+      </mat-card-subtitle>
+      <hr>
+      <br>
+      <mat-card-subtitle>
+        <label><strong>Gesamtanzahl der Antworten</strong></label>
+        <p>{{toEvaluateSurvey?.countOfAnswers || ''}}</p>
+      </mat-card-subtitle>
+    </div>
   </mat-card>
+
+  <ng-container>
+    <div class="grid grid-cols-1 md:grid-cols-2">
+      <div *ngFor="let question of toEvaluateSurvey?.questionAnswers">
+        <mat-card class="p-2 mt-4 mx-4">
+          <h2>{{question.questionNumber}}.{{question.questionText}}</h2>
+          <div>
+            <canvas id="{{question.questionNumber.toString()}}}">
+
+            </canvas>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </ng-container>
+
 </div>
+
 
 <div class="mx-3" *ngIf="currentView == 'view'">
   <br>
@@ -167,15 +253,23 @@
             </mat-form-field>
           </div>
           <div class="flex justify-end">
-            <div *ngIf="editedSurvey!=survey.id"><button matTooltip="Freigabestatus ändern" mat-icon-button color="primary" (click)="editSurveyStatus(survey.id)" [disabled]="editMode">
-              <mat-icon>edit</mat-icon>
-            </button></div>
-            <div *ngIf="editMode && editedSurvey==survey.id"><button matTooltip="Speichern" mat-icon-button color="primary" (click)="saveSurveyStatus(survey.id)">
-              <mat-icon>save</mat-icon>
-            </button></div>
-            <div><button matTooltip="Umfragebogen löschen" mat-icon-button color="warn" (click)="deleteSurvey(survey.id)" [disabled]="editMode">
-              <mat-icon>delete</mat-icon>
-            </button></div>
+            <div *ngIf="editedSurvey!=survey.id">
+              <button matTooltip="Freigabestatus ändern" mat-icon-button color="primary"
+                      (click)="editSurveyStatus(survey.id)" [disabled]="editMode">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+            <div *ngIf="editMode && editedSurvey==survey.id">
+              <button matTooltip="Speichern" mat-icon-button color="primary" (click)="saveSurveyStatus(survey.id)">
+                <mat-icon>save</mat-icon>
+              </button>
+            </div>
+            <div>
+              <button matTooltip="Umfragebogen löschen" mat-icon-button color="warn" (click)="deleteSurvey(survey.id)"
+                      [disabled]="editMode">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </div>
         </div>
       </ng-container>
