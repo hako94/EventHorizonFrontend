@@ -14,6 +14,8 @@ import {ErrorStateMatcher} from "@angular/material/core";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogLoadingComponent} from "./dialog-loading/dialog-loading.component";
 import {HttpResponse} from "@angular/common/http";
+import {OrganizationUserModel} from "../../../models/OrganizationUserModel";
+import {List} from "postcss/lib/list";
 
 export interface createInterfaceTemplateBasic {
   eventName : string,
@@ -38,6 +40,8 @@ export interface baseModel {
   name : string,
   description : string,
   location : string,
+  organisatorId : Array<string>,
+  tutorId : Array<string>,
   eventStatus:
     {
       id: number,
@@ -113,7 +117,14 @@ export class OrganizationAddeventComponent {
     location : '',
     eventType: 'single'
   }
+
   childs : ChildEvent[] = [];
+
+  members : OrganizationUserModel[] = [];
+  organizers : OrganizationUserModel[] = [];
+
+  toAddTutor : OrganizationUserModel[] = [];
+  toAddOrganizer : OrganizationUserModel[] = [];
 
   constructor(private dataService : DataService,
               private location : Location,
@@ -140,6 +151,7 @@ export class OrganizationAddeventComponent {
 
     this.loadTemplates()
     this.loadEmails()
+    this.loadMembers();
   }
 
   openDialog(): void {
@@ -162,6 +174,8 @@ export class OrganizationAddeventComponent {
       name : this.form.eventName,
       description : this.form.eventDescription,
       location : this.form.location,
+      tutorId : this.toAddTutor.map(el => el.id),
+      organisatorId : this.toAddOrganizer.map(el => el.id),
       eventStatus:
         {
           id: 1,
@@ -459,6 +473,25 @@ export class OrganizationAddeventComponent {
     if (minutes) {
       date.value?.setMinutes(minutes)
     }
+  }
+
+  private loadMembers() {
+    this.dataService.getOrganizationMember(this.currentOrganization).subscribe(data => {
+      this.organizers = data.filter(el => (el.role.id == 1 || el.role.id == 2));
+      this.members = data.filter(el => !(el.role.id == 1 || el.role.id == 2));
+    })
+  }
+
+  userIsInList(list : OrganizationUserModel[], id : string) {
+    return list.filter(el => el.id == id).length > 0;
+  }
+
+  removeOrganizerFromList(id: string) {
+    this.toAddOrganizer = this.toAddOrganizer.filter(el => el.id != id)
+  }
+
+  removeTutorFromList(id: string) {
+    this.toAddTutor = this.toAddTutor.filter(el => el.id != id)
   }
 
   protected readonly Date = Date;

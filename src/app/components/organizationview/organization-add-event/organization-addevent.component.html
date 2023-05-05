@@ -53,6 +53,76 @@
       <br>
       <button color="primary" matStepperNext mat-raised-button>Weiter</button>
     </mat-step>
+    <mat-step optional>
+      <ng-template matStepLabel>Rechte</ng-template>
+      <br>
+      <h2>Personen berechtigen</h2>
+      <div>
+        <h3>Person als Organisator berechtigen</h3>
+        <div class="grid grid-rows-1 grid-cols-4 items-end">
+          <p><strong>Vorname</strong></p>
+          <p><strong>Nachname</strong></p>
+          <p><strong>Email</strong></p>
+          <p><strong>Aktion</strong></p>
+        </div>
+        <ng-container *ngFor="let organizer of organizers">
+          <div class="grid grid-rows-1 grid-cols-4 items-end">
+            <p>{{organizer.vorname || "Registrierung nicht abgeschlossen"}}</p>
+            <p>{{organizer.nachname}}</p>
+            <p>{{organizer.email}}</p>
+            <div class="flex">
+              <button *ngIf="!userIsInList(toAddOrganizer, organizer.id)"
+                      (click)="toAddOrganizer.push(organizer)"
+                      mat-icon-button color="primary">
+                <mat-icon matTooltip="hinzufügen">add</mat-icon>
+              </button>
+              <div *ngIf="userIsInList(toAddOrganizer, organizer.id)">
+                <button mat-icon-button disabled>
+                  <mat-icon>done</mat-icon>
+                </button>
+                <button (click)="removeOrganizerFromList(organizer.id)"
+                        mat-icon-button color="warn">
+                  <mat-icon matTooltip="entfernen">delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <hr>
+      <div class="mt-8">
+        <h3>Person als Tutor berechtigen</h3>
+        <div class="grid grid-rows-1 grid-cols-4 items-end">
+          <p><strong>Vorname</strong></p>
+          <p><strong>Nachname</strong></p>
+          <p><strong>Email</strong></p>
+          <p><strong>Aktion</strong></p>
+        </div>
+        <ng-container *ngFor="let member of members">
+          <div class="grid grid-rows-1 grid-cols-4 items-end">
+            <p>{{member.vorname || "Registrierung nicht abgeschlossen"}}</p>
+            <p>{{member.nachname}}</p>
+            <p>{{member.email}}</p>
+            <div class="flex">
+              <button *ngIf="!userIsInList(toAddTutor, member.id)"
+                      (click)="toAddTutor.push(member)"
+                      mat-icon-button color="primary">
+                <mat-icon matTooltip="hinzufügen">add</mat-icon>
+              </button>
+              <div *ngIf="userIsInList(toAddTutor, member.id)">
+                <button mat-icon-button disabled>
+                  <mat-icon>done</mat-icon>
+                </button>
+                <button (click)="removeTutorFromList(member.id)"
+                        mat-icon-button color="warn">
+                  <mat-icon matTooltip="entfernen">delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-step>
     <mat-step>
       <ng-template matStepLabel>Zeit Planung</ng-template>
       <br>
