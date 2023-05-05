@@ -21,12 +21,16 @@ import {MatDialog} from "@angular/material/dialog";
  */
 export class PlattformAdminComponent {
 
+  loadingAddOrga: boolean = false;
+  loadingDeleteOrga: boolean = false;
+  loadingDB: boolean = false;
+
   orgaName: string = '';
   orgaAdminMail: string = '';
   orgaDescription: string = '';
   toDeleteOrga: string = '';
 
-  constructor(private dataService: DataService, private snackBar: MatSnackBar, private storageService: StorageService, private router: Router, private dialog : MatDialog) {
+  constructor(private dataService: DataService, private snackBar: MatSnackBar, private storageService: StorageService, private router: Router, private dialog: MatDialog) {
     if (!this.storageService.isPlattformAdmin()) {
       this.router.navigateByUrl('/dashboard');
     }
@@ -43,11 +47,13 @@ export class PlattformAdminComponent {
     if (this.orgaName == '' || this.orgaAdminMail == '') {
       this.snackBar.open('Bitte füllen Sie die Pflichtfelder aus', 'OK', {duration: 3000});
     } else {
-      this.dataService.createOrganization(this.orgaName, this.orgaAdminMail, this.orgaDescription).subscribe(() =>
-          this.snackBar.open('Organisation ' + this.orgaName + ' erstellt', 'OK', {duration: 3000})
-        , () => {
-          console.log("Organisation konnte nicht angelegt werden.")
-        })
+      this.loadingAddOrga = true;
+      this.dataService.createOrganization(this.orgaName, this.orgaAdminMail, this.orgaDescription).subscribe(() => {
+        this.snackBar.open('Organisation ' + this.orgaName + ' erstellt', 'OK', {duration: 3000})
+        this.loadingAddOrga = false
+      }, () => {
+        this.loadingAddOrga = false;
+      })
     }
     console.log(this.orgaName);
     console.log(this.orgaAdminMail);
@@ -65,10 +71,16 @@ export class PlattformAdminComponent {
     if (orgId == '') {
       this.snackBar.open('Bitte geben Sie eine Organisations-ID an', 'OK', {duration: 3000});
     } else {
-      const dialogRef = this.dialog.open(DeletionConfirmationComponent,{});
+      this.loadingDeleteOrga = true;
+      const dialogRef = this.dialog.open(DeletionConfirmationComponent, {});
       dialogRef.afterClosed().subscribe((confirmed: boolean) => {
         if (confirmed) {
-          this.dataService.deleteOrganization(orgId).subscribe(() => this.snackBar.open('Organisation gelöscht', 'OK', {duration: 3000}));
+          this.dataService.deleteOrganization(orgId).subscribe(() => {
+            this.snackBar.open('Organisation gelöscht', 'OK', {duration: 3000});
+            this.loadingDeleteOrga = false;
+          }, () => {
+            this.loadingDeleteOrga = false;
+          });
         }
       });
       this.toDeleteOrga = '';
@@ -79,10 +91,16 @@ export class PlattformAdminComponent {
    * Calls the DataService to delete all entries of the database
    */
   clearDB() {
-    const dialogRef = this.dialog.open(DeletionConfirmationComponent,{});
+    this.loadingDB = true;
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent, {});
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        this.dataService.deleteDatabase().subscribe(() => this.snackBar.open('Datenbank geleert', 'OK', {duration: 3000}));
+        this.dataService.deleteDatabase().subscribe(() => {
+          this.snackBar.open('Datenbank geleert', 'OK', {duration: 3000});
+          this.loadingDB = false;
+        }, () => {
+          this.loadingDB = false;
+        });
       }
     });
   }
@@ -91,10 +109,16 @@ export class PlattformAdminComponent {
    * Calls the DataService to re-initialize the database
    */
   resetDB() {
-    const dialogRef = this.dialog.open(DeletionConfirmationComponent,{});
+    this.loadingDB = true;
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent, {});
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        this.dataService.resetDatabase().subscribe(() => this.snackBar.open('Datenbank zurückgesetzt', 'OK', {duration: 3000}));
+        this.dataService.resetDatabase().subscribe(() => {
+          this.snackBar.open('Datenbank zurückgesetzt', 'OK', {duration: 3000});
+          this.loadingDB = false;
+        }, () => {
+          this.loadingDB = false;
+        });
       }
     });
   }
