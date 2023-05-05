@@ -397,8 +397,8 @@
           childs:
           [
             {
-              eventStart: "none",
-              eventEnd: "none"
+              eventStart: (form.eventType == "single" ? singleStartDate.value!.toString() : ""),
+              eventEnd: (form.eventType == "single" ? singleEndDate.value!.toString() : "")
             }
           ],
           serial: (form.eventType == "serial" || form.eventType == "multi"),
