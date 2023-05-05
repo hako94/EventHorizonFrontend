@@ -89,11 +89,13 @@ export class OrganizationmemberviewComponent implements OnInit{
   }
 
   deleteMember(userId: string) {
-    const dialogRef = this.dialog.open(DeletionConfirmationComponent,{});
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent,{
+      data: {message: 'Wollen Sie den Eintrag wirklich löschen und das Mitglied aus der Organisation entfernen?'}
+    });
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
         this.dataService.deleteOrganizationMember(this.orgaID, userId).subscribe(() => {
-          this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
+          this.snackBar.open('Mitglied entfernt', 'OK', {duration: 3000});
           this.ngOnInit();
         });
       }

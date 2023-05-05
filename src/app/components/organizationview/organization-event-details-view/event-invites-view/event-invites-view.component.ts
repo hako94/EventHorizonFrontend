@@ -4,6 +4,8 @@ import {StorageService} from "../../../../services/StorageService";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {EventInviteModel} from "../../../../models/EventInviteModel";
 import {Router} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
+import {DeletionConfirmationComponent} from "../../../deletion-confirmation/deletion-confirmation.component";
 
 @Component({
   selector: 'app-event-invites-view',
@@ -24,7 +26,7 @@ export class EventInvitesViewComponent {
 
   invitedUsers : EventInviteModel[] = [];
 
-  constructor(private dataService : DataService, private storageService : StorageService, private snackBar : MatSnackBar, private router: Router) {
+  constructor(private dataService : DataService, private storageService : StorageService, private snackBar : MatSnackBar, private router: Router, private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -58,12 +60,18 @@ export class EventInvitesViewComponent {
    * @param inviteId
    */
   deleteInvite(inviteId : string) {
-    this.dataService.deleteEventInvite(this.orgaID, this.eventID, inviteId).subscribe(success => {
-      console.log(success)
-      this.ngOnInit();
-      this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
-    }, error => {
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent, {data:
+        {message: 'Wollen Sie den Eintrag wirklich löschen und die Event-Einladung zurückziehen?'}
     });
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.dataService.deleteEventInvite(this.orgaID, this.eventID, inviteId).subscribe(success => {
+          console.log(success)
+          this.ngOnInit();
+          this.snackBar.open('Einladung entfernt', 'OK', {duration: 3000});
+        });
+      }
+    })
   }
 
   /**

@@ -6,6 +6,8 @@ import {UserForEventWithRoleModel} from "../../../../models/UserForEventWithRole
 import {OrganizationUserModel} from "../../../../models/OrganizationUserModel";
 import {map, Observable, startWith} from "rxjs";
 import {FormControl} from "@angular/forms";
+import {MatDialog} from "@angular/material/dialog";
+import {DeletionConfirmationComponent} from "../../../deletion-confirmation/deletion-confirmation.component";
 
 @Component({
   selector: 'app-event-attender-view',
@@ -39,7 +41,7 @@ export class EventAttenderViewComponent implements OnInit {
     }
   });
 
-  constructor(private dataService: DataService, private storageService: StorageService, private snackBar: MatSnackBar) {
+  constructor(private dataService: DataService, private storageService: StorageService, private snackBar: MatSnackBar, private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -121,13 +123,18 @@ export class EventAttenderViewComponent implements OnInit {
   }
 
   deleteAttender(attenderEmail: string): void {
-    console.log("deleted attender " + attenderEmail);
-    this.dataService.deleteAttenderFromEvent(this.orgaID, this.eventID, attenderEmail).subscribe(success => {
-      this.snackBar.open('Teilnehmer abgemeldet', 'OK', {duration: 3000});
-      this.ngOnInit();
-    }, error => {
-      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent, {
+      data: {message: 'Wollen Sie den Eintrag wirklich löschen und den Teilnehmer vom Event abmelden?'}
     });
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        console.log("deleted attender " + attenderEmail);
+        this.dataService.deleteAttenderFromEvent(this.orgaID, this.eventID, attenderEmail).subscribe(success => {
+          this.snackBar.open('Teilnehmer abgemeldet', 'OK', {duration: 3000});
+          this.ngOnInit();
+        });
+      }
+    })
   }
 
   inviteSubmit(): void {

@@ -14,6 +14,8 @@ import {QuestionAnswerModel} from "../../../../models/QuestionAnswerModel";
 import {QuestionnaireEvaluationModel} from "../../../../models/QuestionnaireEvaluationModel";
 import {Chart, registerables} from "chart.js";
 import {delay, tap} from "rxjs";
+import {MatDialog} from "@angular/material/dialog";
+import {DeletionConfirmationComponent} from "../../../deletion-confirmation/deletion-confirmation.component";
 
 export interface FormIn {
   titeln : string,
@@ -95,7 +97,8 @@ export class EventSurveyComponent implements OnInit {
               private storageService: StorageService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private dialog: MatDialog) {
 
     const regex = /\/organizations\/(\w+)\/event\/(\w+)\//;
     const matches = regex.exec(location.path());
@@ -290,11 +293,18 @@ export class EventSurveyComponent implements OnInit {
    * @param id
    */
   deleteSurvey(id: string) {
-    this.dataService.deleteEventQuestionnaire(this.orgId, this.eventId, id).subscribe(() => {
-      this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
-      this.ngOnInit();
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent, {});
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.dataService.deleteEventQuestionnaire(this.orgId, this.eventId, id).subscribe(() => {
+          this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
+          this.ngOnInit();
+        })
+      }
     })
   }
+
+
 
   /**
    * enters edit mode to change status of survey

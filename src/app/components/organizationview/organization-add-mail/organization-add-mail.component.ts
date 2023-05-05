@@ -58,7 +58,7 @@ export class OrganizationAddMailComponent {
    * discards the input and routes back to the mail-template overview page
    */
   discardTemplate() {
-    const dialogRef = this.dialog.open(DeletionConfirmationComponent,{});
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent,{data: {message: 'Wollen Sie die Vorlage wirklich verwerfen?'}});
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
         this.snackBar.open('Vorlage verworfen', 'OK', {duration: 3000});

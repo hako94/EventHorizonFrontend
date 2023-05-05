@@ -54,13 +54,15 @@ export class OrganizationinviteviewComponent {
    * @param inviteId
    */
   deleteInvite(inviteId : string) {
-    const dialogRef = this.dialog.open(DeletionConfirmationComponent,{});
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent,{
+      data: {message: 'Wollen Sie den Eintrag wirklich löschen und die Organisations-Einladung zurückziehen?'}
+    });
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
         this.dataService.deleteOrganizationInvite(this.orgaID, inviteId).subscribe(success => {
           console.log(success)
           this.ngOnInit();
-          this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
+          this.snackBar.open('Einladung entfernt', 'OK', {duration: 3000});
         });
       }
     });

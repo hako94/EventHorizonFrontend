@@ -16,6 +16,8 @@ import {DialogLoadingComponent} from "./dialog-loading/dialog-loading.component"
 import {HttpResponse} from "@angular/common/http";
 import {OrganizationUserModel} from "../../../models/OrganizationUserModel";
 import {List} from "postcss/lib/list";
+import {DeletionConfirmationComponent} from "../../deletion-confirmation/deletion-confirmation.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 export interface createInterfaceTemplateBasic {
   eventName : string,
@@ -129,7 +131,9 @@ export class OrganizationAddeventComponent {
   constructor(private dataService : DataService,
               private location : Location,
               private router : Router,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              private deleteDialog: MatDialog,
+              private snackBar: MatSnackBar) {
 
     this.customFields.push({ id: "1", name: "test0"})
     this.customFields.push({ id: "2", name: "test1"})
@@ -386,7 +390,13 @@ export class OrganizationAddeventComponent {
   }
 
   goBack() : void {
-    this.location.back()
+    const dialogRef = this.deleteDialog.open(DeletionConfirmationComponent,{data: {message: 'Wollen Sie den Vorgang wirklich abbrechen und das Event verwerfen?'}});
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.snackBar.open('Event verworfen', 'OK', {duration: 3000});
+        this.location.back()
+      }
+    });
   }
 
   persistTemplate() {
