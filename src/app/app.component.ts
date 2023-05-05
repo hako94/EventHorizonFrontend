@@ -10,24 +10,26 @@ import {Location} from "@angular/common";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'EventHorizonFrontend';
 
   constructor(private storageService: StorageService,
               private authService: AuthService,
-              private csrfService : CsrfService,
+              private csrfService: CsrfService,
               private router: Router,
-              private activeRoute : ActivatedRoute,
-              private location : Location) { }
+              private activeRoute: ActivatedRoute,
+              private location: Location) {
+  }
 
   ngOnInit(): void {
 
     //TODO: remove session Check from component
     //TODO: safe check
     if (!this.storageService.getUser() &&
-        !this.location.path().includes("newUser") &&
-        !this.location.path().includes("register") &&
-        !this.location.path().includes("resetpassword")) {
+      !this.location.path().includes("newUser") &&
+      !this.location.path().includes("register") &&
+      !this.location.path().includes("resetpassword") &&
+      !this.location.path().includes("impressum")) {
 
       this.router.navigate(['/login']);
 

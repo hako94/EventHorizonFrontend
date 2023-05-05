@@ -4,6 +4,7 @@
     <h1 style="margin: 0px 0px 0px 10px;">Event Horizon</h1>
     <span class="mx-3 pt-2.5"><button *ngIf="isLoggedInPlatformAdmin()"><mat-icon routerLink="/platform-settings" class="cursor-pointer">settings</mat-icon></button></span>
     <span style="flex-grow: 4"></span>
+    <span class="text-neutral-400 text-xs mr-3 cursor-pointer" routerLink="/impressum">Impressum</span>
     <div *ngIf="!foundSession()">
       <button mat-raised-button aria-label="Login" routerLink="/login">
         <mat-icon>login</mat-icon>

@@ -3,8 +3,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AppComponent } from './app.component';
 import { AuthService } from './services/AuthService';
-import {HeaderComponent} from "./components/header/header.component";
-import {NO_ERRORS_SCHEMA} from "@angular/core";
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -26,8 +24,8 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'EventHorizonFrontend'`, () => {
+  it(`should have as title 'EventHorizon'`, () => {
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('EventHorizonFrontend');
+    expect(app.title).toEqual('EventHorizon');
   });
 });
