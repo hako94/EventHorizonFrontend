@@ -8,13 +8,13 @@
     <mat-card-content class="mt-4">
       <div class="flex">
         <div class="shrink-0">
-          <img class="w-40 h-40" [src]="shownimage">
+          <img class="sm:w-40 sm:h-40 h-20 w-20" [src]="shownimage">
         </div>
-        <div class="flex-col">
-          <div class="ml-8 mb-4">
-            <mat-card-title class="grow">{{orgEvent.name}}</mat-card-title>
+        <div class="flex-col shrink truncate">
+          <div class="ml-2 sm:ml-8 mb-4">
+            <mat-card-title class="grow truncate">{{orgEvent.name}}</mat-card-title>
           </div>
-          <div class="ml-8 shrink-0 flex">
+          <div class="ml-2 sm:ml-8 shrink-0 flex">
             <div>
               <mat-card-subtitle>
                 <label><strong>Ort</strong></label>
@@ -47,7 +47,7 @@
           </div>
           <div class="flex flex-grow"></div>
           <div>
-            <div class="flex">
+            <div class="flex flex-col sm:flex-row">
               <button *ngIf="!orgEvent.attender && orgEvent.eventStatus.id == 2" mat-raised-button color="primary" (click)="book()">Teilnehmen</button>
               <button *ngIf="orgEvent.attender && orgEvent.eventStatus.id == 2" mat-raised-button color="primary" (click)="signOff()">Abmelden</button>
               <button class="ml-4" (click)="routeToEventDetails()" mat-raised-button>Details</button>
