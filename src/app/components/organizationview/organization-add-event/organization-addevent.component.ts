@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {DataService} from "../../../services/DataService";
 import {Location} from "@angular/common";
 import {AddEventCustomField} from "../../../dataobjects/AddEventCustomField";
-import {delay, forkJoin, min, Observable, of} from "rxjs";
+import {delay, forkJoin, min, Observable, of, Subscription} from "rxjs";
 import {FormControl, FormGroupDirective, NgForm} from "@angular/forms";
 import {EventTemplateModel} from "../../../models/EventTemplateModel";
 import {AvailableTemplateList} from "../../../models/AvailableTemplateList";
@@ -237,33 +237,43 @@ export class OrganizationAddeventComponent {
     this.dataService.postEventInOrganizationAndPersist(this.currentOrganization, modelExtended).pipe(delay(1000)).subscribe(response => {
 
       if (this.dialogRef) {
-        this.dialogRef.componentInstance.data = {mEventCreated : true, mEventPictureUploaded : false, mEventFilesUploaded : false};
+        this.dialogRef.componentInstance.data = {
+          mEventCreated : { id: 1, description : "" },
+          mEventPictureUploaded : { id: 0, description : "" },
+          mEventFilesUploaded : { id: 0, description : "" }
+        };
       }
       console.log(this.extractIdFromUrl(response.body.toString()))
 
       this.persistImage(this.extractIdFromUrl(response.body.toString())).pipe(delay(1000)).subscribe(successPersistImage => {
 
         if (this.dialogRef) {
-          this.dialogRef.componentInstance.data = {mEventCreated : true, mEventPictureUploaded : true, mEventFilesUploaded : false};
+          this.dialogRef.componentInstance.data = {
+            mEventCreated : { id: 1, description : "" },
+            mEventPictureUploaded : { id: 1, description : "" },
+            mEventFilesUploaded : { id: 0, description : "" }
+          };
         }
 
         this.persistAllFiles(this.currentOrganization, this.extractIdFromUrl(response.body.toString())).pipe(delay(2000)).subscribe(success => {
           console.log("request vollständig + " + success)
 
           if (this.dialogRef) {
-            this.dialogRef.componentInstance.data = {mEventCreated : true, mEventPictureUploaded : true, mEventFilesUploaded : true};
+            this.dialogRef.componentInstance.data = {
+              mEventCreated : { id: 1, description : "" },
+              mEventPictureUploaded : { id: 1, description : "" },
+              mEventFilesUploaded : { id: 1, description : "" }
+            };
           }
 
         }, error => {
-          //TODO rollback
-          console.log("konnte die Dateien nicht hochladen")
+          this.dialogRef?.close();
         }, ()=> {
-          console.log("finishing request ...")
           this.router.navigate(['/organizations/' + this.currentOrganization], {queryParams: {view: 'events'}});
         })
 
-      }, error => { console.log(error) })
-    });
+      }, error => { this.dialogRef?.close() })
+    }, error => { this.dialogRef?.close() });
   }
   extractIdFromUrl(url: string): string {
     const parts = url.split('/');
