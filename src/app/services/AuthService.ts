@@ -20,6 +20,11 @@ export class AuthService {
   constructor(private http: HttpClient) {
   }
 
+  /**
+   * send login request to backend
+   * @param email
+   * @param password
+   */
   login(email: string, password: string): Observable<LoginResponse> {
 
     return this.http.post<LoginResponse>(
@@ -32,6 +37,11 @@ export class AuthService {
     );
   }
 
+  /**
+   * send register request to backend
+   * @param email
+   * @param password
+   */
   register(email: string, password: string): Observable<any> {
 
     return this.http.post(
@@ -44,6 +54,16 @@ export class AuthService {
     );
   }
 
+  /**
+   * send register request with data from link
+   * @param email
+   * @param password
+   * @param first_name
+   * @param last_name
+   * @param userIdEmail
+   * @param orgaId
+   * @param userModel
+   */
   registerWithLink(email: string,
                    password: string,
                    first_name: string,
@@ -73,6 +93,14 @@ export class AuthService {
     );
   }
 
+  /**
+   * send answer to org invitation
+   * @param email
+   * @param userIdEmail
+   * @param orgaId
+   * @param userModel
+   * @param accept
+   */
   answerOrgInvite(email: string,
                   userIdEmail: string,
                   orgaId: string,
@@ -99,6 +127,12 @@ export class AuthService {
     );
   }
 
+  /**
+   * check if invite is available
+   * @param newUser
+   * @param orgaId
+   * @param userModel
+   */
   checkInvite(newUser: boolean,
               orgaId: string,
               userModel: string,
@@ -121,6 +155,10 @@ export class AuthService {
     );
   }
 
+  /**
+   * send logout to backend
+   * @param refresh_token
+   */
   logout(refresh_token: string | null): Observable<any> {
     return this.http.post(
       BACKEND_AUTH_API + 'logout',
@@ -130,6 +168,10 @@ export class AuthService {
       defaultHttpOptions);
   }
 
+  /**
+   * send request for reset password email
+   * @param email
+   */
   sendResetEmail(email: string): Observable<any> {
     return this.http.post(
       BACKEND_AUTH_API + 'forgotpassword',
@@ -141,6 +183,11 @@ export class AuthService {
     );
   }
 
+  /**
+   * reset password of user with reset token
+   * @param resetToken
+   * @param password
+   */
   resetPassword(resetToken: string, password: string): Observable<any> {
     return this.http.post(
       BACKEND_AUTH_API + 'resetpassword',
@@ -152,6 +199,10 @@ export class AuthService {
     );
   }
 
+  /**
+   * send request for refreshing of logged in token
+   * @param refresh_token
+   */
   refreshToken(refresh_token: string): Observable<RefreshResponse> {
     const tokenRequest = {refresh_token};
     return this.http.post<RefreshResponse>(

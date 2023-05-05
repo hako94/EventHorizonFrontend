@@ -51,6 +51,9 @@ export class DataService {
     );
   }
 
+  /**
+   * get data for organizations
+   */
   getOrganizations(): Observable<OrganizationModel[]> {
     return this.http.get<OrganizationModel[]>(
       BACKEND_API + 'api/v1/organizations',
@@ -58,6 +61,10 @@ export class DataService {
     );
   }
 
+  /**
+   * get events for one org
+   * @param orgaId
+   */
   getOrganizationEvents(orgaId: string): Observable<OrganizationEventModel[]> {
     return this.http.get<OrganizationEventModel[]>(
       BACKEND_API + 'api/v1/organization/' + orgaId + '/events',
@@ -65,6 +72,11 @@ export class DataService {
     )
   }
 
+  /**
+   * save new event in organization
+   * @param orgaId
+   * @param model
+   */
   postEventInOrganizationAndPersist(orgaId: string, model: any): Observable<HttpResponse<any>> {
     return this.http.post(
       BACKEND_API + 'api/v1/organization/' + orgaId + '/events',
@@ -76,6 +88,10 @@ export class DataService {
     )
   }
 
+  /**
+   * get all members of one org
+   * @param orgId
+   */
   getOrganizationMember(orgId: string): Observable<OrganizationUserModel[]> {
     return this.http.get<OrganizationUserModel[]>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/members',
@@ -83,6 +99,12 @@ export class DataService {
     )
   }
 
+  /**
+   * change the role of one member of one org
+   * @param orgId
+   * @param memberId
+   * @param role
+   */
   changeOrganizationMemberRole(orgId: string, memberId: string, role: number): Observable<string> {
     return this.http.put<string>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/member/' + memberId,
@@ -99,6 +121,10 @@ export class DataService {
     )
   }
 
+  /**
+   * maps a roleID to the string value of the role
+   * @param id
+   */
   mapRoleIdToString(id: number): string {
     if (id == 1) {
       return 'Admin';
@@ -121,6 +147,11 @@ export class DataService {
     }
   }
 
+  /**
+   * delete one member from one org
+   * @param orgId
+   * @param memberId
+   */
   deleteOrganizationMember(orgId: string, memberId: string): Observable<any> {
     return this.http.delete<any>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/member/' + memberId,
@@ -128,6 +159,10 @@ export class DataService {
     )
   }
 
+  /**
+   * get all invites into one org
+   * @param orgId
+   */
   getOrganizationInvites(orgId: string): Observable<OrganizationInviteModel[]> {
     return this.http.get<OrganizationInviteModel[]>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/invites',
@@ -135,6 +170,11 @@ export class DataService {
     )
   }
 
+  /**
+   * delete one invitation from one org
+   * @param orgId
+   * @param inviteId
+   */
   deleteOrganizationInvite(orgId: string, inviteId: string): Observable<any> {
     return this.http.delete<any>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/invite/' + inviteId,
@@ -142,6 +182,12 @@ export class DataService {
     )
   }
 
+  /**
+   * change the role of one invitation to one org
+   * @param orgId
+   * @param inviteId
+   * @param roleId
+   */
   changeOrganizationInviteRole(orgId: string, inviteId: string, roleId: number): Observable<string> {
     return this.http.put<string>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/invite/' + inviteId,
@@ -158,6 +204,11 @@ export class DataService {
     )
   }
 
+  /**
+   * get every event for a user in a specific period of time
+   * @param dateFrom
+   * @param dateTo
+   */
   getAllEventsForUser(dateFrom: string, dateTo: string): Observable<OrganizationEventModel[]> {
     return this.http.get<OrganizationEventModel[]>(
       BACKEND_API + 'api/v1/organizations/events',
@@ -170,6 +221,12 @@ export class DataService {
     )
   }
 
+  /**
+   * invite a user to one org as defined role
+   * @param email
+   * @param orgId
+   * @param asRole
+   */
   inviteUser(email: string, orgId: string, asRole: string): Observable<string> {
     return this.http.post<string>(
       BACKEND_API + 'api/v1/authenticatedUser/invite',
@@ -184,6 +241,10 @@ export class DataService {
     )
   }
 
+  /**
+   * load every event template for one organization
+   * @param orgId
+   */
   loadTemplates(orgId: string): Observable<EventTemplateModel[]> {
     return this.http.get<EventTemplateModel[]>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/eventtemplates',
@@ -191,6 +252,11 @@ export class DataService {
     )
   }
 
+  /**
+   * load one template from one org
+   * @param orgId
+   * @param templateId
+   */
   loadTemplateBasedOnId(orgId: string, templateId: string): Observable<EventTemplatePrefillModel> {
     return this.http.get<EventTemplatePrefillModel>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/eventtemplate/' + templateId,
@@ -198,6 +264,11 @@ export class DataService {
     )
   }
 
+  /**
+   * safe a template in one org
+   * @param orgId
+   * @param template
+   */
   safeTemplate(orgId: string, template: EventTemplatePrefillModel): Observable<EventTemplatePrefillModel> {
     return this.http.post<EventTemplatePrefillModel>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/eventtemplates',
@@ -206,6 +277,11 @@ export class DataService {
     )
   }
 
+  /**
+   * store a file for one org
+   * @param formData
+   * @param orgId
+   */
   storeFile(formData: FormData, orgId: string): Observable<any> {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/files',
@@ -214,6 +290,12 @@ export class DataService {
     )
   }
 
+  /**
+   * store a file for one event in one org
+   * @param formData
+   * @param orgId
+   * @param eventId
+   */
   storeFileForEvent(formData: FormData, orgId: string, eventId: string): Observable<any> {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/files',
@@ -227,6 +309,12 @@ export class DataService {
     )
   }
 
+  /**
+   * store the event image for one event
+   * @param formData
+   * @param orgId
+   * @param id
+   */
   storeEventImage(formData: FormData, orgId: string, id: string): Observable<HttpResponse<any>> {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/files',
@@ -242,6 +330,11 @@ export class DataService {
     )
   }
 
+  /**
+   * get the image by the id for org, event
+   * @param orgId
+   * @param fileId
+   */
   getImage(orgId: string, fileId: string): Observable<any> {
     return this.http.get(
       BACKEND_API + 'api/v1/files/' + fileId,
@@ -252,6 +345,11 @@ export class DataService {
     )
   }
 
+  /**
+   * get the infos for every file in one event of one org
+   * @param orgId
+   * @param eventId
+   */
   getFileInfosForEvent(orgId: string, eventId: string): Observable<any> {
     return this.http.get(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/files',
@@ -264,6 +362,12 @@ export class DataService {
     )
   }
 
+  /**
+   * get the actual file by the fileID for one event in one org
+   * @param orgId
+   * @param fileId
+   * @param eventId
+   */
   getFileForEvent(orgId: string, fileId: string, eventId: string): Observable<any> {
     return this.http.get(
       BACKEND_API + 'api/v1/files/' + fileId,
@@ -278,6 +382,12 @@ export class DataService {
     )
   }
 
+  /**
+   * get the actual file by the fileID for one event template in one org
+   * @param orgId
+   * @param fileId
+   * @param eventTemplateId
+   */
   getFileForEventTemplate(orgId: string, fileId: string, eventTemplateId: string): Observable<any> {
     return this.http.get(
       BACKEND_API + 'api/v1/files/' + fileId,
@@ -292,6 +402,12 @@ export class DataService {
     )
   }
 
+  /**
+   * delete one file by the fileID in one event of one org
+   * @param orgId
+   * @param eventId
+   * @param fileId
+   */
   deleteFileFromEvent(orgId: string, eventId: string, fileId: string): Observable<any> {
     return this.http.delete<any>(
       BACKEND_API + 'api/v1/files/' + fileId,
@@ -305,6 +421,12 @@ export class DataService {
     )
   }
 
+  /**
+   * delete one file by the fileID in one event template of one org
+   * @param orgId
+   * @param eventTemplateId
+   * @param fileId
+   */
   deleteFileFromEventTemplate(orgId: string, eventTemplateId: string, fileId: string): Observable<any> {
     return this.http.delete<any>(
       BACKEND_API + 'api/v1/files/' + fileId,
@@ -319,6 +441,10 @@ export class DataService {
     )
   }
 
+  /**
+   * get every event template for one org
+   * @param orgaId
+   */
   getAvailableTemplates(orgaId: string): Observable<AvailableTemplateList[]> {
     return this.http.get<AvailableTemplateList[]>(
       BACKEND_API + 'api/v1/organization/' + orgaId + '/events/eventtemplates',
@@ -326,6 +452,10 @@ export class DataService {
     )
   }
 
+  /**
+   * get data for one org
+   * @param orgId
+   */
   getOrganizationInfos(orgId: string): Observable<OrganizationModel> {
     return this.http.get<OrganizationModel>(
       BACKEND_API + 'api/v1/organization/' + orgId,
@@ -333,6 +463,12 @@ export class DataService {
     )
   }
 
+  /**
+   * accept invitation for a event you got invited to
+   * @param orgId
+   * @param eventId
+   * @param userId
+   */
   acceptEvent(orgId: string, eventId: string, userId: string): Observable<HttpResponse<any>> {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/book',
@@ -345,6 +481,12 @@ export class DataService {
     )
   }
 
+  /**
+   * sign off from one event you were signed on
+   * @param orgId
+   * @param eventId
+   * @param userId
+   */
   leaveEvent(orgId: string, eventId: string, userId: string): Observable<HttpResponse<any>> {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/signoff',
@@ -357,6 +499,11 @@ export class DataService {
     )
   }
 
+  /**
+   * delete one event by eventID from one org
+   * @param orgId
+   * @param eventId
+   */
   deleteEvent(orgId: string, eventId: string): Observable<any> {
     return this.http.delete<any>(
       BACKEND_API + 'api/v1/organizations/' + orgId + '/events/' + eventId,
@@ -364,6 +511,12 @@ export class DataService {
     )
   }
 
+  /**
+   * create a new questionnaire at one event of one org
+   * @param orgId
+   * @param eventId
+   * @param eventQuestionnairesModel
+   */
   createEventQuestionnaires(orgId: string, eventId: string, eventQuestionnairesModel: QuestionnairePostModel): Observable<any> {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/questionnaires',
@@ -372,6 +525,11 @@ export class DataService {
     )
   }
 
+  /**
+   * load every questionnaire in one event of one org
+   * @param orgId
+   * @param eventId
+   */
   loadAvailableEventQuestionnaires(orgId: string, eventId: string): Observable<QuestionnaireInfoModel[]> {
     return this.http.get<QuestionnaireInfoModel[]>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/questionnaires',
@@ -379,6 +537,12 @@ export class DataService {
     )
   }
 
+  /**
+   * delete one questionnaire by ID in one event
+   * @param orgId
+   * @param eventId
+   * @param id
+   */
   deleteEventQuestionnaire(orgId: string, eventId: string, id: string): Observable<any> {
     return this.http.delete<any>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/questionnaire/' + id,
@@ -386,6 +550,14 @@ export class DataService {
     )
   }
 
+  /**
+   * change the status of an existing questionnaire in one event of one org
+   * @param orgId
+   * @param eventId
+   * @param surveyId
+   * @param statusId
+   * @param status
+   */
   changeQuestionnaireStatus(orgId: string, eventId: string, surveyId: string, statusId: number, status: string): Observable<any> {
     return this.http.put<any>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/questionnaire/' + surveyId + '/status',
@@ -397,6 +569,12 @@ export class DataService {
     )
   }
 
+  /**
+   * get one questionnaire by ID in one event
+   * @param orgId
+   * @param eventId
+   * @param id
+   */
   getQuestionnaire(orgId: string, eventId: string, id: string): Observable<QuestionnaireModel> {
     return this.http.get<QuestionnaireModel>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/questionnaire/' + id,
@@ -404,6 +582,14 @@ export class DataService {
     )
   }
 
+  /**
+   * submit all answers to a questionnaire in one event
+   * @param orgId
+   * @param eventId
+   * @param questionnaireId
+   * @param userId
+   * @param questionAnswers
+   */
   postQuestionnaireAnswer(orgId: string, eventId: string, questionnaireId: string, userId: string, questionAnswers: QuestionAnswerModel[]): Observable<any> {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/questionnaire/' + questionnaireId + '/responses',
@@ -416,6 +602,12 @@ export class DataService {
     )
   }
 
+  /**
+   * get evaluation of one questionnaire of one event
+   * @param orgId
+   * @param eventId
+   * @param id
+   */
   getQuestionnaireEvaluation(orgId: string, eventId: string, id: string): Observable<QuestionnaireEvaluationModel> {
     return this.http.get<QuestionnaireEvaluationModel>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/questionnaire/' + id + '/evaluation',
@@ -423,6 +615,11 @@ export class DataService {
     )
   }
 
+  /**
+   * get complete chat history of the event guide of one event
+   * @param orgId
+   * @param eventId
+   */
   getChatHistory(orgId: string, eventId: string | undefined): Observable<ChatAnswerModel[]> {
     return this.http.get<ChatAnswerModel[]>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/chat',
@@ -430,6 +627,11 @@ export class DataService {
     )
   }
 
+  /**
+   * get all attendee with presence for a started event
+   * @param orgId
+   * @param eventId
+   */
   getAttendeesWithPresence(orgId: string, eventId: string): Observable<UserAtEventModel[]> {
     return this.http.get<UserAtEventModel[]>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/attendees',
@@ -437,6 +639,12 @@ export class DataService {
     )
   }
 
+  /**
+   * save the latest version of the presence list of attendee in started event
+   * @param orgId
+   * @param eventId
+   * @param users
+   */
   saveAttendeesWithPresence(orgId: string, eventId: string, users: UserAtEventModel[]): Observable<any> {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/attendees',
@@ -445,6 +653,11 @@ export class DataService {
     )
   }
 
+  /**
+   * get all attendee for a event thats not started with the role of every attendee
+   * @param orgId
+   * @param eventId
+   */
   getAttendeesWithRole(orgId: string, eventId: string): Observable<UserForEventWithRoleModel[]> {
     return this.http.get<UserForEventWithRoleModel[]>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/persons',
@@ -453,6 +666,13 @@ export class DataService {
   }
 
 
+  /**
+   * save the role of one attender in one event
+   * @param orgId
+   * @param eventId
+   * @param attenderId
+   * @param role
+   */
   saveAttenderRole(orgId: string, eventId: string, attenderId: string, role: number): Observable<any> {
     return this.http.put<any>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/personrole',
@@ -467,6 +687,12 @@ export class DataService {
     )
   }
 
+  /**
+   * sign a attender off an event
+   * @param orgId
+   * @param eventId
+   * @param email
+   */
   deleteAttenderFromEvent(orgId: string, eventId: string, email: string): Observable<HttpResponse<any>> {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/signoff',
@@ -479,6 +705,13 @@ export class DataService {
     )
   }
 
+  /**
+   * invite a user of the org to one event
+   * @param orgId
+   * @param eventId
+   * @param userId
+   * @param role
+   */
   inviteUserToEvent(orgId: string, eventId: string, userId: string, role: number): Observable<any> {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/invite',
@@ -493,6 +726,12 @@ export class DataService {
     )
   }
 
+  /**
+   * create a completely new organization
+   * @param name
+   * @param email
+   * @param description
+   */
   createOrganization(name: string, email: string, description: string): Observable<string> {
     return this.http.post<string>(
       BACKEND_API + 'api/v1/admin/organization',
@@ -505,6 +744,10 @@ export class DataService {
     )
   }
 
+  /**
+   * delete one complete organization
+   * @param orgId
+   */
   deleteOrganization(orgId: string): Observable<any> {
     return this.http.delete<any>(
       BACKEND_API + 'api/v1/admin/organization/' + orgId,
@@ -512,6 +755,9 @@ export class DataService {
     )
   }
 
+  /**
+   * delete the whole database, only for admins
+   */
   deleteDatabase(): Observable<any> {
     return this.http.delete<any>(
       BACKEND_API + 'api/v1/admin/database/',
@@ -519,6 +765,9 @@ export class DataService {
     )
   }
 
+  /**
+   * reset the whole database to test data, only for admins
+   */
   resetDatabase(): Observable<any> {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/admin/database/',
@@ -526,6 +775,10 @@ export class DataService {
     )
   }
 
+  /**
+   * get every email template for one org
+   * @param orgId
+   */
   getEmailTemplates(orgId: string): Observable<EmailTemplateModel[]> {
     return this.http.get<EmailTemplateModel[]>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/emailtemplates',
@@ -533,6 +786,13 @@ export class DataService {
     )
   }
 
+  /**
+   * create new email template in one org
+   * @param mailName
+   * @param orgaId
+   * @param mailSubject
+   * @param mailText
+   */
   postMailTemplate(mailName: string, orgaId: string, mailSubject: string, mailText: string): Observable<any> {
     return this.http.post<OrganizationModel>(
       BACKEND_API + 'api/v1/organization/' + orgaId + '/emailtemplates',
@@ -546,6 +806,12 @@ export class DataService {
     )
   }
 
+  /**
+   * save a email template of one org
+   * @param orgId
+   * @param templateId
+   * @param emailTemplate
+   */
   saveEmailTemplate(orgId: string, templateId: string, emailTemplate: EmailTemplateModel): Observable<string> {
     return this.http.put<string>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/emailtemplate/' + templateId,
@@ -561,6 +827,11 @@ export class DataService {
     )
   }
 
+  /**
+   * delete a email template from one org
+   * @param orgId
+   * @param templateId
+   */
   deleteMailTemplate(orgId: string, templateId: string): Observable<any> {
     return this.http.delete<any>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/emailtemplate/' + templateId,
@@ -568,6 +839,11 @@ export class DataService {
     )
   }
 
+  /**
+   * get every notification infos for the event emails
+   * @param orgId
+   * @param eventId
+   */
   getNotificationInfos(orgId: string, eventId: string): Observable<any> {
     return this.http.get<NotificationInfoModel[]>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/notifications',
@@ -575,6 +851,12 @@ export class DataService {
     )
   }
 
+  /**
+   * delete one notification by ID
+   * @param orgaID
+   * @param eventID
+   * @param notificationId
+   */
   deleteNotificationInfo(orgaID: string, eventID: string, notificationId: string): Observable<HttpResponse<any>> {
     return this.http.delete<HttpResponse<any>>(
       BACKEND_API + 'api/v1/organization/' + orgaID + '/event/' + eventID + '/notification/' + notificationId,
@@ -585,6 +867,14 @@ export class DataService {
     )
   }
 
+  /**
+   * post new notification info in one template of one event in one org
+   * @param orgaId
+   * @param eventId
+   * @param templateId
+   * @param time
+   * @param isBefore
+   */
   postNotificationInfo(orgaId: string, eventId: string, templateId: string, time: string, isBefore: boolean): Observable<any> {
     return this.http.post<any>(
       BACKEND_API + 'api/v1/organization/' + orgaId + '/event/' + eventId + '/notifications',
@@ -597,6 +887,11 @@ export class DataService {
     )
   }
 
+  /**
+   * delete a event template by ID in one org
+   * @param orgaID
+   * @param templateId
+   */
   deleteTemplate(orgaID: string, templateId: string): Observable<HttpResponse<any>> {
     return this.http.delete<HttpResponse<any>>(
       BACKEND_API + 'api/v1/organization/' + orgaID + '/eventtemplate/' + templateId,
@@ -607,6 +902,11 @@ export class DataService {
     )
   }
 
+  /**
+   * get the invites to one event in one org
+   * @param orgId
+   * @param eventId
+   */
   getEventInvites(orgId: string, eventId: string): Observable<any> {
     return this.http.get<EventInviteModel[]>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/invites',
@@ -614,6 +914,12 @@ export class DataService {
     )
   }
 
+  /**
+   * delete one event invite by ID of one event in one org
+   * @param orgaID
+   * @param eventID
+   * @param inviteId
+   */
   deleteEventInvite(orgaID: string, eventID: string, inviteId: string): Observable<HttpResponse<any>> {
     return this.http.delete<HttpResponse<any>>(
       BACKEND_API + 'api/v1/organization/' + orgaID + '/event/' + eventID + '/invite/' + inviteId,
@@ -624,6 +930,13 @@ export class DataService {
     )
   }
 
+  /**
+   * change the role of one invite to a event in one org
+   * @param orgId
+   * @param eventId
+   * @param inviteId
+   * @param roleId
+   */
   changeEventInviteRole(orgId: string, eventId: string, inviteId: string, roleId: number): Observable<string> {
     return this.http.put<string>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/invite/' + inviteId,
@@ -640,12 +953,22 @@ export class DataService {
     )
   }
 
+  /**
+   * get one event by ID in one org
+   * @param orgaID
+   * @param eventID
+   */
   getSingleEvent(orgaID: string, eventID: string): Observable<OrganizationEventModel> {
     return this.http.get<OrganizationEventModel>(
       BACKEND_API + 'api/v1/organization/' + orgaID + '/event/' + eventID
     )
   }
 
+  /**
+   * get the role of the logged in user for one event with the status of the event
+   * @param orgId
+   * @param eventId
+   */
   getUserRoleAndEventStatus(orgId: string, eventId: string): Observable<EventRoleStatusModel> {
     return this.http.get<EventRoleStatusModel>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/rolestatus',
@@ -653,6 +976,11 @@ export class DataService {
     )
   }
 
+  /**
+   * get the status of one event in one org
+   * @param orgId
+   * @param eventId
+   */
   getEventStatus(orgId: string, eventId: string): Observable<EventStatusModel> {
     return this.http.get<EventStatusModel>(
       BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/status',
@@ -660,6 +988,12 @@ export class DataService {
     )
   }
 
+  /**
+   * set the status of one event in one org to given status by ID
+   * @param orgId
+   * @param eventId
+   * @param statusId
+   */
   setEventStatus(orgId: string, eventId: string, statusId: number) : Observable<any>{
     return this.http.put<any>(
       BACKEND_API + "api/v1/organization/" + orgId + "/event/" + eventId + '/status',
@@ -671,6 +1005,10 @@ export class DataService {
     )
   }
 
+  /**
+   * map a status ID to the right string value
+   * @param id
+   */
   mapStatusIdToString(id: number): string {
     if (id == 1) {
       return 'erstellt';
@@ -689,6 +1027,12 @@ export class DataService {
     }
   }
 
+  /**
+   * save one event template by ID in one org
+   * @param orgId
+   * @param id
+   * @param template
+   */
   putEventTemplateBasedOnId(orgId: string, id: string, template: EventTemplatePrefillModel): Observable<any> {
     return this.http.put<any>(
       BACKEND_API + "api/v1/organization/" + orgId + "/eventtemplate/" + id,

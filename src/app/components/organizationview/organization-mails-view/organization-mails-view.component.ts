@@ -54,9 +54,7 @@ export class OrganizationMailsViewComponent {
   saveEmailTemplate(orgId: string, templateId: string, emailTemplate: EmailTemplateModel) {
     this.dataService.saveEmailTemplate(orgId, templateId, emailTemplate).subscribe(() => {
       this.ngOnInit();
-      this.snackbar.open('Rolle erfolgreich geändert', 'OK', {duration: 3000});
-    }, error => {
-      this.snackbar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
+      this.snackbar.open('Email Vorlage erfolgreich gespeichert', 'OK', {duration: 3000});
     })
     this.editMode = false;
     this.editedEmailTemplate = '';
