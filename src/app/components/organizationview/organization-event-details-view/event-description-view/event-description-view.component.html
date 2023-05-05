@@ -8,10 +8,10 @@
     </mat-card-title>
     <div class="flex">
       <div>
-        <img [src]="shownimage" class="w-64 h-64">
+        <img [src]="shownimage" class="w-20 h-20 sm:w-64 sm:h-64">
         <br>
       </div>
-      <div class="ml-16">
+      <div class="ml-2 sm:ml-16">
         <h2 *ngIf="!eventModel.serial">Einzelevent</h2>
         <h2 *ngIf="eventModel.serial">Serienevent</h2>
         <mat-card-subtitle class="whitespace-nowrap">
