@@ -71,10 +71,10 @@ export class PlattformAdminComponent {
     if (orgId == '') {
       this.snackBar.open('Bitte geben Sie eine Organisations-ID an', 'OK', {duration: 3000});
     } else {
-      this.loadingDeleteOrga = true;
       const dialogRef = this.dialog.open(DeletionConfirmationComponent, {});
       dialogRef.afterClosed().subscribe((confirmed: boolean) => {
         if (confirmed) {
+          this.loadingDeleteOrga = true;
           this.dataService.deleteOrganization(orgId).subscribe(() => {
             this.snackBar.open('Organisation gelöscht', 'OK', {duration: 3000});
             this.loadingDeleteOrga = false;
@@ -91,10 +91,10 @@ export class PlattformAdminComponent {
    * Calls the DataService to delete all entries of the database
    */
   clearDB() {
-    this.loadingDB = true;
-    const dialogRef = this.dialog.open(DeletionConfirmationComponent, {});
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent, {data: {message: 'Wollen Sie die Datenbank wirklich leeren?'}});
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
+        this.loadingDB = true;
         this.dataService.deleteDatabase().subscribe(() => {
           this.snackBar.open('Datenbank geleert', 'OK', {duration: 3000});
           this.loadingDB = false;
@@ -109,10 +109,10 @@ export class PlattformAdminComponent {
    * Calls the DataService to re-initialize the database
    */
   resetDB() {
-    this.loadingDB = true;
-    const dialogRef = this.dialog.open(DeletionConfirmationComponent, {});
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent, {data: {message: 'Wollen Sie die Datenbank wirklich zurücksetzen und nur mit Testdaten befüllen?'}});
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
+        this.loadingDB = true;
         this.dataService.resetDatabase().subscribe(() => {
           this.snackBar.open('Datenbank zurückgesetzt', 'OK', {duration: 3000});
           this.loadingDB = false;
