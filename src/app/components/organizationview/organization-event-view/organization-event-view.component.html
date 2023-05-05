@@ -1,5 +1,5 @@
 <div>
-  <div class="mx-3"> <!-- min-h-0 h-[calc(100vh-120px)] overflow-x-hidden overflow-y-scroll -->
+  <div class="sm:mx-3"> <!-- min-h-0 h-[calc(100vh-120px)] overflow-x-hidden overflow-y-scroll -->
     <div class="mt-6">
       <h2>Event-Übersicht</h2>
       <div class="flex">
@@ -7,7 +7,7 @@
           <mat-label>Suchen</mat-label>
           <input [(ngModel)]="searchText" matInput>
         </mat-form-field>
-        <mat-form-field class="ml-2" appearance="fill">
+        <mat-form-field class="ml-1 sm:ml-2" appearance="fill">
           <mat-label>Datum</mat-label>
           <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
             <input (dateChange)="onFilterChange()" formControlName="start" matStartDate placeholder="Start date">
@@ -16,7 +16,7 @@
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
-        <mat-form-field class="ml-2" appearance="fill">
+        <mat-form-field class="ml-1 sm:ml-2" appearance="fill">
           <mat-label>Rolle</mat-label>
           <mat-select [(value)]="selected" (selectionChange)="onFilterChange()">
             <mat-option [value]="'all'">Alle</mat-option>
@@ -26,12 +26,12 @@
             <mat-option [value]="'noattende'">Offen</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field class="ml-2 w-60" appearance="fill">
+        <mat-form-field class="ml-1 sm:ml-2 w-60" appearance="fill">
           <mat-label>Event-Typ</mat-label>
           <mat-select [(value)]="selectedTyp" (selectionChange)="onFilterChange()">
             <mat-option [value]="'all'">Alle</mat-option>
-            <mat-option [value]="'single'">Einzelevents</mat-option>
-            <mat-option [value]="'multi'">Serien-/Mehrfachevents</mat-option>
+            <mat-option [value]="'single'">Einzel</mat-option>
+            <mat-option [value]="'multi'">Serien</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
