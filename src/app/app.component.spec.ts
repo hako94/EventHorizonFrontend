@@ -26,6 +26,6 @@ describe('AppComponent', () => {
 
   it(`should have as title 'EventHorizon'`, () => {
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('EventHorizon');
+    expect(app.title).toEqual('EventHorizonFrontend');
   });
 });

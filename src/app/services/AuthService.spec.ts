@@ -90,12 +90,12 @@ describe('AuthService', () => {
     //given
     const expectedResponse = {};
     //when
-    authService.logout().subscribe((response: any) => {
+    authService.logout('testToken').subscribe((response: any) => {
       //then
       expect(response).toEqual(expectedResponse);
     });
 
-    const req = httpMock.expectOne(`${BACKEND_AUTH_API}signout`);
+    const req = httpMock.expectOne(`${BACKEND_AUTH_API}logout`);
     expect(req.request.method).toBe('POST');
     req.flush(expectedResponse);
   });
