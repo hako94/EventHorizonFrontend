@@ -3,6 +3,8 @@ import {DataService} from "../../../services/DataService";
 import {OrganizationUserModel} from "../../../models/OrganizationUserModel";
 import {StorageService} from "../../../services/StorageService";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {DeletionConfirmationComponent} from "../../deletion-confirmation/deletion-confirmation.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-organizationmemberview',
@@ -29,7 +31,7 @@ export class OrganizationmemberviewComponent implements OnInit{
 
   inviteLoading : boolean = false;
 
-  constructor(private dataService : DataService, private storageService : StorageService, private snackBar : MatSnackBar) {
+  constructor(private dataService : DataService, private storageService : StorageService, private snackBar : MatSnackBar, private dialog : MatDialog) {
 
   }
 
@@ -87,10 +89,14 @@ export class OrganizationmemberviewComponent implements OnInit{
   }
 
   deleteMember(userId: string) {
-    this.dataService.deleteOrganizationMember(this.orgaID, userId).subscribe(() => {
-      this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
-      this.ngOnInit();
-    }, error => {
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent,{});
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.dataService.deleteOrganizationMember(this.orgaID, userId).subscribe(() => {
+          this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
+          this.ngOnInit();
+        });
+      }
     });
   }
 }

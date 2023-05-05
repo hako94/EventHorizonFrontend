@@ -72,6 +72,7 @@ import {ErrorInterceptor} from "./interceptors/ErrorInterceptor";
 import { DialogLoadingComponent } from './components/organizationview/organization-add-event/dialog-loading/dialog-loading.component';
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {MatListModule} from "@angular/material/list";
+import { DeletionConfirmationComponent } from './components/deletion-confirmation/deletion-confirmation.component';
 
 registerLocaleData(localeDe);
 
@@ -109,7 +110,8 @@ registerLocaleData(localeDe);
     EventFilesViewComponent,
     EventSurveyComponent,
     EventAttendanceListViewComponent,
-    DialogLoadingComponent
+    DialogLoadingComponent,
+    DeletionConfirmationComponent
   ],
     imports: [
         BrowserModule,

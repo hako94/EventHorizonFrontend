@@ -3,6 +3,8 @@ import {DataService} from "../../../services/DataService";
 import {StorageService} from "../../../services/StorageService";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatDialog} from "@angular/material/dialog";
+import {DeletionConfirmationComponent} from "../../deletion-confirmation/deletion-confirmation.component";
 
 @Component({
   selector: 'app-organization-add-mail',
@@ -21,7 +23,7 @@ export class OrganizationAddMailComponent {
   mailSubject : string = '';
   mailText : string = '';
 
-  constructor(private dataService : DataService, private storageService : StorageService, private router : Router, private activatedRoute : ActivatedRoute, private snackBar : MatSnackBar) {
+  constructor(private dataService : DataService, private storageService : StorageService, private router : Router, private activatedRoute : ActivatedRoute, private snackBar : MatSnackBar, private dialog : MatDialog) {
 
   }
 
@@ -48,8 +50,6 @@ export class OrganizationAddMailComponent {
       this.dataService.postMailTemplate(this.mailName, this.orgaID, this.mailSubject, this.mailText).subscribe(() => {
         this.snackBar.open('Mail-Vorlage erfolgreich abgespeichert', 'OK', {duration: 3500});
         this.router.navigate(['/organizations/' + this.orgaID], {queryParams: {view: 'mails'}});
-      }, error => {
-        this.snackBar.open('Fehler: Vorlage konnte nicht gespeichert werden', 'OK', {duration: 3500});
       });
     }
   }
@@ -58,7 +58,12 @@ export class OrganizationAddMailComponent {
    * discards the input and routes back to the mail-template overview page
    */
   discardTemplate() {
-    this.snackBar.open('Vorlage verworfen', 'OK', {duration: 3000});
-    this.router.navigate(['/organizations/' + this.orgaID], {queryParams: {view: 'mails'}});
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent,{});
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.snackBar.open('Vorlage verworfen', 'OK', {duration: 3000});
+        this.router.navigate(['/organizations/' + this.orgaID], {queryParams: {view: 'mails'}});
+      }
+    });
   }
 }

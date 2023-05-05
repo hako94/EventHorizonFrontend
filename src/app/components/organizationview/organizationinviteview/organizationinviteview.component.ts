@@ -3,6 +3,8 @@ import {DataService} from "../../../services/DataService";
 import {OrganizationInviteModel} from "../../../models/OrganizationInviteModel";
 import {StorageService} from "../../../services/StorageService";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatDialog} from "@angular/material/dialog";
+import {DeletionConfirmationComponent} from "../../deletion-confirmation/deletion-confirmation.component";
 
 @Component({
   selector: 'app-organizationinviteview',
@@ -20,7 +22,7 @@ export class OrganizationinviteviewComponent {
 
   invitedUsers : OrganizationInviteModel[] = [];
 
-  constructor(private dataService : DataService, private storageService : StorageService, private snackBar : MatSnackBar) {
+  constructor(private dataService : DataService, private storageService : StorageService, private snackBar : MatSnackBar, private dialog : MatDialog) {
 
   }
 
@@ -52,11 +54,15 @@ export class OrganizationinviteviewComponent {
    * @param inviteId
    */
   deleteInvite(inviteId : string) {
-    this.dataService.deleteOrganizationInvite(this.orgaID, inviteId).subscribe(success => {
-      console.log(success)
-      this.ngOnInit();
-      this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
-    }, error => {
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent,{});
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.dataService.deleteOrganizationInvite(this.orgaID, inviteId).subscribe(success => {
+          console.log(success)
+          this.ngOnInit();
+          this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
+        });
+      }
     });
   }
 

@@ -2,6 +2,9 @@ import {Component, Input, OnInit} from '@angular/core';
 import {DataService} from "../../../services/DataService";
 import {EventTemplateModel} from "../../../models/EventTemplateModel";
 import {EventTemplatePrefillModel} from "../../../models/EventTemplatePrefillModel";
+import {MatDialog} from "@angular/material/dialog";
+import {DeletionConfirmationComponent} from "../../deletion-confirmation/deletion-confirmation.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-organization-preset-view',
@@ -19,7 +22,7 @@ export class OrganizationPresetViewComponent implements OnInit{
   isLoading : boolean = false;
   editMode : boolean = false;
 
-  constructor(private dataService : DataService) {
+  constructor(private dataService : DataService, private dialog : MatDialog, private snackBar : MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -27,9 +30,16 @@ export class OrganizationPresetViewComponent implements OnInit{
   }
 
   deleteTemplate(templateId : string) {
-    this.dataService.deleteTemplate(this.orgaID, templateId).subscribe(success => {
-      this.eventTemplates = this.eventTemplates.filter(el => el.id  != templateId)
-    })
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent,{});
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.dataService.deleteTemplate(this.orgaID, templateId).subscribe(success => {
+          this.eventTemplates = this.eventTemplates.filter(el => el.id  != templateId)
+          this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
+        });
+      }
+    });
+
   }
 
   loadTemplates() {
@@ -61,7 +71,9 @@ export class OrganizationPresetViewComponent implements OnInit{
       delete this.eventeTemplatePrefillModel.created;
       delete this.eventeTemplatePrefillModel.lastModified;
 
-      this.dataService.putEventTemplateBasedOnId(this.orgaID, id, this.eventeTemplatePrefillModel).subscribe();
+      this.dataService.putEventTemplateBasedOnId(this.orgaID, id, this.eventeTemplatePrefillModel).subscribe(success => {
+        this.snackBar.open('Änderungen gespeichert', 'OK', {duration: 3000});
+      });
     }
   }
 }
