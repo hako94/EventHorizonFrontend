@@ -13,8 +13,7 @@ import {QuestionnaireModel} from "../../../../models/QuestionnaireModel";
 import {QuestionAnswerModel} from "../../../../models/QuestionAnswerModel";
 import {QuestionnaireEvaluationModel} from "../../../../models/QuestionnaireEvaluationModel";
 import {Chart, registerables} from "chart.js";
-import {delay, map, tap} from "rxjs";
-import {data} from "autoprefixer";
+import {delay, tap} from "rxjs";
 
 export interface FormIn {
   titeln : string,
@@ -56,6 +55,21 @@ export class EventSurveyComponent implements OnInit {
   toEvaluateSurvey: QuestionnaireEvaluationModel | undefined;
 
   loadingEvaluation: boolean = false;
+
+  chartTypes: string[] = ['bar', 'bar', 'bar', 'bar', 'bar', 'bar', 'bar', 'bar', 'bar', 'bar'];
+
+  chartType: string = 'bar';
+
+  model1: string = 'bar';
+  model2: string = 'bar';
+  model3: string = 'bar';
+  model4: string = 'bar';
+  model5: string = 'bar';
+  model6: string = 'bar';
+  model7: string = 'bar';
+  model8: string = 'bar';
+  model9: string = 'bar';
+  model10: string = 'bar';
 
   orgId: string = '';
   eventId: string = '';
@@ -462,7 +476,8 @@ export class EventSurveyComponent implements OnInit {
         dataArray.push(answer.count);
       })
       let myChart = new Chart(question.questionNumber.toString(), {
-        type: 'bar',
+        //@ts-ignore
+        type: this.chartTypes.at((question.questionNumber) - 1),
         data: {
           labels: labelArray,
           datasets: [{
@@ -473,6 +488,7 @@ export class EventSurveyComponent implements OnInit {
       })
     })
     this.loadingEvaluation = false;
+
   }
 
   /**
@@ -490,5 +506,6 @@ export class EventSurveyComponent implements OnInit {
   clearEvaluationSession() {
     this.toEvaluateSurvey = undefined;
     this.toEvaluateSurveyId = '';
+    this.chartTypes = ['bar', 'bar', 'bar', 'bar', 'bar', 'bar', 'bar', 'bar', 'bar', 'bar'];
   }
 }

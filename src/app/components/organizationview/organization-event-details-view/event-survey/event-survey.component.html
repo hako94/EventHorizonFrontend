@@ -214,12 +214,21 @@
   <ng-container>
     <div class="grid grid-cols-1 md:grid-cols-2">
 
-      <div *ngFor="let question of toEvaluateSurvey?.questionAnswers">
+      <div *ngFor="let question of toEvaluateSurvey?.questionAnswers" >
         <mat-card class="p-2 mt-4 mx-4">
-          <h2>{{question.questionNumber}}. {{question.questionText}}</h2>
-          <div>
-            <canvas id="{{question.questionNumber.toString()}}">
 
+          <mat-form-field appearance="fill">
+            <mat-label>Diagrammtyp wählen</mat-label>
+            <mat-select [(ngModel)]="chartTypes[question.questionNumber - 1]">
+              <mat-option [value]="'bar'" (click)="selectToEvaluateSurvey()">Säulendiagramm</mat-option>
+              <mat-option [value]="'pie'" (click)="selectToEvaluateSurvey()">Tortendiagramm</mat-option>
+              <mat-option [value]="'radar'" (click)="selectToEvaluateSurvey()">Netzdiagramm</mat-option>
+              <mat-option [value]="'line'" (click)="selectToEvaluateSurvey()">Liniendiagramm</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <h2>{{question.questionNumber}}. {{question.questionText}}</h2>
+          <div class="max-h-[35vh] flex justify-center">
+            <canvas id="{{question.questionNumber.toString()}}">
             </canvas>
           </div>
         </mat-card>
