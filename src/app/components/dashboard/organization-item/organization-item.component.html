@@ -4,7 +4,9 @@
             [queryParams]="{ view : 'events'}">
     <mat-card-content>
       <h3 class="text-center truncate">{{name}}</h3>
-      <img [src]="shownimage" class="w-32 h-32">
+      <div class="flex justify-center">
+        <img [src]="shownimage" class="w-32 h-32">
+      </div>
     </mat-card-content>
   </mat-card>
 </div>
