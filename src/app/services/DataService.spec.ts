@@ -6,14 +6,10 @@ import {OrganizationEventModel} from '../models/OrganizationEventModel';
 import {OrganizationUserModel} from '../models/OrganizationUserModel';
 import {EventTemplateModel} from '../models/EventTemplateModel';
 import {AvailableTemplateList} from '../models/AvailableTemplateList';
-import {EventQuestionnairesModel} from '../models/EventQuestionnairesModel';
 import {UserAtEventModel} from '../models/UserAtEventModel';
 import {environment} from '../../environments/environment';
 import {EventTemplatePrefillModel} from "../models/EventTemplatePrefillModel";
 import {QuestionnairePostModel} from "../models/QuestionnairePostModel";
-import {QuestionModel} from "../models/QuestionModel";
-import {QuestionnaireStatusModel} from "../models/QuestionnaireStatusModel";
-import {AnswerModel} from "../models/AnswerModel";
 
 describe('DataService', () => {
   let service: DataService;
@@ -66,6 +62,7 @@ describe('DataService', () => {
       organisator: true,
       tutor: false,
       attender: false,
+      invited: false,
       eventStatus: {
         id: 1,
         status: 'erstellt'

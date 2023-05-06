@@ -464,7 +464,7 @@ export class DataService {
   }
 
   /**
-   * accept invitation for a event you got invited to
+   * book user into event
    * @param orgId
    * @param eventId
    * @param userId
@@ -477,6 +477,36 @@ export class DataService {
         observe: 'response',
         headers: {'Content-Type': 'application/json'},
         params: {'email': userId}
+      }
+    )
+  }
+
+  /**
+   * accept invite for one event
+   * @param orgId
+   * @param eventId
+   */
+  acceptEventInvite(orgId: string, eventId: string): Observable<HttpResponse<any>> {
+    return this.http.post<any>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/inviteaccept',
+      {},
+      {
+        headers: {'Content-Type': 'application/json'},
+      }
+    )
+  }
+
+  /**
+   * decline invite for one event
+   * @param orgId
+   * @param eventId
+   */
+  declineEventInvite(orgId: string, eventId: string): Observable<HttpResponse<any>> {
+    return this.http.post<any>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/invitedecline',
+      {},
+      {
+        headers: {'Content-Type': 'application/json'},
       }
     )
   }

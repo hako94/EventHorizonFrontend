@@ -1,11 +1,7 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {OrganizationEventModel} from "../../../models/OrganizationEventModel";
-import {SocketService} from "../../../services/SocketService";
-import {Message} from "@stomp/stompjs";
 import {DataService} from "../../../services/DataService";
 import {StorageService} from "../../../services/StorageService";
-import {ChatModel} from "../../../models/ChatModel";
-import {DatePipe} from "@angular/common";
 import {ImageGetServiceService} from "../../../services/image-get-service.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {Router} from "@angular/router";
@@ -92,6 +88,18 @@ export class EventItemComponent implements OnInit {
       });
   }
 
+  acceptInvite() {
+    this.dataService.acceptEventInvite(this.orgId, this.orgEvent!.id).subscribe(success => {
+      window.location.reload();
+    })
+  }
+
+  declineInvite() {
+    this.dataService.declineEventInvite(this.orgId, this.orgEvent!.id).subscribe(success => {
+      window.location.reload();
+    })
+  }
+
   //DANGER ZONE
 
   deleteEvent() {
@@ -115,9 +123,4 @@ export class EventItemComponent implements OnInit {
     this.router.navigate(['/organizations/' + this.orgId + '/event/' + this.orgEvent.id + '/details'], {queryParams: {view: 'description'}});
   }
 
-  setStatus(id: number){
-    this.dataService.setEventStatus(this.orgId, this.orgEvent!.id, id).subscribe(success => {
-      console.log(success);
-    })
-  }
 }
