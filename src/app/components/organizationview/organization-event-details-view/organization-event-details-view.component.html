@@ -43,13 +43,13 @@
        [active]="currentParam == mailsViewParam"
        (click)="updateURLWithParam(mailsViewParam)">Mailversand</a>
   </div>
-  <div *ngIf="(hasRole(1) || hasRole(2)) && this.currentRoleAndStatus.status.id == 3">
+  <div *ngIf="(hasRole(1) || hasRole(2)) && (this.currentRoleAndStatus.status.id >= 3 && this.currentRoleAndStatus.status.id <= 4)">
     <a mat-tab-link
        *ngIf="currentRoleAndStatus.role.id != 12"
        [active]="currentParam == attendanceViewParam"
        (click)="updateURLWithParam(attendanceViewParam)">Anwesenheit</a>
   </div>
-  <div *ngIf="(hasRole(1) || hasRole(2)) && this.currentRoleAndStatus.status.id != 3">
+  <div *ngIf="(hasRole(1) || hasRole(2)) && !(this.currentRoleAndStatus.status.id >= 3 && this.currentRoleAndStatus.status.id <= 4)">
     <a mat-tab-link matTooltip="Anwesenheitsliste nur für gestartete Events verfügbar" disabled>Anwesenheit</a>
   </div>
 </nav>
@@ -83,7 +83,7 @@
   </app-event-mailsettings-view>
 </ng-container>
 <ng-container *ngIf="currentParam == attendanceViewParam" class="mx-3">
-  <app-event-attendance-list-view [orgaID]="currentOrganization" [eventID]="currentEvent" [roleIdInEvent]="currentRoleAndStatus.role.id">
+  <app-event-attendance-list-view [orgaID]="currentOrganization" [eventID]="currentEvent" [roleIdInEvent]="currentRoleAndStatus.role.id" [eventStatus]="currentRoleAndStatus.status.id">
   </app-event-attendance-list-view>
 </ng-container>
 
