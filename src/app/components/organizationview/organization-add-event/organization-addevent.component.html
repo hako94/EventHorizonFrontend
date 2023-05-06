@@ -315,34 +315,34 @@
             <div class="md:col-span-2"><p><strong>Versandzeitpunkt</strong></p></div>
           </div>
           <mat-divider></mat-divider>
-          <div *ngFor="let template of usedMailTemplates">
+          <div *ngFor="let template of usedMailTemplates; let i = index">
             <div class="grid grid-cols-1 md:grid-cols-5">
-              <div class="md:col-span-2"><p class="pt-3">{{template.templateName}}</p></div>
+              <div class="md:col-span-2"><p class="pt-3">{{template.name}}</p></div>
               <div class="flex md:col-span-2">
                 <div>
                   <mat-form-field class="max-w-[90px] mr-5">
                     <mat-label>Anzahl*</mat-label>
-                    <input matInput type="number" min="0" max="999" [(ngModel)]="timeAmount" oninput="validity.valid||(value='');">
+                    <input matInput (change)="updateToPersistMailTemplates()" type="number" min="0" max="999" [(ngModel)]="timeAmount[i]" oninput="validity.valid||(value='');">
                   </mat-form-field>
                   <mat-form-field appearance="fill" class="max-w-[120px] mr-5">
                     <mat-label>Einheit*</mat-label>
-                    <mat-select [(value)]="timeUnit">
-                      <mat-option value="D">Tage</mat-option>
-                      <mat-option value="H">Stunden</mat-option>
-                      <mat-option value="M">Minuten</mat-option>
+                    <mat-select [(value)]="timeUnit[i]">
+                      <mat-option value="D" (click)="updateToPersistMailTemplates()">Tage</mat-option>
+                      <mat-option value="H" (click)="updateToPersistMailTemplates()">Stunden</mat-option>
+                      <mat-option value="M" (click)="updateToPersistMailTemplates()">Minuten</mat-option>
                     </mat-select>
                   </mat-form-field>
                   <mat-form-field appearance="fill" class="max-w-[150px]">
                     <mat-label>Zeitpunkt*</mat-label>
-                    <mat-select [(value)]="timeSlot">
-                      <mat-option value="before">vor Event</mat-option>
-                      <mat-option value="after">nach Event</mat-option>
+                    <mat-select [(value)]="timeSlot[i]">
+                      <mat-option value="before" (click)="updateToPersistMailTemplates()">vor Event</mat-option>
+                      <mat-option value="after" (click)="updateToPersistMailTemplates()">nach Event</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
               </div>
               <div class="justify-end flex">
-                <div class="justify-self-end"><button mat-icon-button color="warn">
+                <div class="justify-self-end"><button mat-icon-button color="warn" (click)="deleteFromUsedMail(template.id, i)">
                   <mat-icon matTooltip="Entfernen">delete</mat-icon>
                 </button></div>
               </div>
@@ -397,17 +397,17 @@
       <br>
       <div class="border-l-2 p-2 mb-6">
         <h2>Speichere Das Event als Template</h2>
-        <button mat-raised-button color="primary" (click)="persistTemplate()" type="submit" formaction="" [disabled]="disabledTemplateSafe">{{ disabledTemplateSafe ? 'Gespeichert' : 'Speichern'}}</button>
+        <button mat-raised-button color="primary" (click)="persistTemplate()" type="submit" formaction="" [disabled]="disabledTemplateSafe"><mat-icon>save</mat-icon>{{ disabledTemplateSafe ? 'Gespeichert' : 'Speichern'}}</button>
       </div>
       <hr>
       <div class="flex mt-6">
         <div class="border-l-2 p-2">
           <h2>Erstelle das Event</h2>
-          <button mat-raised-button color="primary" (click)="persistData()" type="submit" formaction="">Erstellen</button>
+          <button mat-raised-button color="primary" (click)="persistData()" type="submit" formaction=""><mat-icon>check</mat-icon>Erstellen</button>
         </div>
         <div class="border-l-2 ml-10 p-2">
           <h2>Abbrechen und verwerfen</h2>
-          <button style="margin-left: 5px" mat-raised-button color="warn" (click)="goBack()">Abbrechen</button>
+          <button style="margin-left: 5px" mat-raised-button color="warn" (click)="goBack()"><mat-icon>delete</mat-icon>Abbrechen</button>
         </div>
       </div>
       <mat-divider></mat-divider>

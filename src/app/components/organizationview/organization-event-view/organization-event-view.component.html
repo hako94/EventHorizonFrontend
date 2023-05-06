@@ -36,7 +36,7 @@
         </mat-form-field>
       </div>
     </div>
-    <div class="max-h-[65vh] overflow-y-auto">
+    <div class="max-h-[60vh] overflow-y-auto">
       <ng-container *ngFor="let event of filteredEvents | appFilter: searchText">
         <app-event [orgEvent]="event" [orgId]="orgaID"></app-event>
       </ng-container>

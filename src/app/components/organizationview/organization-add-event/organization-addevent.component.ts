@@ -21,51 +21,51 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {NotificationInfoModel} from "../../../models/NotificationInfoModel";
 
 export interface createInterfaceTemplateBasic {
-  eventName : string,
-  eventDescription : string,
-  location : string,
-  eventType : string
+  eventName: string,
+  eventDescription: string,
+  location: string,
+  eventType: string
 }
 
 export interface dateSlotHolder {
-  eventStartDate : string,
-  eventStartTime : string,
-  eventEndDate : string,
-  eventEndTime : string
+  eventStartDate: string,
+  eventStartTime: string,
+  eventEndDate: string,
+  eventEndTime: string
 }
 
 export interface eventRepeatScheme {
-  repeatTimes : string,
-  repeatCycle : number
+  repeatTimes: string,
+  repeatCycle: number
 }
 
 export interface baseModel {
-  name : string,
-  description : string,
-  location : string,
-  organisatorId : Array<string>,
-  tutorId : Array<string>,
+  name: string,
+  description: string,
+  location: string,
+  organisatorId: Array<string>,
+  tutorId: Array<string>,
   JENACHDEMWIEHANNESDASFELDNENNT?: NotificationPostDto[],
   eventStatus:
     {
       id: number,
-      status : string
+      status: string
     }
 }
 
 export interface NotificationPostDto {
-  templateId : string,
-  time : string,
-  before : boolean;
+  templateId: string,
+  time: string,
+  before: boolean;
 }
 
-export interface RequestModel extends baseModel{
+export interface RequestModel extends baseModel {
   serial: boolean
   childs: {
-    eventStart : string,
-    eventEnd : string
+    eventStart: string,
+    eventEnd: string
   } []
-  eventRepeatScheme? :
+  eventRepeatScheme?:
     {
       repeatCycle: string,
       repeatTimes: string
@@ -81,16 +81,16 @@ export class OrganizationAddeventComponent {
 
   private dialogRef?: MatDialogRef<DialogLoadingComponent>
 
-  eventCreated : boolean = false;
-  pictureUploaded : boolean = false
-  filesUploaded : boolean = false
+  eventCreated: boolean = false;
+  pictureUploaded: boolean = false
+  filesUploaded: boolean = false
 
-  singleStartTime : string = '';
-  singleEndTime : string = '';
+  singleStartTime: string = '';
+  singleEndTime: string = '';
 
-  disabledTemplateSafe : boolean = false;
+  disabledTemplateSafe: boolean = false;
 
-  serialEvent : eventRepeatScheme = {
+  serialEvent: eventRepeatScheme = {
     repeatTimes: "0",
     repeatCycle: 0
   };
@@ -100,57 +100,57 @@ export class OrganizationAddeventComponent {
   singleStartDate = new FormControl(new Date());
   singleEndDate = new FormControl(new Date());
 
-  toPersistEmails : NotificationPostDto[] = [];
+  toPersistEmails: NotificationPostDto[] = [];
 
-  shownPreviewImage : any;
+  shownPreviewImage: any;
 
-  imageToPersist? : FormData;
-  filesToPersist : FormData[] = [];
+  imageToPersist?: FormData;
+  filesToPersist: FormData[] = [];
 
   startDate = new FormControl(new Date());
   endDate = new FormControl(new Date());
 
-  currentOrganization : string = '';
+  currentOrganization: string = '';
 
-  eventTemplates : EventTemplateModel[] = [];
+  eventTemplates: EventTemplateModel[] = [];
 
-  customFields : Array<AddEventCustomField> = [];
+  customFields: Array<AddEventCustomField> = [];
 
-  customFieldData : Array<string> = [];
+  customFieldData: Array<string> = [];
   availableMailTemplates: EmailTemplateModel[] = [];
-  usedMailTemplates: NotificationInfoModel[] = [];
+  usedMailTemplates: EmailTemplateModel[] = [];
 
-  timeAmount: number = 3;
-  timeUnit: string = "D";
-  timeSlot: string = "before";
+  timeAmount: number[] = [];
+  timeUnit: string[] = [];
+  timeSlot: string[] = [];
 
-  files : File[] = [];
+  files: File[] = [];
 
-  form : createInterfaceTemplateBasic = {
-    eventName : '',
-    eventDescription : '',
-    location : '',
+  form: createInterfaceTemplateBasic = {
+    eventName: '',
+    eventDescription: '',
+    location: '',
     eventType: 'single'
   }
 
-  childs : ChildEvent[] = [];
+  childs: ChildEvent[] = [];
 
-  members : OrganizationUserModel[] = [];
-  organizers : OrganizationUserModel[] = [];
+  members: OrganizationUserModel[] = [];
+  organizers: OrganizationUserModel[] = [];
 
-  toAddTutor : OrganizationUserModel[] = [];
-  toAddOrganizer : OrganizationUserModel[] = [];
+  toAddTutor: OrganizationUserModel[] = [];
+  toAddOrganizer: OrganizationUserModel[] = [];
 
-  constructor(private dataService : DataService,
-              private location : Location,
-              private router : Router,
+  constructor(private dataService: DataService,
+              private location: Location,
+              private router: Router,
               public dialog: MatDialog,
               private deleteDialog: MatDialog,
               private snackBar: MatSnackBar) {
 
-    this.customFields.push({ id: "1", name: "test0"})
-    this.customFields.push({ id: "2", name: "test1"})
-    this.customFields.push({ id: "3", name: "test2"})
+    this.customFields.push({id: "1", name: "test0"})
+    this.customFields.push({id: "2", name: "test1"})
+    this.customFields.push({id: "3", name: "test2"})
 
     let orga = this.location.path().split('/').at(2)?.toString()
 
@@ -158,7 +158,7 @@ export class OrganizationAddeventComponent {
       console.log("Orga index " + orga.indexOf('?'))
 
       if (orga.indexOf('?') > 0) {
-        this.currentOrganization = orga.slice(0,orga.indexOf('?'));
+        this.currentOrganization = orga.slice(0, orga.indexOf('?'));
       } else {
         this.currentOrganization = orga;
       }
@@ -174,14 +174,18 @@ export class OrganizationAddeventComponent {
   openDialog(): void {
     this.dialogRef = this.dialog.open(DialogLoadingComponent, {
       width: '400px',
-      data: { mEventCreated: this.eventCreated, mEventPictureUploaded : this.pictureUploaded, mEventFilesUploaded : this.filesUploaded }
+      data: {
+        mEventCreated: this.eventCreated,
+        mEventPictureUploaded: this.pictureUploaded,
+        mEventFilesUploaded: this.filesUploaded
+      }
     });
   }
 
   isUsed(templateId: string): boolean {
     // @ts-ignore
     this.usedMailTemplates.forEach(usedTemplate => {
-      if (usedTemplate.templateId == templateId) {
+      if (usedTemplate.id == templateId) {
         return true;
       }
     })
@@ -190,32 +194,33 @@ export class OrganizationAddeventComponent {
 
   addToUsed(template: EmailTemplateModel) {
 
-    this.usedMailTemplates.push(new class implements NotificationInfoModel {
-      id: string = "";
-      sent: boolean = false;
-      templateId: string = template.id;
-      templateName: string = template.name;
-      triggerTime: Date = new Date(Date.now());
-    })
+    let mails: EmailTemplateModel[] = [];
 
-    this.isUsed(template.id);
+    this.availableMailTemplates.forEach(t => {
+      if (t.id != template.id) {
+        mails.push(t);
+      }
+    })
+    this.availableMailTemplates = mails;
+    this.usedMailTemplates.push(template)
+    this.updateToPersistMailTemplates();
   }
 
-  validateTimeInput(input : string): boolean {
+  validateTimeInput(input: string): boolean {
     const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/; // Regular expression for hh:mm format
     return timeRegex.test(input);
   }
 
-  persistData() : void {
+  persistData(): void {
 
     console.warn(this.singleStartDate.value)
 
-    let model : baseModel = {
-      name : this.form.eventName,
-      description : this.form.eventDescription,
-      location : this.form.location,
-      tutorId : this.toAddTutor.map(el => el.id),
-      organisatorId : this.toAddOrganizer.map(el => el.id),
+    let model: baseModel = {
+      name: this.form.eventName,
+      description: this.form.eventDescription,
+      location: this.form.location,
+      tutorId: this.toAddTutor.map(el => el.id),
+      organisatorId: this.toAddOrganizer.map(el => el.id),
       eventStatus:
         {
           id: 1,
@@ -225,7 +230,7 @@ export class OrganizationAddeventComponent {
 
     if (this.toPersistEmails.length > 0) {
       model = {
-        JENACHDEMWIEHANNESDASFELDNENNT : this.toPersistEmails,
+        JENACHDEMWIEHANNESDASFELDNENNT: this.toPersistEmails,
         ...model
       }
     }
@@ -257,7 +262,7 @@ export class OrganizationAddeventComponent {
             serial: true,
             eventRepeatScheme:
               {
-                repeatCycle: "PT"+this.serialEvent.repeatCycle*24+"H",
+                repeatCycle: "PT" + this.serialEvent.repeatCycle * 24 + "H",
                 repeatTimes: this.serialEvent.repeatTimes
               },
             childs:
@@ -275,7 +280,9 @@ export class OrganizationAddeventComponent {
         {
           ...model,
           serial: true,
-          childs: this.childs.map(el => {return {eventStart: el.eventStart, eventEnd: el.eventEnd}})
+          childs: this.childs.map(el => {
+            return {eventStart: el.eventStart, eventEnd: el.eventEnd}
+          })
         }
     }
 
@@ -285,9 +292,9 @@ export class OrganizationAddeventComponent {
 
       if (this.dialogRef) {
         this.dialogRef.componentInstance.data = {
-          mEventCreated : { id: 1, description : "" },
-          mEventPictureUploaded : { id: 0, description : "" },
-          mEventFilesUploaded : { id: 0, description : "" }
+          mEventCreated: {id: 1, description: ""},
+          mEventPictureUploaded: {id: 0, description: ""},
+          mEventFilesUploaded: {id: 0, description: ""}
         };
       }
       console.log(this.extractIdFromUrl(response.body.toString()))
@@ -296,9 +303,9 @@ export class OrganizationAddeventComponent {
 
         if (this.dialogRef) {
           this.dialogRef.componentInstance.data = {
-            mEventCreated : { id: 1, description : "" },
-            mEventPictureUploaded : { id: 1, description : "" },
-            mEventFilesUploaded : { id: 0, description : "" }
+            mEventCreated: {id: 1, description: ""},
+            mEventPictureUploaded: {id: 1, description: ""},
+            mEventFilesUploaded: {id: 0, description: ""}
           };
         }
 
@@ -307,28 +314,33 @@ export class OrganizationAddeventComponent {
 
           if (this.dialogRef) {
             this.dialogRef.componentInstance.data = {
-              mEventCreated : { id: 1, description : "" },
-              mEventPictureUploaded : { id: 1, description : "" },
-              mEventFilesUploaded : { id: 1, description : "" }
+              mEventCreated: {id: 1, description: ""},
+              mEventPictureUploaded: {id: 1, description: ""},
+              mEventFilesUploaded: {id: 1, description: ""}
             };
           }
 
         }, error => {
           this.dialogRef?.close();
-        }, ()=> {
+        }, () => {
           this.router.navigate(['/organizations/' + this.currentOrganization], {queryParams: {view: 'events'}});
         })
 
-      }, error => { this.dialogRef?.close() })
-    }, error => { this.dialogRef?.close() });
+      }, error => {
+        this.dialogRef?.close()
+      })
+    }, error => {
+      this.dialogRef?.close()
+    });
   }
+
   extractIdFromUrl(url: string): string {
     const parts = url.split('/');
     return parts[parts.length - 1];
   }
 
 
-  persistImage(id : string) : Observable<any> {
+  persistImage(id: string): Observable<any> {
     if (this.imageToPersist) {
       return this.dataService.storeEventImage(this.imageToPersist, this.currentOrganization, id);
     } else {
@@ -337,7 +349,7 @@ export class OrganizationAddeventComponent {
     }
   }
 
-  persistAllFiles(orgId : string, eventId : string) : Observable<any> {
+  persistAllFiles(orgId: string, eventId: string): Observable<any> {
     if (this.filesToPersist.length > 0) {
 
       const observables: Observable<any>[] = [];
@@ -358,9 +370,9 @@ export class OrganizationAddeventComponent {
     )
   }
 
-  onFileSelected(event : any) {
+  onFileSelected(event: any) {
 
-    const files : Array<File> = event.target.files;
+    const files: Array<File> = event.target.files;
 
     console.log(files);
 
@@ -381,7 +393,7 @@ export class OrganizationAddeventComponent {
   onEventImageFileSelected(event: any) {
 
     const fileReader = new FileReader();
-    const file:File = event.target.files[0];
+    const file: File = event.target.files[0];
 
     if (file) {
 
@@ -399,7 +411,7 @@ export class OrganizationAddeventComponent {
   }
 
   dateToLocalDateTimeString<T extends Date>(date: T): string {
-    const dateString : string = `${date.getFullYear()}-${(date.getMonth() + 1).toString()
+    const dateString: string = `${date.getFullYear()}-${(date.getMonth() + 1).toString()
       .padStart(2, '0')}-${date.getDate().toString()
       .padStart(2, '0')}T${date.getHours().toString()
       .padStart(2, '0')}:${date.getMinutes().toString()
@@ -408,7 +420,7 @@ export class OrganizationAddeventComponent {
     return dateString;
   }
 
-  addChildEvent(eventStart : Date | null, eventEnd : Date | null) : void {
+  addChildEvent(eventStart: Date | null, eventEnd: Date | null): void {
     if (eventStart != null && eventEnd != null) {
       this.childs.push(
         {
@@ -420,14 +432,18 @@ export class OrganizationAddeventComponent {
     console.log(this.childs)
   }
 
-  deleteChildEvent(start: string, end : string) {
+  deleteChildEvent(start: string, end: string) {
     this.childs = this.childs
-      .filter(el => {return (el.eventEnd != end || el.eventStart != start)})
-      .filter(el => {return el != null})
+      .filter(el => {
+        return (el.eventEnd != end || el.eventStart != start)
+      })
+      .filter(el => {
+        return el != null
+      })
   }
 
-  goBack() : void {
-    const dialogRef = this.deleteDialog.open(DeletionConfirmationComponent,{data: {message: 'Wollen Sie den Vorgang wirklich abbrechen und das Event verwerfen?'}});
+  goBack(): void {
+    const dialogRef = this.deleteDialog.open(DeletionConfirmationComponent, {data: {message: 'Wollen Sie den Vorgang wirklich abbrechen und das Event verwerfen?'}});
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
         this.snackBar.open('Event verworfen', 'OK', {duration: 3000});
@@ -442,11 +458,11 @@ export class OrganizationAddeventComponent {
 
     if (this.form.eventType == "single" && this.singleStartDate != null && this.singleEndDate != null) {
 
-      let template : EventTemplatePrefillModel = {
-        name : this.form.eventName,
-        description : this.form.eventDescription,
-        location : this.form.location,
-        eventType : this.form.eventType,
+      let template: EventTemplatePrefillModel = {
+        name: this.form.eventName,
+        description: this.form.eventDescription,
+        location: this.form.location,
+        eventType: this.form.eventType,
         childs:
           [
             {
@@ -457,26 +473,26 @@ export class OrganizationAddeventComponent {
         serial: (this.childs.length > 1)
       }
 
-      this.dataService.safeTemplate(this.currentOrganization, template).subscribe()
+      this.dataService.safeTemplate(this.currentOrganization, template).subscribe(() => {}, () => {this.disabledTemplateSafe = false;})
 
     } else {
 
-      let template : EventTemplatePrefillModel = {
-        name : this.form.eventName,
-        description : this.form.eventDescription,
-        location : this.form.location,
-        eventType : this.form.eventType,
+      let template: EventTemplatePrefillModel = {
+        name: this.form.eventName,
+        description: this.form.eventDescription,
+        location: this.form.location,
+        eventType: this.form.eventType,
         serial: (this.childs.length > 1),
-        childs : this.childs.slice(0,1)
+        childs: this.childs.slice(0, 1)
       }
 
-      this.dataService.safeTemplate(this.currentOrganization, template).subscribe()
+      this.dataService.safeTemplate(this.currentOrganization, template).subscribe(() => {}, () => {this.disabledTemplateSafe = false;})
 
     }
   }
 
   loadTemplateWithId(id: string) {
-    this.dataService.loadTemplateBasedOnId(this.currentOrganization,id).subscribe(template => {
+    this.dataService.loadTemplateBasedOnId(this.currentOrganization, id).subscribe(template => {
       this.form.eventName = template.name;
       this.form.location = template.location;
       this.form.eventDescription = template.description;
@@ -529,7 +545,7 @@ export class OrganizationAddeventComponent {
     })
   }
 
-  userIsInList(list : OrganizationUserModel[], id : string) {
+  userIsInList(list: OrganizationUserModel[], id: string) {
     return list.filter(el => el.id == id).length > 0;
   }
 
@@ -543,19 +559,49 @@ export class OrganizationAddeventComponent {
 
   private loadEmailTemplates() {
     this.dataService.getEmailTemplates(this.currentOrganization).subscribe(success => {
-      success.forEach(availableTemplate => {
-        let alreadyUsed: boolean = false;
-        this.usedMailTemplates.forEach(usedTemplate => {
-          if (availableTemplate.id == usedTemplate.templateId) {
-            alreadyUsed = true;
-          }
-        })
-        if (!alreadyUsed) {
-          this.availableMailTemplates.push(availableTemplate);
-        }
-      })
+      this.availableMailTemplates = success;
+      for (let i = 0; i < this.availableMailTemplates.length; i++) {
+        this.timeAmount[i] = 3;
+        this.timeUnit[i] = 'D';
+        this.timeSlot[i] = 'after';
+      }
     })
   }
 
   protected readonly Date = Date;
+
+  deleteFromUsedMail(id: string, index: number) {
+    let mails: EmailTemplateModel[] = [];
+    this.usedMailTemplates.forEach(template => {
+      if (template.id != id) {
+        mails.push(template);
+      } else {
+        this.availableMailTemplates.push(template);
+      }
+    })
+    this.usedMailTemplates = mails;
+
+    this.updateToPersistMailTemplates();
+  }
+
+  updateToPersistMailTemplates() {
+    this.toPersistEmails = [];
+    let index = 0;
+    this.usedMailTemplates.forEach(template => {
+      let beforeBool : boolean = (this.timeSlot[index] == 'before');
+      let timeScheme: string = 'PT';
+      if (this.timeUnit[index] == 'D') {
+        timeScheme += ((this.timeAmount[index] * 24) + 'H');
+      } else {
+        timeScheme += '' + this.timeAmount[index] + this.timeUnit[index];
+      }
+      this.toPersistEmails.push(new class implements NotificationPostDto {
+        before: boolean = beforeBool;
+        templateId: string = template.id;
+        time: string = timeScheme;
+      })
+      console.log(index + ' ' + template.id + ' ' + timeScheme + ' ' + beforeBool);
+      index++;
+    })
+  }
 }
