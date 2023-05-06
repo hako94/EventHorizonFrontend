@@ -8,27 +8,53 @@
     </mat-card-title>
     <div class="flex">
       <div>
-        <img [src]="shownimage" class="w-20 h-20 sm:w-64 sm:h-64">
+        <img [src]="shownimage" class="w-20 h-20 sm:w-64 sm:h-64" alt="">
+        <div *ngIf="editMode" class="relative mt-[-16rem] w-64 h-64 bg-black bg-opacity-60">
+          <input type="file" class="w-64 h-64 opacity-0" (change)="onEventImageFileSelected($event)">
+        </div>
+        <p *ngIf="editMode">Klicke das Bild an, zum ändern</p>
         <br>
       </div>
       <div class="ml-2 sm:ml-16">
         <h2 *ngIf="!eventModel.serial">Einzelevent</h2>
         <h2 *ngIf="eventModel.serial">Serienevent</h2>
-        <mat-card-subtitle class="whitespace-nowrap">
+        <mat-card-subtitle class="whitespace-nowrap" *ngIf="!editMode">
           <label *ngIf="eventModel.serial"><strong>Datum erstes Event</strong></label>
           <label *ngIf="!eventModel.serial"><strong>Start-Datum</strong></label>
           <p>{{eventModel.childs[eventModel.childs.length - 1].eventStart.replace('T', ', ').slice(0, 17)}}</p>
         </mat-card-subtitle>
-        <mat-card-subtitle class="whitespace-nowrap">
+        <mat-card-subtitle *ngIf="editMode">
+          <mat-form-field appearance="fill">
+            <mat-label>Start-Datum</mat-label>
+            <input matInput [matDatepicker]="picker" value="{{eventModel.childs[0].eventStart}}">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </mat-card-subtitle>
+        <mat-card-subtitle class="whitespace-nowrap" *ngIf="!editMode">
           <label *ngIf="eventModel.serial"><strong>Datum letztes Event</strong></label>
           <label *ngIf="!eventModel.serial"><strong>End-Datum</strong></label>
           <p>{{eventModel.childs[eventModel.childs.length - 1].eventEnd.replace('T', ', ').slice(0, 17)}}</p>
         </mat-card-subtitle>
-        <mat-card-subtitle class="whitespace-nowrap">
+        <mat-card-subtitle *ngIf="editMode">
+          <mat-form-field appearance="fill">
+            <mat-label>End-Datum</mat-label>
+            <input matInput [matDatepicker]="picker2" value="{{eventModel.childs[0].eventEnd}}">
+            <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </mat-card-subtitle>
+        <mat-card-subtitle class="whitespace-nowrap" *ngIf="!editMode">
           <label><strong>Ort</strong></label>
           <p>{{eventModel.location}}</p>
         </mat-card-subtitle>
-        <mat-card-subtitle class="whitespace-nowrap">
+        <mat-card-subtitle *ngIf="editMode">
+          <mat-form-field>
+            <mat-label>Ort</mat-label>
+            <input matInput value="{{eventModel.location}}">
+          </mat-form-field>
+        </mat-card-subtitle>
+        <mat-card-subtitle class="whitespace-nowrap" *ngIf="!editMode">
           <label><strong>Status</strong></label>
           <p>{{eventModel.eventStatus.status}}</p>
         </mat-card-subtitle>
@@ -47,9 +73,17 @@
                 matTooltip="Das Event wird automatisch 1h nach Schluss beendet">Beenden
         </button>
         <button *ngIf="(roleIdInEvent==10 || roleIdInEvent==11) && eventModel.eventStatus.id == 5" class="ml-4" mat-raised-button color="warn" (click)="setStatus(6)">Löschen</button>
+        <button class="ml-4" mat-raised-button color="primary" (click)="editMode = true" *ngIf="!editMode">Bearbeiten</button>
+        <button class="ml-4" mat-raised-button color="primary" (click)="safeAndPersist()" *ngIf="editMode">Speichern</button>
       </div>
     </div>
-    <p>{{eventModel.description}}</p>
+    <div>
+      <p *ngIf="!editMode">{{eventModel.description}}</p>
+      <mat-form-field *ngIf="editMode" class="w-[570px]">
+        <mat-label>Beschreibung</mat-label>
+        <textarea matInput value="{{eventModel.description}}" style="height: 300px"></textarea>
+      </mat-form-field>
+    </div>
     <div *ngIf="eventModel.serial">
       <br>
       <mat-divider></mat-divider>

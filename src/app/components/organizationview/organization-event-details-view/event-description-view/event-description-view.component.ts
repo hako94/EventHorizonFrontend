@@ -14,11 +14,30 @@ export class EventDescriptionViewComponent implements OnInit {
   @Input() eventID = '';
   @Input() roleIdInEvent!: number;
 
+  editMode : boolean = false;
+  imageToPersist? : FormData;
+
   shownimage: any;
   eventModel? : OrganizationEventModel;
 
   constructor(private dataService : DataService, private sanitizer : DomSanitizer) {
 
+  }
+
+  onEventImageFileSelected(event: any) {
+
+    const fileReader = new FileReader();
+    const file:File = event.target.files[0];
+
+    if (file) {
+
+      console.log(file)
+
+      const formData = new FormData();
+      formData.append("file", file, file.name);
+
+      this.imageToPersist = formData;
+    }
   }
 
   ngOnInit(): void {
@@ -28,7 +47,7 @@ export class EventDescriptionViewComponent implements OnInit {
 
       this.dataService.getFileForEvent(this.orgaID, this.eventModel?.pictureId || 'error', this.eventID).subscribe(success => {
 
-        let objectURL = URL.createObjectURL(success);
+        let objectURL = URL.createObjectURL(success.body);
         this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
 
       }, error => {
@@ -57,4 +76,12 @@ export class EventDescriptionViewComponent implements OnInit {
 
   protected readonly event = event;
   protected readonly Date = Date;
+
+  safeAndPersist() {
+    this.editMode = false;
+
+    if (this.imageToPersist) {
+      this.dataService.storeEventImage(this.imageToPersist, this.orgaID, this.eventID).subscribe(() => window.location.reload())
+    }
+  }
 }
