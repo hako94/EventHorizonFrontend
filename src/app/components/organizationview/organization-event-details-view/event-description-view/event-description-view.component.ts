@@ -12,7 +12,7 @@ export class EventDescriptionViewComponent implements OnInit {
 
   @Input() orgaID = '';
   @Input() eventID = '';
-  @Input() roleIdInEvent!: number;
+  @Input() roleIdInEvent?: number;
 
   editMode : boolean = false;
   imageToPersist? : FormData;
