@@ -18,6 +18,7 @@ import {OrganizationUserModel} from "../../../models/OrganizationUserModel";
 import {List} from "postcss/lib/list";
 import {DeletionConfirmationComponent} from "../../deletion-confirmation/deletion-confirmation.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {NotificationInfoModel} from "../../../models/NotificationInfoModel";
 
 export interface createInterfaceTemplateBasic {
   eventName : string,
@@ -44,11 +45,18 @@ export interface baseModel {
   location : string,
   organisatorId : Array<string>,
   tutorId : Array<string>,
+  JENACHDEMWIEHANNESDASFELDNENNT?: NotificationPostDto[],
   eventStatus:
     {
       id: number,
       status : string
     }
+}
+
+export interface NotificationPostDto {
+  templateId : string,
+  time : string,
+  before : boolean;
 }
 
 export interface RequestModel extends baseModel{
@@ -92,6 +100,8 @@ export class OrganizationAddeventComponent {
   singleStartDate = new FormControl(new Date());
   singleEndDate = new FormControl(new Date());
 
+  toPersistEmails : NotificationPostDto[] = [];
+
   shownPreviewImage : any;
 
   imageToPersist? : FormData;
@@ -102,14 +112,17 @@ export class OrganizationAddeventComponent {
 
   currentOrganization : string = '';
 
-  emailTemplates: EmailTemplateModel[] = [];
-  emailTemplatesInUse : EmailTemplateModel[] = [];
-  availableTemplates : AvailableTemplateList[] = []
   eventTemplates : EventTemplateModel[] = [];
 
   customFields : Array<AddEventCustomField> = [];
 
   customFieldData : Array<string> = [];
+  availableMailTemplates: EmailTemplateModel[] = [];
+  usedMailTemplates: NotificationInfoModel[] = [];
+
+  timeAmount: number = 3;
+  timeUnit: string = "D";
+  timeSlot: string = "before";
 
   files : File[] = [];
 
@@ -154,8 +167,8 @@ export class OrganizationAddeventComponent {
     }
 
     this.loadTemplates()
-    this.loadEmails()
     this.loadMembers();
+    this.loadEmailTemplates();
   }
 
   openDialog(): void {
@@ -163,6 +176,29 @@ export class OrganizationAddeventComponent {
       width: '400px',
       data: { mEventCreated: this.eventCreated, mEventPictureUploaded : this.pictureUploaded, mEventFilesUploaded : this.filesUploaded }
     });
+  }
+
+  isUsed(templateId: string): boolean {
+    // @ts-ignore
+    this.usedMailTemplates.forEach(usedTemplate => {
+      if (usedTemplate.templateId == templateId) {
+        return true;
+      }
+    })
+    return false;
+  }
+
+  addToUsed(template: EmailTemplateModel) {
+
+    this.usedMailTemplates.push(new class implements NotificationInfoModel {
+      id: string = "";
+      sent: boolean = false;
+      templateId: string = template.id;
+      templateName: string = template.name;
+      triggerTime: Date = new Date(Date.now());
+    })
+
+    this.isUsed(template.id);
   }
 
   validateTimeInput(input : string): boolean {
@@ -185,6 +221,13 @@ export class OrganizationAddeventComponent {
           id: 1,
           status: "erstellt"
         }
+    }
+
+    if (this.toPersistEmails.length > 0) {
+      model = {
+        JENACHDEMWIEHANNESDASFELDNENNT : this.toPersistEmails,
+        ...model
+      }
     }
 
     let modelExtended;
@@ -306,12 +349,6 @@ export class OrganizationAddeventComponent {
       return forkJoin(observables);
     }
     return of("No files to persist found");
-  }
-
-  loadEmails() : void {
-    this.dataService.getEmailTemplates(this.currentOrganization).subscribe(templates => {
-      this.emailTemplates = templates;
-    })
   }
 
   loadTemplates() {
@@ -470,16 +507,6 @@ export class OrganizationAddeventComponent {
     })
   }
 
-  removeValueFromInUseEmails(id: string) {
-    this.emailTemplatesInUse = this.emailTemplatesInUse.filter(val => { return val.id != id })
-  }
-
-  addValueToInUseEmails(emailTemplate: EmailTemplateModel) {
-    if (!this.emailTemplatesInUse.includes(emailTemplate)) {
-      this.emailTemplatesInUse.push(emailTemplate);
-    }
-  }
-
   protected readonly Number = Number;
 
   attachTimeToDate(date: FormControl<Date | null>, time: string) {
@@ -512,6 +539,22 @@ export class OrganizationAddeventComponent {
 
   removeTutorFromList(id: string) {
     this.toAddTutor = this.toAddTutor.filter(el => el.id != id)
+  }
+
+  private loadEmailTemplates() {
+    this.dataService.getEmailTemplates(this.currentOrganization).subscribe(success => {
+      success.forEach(availableTemplate => {
+        let alreadyUsed: boolean = false;
+        this.usedMailTemplates.forEach(usedTemplate => {
+          if (availableTemplate.id == usedTemplate.templateId) {
+            alreadyUsed = true;
+          }
+        })
+        if (!alreadyUsed) {
+          this.availableMailTemplates.push(availableTemplate);
+        }
+      })
+    })
   }
 
   protected readonly Date = Date;

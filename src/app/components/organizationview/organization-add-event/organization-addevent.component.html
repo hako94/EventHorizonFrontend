@@ -283,47 +283,74 @@
     <mat-step optional>
       <ng-template matStepLabel>Emails</ng-template>
       <br>
-      <h2>mögliche Email-Vorlagen</h2>
-      <p>Hier sind alle Email-Vorlagen der Organisation aufgelistet. Klicken sie auf der + um die Vorlage zum Event hinzu zu fügen</p>
-      <br><br>
-      <div class="grid grid-cols-4">
-        <h2>Vorlagen-ID</h2>
-        <h2>Name</h2>
-        <h2>Email-Titel</h2>
+      <br>
+      <div class="mx-3">
+        <h2>Verfügbare Mail-Vorlagen</h2>
+        <mat-card class="p-2 max-h-[30vh] overflow-y-auto">
+          <div class="max-sm:hidden grid md:grid-cols-5">
+            <div class="col-span-2"><p><strong>Vorlagenbezeichnung</strong></p></div>
+            <div class="col-span-2"><p><strong>Mailbetreff</strong></p></div>
+          </div>
+          <mat-divider></mat-divider>
+          <div *ngFor="let template of availableMailTemplates">
+            <div *ngIf="!isUsed(template.id)" class="grid grid-cols-1 md:grid-cols-5">
+              <div class="md:col-span-2 pt-3"><p>{{template.name}}</p></div>
+              <div class="md:col-span-2 md:pt-3"><p>{{template.subject}}</p></div>
+              <div class="justify-self-end flex">
+                <div *ngIf="!isUsed(template.id)">
+                  <button mat-icon-button color="primary" (click)="addToUsed(template)">
+                    <mat-icon matTooltip="Verwenden">add</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+          </div>
+        </mat-card>
+        <br>
+        <h2>Verwendete Mail-Vorlagen</h2>
+        <mat-card class="p-2 max-h-[40vh] overflow-y-auto">
+          <div class="max-sm:hidden grid md:grid-cols-5">
+            <div class="md:col-span-2"><p><strong>Vorlagenbezeichnung</strong></p></div>
+            <div class="md:col-span-2"><p><strong>Versandzeitpunkt</strong></p></div>
+          </div>
+          <mat-divider></mat-divider>
+          <div *ngFor="let template of usedMailTemplates">
+            <div class="grid grid-cols-1 md:grid-cols-5">
+              <div class="md:col-span-2"><p class="pt-3">{{template.templateName}}</p></div>
+              <div class="flex md:col-span-2">
+                <div>
+                  <mat-form-field class="max-w-[90px] mr-5">
+                    <mat-label>Anzahl*</mat-label>
+                    <input matInput type="number" min="0" max="999" [(ngModel)]="timeAmount" oninput="validity.valid||(value='');">
+                  </mat-form-field>
+                  <mat-form-field appearance="fill" class="max-w-[120px] mr-5">
+                    <mat-label>Einheit*</mat-label>
+                    <mat-select [(value)]="timeUnit">
+                      <mat-option value="D">Tage</mat-option>
+                      <mat-option value="H">Stunden</mat-option>
+                      <mat-option value="M">Minuten</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="fill" class="max-w-[150px]">
+                    <mat-label>Zeitpunkt*</mat-label>
+                    <mat-select [(value)]="timeSlot">
+                      <mat-option value="before">vor Event</mat-option>
+                      <mat-option value="after">nach Event</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="justify-end flex">
+                <div class="justify-self-end"><button mat-icon-button color="warn">
+                  <mat-icon matTooltip="Entfernen">delete</mat-icon>
+                </button></div>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+          </div>
+        </mat-card>
       </div>
-      <ng-container *ngFor="let emailTemplate of emailTemplates">
-        <div class="grid grid-cols-4">
-          <p>{{emailTemplate.id}}</p>
-          <p>{{emailTemplate.name}}</p>
-          <p>{{emailTemplate.subject}}</p>
-          <button class="justify-self-end flex" color="primary" mat-raised-button
-                  (click)="addValueToInUseEmails(emailTemplate)"
-                  [disabled]="emailTemplatesInUse.includes(emailTemplate)">
-            <mat-icon>add</mat-icon>Verwenden
-          </button>
-          <br>
-        </div>
-      </ng-container>
-      <br><hr><br><br>
-      <h2>Verwendet</h2>
-      <p>Hier werden alle Email-Vorlagen aufgelistet, die für das aktuelle Event verwendet werden</p>
-      <br><br>
-      <div class="grid grid-cols-4">
-        <h2>Vorlagen-ID</h2>
-        <h2>Name</h2>
-        <h2>Email-Titel</h2>
-      </div>
-      <ng-container *ngFor="let emailTemplate of emailTemplatesInUse">
-        <div class="grid grid-cols-4">
-          <p>{{emailTemplate.id}}</p>
-          <p>{{emailTemplate.name}}</p>
-          <p>{{emailTemplate.subject}}</p>
-          <button class="justify-self-end flex" color="warn" mat-raised-button (click)="removeValueFromInUseEmails(emailTemplate.id)">
-            <mat-icon>remove</mat-icon>Entfernen
-          </button>
-          <br>
-        </div>
-      </ng-container>
       <br><br>
       <button color="primary" matStepperNext mat-raised-button>Weiter</button>
     </mat-step>
