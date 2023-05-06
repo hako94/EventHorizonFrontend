@@ -17,6 +17,7 @@ export class EventAttendanceListViewComponent {
   @Input() orgaID = '';
   @Input() eventID = '';
   @Input() roleIdInEvent!: number;
+  @Input() eventStatus!: number;
   attendee: UserAtEventModel[] = [];
 
   selectedRole: number = 12;
