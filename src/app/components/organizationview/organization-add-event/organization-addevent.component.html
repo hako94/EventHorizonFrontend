@@ -146,7 +146,7 @@
               <br><mat-divider></mat-divider><br>
               <h3>Einzelevent-Details</h3>
               <mat-form-field appearance="fill">
-                <mat-label>Start-Datum</mat-label>
+                <mat-label>Beginn</mat-label>
                 <input [min]="minDate" matInput [matDatepicker]="startPicker" [formControl]="singleStartDate">
                 <mat-hint>DD.MM.YYYY</mat-hint>
                 <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
@@ -159,11 +159,11 @@
               </mat-form-field>
               <br>
               <mat-form-field appearance="fill" class="mt-4">
-                <mat-label>End-Datum</mat-label>
+                <mat-label>Ende</mat-label>
                 <input matInput [min]="singleStartDate.value"  [matDatepicker]="endPicker" [formControl]="singleEndDate">
                 <mat-hint>DD.MM.YYYY</mat-hint>
                 <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
-                <mat-error>Das End-Datum muss gültig sein und nach dem Startdatum liegen</mat-error>
+                <mat-error>Der Endzeitpunkt muss gültig sein und nach dem Beginn liegen</mat-error>
                 <mat-datepicker #endPicker></mat-datepicker>
               </mat-form-field>
               <mat-form-field class="ml-2">
@@ -182,7 +182,7 @@
             <br><mat-divider></mat-divider><br>
             <h3>Mehrfachevent-Details</h3>
             <mat-form-field>
-              <mat-label>Start-Datum</mat-label>
+              <mat-label>Beginn</mat-label>
               <input matInput [matDatepicker]="customStartPicker" [formControl]="startDate" >
               <mat-hint>DD.MM.YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="customStartPicker"></mat-datepicker-toggle>
@@ -195,7 +195,7 @@
             </mat-form-field>
             <br>
             <mat-form-field class="mt-4">
-              <mat-label>End-Datum</mat-label>
+              <mat-label>Ende</mat-label>
               <input matInput [matDatepicker]="customEndPicker" [formControl]="endDate">
               <mat-hint>DD.MM.YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="customEndPicker"></mat-datepicker-toggle>
@@ -231,7 +231,7 @@
             <h3>Serienevent-Details</h3>
             <p>Das Datum, an dem das Event das erste mal statt findet</p>
             <mat-form-field appearance="fill">
-              <mat-label>Start-Datum</mat-label>
+              <mat-label>Beginn</mat-label>
               <input matInput [matDatepicker]="startPicker" [formControl]="startDate">
               <mat-hint>DD.MM.YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
@@ -244,7 +244,7 @@
             </mat-form-field>
             <br><br>
             <mat-form-field appearance="fill">
-              <mat-label>End-Datum</mat-label>
+              <mat-label>Ende</mat-label>
               <input matInput [matDatepicker]="endPicker" [formControl]="endDate">
               <mat-hint>DD.MM.YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>

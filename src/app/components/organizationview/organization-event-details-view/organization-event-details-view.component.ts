@@ -2,10 +2,7 @@ import {Component} from '@angular/core';
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Location} from "@angular/common";
 import {StorageService} from "../../../services/StorageService";
-import {UserRoleModel} from "../../../models/UserRoleModel";
 import {DataService} from "../../../services/DataService";
-import {lastValueFrom, Subscription} from "rxjs";
-import {EventItemComponent} from "../event-item/event-item.component";
 import {EventRoleStatusModel} from "../../../models/EventRoleStatusModel";
 
 @Component({
@@ -86,6 +83,12 @@ export class OrganizationEventDetailsViewComponent {
     });
     this.dataService.getUserRoleAndEventStatus(this.currentOrganization, this.currentEvent).subscribe(success => {
       this.currentRoleAndStatus = success;
+      if (this.currentRoleAndStatus.role == null){
+        this.currentRoleAndStatus.role = {
+          id: 12,
+          role: 'Teilnehmer',
+        }
+      }
     });
   }
 

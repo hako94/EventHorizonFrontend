@@ -9,13 +9,14 @@
     <div class="flex">
       <div>
         <img [src]="shownimage" class="w-20 h-20 sm:w-64 sm:h-64">
-        <div class="relative mt-[-16rem] mb-8 w-64 h-64 border-dotted bg-white border-2 opacity-90" *ngIf="editMode" >
+        <div class="relative mt-[-16rem] mb-8 w-64 h-64 border-dotted bg-white border-2 opacity-90" *ngIf="editMode">
           <label style="color: #e5e7eb">Drag and Drop</label>
           <div class="h-full flex flex-col items-center justify-center z-0">
             <mat-icon class="w-32 h-32 scale-[3] opacity-100">upload</mat-icon>
             <label class="mt-8 text-center">Dateie hier ablegen oder klicken zum auswählen</label>
           </div>
-          <input class="w-64 h-64 opacity-0 z-20 absolute top-0" (change)="onEventImageFileSelected($event)" type="file" #fileUpload>
+          <input class="w-64 h-64 opacity-0 z-20 absolute top-0" (change)="onEventImageFileSelected($event)" type="file"
+                 #fileUpload>
         </div>
         <br>
       </div>
@@ -24,26 +25,28 @@
         <h2 *ngIf="eventModel.serial">Serienevent</h2>
         <mat-card-subtitle class="whitespace-nowrap" *ngIf="!editMode">
           <label *ngIf="eventModel.serial"><strong>Datum erstes Event</strong></label>
-          <label *ngIf="!eventModel.serial"><strong>Start-Datum</strong></label>
-          <p>{{eventModel.childs[eventModel.childs.length - 1].eventStart.replace('T', ', ').slice(0, 17)}}</p>
+          <label *ngIf="!eventModel.serial"><strong>Beginn</strong></label>
+          <p>{{eventModel.childs[eventModel.childs.length - 1].eventStart.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}}</p>
         </mat-card-subtitle>
         <mat-card-subtitle *ngIf="editMode">
           <mat-form-field appearance="fill">
-            <mat-label>Start-Datum</mat-label>
-            <input matInput [matDatepicker]="picker" value="{{eventModel.childs[0].eventStart}}">
+            <mat-label>Beginn</mat-label>
+            <input matInput [matDatepicker]="picker"
+                   value="{{eventModel.childs[0].eventStart | date: 'dd.MM.yyyy, HH:mm'}}">
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </mat-card-subtitle>
         <mat-card-subtitle class="whitespace-nowrap" *ngIf="!editMode">
           <label *ngIf="eventModel.serial"><strong>Datum letztes Event</strong></label>
-          <label *ngIf="!eventModel.serial"><strong>End-Datum</strong></label>
-          <p>{{eventModel.childs[eventModel.childs.length - 1].eventEnd.replace('T', ', ').slice(0, 17)}}</p>
+          <label *ngIf="!eventModel.serial"><strong>Ende</strong></label>
+          <p>{{eventModel.childs[eventModel.childs.length - 1].eventEnd.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}}</p>
         </mat-card-subtitle>
         <mat-card-subtitle *ngIf="editMode">
           <mat-form-field appearance="fill">
-            <mat-label>End-Datum</mat-label>
-            <input matInput [matDatepicker]="picker2" value="{{eventModel.childs[0].eventEnd}}">
+            <mat-label>Ende</mat-label>
+            <input matInput [matDatepicker]="picker2"
+                   value="{{eventModel.childs[0].eventEnd | date: 'dd.MM.yyyy, HH:mm'}}">
             <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2></mat-datepicker>
           </mat-form-field>
@@ -64,21 +67,44 @@
         </mat-card-subtitle>
       </div>
       <div class="ml-auto">
-        <button *ngIf="(roleIdInEvent==10 || roleIdInEvent==11) && eventModel.eventStatus.id == 1" class="ml-4" mat-raised-button color="primary" (click)="setStatus(2)">Freigeben</button>
-        <button *ngIf="(roleIdInEvent==10 || roleIdInEvent==11) && eventModel.eventStatus.id == 2" class="mr-4 ml-4" mat-raised-button color="primary"
+        <button
+          *ngIf="!eventModel.organisator && !eventModel.tutor && !eventModel.attender && eventModel.eventStatus.id == 2 && !eventModel.invited && !eventModel.serial && eventModel.parentId == null"
+          mat-raised-button color="primary" (click)="book()">Teilnehmen
+        </button>
+        <button
+          *ngIf="!eventModel.organisator && !eventModel.tutor && eventModel.attender && eventModel.eventStatus.id == 2 && !eventModel.invited && !eventModel.serial && eventModel.parentId == null"
+          mat-raised-button color="primary" (click)="signOff()">Abmelden
+        </button>
+        <button *ngIf="eventModel.invited" class="ml-4" (click)="acceptInvite()" mat-raised-button>Annehmen</button>
+        <button *ngIf="eventModel.invited" class="ml-4" (click)="declineInvite()" mat-raised-button color="warn">
+          Ablehnen
+        </button>
+        <button *ngIf="(roleIdInEvent==10 || roleIdInEvent==11) && eventModel.eventStatus.id == 1" class="ml-4"
+                mat-raised-button color="primary" (click)="setStatus(2)">Freigeben
+        </button>
+        <button *ngIf="(roleIdInEvent==10 || roleIdInEvent==11) && eventModel.eventStatus.id == 2" class="mr-4 ml-4"
+                mat-raised-button color="primary"
                 (click)="setStatus(3)"
                 matTooltip="Manuelles Starten eines Events erst 24h vor Eventstart möglich, Event wird automatisch 2h vor Beginn gestartet">
           Starten
         </button>
-        <button *ngIf="(roleIdInEvent==10 || roleIdInEvent==11) && eventModel.eventStatus.id == 2" mat-raised-button color="warn" (click)="setStatus(5)"
+        <button *ngIf="(roleIdInEvent==10 || roleIdInEvent==11) && eventModel.eventStatus.id == 2" mat-raised-button
+                color="warn" (click)="setStatus(5)"
                 matTooltip="Das Event wird abgesagt und für Teilnehmer nicht mehr angezeigt">Absagen
         </button>
-        <button *ngIf="(roleIdInEvent==10 || roleIdInEvent==11) && eventModel.eventStatus.id == 3" class="ml-4" mat-raised-button color="warn" (click)="setStatus(4)"
+        <button *ngIf="(roleIdInEvent==10 || roleIdInEvent==11) && eventModel.eventStatus.id == 3" class="ml-4"
+                mat-raised-button color="warn" (click)="setStatus(4)"
                 matTooltip="Das Event wird automatisch 1h nach Schluss beendet">Beenden
         </button>
-        <button *ngIf="(roleIdInEvent==10 || roleIdInEvent==11) && eventModel.eventStatus.id == 5" class="ml-4" mat-raised-button color="warn" (click)="setStatus(6)">Löschen</button>
-        <button class="ml-4" mat-raised-button color="primary" (click)="editMode = true" *ngIf="!editMode && (roleIdInEvent==10 || roleIdInEvent==11)">Bearbeiten</button>
-        <button class="ml-4" mat-raised-button color="primary" (click)="safeAndPersist()" *ngIf="editMode && (roleIdInEvent==10 || roleIdInEvent==11)">Speichern</button>
+        <button *ngIf="(roleIdInEvent==10 || roleIdInEvent==11) && eventModel.eventStatus.id == 5" class="ml-4"
+                mat-raised-button color="warn" (click)="setStatus(6)">Löschen
+        </button>
+        <button class="ml-4" mat-raised-button color="primary" (click)="editMode = true"
+                *ngIf="!editMode && (roleIdInEvent==10 || roleIdInEvent==11)">Bearbeiten
+        </button>
+        <button class="ml-4" mat-raised-button color="primary" (click)="safeAndPersist()"
+                *ngIf="editMode && (roleIdInEvent==10 || roleIdInEvent==11)">Speichern
+        </button>
       </div>
     </div>
     <div>
@@ -99,12 +125,12 @@
           <div class="mr-10 mt-4">
             <h2>Event-Termin</h2>
             <mat-card-subtitle>
-              <label><strong>Start-Datum</strong></label>
-              <p>{{child.eventStart.replace('T', ', ').slice(0, 17)}}</p>
+              <label><strong>Beginn</strong></label>
+              <p>{{child.eventStart.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}}</p>
             </mat-card-subtitle>
             <mat-card-subtitle>
-              <label><strong>End-Datum</strong></label>
-              <p>{{child.eventEnd.replace('T', ', ').slice(0, 17)}}</p>
+              <label><strong>Ende</strong></label>
+              <p>{{child.eventEnd.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}}</p>
             </mat-card-subtitle>
           </div>
         </ng-container>
