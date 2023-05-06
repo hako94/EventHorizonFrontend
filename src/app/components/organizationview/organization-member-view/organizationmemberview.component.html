@@ -12,7 +12,7 @@
         <mat-option value="Gast">Gast</mat-option>
         <mat-option value="Teilnehmer">Teilnehmer</mat-option>
         <mat-option value="Organisator" *ngIf="hasRole(2) || hasRole(1)">Organisator</mat-option>
-        <mat-option value="Admin" *ngIf="hasRole(2) || hasRole(1)">Admin</mat-option>
+        <mat-option value="Admin" *ngIf="hasRole(1)">Admin</mat-option>
       </mat-select>
     </mat-form-field>
     <button class="ml-1 mb-4" mat-raised-button color="primary" (click)="inviteSubmit()" [disabled]="inviteLoading">
@@ -42,7 +42,7 @@
                 <mat-option [value]=5>Gast</mat-option>
                 <mat-option [value]=4>Teilnehmer</mat-option>
                 <mat-option [value]=2 *ngIf="hasRole(2) || hasRole(1)">Organisator</mat-option>
-                <mat-option [value]=1 *ngIf="hasRole(2) || hasRole(1)">Admin</mat-option>
+                <mat-option [value]=1 *ngIf="hasRole(1)">Admin</mat-option>
               </mat-select>
             </mat-form-field>
           </div>

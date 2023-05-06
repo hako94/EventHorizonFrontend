@@ -12,7 +12,7 @@ import {DeletionConfirmationComponent} from "../../deletion-confirmation/deletio
   styleUrls: ['./organizationinviteview.component.scss']
 })
 export class OrganizationinviteviewComponent {
-  selectedRole : number = -1;
+  selectedRole : number = 5;
   editMode : boolean = false;
   editedUser : string = '';
   email : string = '';
@@ -81,7 +81,7 @@ export class OrganizationinviteviewComponent {
       this.changeInviteRole(id, this.selectedRole)
       this.editMode = false;
       this.editedUser = '';
-      this.selectedRole = -1;
+      this.selectedRole = 5;
     }
   }
 

@@ -13,7 +13,7 @@ export class OrganizationEventViewComponent implements OnInit {
 
   @Input() orgaID = '';
 
-
+  selectedStatus: number | null = null;
   selectedTyp: string = '';
   selected = '';
 
@@ -95,6 +95,42 @@ export class OrganizationEventViewComponent implements OnInit {
     if (this.selectedTyp == 'multi') {
       this.filteredEvents = this.filteredEvents.filter(val => {
         return val.serial
+      })
+    }
+
+    if (this.selectedStatus == 0) {
+      this.filteredEvents = this.filteredEvents.filter(val => {
+        return val
+      })
+    }
+    if (this.selectedStatus == 1) {
+      this.filteredEvents = this.filteredEvents.filter(val => {
+        return val.eventStatus.id == 1
+      })
+    }
+    if (this.selectedStatus == 2) {
+      this.filteredEvents = this.filteredEvents.filter(val => {
+        return val.eventStatus.id == 2
+      })
+    }
+    if (this.selectedStatus == 3) {
+      this.filteredEvents = this.filteredEvents.filter(val => {
+        return val.eventStatus.id == 3
+      })
+    }
+    if (this.selectedStatus == 4) {
+      this.filteredEvents = this.filteredEvents.filter(val => {
+        return val.eventStatus.id == 4
+      })
+    }
+    if (this.selectedStatus == 5) {
+      this.filteredEvents = this.filteredEvents.filter(val => {
+        return val.eventStatus.id == 5
+      })
+    }
+    if (this.selectedStatus == 6) {
+      this.filteredEvents = this.filteredEvents.filter(val => {
+        return val.eventStatus.id == 6
       })
     }
 
