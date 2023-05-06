@@ -8,9 +8,14 @@
     </mat-card-title>
     <div class="flex">
       <div>
-        <img [src]="shownimage" class="w-20 h-20 sm:w-64 sm:h-64" alt="">
-        <div *ngIf="editMode" class="relative mt-[-16rem] w-64 h-64 bg-black bg-opacity-60">
-          <input type="file" class="w-64 h-64 opacity-0" (change)="onEventImageFileSelected($event)">
+        <img [src]="shownimage" class="w-20 h-20 sm:w-64 sm:h-64">
+        <div class="relative mt-[-16rem] mb-8 w-64 h-64 border-dotted border-2 opacity-60" *ngIf="editMode" >
+          <label style="color: #e5e7eb">Drag and Drop</label>
+          <div class="h-full flex flex-col items-center justify-center z-0">
+            <mat-icon class="w-32 h-32 scale-[3] opacity-100">upload</mat-icon>
+            <label class="mt-8">Dateien hier ablegen oder klicken zum auswählen</label>
+          </div>
+          <input class="w-64 h-64 opacity-0 z-20 absolute top-0" (change)="onEventImageFileSelected($event)" type="file" #fileUpload>
         </div>
         <p *ngIf="editMode">Klicke das Bild an, zum ändern</p>
         <br>
