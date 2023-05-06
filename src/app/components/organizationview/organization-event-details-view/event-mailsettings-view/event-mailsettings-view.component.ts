@@ -123,7 +123,6 @@ export class EventMailsettingsViewComponent {
         this.editedId = "";
         this.ngOnInit();
       }, error => {
-        this.snackBar.open('Fehler: Sendezeitpunkt darf nicht in der Vergangenheit liegen', 'OK', {duration: 3000});
       })
     } else {
       this.dataService.deleteNotificationInfo(this.orgaID, this.eventID, notificationId).subscribe(success => {
@@ -133,10 +132,8 @@ export class EventMailsettingsViewComponent {
           this.editedId = "";
           this.ngOnInit();
         }, error => {
-          this.snackBar.open('Fehler: Sendezeitpunkt darf nicht in der Vergangenheit liegen', 'OK', {duration: 3000});
         })
       }, error => {
-        this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
       })
     }
 
