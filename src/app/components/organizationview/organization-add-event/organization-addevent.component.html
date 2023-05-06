@@ -344,6 +344,9 @@
         </div>
         <p>Vorschau</p>
         <img [src]="shownPreviewImage" *ngIf="shownPreviewImage" class="w-32 h-32">
+        <div *ngIf="!shownPreviewImage" class="w-32 h-32 bg-gray-100">
+          <p class="p-4">Kein Bild ausgewählt</p>
+        </div>
       </div>
       <br><mat-divider></mat-divider><br>
       <div>
