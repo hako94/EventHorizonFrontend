@@ -34,7 +34,8 @@ export class OrganizationEventViewComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.getOrganizationEvents(this.orgaID).subscribe(success => {
       this.events = success;
-      this.defaultFilter()
+      this.defaultFilter();
+      console.log(this.filteredEvents);
     })
   }
 
@@ -43,20 +44,16 @@ export class OrganizationEventViewComponent implements OnInit {
     let startTimeFilter = this.range.controls['start'].value?.valueOf()!;
     let endTimeFilter = this.range.controls['end'].value?.valueOf()! + 8.64e+7;
     console.log(this.range.controls['start'].value + " - " + this.range.controls['end'].value);
-    console.log('start: ' + startTimeFilter);
-    console.log('ende: ' + endTimeFilter);
 
     this.filteredEvents = this.events.slice();
 
     if (startTimeFilter != undefined && endTimeFilter != undefined) {
-      console.log('time filter');
       this.filteredEvents = this.filteredEvents.filter(event => {
         if (!event.serial && event.parentId == null){
           let childStart = new Date(event.childs[0].eventStart).valueOf();
           let childEnd = new Date(event.childs[0].eventEnd).valueOf();
           return (startTimeFilter <= childStart && childEnd <= endTimeFilter)
         } else {
-          console.log('serial')
           let childStart = new Date(event.childs[0].eventStart).valueOf();
           let childEnd = new Date(event.childs[event.childs.length-1].eventEnd).valueOf();
           console.log(childEnd);
@@ -64,7 +61,6 @@ export class OrganizationEventViewComponent implements OnInit {
         }
       })
     }
-
 
     if (this.selected == 'attende') {
       this.filteredEvents = this.filteredEvents.filter(val => {

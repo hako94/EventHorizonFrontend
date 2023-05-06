@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {DataService} from "../../../../services/DataService";
 import {DomSanitizer} from "@angular/platform-browser";
 import {OrganizationEventModel} from "../../../../models/OrganizationEventModel";
+import {StorageService} from "../../../../services/StorageService";
 
 @Component({
   selector: 'app-event-description-view',
@@ -12,7 +13,7 @@ export class EventDescriptionViewComponent implements OnInit {
 
   @Input() orgaID = '';
   @Input() eventID = '';
-  @Input() roleIdInEvent?: number;
+  @Input() roleIdInEvent: number = 12;
 
   editMode : boolean = false;
   imageToPersist? : FormData;
@@ -20,24 +21,8 @@ export class EventDescriptionViewComponent implements OnInit {
   shownimage: any;
   eventModel? : OrganizationEventModel;
 
-  constructor(private dataService : DataService, private sanitizer : DomSanitizer) {
+  constructor(private dataService : DataService, private sanitizer : DomSanitizer, private storageService: StorageService) {
 
-  }
-
-  onEventImageFileSelected(event: any) {
-
-    const fileReader = new FileReader();
-    const file:File = event.target.files[0];
-
-    if (file) {
-
-      console.log(file)
-
-      const formData = new FormData();
-      formData.append("file", file, file.name);
-
-      this.imageToPersist = formData;
-    }
   }
 
   ngOnInit(): void {
@@ -67,11 +52,61 @@ export class EventDescriptionViewComponent implements OnInit {
     });
   }
 
+  onEventImageFileSelected(event: any) {
+
+    const fileReader = new FileReader();
+    const file:File = event.target.files[0];
+
+    if (file) {
+
+      console.log(file)
+
+      const formData = new FormData();
+      formData.append("file", file, file.name);
+
+      this.imageToPersist = formData;
+    }
+  }
+
   setStatus(id: number){
     this.dataService.setEventStatus(this.orgaID, this.eventID, id).subscribe(success => {
       console.log(success);
     })
     window.location.reload();
+  }
+
+  book() {
+    this.dataService.acceptEvent(this.orgaID, this.eventID || '', this.storageService.getEmail())
+      .subscribe(success => {
+        if (success.status == 200) {
+          if (this.eventModel) {
+            this.eventModel.attender = true;
+          }
+        }
+      });
+  }
+
+  signOff() {
+    this.dataService.leaveEvent(this.orgaID, this.eventID || '', this.storageService.getEmail())
+      .subscribe(success => {
+        if (success.status == 204) {
+          if (this.eventModel) {
+            this.eventModel.attender = false;
+          }
+        }
+      });
+  }
+
+  acceptInvite() {
+    this.dataService.acceptEventInvite(this.orgaID, this.eventID).subscribe(success => {
+      window.location.reload();
+    })
+  }
+
+  declineInvite() {
+    this.dataService.declineEventInvite(this.orgaID, this.eventID).subscribe(success => {
+      window.location.reload();
+    })
   }
 
   protected readonly event = event;
