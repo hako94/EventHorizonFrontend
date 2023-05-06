@@ -10,6 +10,7 @@ import {PlattformAdminComponent} from "./components/plattform-admin/plattform-ad
 import {OrganizationAddMailComponent} from "./components/organizationview/organization-add-mail/organization-add-mail.component";
 import {OrganizationEventDetailsViewComponent} from "./components/organizationview/organization-event-details-view/organization-event-details-view.component";
 import {ResetPasswordComponent} from "./components/login/reset-password/reset-password.component";
+import {ImpressumComponent} from "./components/header/impressum/impressum.component";
 
 const routes: Routes = [
   { path: "register", component: RegisterComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: "resetpassword", component: ResetPasswordComponent },
   { path: "platform-settings", component: PlattformAdminComponent },
   { path: "dashboard", component: DashboardComponent},
+  { path: "impressum", component: ImpressumComponent},
   { path: "organizations/:id/event/:eventid/eventusermanagment", component: EventUserMangamentComponent},
   { path: "organizations/:id/event/:eventid/details", component: OrganizationEventDetailsViewComponent},
   { path: "organizations/:id", component: OrganizationviewComponent},

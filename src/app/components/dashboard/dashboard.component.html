@@ -1,7 +1,7 @@
-<div class="block lg:flex gap-4 mt-8">
-  <div class="ml-10 mb-10">
-    <h1 class="ml-10">Deine Organisationen</h1>
-    <div class="flex gap-4 flex-wrap gap-y-4">
+<div class="block lg:flex gap-4 mt-8 overflow-y-hidden max-sm:mr-4">
+  <div class="ml-4 md:ml-10 mb-10">
+    <h1 class="ml-4 md:ml-10">Deine Organisationen</h1>
+    <div class="flex gap-4 flex-wrap gap-y-4 overflow-y-auto max-h-[40vh] md:max-h-[80vh]">
       <div class="mb-6" *ngFor="let organization of organizations">
         <app-organizationitem
           [id]="organization.id"
@@ -12,24 +12,26 @@
       </div>
     </div>
   </div>
-  <div class="flex-grow"></div>
-  <div class="mr-10 ml-10 shrink-0">
+
+  <div class="flex-grow md:ml-10 ml-4">
     <h1>Event-Radar</h1>
-    <ng-container *ngFor="let event of currentEvents">
-      <app-eventradar-item
-        [name]="event.name"
-        [location]="event.location"
-        [id]="event.id"
-        [organizationId]="event.organizationId"
-        [organizationName]="event.organizationName"
-        [startTime]="event.childs.at(0)?.eventStart || ''"
-        [endTime]="event.childs.at(0)?.eventEnd || ''"
-        [serial]="event.serial"
-        [organisator]="event.organisator"
-        [tutor]="event.tutor"
-        [attender]="event.attender">
-      </app-eventradar-item>
-      <br>
-    </ng-container>
+    <div class="md:mr-10 mr-0 shrink-0 overflow-y-auto max-h-[40vh] md:max-h-[80vh]">
+      <ng-container *ngFor="let event of currentEvents">
+        <app-eventradar-item
+          [name]="event.name"
+          [location]="event.location"
+          [id]="event.id"
+          [organizationId]="event.organizationId"
+          [organizationName]="event.organizationName"
+          [startTime]="event.childs.at(0)?.eventStart || ''"
+          [endTime]="event.childs.at(0)?.eventEnd || ''"
+          [serial]="event.serial"
+          [organisator]="event.organisator"
+          [tutor]="event.tutor"
+          [attender]="event.attender">
+        </app-eventradar-item>
+        <br>
+      </ng-container>
+    </div>
   </div>
 </div>

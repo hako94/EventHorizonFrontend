@@ -5,6 +5,8 @@ import {DataService} from "../../../../services/DataService";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {StorageService} from "../../../../services/StorageService";
 import {Router} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
+import {DeletionConfirmationComponent} from "../../../deletion-confirmation/deletion-confirmation.component";
 
 @Component({
   selector: 'app-event-mailsettings-view',
@@ -17,17 +19,17 @@ export class EventMailsettingsViewComponent {
   @Input() eventID = '';
   @Input() roleIdInEvent!: number;
 
-  availableMailTemplates : EmailTemplateModel[] = [];
-  usedMailTemplates : NotificationInfoModel[] = [];
+  availableMailTemplates: EmailTemplateModel[] = [];
+  usedMailTemplates: NotificationInfoModel[] = [];
 
-  editMode : boolean = false;
-  editedId : string = "";
+  editMode: boolean = false;
+  editedId: string = "";
 
-  timeAmount : number = 3;
+  timeAmount: number = 3;
   timeUnit: string = "D";
   timeSlot: string = "before";
 
-  constructor(private dataService : DataService, private snackBar : MatSnackBar, private storageService : StorageService, private router : Router) {
+  constructor(private dataService: DataService, private snackBar: MatSnackBar, private storageService: StorageService, private router: Router, private dialog: MatDialog) {
 
   }
 
@@ -46,7 +48,7 @@ export class EventMailsettingsViewComponent {
 
     this.dataService.getEmailTemplates(this.orgaID).subscribe(success => {
       success.forEach(availableTemplate => {
-        let alreadyUsed : boolean = false;
+        let alreadyUsed: boolean = false;
         this.usedMailTemplates.forEach(usedTemplate => {
           if (availableTemplate.id == usedTemplate.templateId) {
             alreadyUsed = true;
@@ -63,7 +65,7 @@ export class EventMailsettingsViewComponent {
    * Checks if a template with this templateId is already used in a mail-rule
    * @param templateId
    */
-  isUsed(templateId: string) : boolean {
+  isUsed(templateId: string): boolean {
     // @ts-ignore
     this.usedMailTemplates.forEach(usedTemplate => {
       if (usedTemplate.templateId == templateId) {
@@ -103,14 +105,14 @@ export class EventMailsettingsViewComponent {
       return;
     }
 
-    let timeScheme : string = 'PT';
-    if (this.timeUnit=='D') {
-      timeScheme += ((this.timeAmount*24) + 'H');
+    let timeScheme: string = 'PT';
+    if (this.timeUnit == 'D') {
+      timeScheme += ((this.timeAmount * 24) + 'H');
     } else {
       timeScheme += '' + this.timeAmount + this.timeUnit;
     }
 
-    let isBefore : boolean = (this.timeSlot == 'before');
+    let isBefore: boolean = (this.timeSlot == 'before');
 
     console.log(notificationId)
 
@@ -121,7 +123,6 @@ export class EventMailsettingsViewComponent {
         this.editedId = "";
         this.ngOnInit();
       }, error => {
-        this.snackBar.open('Fehler: Sendezeitpunkt darf nicht in der Vergangenheit liegen', 'OK', {duration: 3000});
       })
     } else {
       this.dataService.deleteNotificationInfo(this.orgaID, this.eventID, notificationId).subscribe(success => {
@@ -131,10 +132,8 @@ export class EventMailsettingsViewComponent {
           this.editedId = "";
           this.ngOnInit();
         }, error => {
-          this.snackBar.open('Fehler: Sendezeitpunkt darf nicht in der Vergangenheit liegen', 'OK', {duration: 3000});
         })
       }, error => {
-        this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
       })
     }
 
@@ -157,11 +156,16 @@ export class EventMailsettingsViewComponent {
    * @param id
    */
   delete(id: string) {
-    this.dataService.deleteNotificationInfo(this.orgaID, this.eventID, id).subscribe(() => {
-      this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
-      this.ngOnInit();
-    }, error => {
-      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
-    })
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent, {});
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.dataService.deleteNotificationInfo(this.orgaID, this.eventID, id).subscribe(() => {
+          this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
+          this.ngOnInit();
+        })
+      }
+    });
   }
+
+
 }

@@ -16,7 +16,7 @@
       </mat-form-field>
       <mat-form-field appearance="fill" class="m-2 w-36">
         <mat-label>Rolle</mat-label>
-        <mat-select [(value)]="selectedRole">
+        <mat-select [(value)]="selectedRoleForInvite">
           <mat-option [value]="12">Teilnehmer</mat-option>
           <mat-option [value]="11">Tutor</mat-option>
           <mat-option [value]="10">Organisator</mat-option>
@@ -46,7 +46,7 @@
           <div *ngIf="editMode && editedUser == attender.id && (hasRole(2) || hasRole(1))" class="p-2 pt-3">
             <mat-form-field appearance="fill">
               <mat-label>Rolle bearbeiten</mat-label>
-              <mat-select [required]="true" [(value)]="selectedRole">
+              <mat-select [required]="true" [(value)]="selectedRoleForChange">
                 <mat-option [value]=12>Teilnehmer</mat-option>
                 <mat-option [value]=11>Tutor</mat-option>
                 <mat-option [value]=10 *ngIf="hasRole(2) || hasRole(1)">Organisator</mat-option>
@@ -56,7 +56,7 @@
           <div *ngIf="hasRole(1) || hasRole(2)" class="justify-self-end flex">
             <div *ngIf="this.editMode && this.editedUser == attender.id">
               <button mat-icon-button color="primary"
-                      (click)="this.saveAttenderRole(orgaID, attender.id, selectedRole)">
+                      (click)="this.saveAttenderRole(orgaID, attender.id, selectedRoleForChange)">
                 <mat-icon>save</mat-icon>
               </button>
             </div>
@@ -65,7 +65,7 @@
                 <mat-icon>edit</mat-icon>
               </button>
             </div>
-            <button mat-icon-button color="warn" [disabled]="editMode" (click)="deleteAttender(attender.email)">
+            <button mat-icon-button matTooltip="Abmelden" color="warn" [disabled]="editMode" (click)="deleteAttender(attender.email)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>

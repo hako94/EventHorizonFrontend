@@ -3,6 +3,8 @@ import {DataService} from "../../../../services/DataService";
 import {DomSanitizer} from "@angular/platform-browser";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {FileInfoModel} from "../../../../models/FileInfoModel";
+import {MatDialog} from "@angular/material/dialog";
+import {DeletionConfirmationComponent} from "../../../deletion-confirmation/deletion-confirmation.component";
 
 @Component({
   selector: 'app-event-files-view',
@@ -16,7 +18,7 @@ export class EventFilesViewComponent implements OnInit {
   @Input() roleIdInEvent!: number;
   availableFilesInfos: FileInfoModel[] = [];
 
-  constructor(private dataService: DataService, private sanitizer: DomSanitizer, private snackBar: MatSnackBar) {
+  constructor(private dataService: DataService, private sanitizer: DomSanitizer, private snackBar: MatSnackBar, private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -62,9 +64,14 @@ export class EventFilesViewComponent implements OnInit {
   }
 
   deleteFile(fileId: string): void{
-    this.dataService.deleteFileFromEvent(this.orgaID, this.eventID, fileId).subscribe(success => {
-      this.snackBar.open('Datei erfolgreich gelöscht', 'OK', {duration: 3000});
-      this.ngOnInit();
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent, {});
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.dataService.deleteFileFromEvent(this.orgaID, this.eventID, fileId).subscribe(success => {
+          this.snackBar.open('Datei erfolgreich gelöscht', 'OK', {duration: 3000});
+          this.ngOnInit();
+        })
+      }
     })
   }
 }

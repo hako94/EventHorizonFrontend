@@ -34,7 +34,7 @@
       <div class="grid grid-cols-1 md:grid-cols-5">
         <div class="md:col-span-2"><p class="pt-3">{{template.templateName}}</p></div>
         <div class="flex md:col-span-2">
-          <div *ngIf="editedId!=template.templateId" class="mr-5"><p class="pt-3">{{template.triggerTime | date:'dd.MM.yyyy, hh:mm'}}</p></div>
+          <div *ngIf="editedId!=template.templateId" class="mr-5"><p class="pt-3">{{template.triggerTime | date:'dd.MM.yyyy, HH:mm'}}</p></div>
           <div *ngIf="editMode && editedId==template.templateId">
             <mat-form-field class="max-w-[90px] mr-5">
               <mat-label>Anzahl*</mat-label>

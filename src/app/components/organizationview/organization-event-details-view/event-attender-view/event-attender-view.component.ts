@@ -6,6 +6,8 @@ import {UserForEventWithRoleModel} from "../../../../models/UserForEventWithRole
 import {OrganizationUserModel} from "../../../../models/OrganizationUserModel";
 import {map, Observable, startWith} from "rxjs";
 import {FormControl} from "@angular/forms";
+import {MatDialog} from "@angular/material/dialog";
+import {DeletionConfirmationComponent} from "../../../deletion-confirmation/deletion-confirmation.component";
 
 @Component({
   selector: 'app-event-attender-view',
@@ -21,7 +23,8 @@ export class EventAttenderViewComponent implements OnInit {
   attendee: UserForEventWithRoleModel[] = [];
   editMode: boolean = false;
   editedUser: string = '';
-  selectedRole: number = 12;
+  selectedRoleForInvite: number = 12;
+  selectedRoleForChange: number = 12;
   invitedEmail: string = '';
   invitedUser: string = '';
   inviteLoading: boolean = false;
@@ -38,7 +41,7 @@ export class EventAttenderViewComponent implements OnInit {
     }
   });
 
-  constructor(private dataService: DataService, private storageService: StorageService, private snackBar: MatSnackBar) {
+  constructor(private dataService: DataService, private storageService: StorageService, private snackBar: MatSnackBar, private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -116,25 +119,30 @@ export class EventAttenderViewComponent implements OnInit {
     })
     this.editMode = false;
     this.editedUser = '';
-    this.selectedRole = 12;
+    this.selectedRoleForChange = 12;
   }
 
   deleteAttender(attenderEmail: string): void {
-    console.log("deleted attender " + attenderEmail);
-    this.dataService.deleteAttenderFromEvent(this.orgaID, this.eventID, attenderEmail).subscribe(success => {
-      this.snackBar.open('Teilnehmer abgemeldet', 'OK', {duration: 3000});
-      this.ngOnInit();
-    }, error => {
-      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent, {
+      data: {message: 'Wollen Sie den Eintrag wirklich löschen und den Teilnehmer vom Event abmelden?'}
     });
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        console.log("deleted attender " + attenderEmail);
+        this.dataService.deleteAttenderFromEvent(this.orgaID, this.eventID, attenderEmail).subscribe(success => {
+          this.snackBar.open('Teilnehmer abgemeldet', 'OK', {duration: 3000});
+          this.ngOnInit();
+        });
+      }
+    })
   }
 
   inviteSubmit(): void {
     this.inviteLoading = true;
     if (this.requireMatch(this.eventInviteControl.value!.email)) {
-      console.log(this.selectedRole);
+      console.log(this.selectedRoleForInvite);
       console.log(this.eventInviteControl.value!.id);
-      this.dataService.inviteUserToEvent(this.orgaID, this.eventID, this.eventInviteControl.value!.id, this.selectedRole).subscribe(success => {
+      this.dataService.inviteUserToEvent(this.orgaID, this.eventID, this.eventInviteControl.value!.id, this.selectedRoleForInvite).subscribe(success => {
         this.invitedUser = success;
         this.snackBar.open('Einladung wurde erfolgreich versandt', 'OK', {duration: 3000});
         this.inviteLoading = false;
