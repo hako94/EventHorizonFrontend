@@ -77,8 +77,8 @@
                 matTooltip="Das Event wird automatisch 1h nach Schluss beendet">Beenden
         </button>
         <button *ngIf="(roleIdInEvent==10 || roleIdInEvent==11) && eventModel.eventStatus.id == 5" class="ml-4" mat-raised-button color="warn" (click)="setStatus(6)">Löschen</button>
-        <button class="ml-4" mat-raised-button color="primary" (click)="editMode = true" *ngIf="!editMode">Bearbeiten</button>
-        <button class="ml-4" mat-raised-button color="primary" (click)="safeAndPersist()" *ngIf="editMode">Speichern</button>
+        <button class="ml-4" mat-raised-button color="primary" (click)="editMode = true" *ngIf="!editMode && (roleIdInEvent==10 || roleIdInEvent==11)">Bearbeiten</button>
+        <button class="ml-4" mat-raised-button color="primary" (click)="safeAndPersist()" *ngIf="editMode && (roleIdInEvent==10 || roleIdInEvent==11)">Speichern</button>
       </div>
     </div>
     <div>
