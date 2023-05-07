@@ -23,7 +23,10 @@
         </ng-container>
       </div>
       <hr><br>
-      <button color="primary" matStepperNext mat-raised-button>Weiter ohne Template</button>
+      <div class="flex">
+        <button class="mr-5" mat-raised-button color="warn" (click)="goBack()"><mat-icon>delete</mat-icon>Abbrechen</button>
+        <button color="primary" matStepperNext mat-raised-button><mat-icon>arrow_right</mat-icon>Weiter ohne Template</button>
+      </div>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Grundlegende Informationen</ng-template>
@@ -51,7 +54,10 @@
         </mat-form-field>
       </div>
       <br>
-      <button color="primary" matStepperNext mat-raised-button>Weiter</button>
+      <div>
+        <button mat-raised-button matStepperPrevious><mat-icon>arrow_left</mat-icon>Zurück</button>
+        <button class="ml-5" matStepperNext mat-raised-button>Weiter</button>
+      </div>
     </mat-step>
     <mat-step optional>
       <ng-template matStepLabel>Rechte</ng-template>
@@ -73,6 +79,8 @@
             <div class="flex">
               <button *ngIf="!userIsInList(toAddOrganizer, organizer.id)"
                       (click)="toAddOrganizer.push(organizer)"
+                      matTooltip="{{organizer.email}} als Organisator hinzufügen"
+                      matTooltipPosition="after"
                       mat-icon-button color="primary">
                 <mat-icon matTooltip="hinzufügen">add</mat-icon>
               </button>
@@ -81,6 +89,8 @@
                   <mat-icon>done</mat-icon>
                 </button>
                 <button (click)="removeOrganizerFromList(organizer.id)"
+                        matTooltip="{{organizer.email}} als Organisator entfernen"
+                        matTooltipPosition="after"
                         mat-icon-button color="warn">
                   <mat-icon matTooltip="entfernen">delete</mat-icon>
                 </button>
@@ -106,6 +116,8 @@
             <div class="flex">
               <button *ngIf="!userIsInList(toAddTutor, member.id)"
                       (click)="toAddTutor.push(member)"
+                      matTooltip="{{member.email}} als Tutor hinzufügen"
+                      matTooltipPosition="after"
                       mat-icon-button color="primary">
                 <mat-icon matTooltip="hinzufügen">add</mat-icon>
               </button>
@@ -114,6 +126,8 @@
                   <mat-icon>done</mat-icon>
                 </button>
                 <button (click)="removeTutorFromList(member.id)"
+                        matTooltip="{{member.email}} als Tutor entfernen"
+                        matTooltipPosition="after"
                         mat-icon-button color="warn">
                   <mat-icon matTooltip="entfernen">delete</mat-icon>
                 </button>
@@ -121,6 +135,13 @@
             </div>
           </div>
         </ng-container>
+      </div>
+      <br>
+      <hr>
+      <br>
+      <div>
+        <button mat-raised-button matStepperPrevious><mat-icon>arrow_left</mat-icon>Zurück</button>
+        <button class="ml-5" matStepperNext mat-raised-button>Weiter</button>
       </div>
     </mat-step>
     <mat-step>
@@ -277,8 +298,13 @@
           </div>
         </div>
       </div>
-      <br><br>
-      <button color="primary" matStepperNext mat-raised-button>Weiter</button>
+      <br>
+      <hr>
+      <br>
+      <div>
+        <button mat-raised-button matStepperPrevious><mat-icon>arrow_left</mat-icon>Zurück</button>
+        <button class="ml-5" matStepperNext mat-raised-button>Weiter</button>
+      </div>
     </mat-step>
     <mat-step optional>
       <ng-template matStepLabel>Emails</ng-template>
@@ -351,8 +377,13 @@
           </div>
         </mat-card>
       </div>
-      <br><br>
-      <button color="primary" matStepperNext mat-raised-button>Weiter</button>
+      <br>
+      <hr>
+      <br>
+      <div>
+        <button mat-raised-button matStepperPrevious><mat-icon>arrow_left</mat-icon>Zurück</button>
+        <button class="ml-5" matStepperNext mat-raised-button>Weiter</button>
+      </div>
     </mat-step>
     <mat-step optional>
       <ng-template matStepLabel>Dateien hochladen</ng-template>
@@ -389,8 +420,13 @@
         </div>
         <p>Es wurde(n) {{filesToPersist.length}} Dateien ausgewählt</p>
       </div>
-      <br><br>
-      <button color="primary" matStepperNext mat-raised-button>Weiter</button>
+      <br>
+      <hr>
+      <br>
+      <div>
+        <button mat-raised-button matStepperPrevious><mat-icon>arrow_left</mat-icon>Zurück</button>
+        <button class="ml-5" matStepperNext mat-raised-button>Weiter</button>
+      </div>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Abschluss</ng-template>
@@ -450,6 +486,12 @@
       <br>
       <mat-divider></mat-divider>
       <br>
+      <br>
+      <hr>
+      <br>
+      <div>
+        <button mat-raised-button matStepperPrevious><mat-icon>arrow_left</mat-icon>Zurück</button>
+      </div>
     </mat-step>
   </mat-stepper>
 </div>
