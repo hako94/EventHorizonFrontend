@@ -45,7 +45,7 @@ export interface baseModel {
   location: string,
   organisatorId: Array<string>,
   tutorId: Array<string>,
-  JENACHDEMWIEHANNESDASFELDNENNT?: NotificationPostDto[],
+  attendeeNotifications?: NotificationPostDto[],
   eventStatus:
     {
       id: number,
@@ -230,7 +230,7 @@ export class OrganizationAddeventComponent {
 
     if (this.toPersistEmails.length > 0) {
       model = {
-        JENACHDEMWIEHANNESDASFELDNENNT: this.toPersistEmails,
+        attendeeNotifications: this.toPersistEmails,
         ...model
       }
     }
