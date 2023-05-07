@@ -40,6 +40,7 @@ export interface baseModel {
   description: string,
   location: string,
   organisatorId: Array<string>,
+  questionnaireIds? : string[],
   tutorId: Array<string>,
   attendeeNotifications?: NotificationPostDto[],
   eventStatus:
@@ -76,6 +77,8 @@ export interface RequestModel extends baseModel {
 export class OrganizationAddeventComponent {
 
   private dialogRef?: MatDialogRef<DialogLoadingComponent>
+
+  surveyFromTemplate? : string[];
 
   eventCreated: boolean = false;
   pictureUploaded: boolean = false
@@ -228,6 +231,13 @@ export class OrganizationAddeventComponent {
     if (this.toPersistEmails.length > 0) {
       model = {
         attendeeNotifications: this.toPersistEmails,
+        ...model
+      }
+    }
+
+    if (this.surveyFromTemplate) {
+      model = {
+        questionnaireIds: this.surveyFromTemplate,
         ...model
       }
     }
@@ -521,6 +531,10 @@ export class OrganizationAddeventComponent {
       this.form.eventName = template.name;
       this.form.location = template.location;
       this.form.eventDescription = template.description;
+
+      if (template.questionnaireIds) {
+        this.surveyFromTemplate = template.questionnaireIds;
+      }
 
       if (template.childs != null) {
         if (template.childs.length == 1) {

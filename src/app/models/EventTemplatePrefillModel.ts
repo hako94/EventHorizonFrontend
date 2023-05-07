@@ -5,6 +5,7 @@ export interface EventTemplatePrefillModel {
   location : string,
   description : string,
   eventType : string,
+  questionnaireIds? : string[],
   childs : ChildEvent[],
   serial? : boolean,
   attendeeNotifications? : { beforeEvent : boolean, durationBeforeOrAfterEvent : string, templateId : string }[],
