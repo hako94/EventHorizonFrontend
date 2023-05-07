@@ -74,11 +74,11 @@
   <app-event-files-view [orgaID]="currentOrganization" [eventID]="currentEvent" [roleIdInEvent]="currentRoleAndStatus.role.id">
   </app-event-files-view>
 </ng-container>
-<ng-container *ngIf="currentParam == invitesViewParam" class="mx-3">
+<ng-container *ngIf="currentParam == invitesViewParam && currentRoleAndStatus.role.id != 99" class="mx-3">
   <app-event-invites-view [orgaID]="currentOrganization" [eventID]="currentEvent" [roleIdInEvent]="currentRoleAndStatus.role.id">
   </app-event-invites-view>
 </ng-container>
-<ng-container *ngIf="currentParam == mailsViewParam" class="mx-3">
+<ng-container *ngIf="currentParam == mailsViewParam && currentRoleAndStatus.role.id != 99" class="mx-3">
   <app-event-mailsettings-view [orgaID]="currentOrganization" [eventID]="currentEvent" [roleIdInEvent]="currentRoleAndStatus.role.id">
   </app-event-mailsettings-view>
 </ng-container>

@@ -25,11 +25,11 @@ export class OrganizationEventDetailsViewComponent {
 
   currentRoleAndStatus: EventRoleStatusModel = {
     role: {
-      id: 12,
+      id: 99,
       role: 'Teilnehmer'
     },
     status: {
-      id: 1,
+      id: 99,
       status: 'erstellt'
     }
   };
