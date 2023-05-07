@@ -472,6 +472,7 @@ export class EventSurveyComponent implements OnInit {
     }, error => console.log, () => {
       this.loadingEvaluation = false;
     })
+    this.loadingEvaluation = false;
   }
 
   /**
