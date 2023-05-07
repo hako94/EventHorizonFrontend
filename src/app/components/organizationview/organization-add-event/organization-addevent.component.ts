@@ -14,6 +14,7 @@ import {DialogLoadingComponent} from "./dialog-loading/dialog-loading.component"
 import {OrganizationUserModel} from "../../../models/OrganizationUserModel";
 import {DeletionConfirmationComponent} from "../../deletion-confirmation/deletion-confirmation.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {StorageService} from "../../../services/StorageService";
 
 export interface createInterfaceTemplateBasic {
   eventName: string,
@@ -141,7 +142,8 @@ export class OrganizationAddeventComponent {
               private router: Router,
               public dialog: MatDialog,
               private deleteDialog: MatDialog,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private storageService : StorageService) {
 
     this.customFields.push({id: "1", name: "test0"})
     this.customFields.push({id: "2", name: "test1"})
@@ -568,8 +570,9 @@ export class OrganizationAddeventComponent {
 
   private loadMembers() {
     this.dataService.getOrganizationMember(this.currentOrganization).subscribe(data => {
-      this.organizers = data.filter(el => (el.role.id == 1 || el.role.id == 2));
-      this.members = data.filter(el => !(el.role.id == 1 || el.role.id == 2));
+
+      this.organizers = data.filter(el => ((el.role.id == 1 || el.role.id == 2)) && this.storageService.getUserId() != el.id);
+      this.members = data.filter(el => (!(el.role.id == 1 || el.role.id == 2) && (this.storageService.getUserId() != el.id)));
     })
   }
 
