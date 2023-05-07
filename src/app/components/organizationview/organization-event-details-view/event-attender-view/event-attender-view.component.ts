@@ -114,8 +114,6 @@ export class EventAttenderViewComponent implements OnInit {
     this.dataService.saveAttenderRole(orgId, this.eventID, attenderId, role).subscribe(() => {
       this.ngOnInit();
       this.snackBar.open('Rolle erfolgreich geändert', 'OK', {duration: 3000});
-    }, error => {
-      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
     })
     this.editMode = false;
     this.editedUser = '';
@@ -146,10 +144,19 @@ export class EventAttenderViewComponent implements OnInit {
         this.invitedUser = success;
         this.snackBar.open('Einladung wurde erfolgreich versandt', 'OK', {duration: 3000});
         this.inviteLoading = false;
+      }, error => {
+        this.inviteLoading = false;
       })
     } else {
       this.snackBar.open('Email muss aus in den Vorschlägen vorhanden sein', 'Ok', {duration: 3500});
       this.inviteLoading = false;
     }
+  }
+
+  /**
+   * Checks if current user is organizer in current event
+   */
+  isOrganizer() : boolean {
+    return this.roleIdInEvent == 10;
   }
 }

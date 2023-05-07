@@ -19,7 +19,7 @@
               <mat-select [(value)]="selectedRole">
                 <mat-option value=12>Teilnehmer</mat-option>
                 <mat-option *ngIf="hasRole(2) || hasRole(1) || isTutor()" value=11>Tutor</mat-option>
-                <mat-option *ngIf="hasRole(2) || hasRole(1)" value=10>Organisator</mat-option>
+                <mat-option *ngIf="(hasRole(2) || hasRole(1)) && isOrganizer()" value=10>Organisator</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
