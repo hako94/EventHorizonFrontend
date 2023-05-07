@@ -7,6 +7,7 @@ import {ActivatedRoute} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {DeletionConfirmationComponent} from "../../../deletion-confirmation/deletion-confirmation.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {EventPutModel} from "../../../../models/EventPutModel";
 
 @Component({
   selector: 'app-event-description-view',
@@ -27,6 +28,7 @@ export class EventDescriptionViewComponent implements OnInit {
 
   locationNew : string = '';
   descriptionNew : string = '';
+  nameNew : string = '';
 
   constructor(private dataService : DataService,
               private sanitizer : DomSanitizer,
@@ -49,6 +51,7 @@ export class EventDescriptionViewComponent implements OnInit {
     this.dataService.getSingleEvent(this.orgaID, this.eventID).subscribe(el => {
 
       this.eventModel = el
+      this.nameNew = this.eventModel.name;
       this.locationNew = this.eventModel.location;
       this.descriptionNew = this.eventModel.description;
 
@@ -97,7 +100,7 @@ export class EventDescriptionViewComponent implements OnInit {
         if (confirmed) {
           this.dataService.setEventStatus(this.orgaID, this.eventID, id).subscribe(success => {
             console.log(success);
-            this.snackBar.open('Event-Status auf bendet gesetzt', 'OK', {duration: 3000});
+            this.snackBar.open('Event-Status auf beendet gesetzt', 'OK', {duration: 3000});
             window.location.reload();
           })
         }
@@ -174,20 +177,27 @@ export class EventDescriptionViewComponent implements OnInit {
   safeAndPersist() {
     this.editMode = false;
 
-    if (this.eventModel) {
-      this.eventModel.location = this.locationNew;
-      this.eventModel.description = this.descriptionNew;
+    if (this.descriptionNew == '' || this.nameNew == '' || this.locationNew == '') {
+      this.snackBar.open('Bitte alle Felder ausfüllen', 'OK', {duration: 3000});
+      return;
     }
 
-    const dialogRef = this.dialog.open(DeletionConfirmationComponent, {data: {message: 'Wollen Sie das Event wirklich löschen?'}});
-    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
-      if (confirmed) {
-        //this.dataService.setEventStatus(this.orgaID, this.eventID, id).subscribe(success => {})
+    if (this.eventModel) {
+
+      let eventUpdate : EventPutModel = {
+        id: this.eventModel.id,
+        name: this.nameNew,
+        description: this.descriptionNew,
+        location: this.locationNew,
+        childs: this.eventModel.childs,
+        serial: this.eventModel.serial,
+        eventStatus: this.eventModel.eventStatus,
+        eventRepeatScheme: this.eventModel.eventRepeatScheme
       }
-    });
-
-
-
+      this.dataService.setEventUpdate(this.orgaID, this.eventID, eventUpdate).subscribe(() => {
+        window.location.reload();
+      });
+    }
 
     if (this.imageToPersist) {
       this.dataService.storeEventImage(this.imageToPersist, this.orgaID, this.eventID).subscribe(() => window.location.reload())
@@ -198,7 +208,9 @@ export class EventDescriptionViewComponent implements OnInit {
   protected readonly parent = parent;
 
   safeAsTemplate() {
-    this.dataService.safeExistingEventAsTemplate(this.orgaID, this.eventID).subscribe()
+    this.dataService.safeExistingEventAsTemplate(this.orgaID, this.eventID).subscribe(() => {
+      this.snackBar.open('Event als Vorlage gespeichert', 'OK', {duration: 3000});
+    })
   }
 
   /**
