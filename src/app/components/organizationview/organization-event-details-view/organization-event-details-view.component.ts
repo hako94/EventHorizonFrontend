@@ -92,6 +92,12 @@ export class OrganizationEventDetailsViewComponent {
           role: 'Teilnehmer',
         }
       }
+      if (this.hasRole(1)){
+        this.currentRoleAndStatus.role = {
+          id: 11,
+          role: 'Tutor',
+        }
+      }
     });
   }
 
