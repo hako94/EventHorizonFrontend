@@ -90,7 +90,7 @@
                 matTooltip="Manuelles Starten eines Events erst 24h vor Eventstart möglich, Event wird automatisch 2h vor Beginn gestartet">
           Starten
         </button>
-        <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 2 && eventModel.tutor" mat-raised-button
+        <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 2" mat-raised-button
                 color="warn" (click)="setStatus(5)"
                 matTooltip="Das Event wird abgesagt und für Teilnehmer nicht mehr angezeigt">Absagen
         </button>
