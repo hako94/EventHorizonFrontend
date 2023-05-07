@@ -473,7 +473,35 @@ export class OrganizationAddeventComponent {
         serial: (this.childs.length > 1)
       }
 
+      this.dataService.safeTemplate(this.currentOrganization, template).subscribe(() => {
+      }, () => {
+        this.disabledTemplateSafe = false;
+      })
+
+    } else if (this.form.eventType == "serial" && this.startDate.value && this.endDate.value) {
+
+      let template: EventTemplatePrefillModel = {
+        name: this.form.eventName,
+        description: this.form.eventDescription,
+        location: this.form.location,
+        eventType: this.form.eventType,
+        serial: true,
+        eventRepeatScheme:
+          {
+            repeatCycle: "PT" + this.serialEvent.repeatCycle * 24 + "H",
+            repeatTimes: this.serialEvent.repeatTimes
+          },
+        childs:
+          [
+            {
+              eventStart: this.dateToLocalDateTimeString(this.startDate.value),
+              eventEnd: this.dateToLocalDateTimeString(this.endDate.value),
+            }
+          ]
+      }
+
       this.dataService.safeTemplate(this.currentOrganization, template).subscribe(() => {}, () => {this.disabledTemplateSafe = false;})
+
 
     } else {
 
@@ -519,6 +547,11 @@ export class OrganizationAddeventComponent {
             this.childs.push(childDate)
           })
         }
+      }
+      if (template.eventRepeatScheme) {
+        this.form.eventType = "serial";
+        this.serialEvent.repeatTimes = template.eventRepeatScheme.repeatTimes;
+        this.serialEvent.repeatCycle = ((+ template.eventRepeatScheme.repeatCycle.slice(2,template.eventRepeatScheme.repeatCycle.length-1)) / 24);
       }
     })
   }
