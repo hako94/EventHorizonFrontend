@@ -33,7 +33,7 @@
   </div>
   <div *ngIf="hasRole(1) || hasRole(2)">
     <a mat-tab-link
-       *ngIf="currentRoleAndStatus.role.id != 12"
+       *ngIf="hasRole(1) || currentRoleAndStatus.role.id != 12"
        [active]="currentParam == invitesViewParam"
        (click)="updateURLWithParam(invitesViewParam)">Einladungen</a>
   </div>
