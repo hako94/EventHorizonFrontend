@@ -89,4 +89,14 @@ export class OrganizationPresetViewComponent implements OnInit{
       }
     }
   }
+
+  writeInString(attendeeNotifications: {
+    beforeEvent: boolean;
+    durationBeforeOrAfterEvent: string;
+    templateId: string
+  }[]) : string {
+    let str = '';
+    attendeeNotifications.forEach(el => str += el.templateId + ",");
+    return str;
+  }
 }

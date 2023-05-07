@@ -69,6 +69,21 @@
               </mat-form-field>
             </div>
           </div>
+          <div *ngIf="eventeTemplatePrefillModel.questionnaireIds">
+            <br>
+            <hr>
+            <br>
+            <p>Der Vorlage wurden {{eventeTemplatePrefillModel.questionnaireIds.length}} Umfragen beigefügt</p>
+          </div>
+          <div *ngIf="eventeTemplatePrefillModel.attendeeNotifications">
+            <br>
+            <hr>
+            <br>
+            <p>Der Vorlage wurden {{eventeTemplatePrefillModel.attendeeNotifications.length}} Email beigefügt</p>
+          </div>
+          <br>
+          <hr>
+          <br><br>
         </div>
         <div class="flex justify-self-end">
           <button *ngIf="!editMode" (click)="editMode = true" class="flex-col" mat-icon-button color="primary">
