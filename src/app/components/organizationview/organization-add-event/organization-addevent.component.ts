@@ -2,23 +2,18 @@ import {Component} from '@angular/core';
 import {DataService} from "../../../services/DataService";
 import {Location} from "@angular/common";
 import {AddEventCustomField} from "../../../dataobjects/AddEventCustomField";
-import {delay, forkJoin, min, Observable, of, Subscription} from "rxjs";
-import {FormControl, FormGroupDirective, NgForm} from "@angular/forms";
+import {delay, forkJoin, Observable, of} from "rxjs";
+import {FormControl} from "@angular/forms";
 import {EventTemplateModel} from "../../../models/EventTemplateModel";
-import {AvailableTemplateList} from "../../../models/AvailableTemplateList";
 import {Router} from "@angular/router";
 import {ChildEvent} from "../../../models/ChildEventModel";
 import {EventTemplatePrefillModel} from "../../../models/EventTemplatePrefillModel";
 import {EmailTemplateModel} from "../../../models/EmailTemplateModel";
-import {ErrorStateMatcher} from "@angular/material/core";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogLoadingComponent} from "./dialog-loading/dialog-loading.component";
-import {HttpResponse} from "@angular/common/http";
 import {OrganizationUserModel} from "../../../models/OrganizationUserModel";
-import {List} from "postcss/lib/list";
 import {DeletionConfirmationComponent} from "../../deletion-confirmation/deletion-confirmation.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {NotificationInfoModel} from "../../../models/NotificationInfoModel";
 
 export interface createInterfaceTemplateBasic {
   eventName: string,
@@ -55,8 +50,8 @@ export interface baseModel {
 
 export interface NotificationPostDto {
   templateId: string,
-  time: string,
-  before: boolean;
+  durationBeforeOrAfterEvent: string,
+  beforeEvent: boolean;
 }
 
 export interface RequestModel extends baseModel {
@@ -629,9 +624,9 @@ export class OrganizationAddeventComponent {
         timeScheme += '' + this.timeAmount[index] + this.timeUnit[index];
       }
       this.toPersistEmails.push(new class implements NotificationPostDto {
-        before: boolean = beforeBool;
+        beforeEvent: boolean = beforeBool;
         templateId: string = template.id;
-        time: string = timeScheme;
+        durationBeforeOrAfterEvent: string = timeScheme;
       })
       console.log(index + ' ' + template.id + ' ' + timeScheme + ' ' + beforeBool);
       index++;
