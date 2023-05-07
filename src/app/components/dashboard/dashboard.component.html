@@ -15,7 +15,7 @@
 
   <div class="flex-grow md:ml-10 ml-4">
     <h1>Event-Radar</h1>
-    <div class="md:mr-10 mr-0 shrink-0 overflow-y-auto max-h-[40vh] md:max-h-[80vh]">
+    <div *ngIf="currentEvents.length > 0" class="md:mr-10 mr-0 shrink-0 overflow-y-auto max-h-[40vh] md:max-h-[80vh]">
       <ng-container *ngFor="let event of currentEvents">
         <app-eventradar-item
           [name]="event.name"
@@ -33,5 +33,6 @@
         <br>
       </ng-container>
     </div>
+    <span *ngIf="currentEvents.length == 0" class="justify-center"> Sie können entspannen, es stehen aktuell keine Events an :)</span>
   </div>
 </div>

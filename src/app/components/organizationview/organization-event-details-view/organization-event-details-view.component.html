@@ -8,12 +8,12 @@
        [active]="currentParam == descriptionViewParam"
        (click)="updateURLWithParam(descriptionViewParam)">Beschreibung</a>
   </div>
-  <div *ngIf="this.currentRoleAndStatus.status.id == 3">
+  <div *ngIf="this.currentRoleAndStatus.status.id >= 2 && this.currentRoleAndStatus.status.id <= 4">
     <a mat-tab-link
        [active]="currentParam == chatViewParam"
        (click)="updateURLWithParam(chatViewParam)">Chat</a>
   </div>
-  <div *ngIf="(hasRole(1) || hasRole(2)) && this.currentRoleAndStatus.status.id != 3">
+  <div *ngIf="(hasRole(1) || hasRole(2)) && this.currentRoleAndStatus.status.id < 2 && this.currentRoleAndStatus.status.id > 4">
     <a mat-tab-link matTooltip="Chat nur für gestartete Events verfügbar" disabled>Chat</a>
   </div>
   <div>

@@ -19,7 +19,7 @@
         <mat-select [(value)]="selectedRoleForInvite">
           <mat-option [value]="12">Teilnehmer</mat-option>
           <mat-option [value]="11">Tutor</mat-option>
-          <mat-option [value]="10">Organisator</mat-option>
+          <mat-option *ngIf="isOrganizer()" [value]="10">Organisator</mat-option>
         </mat-select>
       </mat-form-field>
       <button class="ml-1 mb-4" mat-raised-button color="primary" (click)="inviteSubmit()" [disabled]="inviteLoading">
@@ -49,7 +49,7 @@
               <mat-select [required]="true" [(value)]="selectedRoleForChange">
                 <mat-option [value]=12>Teilnehmer</mat-option>
                 <mat-option [value]=11>Tutor</mat-option>
-                <mat-option [value]=10 *ngIf="hasRole(2) || hasRole(1)">Organisator</mat-option>
+                <mat-option [value]=10 *ngIf="(hasRole(2) || hasRole(1)) && isOrganizer()">Organisator</mat-option>
               </mat-select>
             </mat-form-field>
           </div>

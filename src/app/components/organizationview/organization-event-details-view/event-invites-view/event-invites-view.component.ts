@@ -106,4 +106,11 @@ export class EventInvitesViewComponent {
   isTutor() : boolean {
     return this.roleIdInEvent == 11;
   }
+
+  /**
+   * Checks if current user is organizer in current event
+   */
+  isOrganizer() : boolean {
+    return this.roleIdInEvent == 10;
+  }
 }
