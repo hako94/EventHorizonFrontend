@@ -22,6 +22,7 @@ import {QuestionnaireInfoModel} from "../models/QuestionnaireInfoModel";
 import {QuestionnaireModel} from "../models/QuestionnaireModel";
 import {QuestionAnswerModel} from "../models/QuestionAnswerModel";
 import {QuestionnaireEvaluationModel} from "../models/QuestionnaireEvaluationModel";
+import {EventPutModel} from "../models/EventPutModel";
 
 //const BACKEND_API = 'http://localhost:8080/'
 //const BACKEND_API = "https://eventhorizonbackend.azurewebsites.net/";
@@ -1031,6 +1032,22 @@ export class DataService {
         headers: {'Content-Type': 'application/json'},
         'id': statusId,
         'status': this.mapStatusIdToString(statusId),
+      }
+    )
+  }
+
+  /**
+   * updates an already existing event
+   * @param orgId
+   * @param eventId
+   * @param event
+   */
+  setEventUpdate(orgId: string, eventId: string, event: EventPutModel) : Observable<any>{
+    return this.http.put<EventPutModel>(
+      BACKEND_API + "api/v1/organization/" + orgId + "/event/" + eventId,
+        event,
+      {
+        headers: {'Content-Type': 'application/json'}
       }
     )
   }

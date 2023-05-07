@@ -1,5 +1,6 @@
 import {ChildEvent} from "./ChildEventModel";
 import {EventStatusModel} from "./EventStatusModel";
+import {EventRepeatModel} from "./EventRepeatModel";
 
 export interface OrganizationEventModel {
   id : string;
@@ -12,6 +13,7 @@ export interface OrganizationEventModel {
   location: string;
   pictureId: string;
   eventStatus: EventStatusModel;
+  eventRepeatScheme?: EventRepeatModel;
   organizationId : string;
   invited: boolean;
   organisator : boolean;
