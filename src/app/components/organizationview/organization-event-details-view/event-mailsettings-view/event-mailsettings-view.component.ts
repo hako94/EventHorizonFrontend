@@ -44,19 +44,20 @@ export class EventMailsettingsViewComponent {
       this.usedMailTemplates = success;
       console.log('Used success is...')
       console.log(success)
-    })
 
-    this.dataService.getEmailTemplates(this.orgaID).subscribe(success => {
-      success.forEach(availableTemplate => {
-        let alreadyUsed: boolean = false;
-        this.usedMailTemplates.forEach(usedTemplate => {
-          if (availableTemplate.id == usedTemplate.templateId) {
-            alreadyUsed = true;
+
+      this.dataService.getEmailTemplates(this.orgaID).subscribe(success => {
+        success.forEach(availableTemplate => {
+          let alreadyUsed: boolean = false;
+          this.usedMailTemplates.forEach(usedTemplate => {
+            if (availableTemplate.id == usedTemplate.templateId) {
+              alreadyUsed = true;
+            }
+          })
+          if (!alreadyUsed) {
+            this.availableMailTemplates.push(availableTemplate);
           }
         })
-        if (!alreadyUsed) {
-          this.availableMailTemplates.push(availableTemplate);
-        }
       })
     })
   }
@@ -123,6 +124,9 @@ export class EventMailsettingsViewComponent {
         this.editedId = "";
         this.ngOnInit();
       }, error => {
+        this.editMode = false;
+        this.editedId = '';
+        this.ngOnInit();
       })
     } else {
       this.dataService.deleteNotificationInfo(this.orgaID, this.eventID, notificationId).subscribe(success => {
@@ -132,8 +136,14 @@ export class EventMailsettingsViewComponent {
           this.editedId = "";
           this.ngOnInit();
         }, error => {
+          this.editMode = false;
+          this.editedId = '';
+          this.ngOnInit();
         })
       }, error => {
+        this.editMode = false;
+        this.editedId = '';
+        this.ngOnInit();
       })
     }
 
