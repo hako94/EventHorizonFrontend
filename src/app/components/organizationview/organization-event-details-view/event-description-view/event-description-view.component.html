@@ -84,13 +84,13 @@
         <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 1" class="ml-4"
                 mat-raised-button color="primary" (click)="setStatus(2)">Freigeben
         </button>
-        <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 2" class="mr-4 ml-4"
+        <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 2" class="ml-4"
                 mat-raised-button color="primary"
                 (click)="setStatus(3)"
                 matTooltip="Manuelles Starten eines Events erst 24h vor Eventstart möglich, Event wird automatisch 2h vor Beginn gestartet">
           Starten
         </button>
-        <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 2 && eventModel.tutor" mat-raised-button
+        <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 2 && eventModel.tutor" mat-raised-button class="ml-4"
                 color="warn" (click)="setStatus(5)"
                 matTooltip="Das Event wird abgesagt und für Teilnehmer nicht mehr angezeigt">Absagen
         </button>
@@ -108,7 +108,7 @@
         <button class="ml-4" mat-raised-button color="primary" (click)="safeAndPersist()"
                 *ngIf="editMode && (roleIdInEvent==10 || roleIdInEvent==11)">Speichern
         </button>
-        <button mat-raised-button (click)="safeAsTemplate()" *ngIf="(roleIdInEvent==10 || roleIdInEvent==11)">
+        <button class="ml-4" mat-raised-button (click)="safeAsTemplate()" *ngIf="(roleIdInEvent==10 || hasRole(1))">
           Als Template speichern
         </button>
       </div>
