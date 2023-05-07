@@ -23,7 +23,7 @@
       </div>
       <div class="ml-2 sm:ml-16">
         <h2 *ngIf="!eventModel.serial && !eventModel.parentId">Einzelevent</h2>
-        <h2 *ngIf="eventModel.parentId">Einzelevent einer Serie</h2>
+        <h2 *ngIf="eventModel.parentId">Termin einer Serie</h2>
         <h2 *ngIf="eventModel.serial">Serienevent</h2>
         <mat-card-subtitle class="whitespace-nowrap" *ngIf="!editMode">
           <label *ngIf="eventModel.serial"><strong>Datum erstes Event</strong></label>
@@ -120,7 +120,7 @@
       <br>
       <mat-divider></mat-divider>
       <br><br>
-      <p>Es handelt sich um ein Einzelevent, was zu einer Serie an Terminen gehört</p>
+      <p>Es handelt sich um ein Einzelevent, welches zu einer Serie an Terminen gehört</p>
       <button mat-raised-button color="primary"
               [routerLink]="'/organizations/' + orgaID + '/event/' + eventModel.parentId + '/details'"
               [queryParams]="{view: 'description'}">Zeige Serie an
@@ -134,7 +134,7 @@
       <p>Es handelt sich um ein Serienevent, das zu folgenden Zeitpunkten wiederholt wird</p>
       <div class="flex whitespace-nowrap flex-wrap">
         <ng-container *ngFor="let child of eventModel.childs">
-          <div class="mr-10 mt-4">
+          <div class="mr-10 mt-4 mb-8">
             <h2>Event-Termin</h2>
             <mat-card-subtitle>
               <label><strong>Beginn</strong></label>
