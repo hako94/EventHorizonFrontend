@@ -3,6 +3,7 @@ import {DataService} from "../../../../services/DataService";
 import {DomSanitizer} from "@angular/platform-browser";
 import {OrganizationEventModel} from "../../../../models/OrganizationEventModel";
 import {StorageService} from "../../../../services/StorageService";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-event-description-view',
@@ -21,11 +22,23 @@ export class EventDescriptionViewComponent implements OnInit {
   shownimage: any;
   eventModel? : OrganizationEventModel;
 
-  constructor(private dataService : DataService, private sanitizer : DomSanitizer, private storageService: StorageService) {
+  constructor(private dataService : DataService,
+              private sanitizer : DomSanitizer,
+              private storageService: StorageService,
+              private activeRoute : ActivatedRoute) {
 
   }
 
   ngOnInit(): void {
+
+    this.activeRoute.url.subscribe(url => {
+      if (url.at(3)){
+        if (url[3].path != this.eventID) {
+          this.window.location.reload();
+        }
+      }
+    })
+
     this.dataService.getSingleEvent(this.orgaID, this.eventID).subscribe(el => {
 
       this.eventModel = el
@@ -119,4 +132,6 @@ export class EventDescriptionViewComponent implements OnInit {
       this.dataService.storeEventImage(this.imageToPersist, this.orgaID, this.eventID).subscribe(() => window.location.reload())
     }
   }
+
+  protected readonly window = window;
 }
