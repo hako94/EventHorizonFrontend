@@ -29,7 +29,8 @@ export class AppComponent implements OnInit {
       !this.location.path().includes("newUser") &&
       !this.location.path().includes("register") &&
       !this.location.path().includes("resetpassword") &&
-      !this.location.path().includes("impressum")) {
+      !this.location.path().includes("impressum") &&
+      !this.location.path().includes("login")) {
 
       this.router.navigate(['/login']);
 

@@ -101,7 +101,8 @@
         <button *ngIf="(roleIdInEvent==10 || roleIdInEvent==11) && eventModel.eventStatus.id == 5" class="ml-4"
                 mat-raised-button color="warn" (click)="setStatus(6)">Löschen
         </button>
-        <button class="ml-4" mat-raised-button color="primary" (click)="editMode = true"
+        <button class="ml-4" mat-raised-button color="primary"
+                (click)="editMode = true"
                 *ngIf="!editMode && (roleIdInEvent==10 || roleIdInEvent==11)">Bearbeiten
         </button>
         <button class="ml-4" mat-raised-button color="primary" (click)="safeAndPersist()"
