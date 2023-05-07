@@ -21,7 +21,7 @@
     </form>
   </div>
   <h2>Teilnehmer-Übersicht</h2>
-  <mat-card class="mx-1 sm:mx-3 max-h-[55vh]">
+  <mat-card class="mx-1 sm:mx-4 max-h-[55vh]">
     <mat-card-content class="overflow-y-auto max-h-[60vh]">
       <div class="hidden md:grid md:grid-cols-3 font-bold">
         <span class="p-2 pt-3">Nachname, Vorname</span>
@@ -43,7 +43,7 @@
       <mat-divider></mat-divider>
     </mat-card-content>
   </mat-card>
-  <div class="flex justify-end mr-32">
+  <div class="flex justify-end mr-4">
     <button class="mt-4" mat-raised-button color="secondary" [disabled]="eventStatus != 3" (click)="pushAttendeeList()">
       <mat-icon>save</mat-icon>
       Anwesenheiten speichern
