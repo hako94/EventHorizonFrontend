@@ -35,7 +35,7 @@ export class EventFilesViewComponent implements OnInit {
     const file: File = event.target.files[0];
     console.log('file', file);
 
-    if (file && (file.size <= 10000000)) {
+    if (file) {
 
       let fileName = file.name;
       let formData = new FormData();
@@ -45,7 +45,7 @@ export class EventFilesViewComponent implements OnInit {
 
       this.dataService.storeFileForEvent(formData, this.orgaID, this.eventID).subscribe(success => {
         console.log(success);
-        this.snackBar.open('Datei erfolgreich hochgeladen', 'OK', {duration: 3500});
+        this.snackBar.open('Datei erfolgreich hochgeladen', 'OK', {duration: 3000});
         this.ngOnInit();
       })
     } else {
