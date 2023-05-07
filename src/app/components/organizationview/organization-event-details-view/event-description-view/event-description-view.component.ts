@@ -30,7 +30,6 @@ export class EventDescriptionViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.activeRoute.url.subscribe(url => {
       if (url.at(3)){
         if (url[3].path != this.eventID) {
@@ -134,4 +133,5 @@ export class EventDescriptionViewComponent implements OnInit {
   }
 
   protected readonly window = window;
+  protected readonly parent = parent;
 }

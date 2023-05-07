@@ -4,7 +4,8 @@
       <h1>
         <mat-icon *ngIf="!eventModel.serial">event</mat-icon>
         <mat-icon *ngIf="eventModel.serial">event_repeat</mat-icon>
-        {{eventModel.name}}</h1>
+        {{eventModel.name}}
+      </h1>
     </mat-card-title>
     <div class="flex">
       <div>
@@ -21,7 +22,8 @@
         <br>
       </div>
       <div class="ml-2 sm:ml-16">
-        <h2 *ngIf="!eventModel.serial">Einzelevent</h2>
+        <h2 *ngIf="!eventModel.serial && !eventModel.parentId">Einzelevent</h2>
+        <h2 *ngIf="eventModel.parentId">Einzelevent einer Serie</h2>
         <h2 *ngIf="eventModel.serial">Serienevent</h2>
         <mat-card-subtitle class="whitespace-nowrap" *ngIf="!editMode">
           <label *ngIf="eventModel.serial"><strong>Datum erstes Event</strong></label>
@@ -114,6 +116,16 @@
         <textarea matInput value="{{eventModel.description}}" style="height: 300px"></textarea>
       </mat-form-field>
     </div>
+    <div *ngIf="eventModel.parentId">
+      <br>
+      <mat-divider></mat-divider>
+      <br><br>
+      <p>Es handelt sich um ein Einzelevent, was zu einer Serie an Terminen gehört</p>
+      <button mat-raised-button color="primary"
+              [routerLink]="'/organizations/' + orgaID + '/event/' + eventModel.parentId + '/details'"
+              [queryParams]="{view: 'description'}">Zeige Serie an
+      </button>
+    </div>
     <div *ngIf="eventModel.serial">
       <br>
       <mat-divider></mat-divider>
@@ -134,7 +146,8 @@
             </mat-card-subtitle>
             <button mat-raised-button color="primary"
                     [routerLink]="'/organizations/' + orgaID + '/event/' + child.childId + '/details'"
-                    [queryParams]="{view: 'description'}">Zeige Einzel-Termin</button>
+                    [queryParams]="{view: 'description'}">Zeige Einzel-Termin
+            </button>
           </div>
         </ng-container>
       </div>
