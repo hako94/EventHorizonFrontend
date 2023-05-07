@@ -35,7 +35,7 @@ export class EventFilesViewComponent implements OnInit {
     const file: File = event.target.files[0];
     console.log('file', file);
 
-    if (file) {
+    if (file && (file.size <= 10000000)) {
 
       let fileName = file.name;
       let formData = new FormData();

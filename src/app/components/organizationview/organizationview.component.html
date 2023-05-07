@@ -24,7 +24,7 @@
     [active]="currentParam == presetViewParam"
     (click)="updateURLWithParam(presetViewParam)">Event-Vorlagen</a>
   </div>
-  <div *ngIf="hasRole(1) || hasRole(2)">
+  <div *ngIf="hasRole(1)">
     <a mat-tab-link
        [active]="currentParam == settingsViewParam"
        (click)="updateURLWithParam(settingsViewParam)">Logo</a>
