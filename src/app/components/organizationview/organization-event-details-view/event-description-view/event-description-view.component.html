@@ -58,7 +58,7 @@
           <p>{{eventModel.location}}</p>
         </mat-card-subtitle>
         <mat-card-subtitle *ngIf="editMode">
-          <mat-form-field>
+          <mat-form-field [(ngModel)]="locationNew">
             <mat-label>Ort</mat-label>
             <input matInput value="{{eventModel.location}}">
           </mat-form-field>
@@ -115,7 +115,7 @@
     </div>
     <div>
       <p *ngIf="!editMode">{{eventModel.description}}</p>
-      <mat-form-field *ngIf="editMode" class="w-full sm:w-[570px]">
+      <mat-form-field *ngIf="editMode" class="w-full sm:w-[570px]" [(ngModel)]="descriptionNew">
         <mat-label>Beschreibung</mat-label>
         <textarea matInput value="{{eventModel.description}}" style="height: 300px"></textarea>
       </mat-form-field>

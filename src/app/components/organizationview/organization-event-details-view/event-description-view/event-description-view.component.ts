@@ -4,6 +4,9 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {OrganizationEventModel} from "../../../../models/OrganizationEventModel";
 import {StorageService} from "../../../../services/StorageService";
 import {ActivatedRoute} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
+import {DeletionConfirmationComponent} from "../../../deletion-confirmation/deletion-confirmation.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-event-description-view',
@@ -22,10 +25,15 @@ export class EventDescriptionViewComponent implements OnInit {
   shownimage: any;
   eventModel? : OrganizationEventModel;
 
+  locationNew : string = '';
+  descriptionNew : string = '';
+
   constructor(private dataService : DataService,
               private sanitizer : DomSanitizer,
               private storageService: StorageService,
-              private activeRoute : ActivatedRoute) {
+              private activeRoute : ActivatedRoute,
+              private dialog : MatDialog,
+              private snackBar : MatSnackBar) {
 
   }
 
@@ -41,6 +49,8 @@ export class EventDescriptionViewComponent implements OnInit {
     this.dataService.getSingleEvent(this.orgaID, this.eventID).subscribe(el => {
 
       this.eventModel = el
+      this.locationNew = this.eventModel.location;
+      this.descriptionNew = this.eventModel.description;
 
       this.dataService.getFileForEvent(this.orgaID, this.eventModel?.pictureId || 'error', this.eventID).subscribe(success => {
 
@@ -81,10 +91,47 @@ export class EventDescriptionViewComponent implements OnInit {
   }
 
   setStatus(id: number){
-    this.dataService.setEventStatus(this.orgaID, this.eventID, id).subscribe(success => {
-      console.log(success);
-    })
-    window.location.reload();
+    if(id == 4) { //beenden
+      const dialogRef = this.dialog.open(DeletionConfirmationComponent, {data: {message: 'Wollen Sie das Event wirklich beenden?', buttonText: {ok: 'Ja, Beenden'}}});
+      dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          this.dataService.setEventStatus(this.orgaID, this.eventID, id).subscribe(success => {
+            console.log(success);
+            this.snackBar.open('Event-Status auf bendet gesetzt', 'OK', {duration: 3000});
+            window.location.reload();
+          })
+        }
+      });
+    } else if(id == 6) { //löschen
+      const dialogRef = this.dialog.open(DeletionConfirmationComponent, {data: {message: 'Wollen Sie das Event wirklich löschen?'}});
+      dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          this.dataService.setEventStatus(this.orgaID, this.eventID, id).subscribe(success => {
+            console.log(success);
+            this.snackBar.open('Event-Status auf gelöscht gesetzt', 'OK', {duration: 3000});
+            window.location.reload();
+          })
+        }
+      });
+    } else if (id == 5) { //absagen
+      const dialogRef = this.dialog.open(DeletionConfirmationComponent, {data: {message: 'Wollen Sie das Event wirklich absagen?', buttonText: {ok: 'Ja, Absagen'}}});
+      dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          this.dataService.setEventStatus(this.orgaID, this.eventID, id).subscribe(success => {
+            console.log(success);
+            this.snackBar.open('Event-Status auf abgesagt gesetzt', 'OK', {duration: 3000});
+            window.location.reload();
+          })
+        }
+      });
+    } else {
+
+      this.dataService.setEventStatus(this.orgaID, this.eventID, id).subscribe(success => {
+        console.log(success);
+        this.snackBar.open('Status erfolgreich geändert', 'OK', {duration: 3000});
+        window.location.reload();
+      })
+    }
   }
 
   book() {
@@ -126,6 +173,21 @@ export class EventDescriptionViewComponent implements OnInit {
 
   safeAndPersist() {
     this.editMode = false;
+
+    if (this.eventModel) {
+      this.eventModel.location = this.locationNew;
+      this.eventModel.description = this.descriptionNew;
+    }
+
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent, {data: {message: 'Wollen Sie das Event wirklich löschen?'}});
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        //this.dataService.setEventStatus(this.orgaID, this.eventID, id).subscribe(success => {})
+      }
+    });
+
+
+
 
     if (this.imageToPersist) {
       this.dataService.storeEventImage(this.imageToPersist, this.orgaID, this.eventID).subscribe(() => window.location.reload())
