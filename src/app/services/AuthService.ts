@@ -23,9 +23,11 @@ export class AuthService {
   /**
    * send login request to backend
    * @param email
-   * @param password
+   * @param passwordClear
    */
-  login(email: string, password: string): Observable<LoginResponse> {
+  login(email: string, passwordClear: string): Observable<LoginResponse> {
+
+    let password = window.btoa(passwordClear);
 
     return this.http.post<LoginResponse>(
       BACKEND_AUTH_API + 'login',
@@ -65,12 +67,14 @@ export class AuthService {
    * @param userModel
    */
   registerWithLink(email: string,
-                   password: string,
+                   passwordClear: string,
                    first_name: string,
                    last_name: string,
                    userIdEmail: string,
                    orgaId: string,
                    userModel: string): Observable<any> {
+
+    let password = window.btoa(passwordClear);
 
     const httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json'}),
@@ -188,7 +192,10 @@ export class AuthService {
    * @param resetToken
    * @param password
    */
-  resetPassword(resetToken: string, password: string): Observable<any> {
+  resetPassword(resetToken: string, passwordClear: string): Observable<any> {
+
+    let password = window.btoa(passwordClear);
+
     return this.http.post(
       BACKEND_AUTH_API + 'resetpassword',
       {
