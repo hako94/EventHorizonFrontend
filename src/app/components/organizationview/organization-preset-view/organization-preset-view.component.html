@@ -3,7 +3,7 @@
   <h1>EventTemplates</h1>
   <hr><br><br>
   <mat-accordion>
-    <div class="mt-1 max-h-[70vh] pb-1" *ngFor="let template of eventTemplates">
+    <div class="mt-1 pb-1" *ngFor="let template of eventTemplates">
       <mat-expansion-panel (opened)="openPanel(template.id)" class="grid">
         <mat-expansion-panel-header>
           <mat-panel-title class="pt-2">
