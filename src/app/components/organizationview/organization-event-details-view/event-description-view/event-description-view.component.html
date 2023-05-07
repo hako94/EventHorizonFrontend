@@ -108,6 +108,9 @@
         <button class="ml-4" mat-raised-button color="primary" (click)="safeAndPersist()"
                 *ngIf="editMode && (roleIdInEvent==10 || roleIdInEvent==11)">Speichern
         </button>
+        <button mat-raised-button (click)="safeAsTemplate()" *ngIf="(roleIdInEvent==10 || roleIdInEvent==11)">
+          Als Template speichern
+        </button>
       </div>
     </div>
     <div>

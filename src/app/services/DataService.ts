@@ -1072,4 +1072,15 @@ export class DataService {
       }
     )
   }
+
+  safeExistingEventAsTemplate(orgId : string, eventId : string) : Observable<HttpResponse<any>> {
+    return this.http.post<any>(
+      BACKEND_API + 'api/v1/organization/' + orgId + '/event/' + eventId + '/template',
+      {},
+      {
+        observe: 'response',
+        headers: {'Content-Type': 'application/json'},
+      }
+    )
+  }
 }

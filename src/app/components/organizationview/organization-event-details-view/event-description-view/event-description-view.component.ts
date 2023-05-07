@@ -134,4 +134,8 @@ export class EventDescriptionViewComponent implements OnInit {
 
   protected readonly window = window;
   protected readonly parent = parent;
+
+  safeAsTemplate() {
+    this.dataService.safeExistingEventAsTemplate(this.orgaID, this.eventID).subscribe()
+  }
 }
