@@ -132,6 +132,9 @@
               <label><strong>Ende</strong></label>
               <p>{{child.eventEnd.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}}</p>
             </mat-card-subtitle>
+            <button mat-raised-button color="primary"
+                    [routerLink]="'/organizations/' + orgaID + '/event/' + child.childId + '/details'"
+                    [queryParams]="{view: 'description'}">Zeige Einzel-Termin</button>
           </div>
         </ng-container>
       </div>
