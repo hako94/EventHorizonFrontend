@@ -138,4 +138,13 @@ export class EventDescriptionViewComponent implements OnInit {
   safeAsTemplate() {
     this.dataService.safeExistingEventAsTemplate(this.orgaID, this.eventID).subscribe()
   }
+
+  /**
+   * Checks if current user has specified role in current organization
+   *
+   * @param roleId
+   */
+  hasRole(roleId: number): boolean {
+    return this.storageService.getRoleInCurrentOrganization(this.orgaID) == roleId;
+  }
 }
