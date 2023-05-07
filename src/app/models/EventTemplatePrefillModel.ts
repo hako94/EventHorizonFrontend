@@ -9,5 +9,6 @@ export interface EventTemplatePrefillModel {
   serial? : boolean,
   pictureId? : string,
   created? : string,
-  lastModified? : string;
+  lastModified? : string,
+  eventRepeatScheme? : { repeatCycle : string, repeatTimes : string }
 }

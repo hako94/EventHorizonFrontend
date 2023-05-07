@@ -1,9 +1,9 @@
-<div class="mx-3">
+<div class="ml-3 overflow-y-auto max-h-[85vh]">
   <br>
   <h1>EventTemplates</h1>
   <hr><br><br>
   <mat-accordion>
-    <div class="mt-1 overflow-y-auto max-h-[70vh] pb-1" *ngFor="let template of eventTemplates">
+    <div class="mt-1 max-h-[70vh] pb-1" *ngFor="let template of eventTemplates">
       <mat-expansion-panel (opened)="openPanel(template.id)" class="grid">
         <mat-expansion-panel-header>
           <mat-panel-title class="pt-2">
@@ -36,6 +36,39 @@
             <mat-label>Event-Ort</mat-label>
             <input matInput [disabled]="!editMode" [(ngModel)]="eventeTemplatePrefillModel.location">
           </mat-form-field>
+          <hr><br>
+          <p>Es handelt sich um ein <strong>{{eventeTemplatePrefillModel.serial ? "Serien" : "Einzel"}}</strong>-Event
+            {{eventeTemplatePrefillModel.eventRepeatScheme ? "Das nach " + eventeTemplatePrefillModel.eventRepeatScheme.repeatCycle : ""}}
+            {{eventeTemplatePrefillModel.eventRepeatScheme ? " insgesamt " + eventeTemplatePrefillModel.eventRepeatScheme.repeatTimes + " wiederholt wird" : ""}}
+          </p>
+          <div *ngIf="eventeTemplatePrefillModel.eventRepeatScheme">
+            <p>Erste Ausführung</p>
+            <mat-form-field appearance="fill">
+              <mat-label>Beginn</mat-label>
+              <input matInput disabled [matDatepicker]="startPicker">
+              <mat-hint>DD.MM.YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+            </mat-form-field>
+            <div class="mt-8">
+              <p>Die Regel, nach der das Event wiederholt wird</p>
+              <mat-form-field>
+                <mat-label>Zyklus</mat-label>
+                <input matInput [disabled]="!editMode" (change)="updateRepeatePattern()"  [(ngModel)]="eventTemplateRawRepeatValue">
+              </mat-form-field>
+              <mat-form-field class="ml-2" appearance="fill">
+                <mat-label>Einheit</mat-label>
+                <mat-select [disabled]="!editMode" value="days">
+                  <mat-option [value]="'days'">Tage</mat-option>
+                  <mat-option [value]="'weeks'" disabled>Wochen</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="ml-2" appearance="fill">
+                <mat-label>Anzahl Wiederholungen</mat-label>
+                <input matInput [disabled]="!editMode" [(ngModel)]="eventeTemplatePrefillModel.eventRepeatScheme.repeatTimes">
+              </mat-form-field>
+            </div>
+          </div>
         </div>
         <div class="flex justify-self-end">
           <button *ngIf="!editMode" (click)="editMode = true" class="flex-col" mat-icon-button color="primary">

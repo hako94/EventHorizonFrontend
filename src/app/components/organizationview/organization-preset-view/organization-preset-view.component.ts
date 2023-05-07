@@ -19,6 +19,8 @@ export class OrganizationPresetViewComponent implements OnInit{
   eventTemplates : EventTemplateModel[] = [];
   eventeTemplatePrefillModel? : EventTemplatePrefillModel;
 
+  eventTemplateRawRepeatValue : number = 0;
+
   isLoading : boolean = false;
   editMode : boolean = false;
 
@@ -55,6 +57,9 @@ export class OrganizationPresetViewComponent implements OnInit{
     this.dataService.loadTemplateBasedOnId(this.orgaID, id).subscribe(model => {
       this.isLoading = false;
       this.eventeTemplatePrefillModel = model;
+      if (model.eventRepeatScheme) {
+        this.eventTemplateRawRepeatValue = ((+ model.eventRepeatScheme.repeatCycle.slice(2,model.eventRepeatScheme.repeatCycle.length-1)) / 24);
+      }
     })
   }
 
@@ -74,6 +79,14 @@ export class OrganizationPresetViewComponent implements OnInit{
       this.dataService.putEventTemplateBasedOnId(this.orgaID, id, this.eventeTemplatePrefillModel).subscribe(success => {
         this.snackBar.open('Änderungen gespeichert', 'OK', {duration: 3000});
       });
+    }
+  }
+
+  updateRepeatePattern() {
+    if (this.eventeTemplatePrefillModel) {
+      if (this.eventeTemplatePrefillModel?.eventRepeatScheme) {
+        this.eventeTemplatePrefillModel.eventRepeatScheme.repeatCycle = "PT" + this.eventTemplateRawRepeatValue * 24 + "H"
+      }
     }
   }
 }
