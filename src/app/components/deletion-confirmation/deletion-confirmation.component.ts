@@ -8,7 +8,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 })
 export class DeletionConfirmationComponent {
   message: string = "Wollen Sie das gewählte Element wirklich unwiderruflich löschen?"
-  confirmButtonText = "Ja, Löschen"
+  confirmButtonText: string  = "Ja, Löschen"
   cancelButtonText = "Abbrechen"
   constructor(@Inject(MAT_DIALOG_DATA) private data: any, private dialogRef: MatDialogRef<DeletionConfirmationComponent>) {
     if(data){
