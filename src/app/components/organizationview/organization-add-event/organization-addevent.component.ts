@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {DataService} from "../../../services/DataService";
 import {Location} from "@angular/common";
 import {AddEventCustomField} from "../../../dataobjects/AddEventCustomField";
-import {delay, forkJoin, Observable, of} from "rxjs";
+import {delay, forkJoin, map, Observable, of} from "rxjs";
 import {FormControl} from "@angular/forms";
 import {EventTemplateModel} from "../../../models/EventTemplateModel";
 import {Router} from "@angular/router";
@@ -549,6 +549,39 @@ export class OrganizationAddeventComponent {
         this.form.eventType = "serial";
         this.serialEvent.repeatTimes = template.eventRepeatScheme.repeatTimes;
         this.serialEvent.repeatCycle = ((+ template.eventRepeatScheme.repeatCycle.slice(2,template.eventRepeatScheme.repeatCycle.length-1)) / 24);
+      }
+
+      if (template.attendeeNotifications) {
+
+        let index = 0;
+
+        template.attendeeNotifications.forEach(el=> {
+
+          this.availableMailTemplates.forEach(elA => {
+
+            if (el.templateId == elA.id) {
+
+              this.addToUsed(
+                {
+                  id: elA.id,
+                  name: elA.name,
+                  subject: elA.subject,
+                  text: elA.text,
+                  created: elA.created,
+                  lastModified: elA.lastModified,
+                }
+              )
+              this.timeAmount[index] = +el.durationBeforeOrAfterEvent.slice(2,el.durationBeforeOrAfterEvent.length-1);
+              this.timeUnit[index] = el.durationBeforeOrAfterEvent.slice(el.durationBeforeOrAfterEvent.length-1, el.durationBeforeOrAfterEvent.length);
+              this.timeSlot[index] = el.beforeEvent ? 'before' : 'after';
+              console.log(this.timeAmount + " " + this.timeSlot + " " + this.timeUnit)
+              console.log(index)
+
+              index++;
+
+            }
+          })
+        })
       }
     })
   }
