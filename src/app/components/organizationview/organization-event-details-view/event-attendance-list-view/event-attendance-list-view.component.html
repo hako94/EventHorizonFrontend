@@ -34,7 +34,7 @@
           <div class="p-2 pt-3">{{attender.nachname}}, {{attender.vorname}}</div>
           <div class="p-2 pt-3">{{attender.email}}</div>
           <div class="p-2 pt-3 justify-self-end flex">
-            <mat-checkbox [checked]="attender.here" [disabled]="eventStatus != 3" (change)="saveAttendeeList($event, attender.id)">
+            <mat-checkbox [checked]="attender.here" (change)="saveAttendeeList($event, attender.id)">
               anwesend
             </mat-checkbox>
           </div>
@@ -44,7 +44,7 @@
     </mat-card-content>
   </mat-card>
   <div class="flex justify-end mr-4">
-    <button class="mt-4" mat-raised-button color="secondary" [disabled]="eventStatus != 3" (click)="pushAttendeeList()">
+    <button class="mt-4" mat-raised-button color="secondary" (click)="pushAttendeeList()">
       <mat-icon>save</mat-icon>
       Anwesenheiten speichern
     </button>

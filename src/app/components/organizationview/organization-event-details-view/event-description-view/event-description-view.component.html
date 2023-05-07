@@ -96,7 +96,7 @@
         </button>
         <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 3" class="ml-4"
                 mat-raised-button color="warn" (click)="setStatus(4)"
-                matTooltip="Das Event wird automatisch 1h nach Schluss beendet">Beenden
+                matTooltip="Das Event wird automatisch 1h nach Schluss beendet, manuelles Beenden erst nach eingetragenem Event Ende möglich">Beenden
         </button>
         <button *ngIf="(roleIdInEvent==10 || roleIdInEvent==11) && (eventModel.eventStatus.id == 1 || eventModel.eventStatus.id == 4 || eventModel.eventStatus.id == 5)" class="ml-4"
                 mat-raised-button color="warn" (click)="setStatus(6)">Löschen
