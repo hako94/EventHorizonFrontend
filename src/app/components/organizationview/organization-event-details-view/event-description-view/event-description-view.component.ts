@@ -8,6 +8,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {DeletionConfirmationComponent} from "../../../deletion-confirmation/deletion-confirmation.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {EventPutModel} from "../../../../models/EventPutModel";
+import {ChildEvent} from "../../../../models/ChildEventModel";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-event-description-view',
@@ -21,6 +23,7 @@ export class EventDescriptionViewComponent implements OnInit {
   @Input() roleIdInEvent: number = 12;
 
   editMode : boolean = false;
+  multiEvent : boolean = false;
   imageToPersist? : FormData;
 
   shownimage: any;
@@ -29,6 +32,12 @@ export class EventDescriptionViewComponent implements OnInit {
   locationNew : string = '';
   descriptionNew : string = '';
   nameNew : string = '';
+
+  singleStartTime: string = '';
+  singleEndTime: string = '';
+  minDate = new Date();
+  singleStartDate = new FormControl(new Date());
+  singleEndDate = new FormControl(new Date());
 
   constructor(private dataService : DataService,
               private sanitizer : DomSanitizer,
@@ -49,8 +58,14 @@ export class EventDescriptionViewComponent implements OnInit {
     })
 
     this.dataService.getSingleEvent(this.orgaID, this.eventID).subscribe(el => {
-
+      this.multiEvent = false;
       this.eventModel = el
+      if (this.eventModel) {
+        if (this.eventModel.serial && this.eventModel.eventRepeatScheme == null) {
+          this.multiEvent = true;
+        }
+      }
+      console.warn(this.eventModel);
       this.nameNew = this.eventModel.name;
       this.locationNew = this.eventModel.location;
       this.descriptionNew = this.eventModel.description;
@@ -175,7 +190,6 @@ export class EventDescriptionViewComponent implements OnInit {
   protected readonly Date = Date;
 
   safeAndPersist() {
-    this.editMode = false;
 
     if (this.descriptionNew == '' || this.nameNew == '' || this.locationNew == '') {
       this.snackBar.open('Bitte alle Felder ausfüllen', 'OK', {duration: 3000});
@@ -183,7 +197,7 @@ export class EventDescriptionViewComponent implements OnInit {
     }
 
     if (this.eventModel) {
-
+      console.log(this.eventModel.childs)
       let eventUpdate : EventPutModel = {
         id: this.eventModel.id,
         name: this.nameNew,
@@ -195,13 +209,15 @@ export class EventDescriptionViewComponent implements OnInit {
         eventRepeatScheme: this.eventModel.eventRepeatScheme
       }
       this.dataService.setEventUpdate(this.orgaID, this.eventID, eventUpdate).subscribe(() => {
-        window.location.reload();
+        console.log(eventUpdate)
+        this.ngOnInit()
       });
     }
 
     if (this.imageToPersist) {
-      this.dataService.storeEventImage(this.imageToPersist, this.orgaID, this.eventID).subscribe(() => window.location.reload())
+      this.dataService.storeEventImage(this.imageToPersist, this.orgaID, this.eventID).subscribe(() => { /*window.location.reload()*/ })
     }
+    this.editMode = false;
   }
 
   protected readonly window = window;
@@ -220,5 +236,40 @@ export class EventDescriptionViewComponent implements OnInit {
    */
   hasRole(roleId: number): boolean {
     return this.storageService.getRoleInCurrentOrganization(this.orgaID) == roleId;
+  }
+
+  deleteSerialChild(index: number) {
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent, {data: {message: 'Wollen Sie diesen Einzel-Termin wirklich aus der Serie entfernen?'}});
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        let newChilds : ChildEvent[] = [];
+        let i = 0;
+        this.eventModel?.childs.forEach(child => {
+          if(i != index) {
+            newChilds.push(child);
+          }
+          i++;
+        })
+        if (this.eventModel) {
+          this.eventModel.childs = newChilds;
+          if (this.eventModel.eventRepeatScheme) {
+            this.eventModel.eventRepeatScheme.repeatTimes = this.eventModel.eventRepeatScheme.repeatTimes -1;
+          }
+        }
+      }
+    });
+  }
+
+  attachTimeToDate(date: FormControl<Date | null>, time: string) {
+
+    let hours = Number(time.split(':').at(0));
+    let minutes = Number(time.split(':').at(1));
+
+    if (hours) {
+      date.value?.setHours(hours);
+    }
+    if (minutes) {
+      date.value?.setMinutes(minutes)
+    }
   }
 }

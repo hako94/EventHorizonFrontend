@@ -12,7 +12,7 @@
         Login
       </button>
     </div>
-    <div *ngIf="foundSession()" class="max-sm:max-w-[30px] max-sm:overflow-x-hidden">
+    <div *ngIf="foundSession()" class="max-sm:max-w-[30px] max-sm:overflow-x-hidden max-sm:overflow-y-hidden">
       <button [matMenuTriggerFor]="menu" mat-button>
         {{ getUserEmail() }}
         <mat-icon>person</mat-icon>
