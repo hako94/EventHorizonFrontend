@@ -22,6 +22,53 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
+## src tree
+```
+├───app                                        
+│   ├───components                             
+│   │   ├───dashboard                          
+│   │   │   ├───eventradar-item                
+│   │   │   └───organization-item              
+│   │   ├───deletion-confirmation              
+│   │   ├───event-view                         
+│   │   │   └───event-view-main                
+│   │   ├───header                             
+│   │   │   └───impressum                      
+│   │   ├───login                              
+│   │   │   └───reset-password                 
+│   │   ├───organizationview                   
+│   │   │   ├───event-item                     
+│   │   │   ├───event-user-mangament           
+│   │   │   ├───organization-add-event         
+│   │   │   │   └───dialog-loading             
+│   │   │   ├───organization-add-mail          
+│   │   │   ├───organization-event-details-view
+│   │   │   │   ├───event-attendance-list-view 
+│   │   │   │   ├───event-attender-view        
+│   │   │   │   ├───event-chat-view            
+│   │   │   │   ├───event-description-view     
+│   │   │   │   ├───event-files-view           
+│   │   │   │   ├───event-invites-view         
+│   │   │   │   ├───event-mailsettings-view    
+│   │   │   │   └───event-survey               
+│   │   │   ├───organization-event-view        
+│   │   │   ├───organization-mails-view        
+│   │   │   │   └───info-snackbar              
+│   │   │   ├───organization-member-view
+│   │   │   ├───organization-preset-view
+│   │   │   ├───organization-settings
+│   │   │   └───organizationinviteview
+│   │   ├───plattform-admin
+│   │   └───register
+│   ├───dataobjects
+│   ├───interceptors
+│   ├───models
+│   ├───pipes
+│   └───services
+├───assets
+└───environments
+```
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
