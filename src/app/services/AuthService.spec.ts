@@ -28,17 +28,18 @@ describe('AuthService', () => {
   it('should log in a user', () => {
     //given
     const email = 'test@example.com';
-    const password = 'testpassword';
+    const clearPassword = 'testpassword';
     const expectedResponse = { token: 'testtoken' };
     //when
-    authService.login(email, password).subscribe((response: any) => {
+    authService.login(email, clearPassword).subscribe((response: any) => {
       //then
       expect(response).toEqual(expectedResponse);
     });
 
+    const password = window.btoa(clearPassword);
     const req = httpMock.expectOne(`${BACKEND_AUTH_API}login`);
     expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual({ email, password });
+    expect(req.request.body).toEqual({ email,password });
     req.flush(expectedResponse);
   });
 
