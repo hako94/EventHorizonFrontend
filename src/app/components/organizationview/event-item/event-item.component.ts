@@ -1,11 +1,7 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {OrganizationEventModel} from "../../../models/OrganizationEventModel";
-import {SocketService} from "../../../services/SocketService";
-import {Message} from "@stomp/stompjs";
 import {DataService} from "../../../services/DataService";
 import {StorageService} from "../../../services/StorageService";
-import {ChatModel} from "../../../models/ChatModel";
-import {DatePipe} from "@angular/common";
 import {ImageGetServiceService} from "../../../services/image-get-service.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {Router} from "@angular/router";
@@ -35,15 +31,7 @@ export class EventItemComponent implements OnInit {
 
     if (this.orgEvent) {
 
-      this.dataService.getImageForEvent("10", this.orgEvent.pictureId, this.orgEvent.id).subscribe(success => {
-        console.warn(success)
-
-        let objectURL = URL.createObjectURL(success);
-        this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-
-      }, error => {
-
-        console.warn("Cant fetch Image for OrgID " + this.orgId + " EventID " + this.orgEvent + " : " + error.status + " using default Organization Image")
+      if(this.orgEvent.pictureId == null) {
 
         this.dataService.getOrganizationInfos(this.orgId).subscribe(success => {
 
@@ -53,7 +41,28 @@ export class EventItemComponent implements OnInit {
             this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
           })
         })
-      })
+
+      } else {
+
+        this.dataService.getFileForEvent(this.orgId, this.orgEvent.pictureId, this.orgEvent.id).subscribe(success => {
+
+          let objectURL = URL.createObjectURL(success.body);
+          this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+
+        }, error => {
+
+          console.warn("Cant fetch Image for OrgID " + this.orgId + " EventID " + this.orgEvent + " : " + error.status + " using default Organization Image")
+
+          this.dataService.getOrganizationInfos(this.orgId).subscribe(success => {
+
+            this.dataService.getImage(this.orgId, success.logoId).subscribe(success => {
+
+              let objectURL = URL.createObjectURL(success);
+              this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            })
+          })
+        })
+      }
     }
   }
 
@@ -79,6 +88,18 @@ export class EventItemComponent implements OnInit {
       });
   }
 
+  acceptInvite() {
+    this.dataService.acceptEventInvite(this.orgId, this.orgEvent!.id).subscribe(success => {
+      window.location.reload();
+    })
+  }
+
+  declineInvite() {
+    this.dataService.declineEventInvite(this.orgId, this.orgEvent!.id).subscribe(success => {
+      window.location.reload();
+    })
+  }
+
   //DANGER ZONE
 
   deleteEvent() {
@@ -101,4 +122,5 @@ export class EventItemComponent implements OnInit {
     // @ts-ignore
     this.router.navigate(['/organizations/' + this.orgId + '/event/' + this.orgEvent.id + '/details'], {queryParams: {view: 'description'}});
   }
+
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {StorageService} from "../../services/StorageService";
 import {Router} from "@angular/router";
+import {AuthService} from "../../services/AuthService";
 
 @Component({
   selector: 'app-header',
@@ -10,7 +11,7 @@ export class HeaderComponent {
 
   protected readonly sessionStorage = sessionStorage;
 
-  constructor(private storageService : StorageService, private router : Router) {
+  constructor(private storageService : StorageService, private router : Router, private authService : AuthService) {
   }
 
   /**
@@ -24,8 +25,14 @@ export class HeaderComponent {
    * Terminates current session and current user gets logged out
    */
   abmelden() : void {
-    this.storageService.clear()
-    window.location.reload();
+    this.authService.logout(this.storageService.getRefreshToken()).subscribe(success => {
+        this.storageService.clear();
+        window.location.reload();
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   /**

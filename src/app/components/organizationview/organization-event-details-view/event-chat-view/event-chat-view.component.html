@@ -1,13 +1,13 @@
-  <mat-card class="p-4 my-4 ml-4 min-h-0">
+  <mat-card class="p-4 my-4 mx-1 sm:mx-4 min-h-0">
     <h1>
       Live-Chat
       <mat-icon *ngIf="!connected" color="warn">link_off</mat-icon>
-      <mat-icon *ngIf="connected">link</mat-icon>
+      <mat-icon *ngIf="connected" matTooltip="Es besteht eine aktive Verbindung zum Server">link</mat-icon>
       <mat-icon color="warn" *ngIf="!connected">warning</mat-icon>
     </h1>
     <mat-tab-group (selectedTabChange)="selectedTabIndex = $event.index">
       <mat-tab label="Alle Nachrichten">
-        <div class="chat-window h-48 mb-4 overflow-y-scroll">
+        <div class="chat-window h-[56vh] mb-4 overflow-y-scroll">
           <div *ngFor="let message of chatMessages" class="bg-gray-200 rounded-lg p-4 mb-4"
                [ngClass]="{'bg-blue-200': message.sender === getUserEmail(), 'bg-gray-200': message.sender !== getUserEmail()}">
             <div class="flex justify-between items-center mb-2">
@@ -28,15 +28,17 @@
             <mat-label>Nachricht</mat-label>
             <input matInput #socketInput [disabled]="!subscription.closed">
           </mat-form-field>
-          <mat-checkbox class="mr-2 h-8 w-8" *ngIf="roleIdInEvent !== 12" [(ngModel)]="isImportant">Priorität
+          <mat-checkbox class="mr-4 h-8 w-8" *ngIf="roleIdInEvent !== 12" [(ngModel)]="isImportant"
+                        matTooltip="Als wichtige Nachricht kennzeichnen">
           </mat-checkbox>
+
           <button [disabled]="!subscription.closed" mat-raised-button
                   (click)="pushMessageToBackend(socketInput.value, isImportant)">Absenden
           </button>
         </div>
       </mat-tab>
       <mat-tab label="Wichtige Nachrichten">
-        <div class="chat-window h-48 mb-4 overflow-y-scroll">
+        <div class="chat-window h-[56vh] mb-4 overflow-y-scroll">
           <div *ngFor="let message of getImportantMessages()" class="bg-gray-200 rounded-lg p-4 mb-4"
                [ngClass]="{'bg-blue-200': message.sender === getUserEmail(), 'bg-gray-200': message.sender !== getUserEmail()}">
             <div class="flex justify-between items-center mb-2">

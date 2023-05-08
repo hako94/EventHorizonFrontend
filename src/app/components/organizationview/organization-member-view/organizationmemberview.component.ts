@@ -3,6 +3,8 @@ import {DataService} from "../../../services/DataService";
 import {OrganizationUserModel} from "../../../models/OrganizationUserModel";
 import {StorageService} from "../../../services/StorageService";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {DeletionConfirmationComponent} from "../../deletion-confirmation/deletion-confirmation.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-organizationmemberview',
@@ -23,13 +25,13 @@ export class OrganizationmemberviewComponent implements OnInit{
   @Input() orgaID = '';
 
   members : OrganizationUserModel[] = [];
-  selected: any = 'guest';
+  selected: any = 'Gast';
   editMode : boolean = false;
   editedUser : string = '';
 
   inviteLoading : boolean = false;
 
-  constructor(private dataService : DataService, private storageService : StorageService, private snackBar : MatSnackBar) {
+  constructor(private dataService : DataService, private storageService : StorageService, private snackBar : MatSnackBar, private dialog : MatDialog) {
 
   }
 
@@ -51,9 +53,10 @@ export class OrganizationmemberviewComponent implements OnInit{
     this.dataService.inviteUser(this.invitedEmail, this.orgaID, this.selected).subscribe(success => {
       this.invitedUser = success;
       this.snackBar.open('Einladung wurde erfolgreich versandt', 'OK', {duration: 3000});
+      this.invitedEmail = '';
+      this.selectedRole = 5;
       this.inviteLoading = false;
     }, error => {
-      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
       this.inviteLoading = false;
     })
   }
@@ -79,7 +82,6 @@ export class OrganizationmemberviewComponent implements OnInit{
       this.ngOnInit();
       this.snackBar.open('Rolle erfolgreich geändert', 'OK', {duration: 3000});
     }, error => {
-      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
     })
     this.editMode = false;
     this.editedUser = '';
@@ -87,11 +89,16 @@ export class OrganizationmemberviewComponent implements OnInit{
   }
 
   deleteMember(userId: string) {
-    this.dataService.deleteOrganizationMember(this.orgaID, userId).subscribe(() => {
-      this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
-      this.ngOnInit();
-    }, error => {
-      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent,{
+      data: {message: 'Wollen Sie den Eintrag wirklich löschen und das Mitglied aus der Organisation entfernen?'}
+    });
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.dataService.deleteOrganizationMember(this.orgaID, userId).subscribe(() => {
+          this.snackBar.open('Mitglied entfernt', 'OK', {duration: 3000});
+          this.ngOnInit();
+        });
+      }
     });
   }
 }

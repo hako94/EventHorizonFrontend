@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {httpInterceptorProviders} from "./interceptors/BearerInterceptor";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -67,6 +67,13 @@ import { EventFilesViewComponent } from './components/organizationview/organizat
 import { EventSurveyComponent } from './components/organizationview/organization-event-details-view/event-survey/event-survey.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { EventAttendanceListViewComponent } from './components/organizationview/organization-event-details-view/event-attendance-list-view/event-attendance-list-view.component';
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {ErrorInterceptor} from "./interceptors/ErrorInterceptor";
+import { DialogLoadingComponent } from './components/organizationview/organization-add-event/dialog-loading/dialog-loading.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatListModule} from "@angular/material/list";
+import { DeletionConfirmationComponent } from './components/deletion-confirmation/deletion-confirmation.component';
+import { ImpressumComponent } from './components/header/impressum/impressum.component';
 
 registerLocaleData(localeDe);
 
@@ -104,41 +111,49 @@ registerLocaleData(localeDe);
     EventFilesViewComponent,
     EventSurveyComponent,
     EventAttendanceListViewComponent,
+    DialogLoadingComponent,
+    DeletionConfirmationComponent,
+    ImpressumComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    MatToolbarModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatCardModule,
-    MatRadioModule,
-    MatCheckboxModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatTabsModule,
-    MatDividerModule,
-    MatStepperModule,
-    MatGridListModule,
-    MatMenuModule,
-    MatPaginatorModule,
-    MatSnackBarModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    NgxDropzoneModule,
-    MatExpansionModule,
-    MatButtonToggleModule,
-    MatTooltipModule,
-    MatSlideToggleModule,
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        MatToolbarModule,
+        MatInputModule,
+        MatSelectModule,
+        MatButtonModule,
+        MatCardModule,
+        MatRadioModule,
+        MatRadioModule,
+        MatCheckboxModule,
+        MatProgressSpinnerModule,
+        MatIconModule,
+        MatTabsModule,
+        MatDividerModule,
+        MatStepperModule,
+        MatGridListModule,
+        MatMenuModule,
+        MatPaginatorModule,
+        MatSnackBarModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        NgxDropzoneModule,
+        MatExpansionModule,
+        MatButtonToggleModule,
+        MatTooltipModule,
+        MatSlideToggleModule,
+        MatAutocompleteModule,
+        MatDialogModule,
+        MatListModule,
 
-  ],
+    ],
   providers: [
     { provide: LOCALE_ID, useValue: 'de-DE' },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     httpInterceptorProviders,
     DatePipe,
     {

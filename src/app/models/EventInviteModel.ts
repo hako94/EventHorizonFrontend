@@ -2,8 +2,8 @@ import {UserRoleModel} from "./UserRoleModel";
 
 export interface EventInviteModel {
   id: string;
-  firstName: string;
-  lastName: string;
+  vorname: string;
+  nachname: string;
   email: string;
   role: UserRoleModel;
 }

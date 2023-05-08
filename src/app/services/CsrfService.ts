@@ -14,6 +14,9 @@ export class CsrfService {
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * get security csrf
+   */
   getCsrf(): Observable<any> {
     return this.http.get<any>(
       BACKEND_API + 'api/v1/security/csrf',

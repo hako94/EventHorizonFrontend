@@ -3,6 +3,8 @@ import {DataService} from "../../../services/DataService";
 import {OrganizationInviteModel} from "../../../models/OrganizationInviteModel";
 import {StorageService} from "../../../services/StorageService";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatDialog} from "@angular/material/dialog";
+import {DeletionConfirmationComponent} from "../../deletion-confirmation/deletion-confirmation.component";
 
 @Component({
   selector: 'app-organizationinviteview',
@@ -10,7 +12,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   styleUrls: ['./organizationinviteview.component.scss']
 })
 export class OrganizationinviteviewComponent {
-  selectedRole : number = -1;
+  selectedRole : number = 5;
   editMode : boolean = false;
   editedUser : string = '';
   email : string = '';
@@ -20,7 +22,7 @@ export class OrganizationinviteviewComponent {
 
   invitedUsers : OrganizationInviteModel[] = [];
 
-  constructor(private dataService : DataService, private storageService : StorageService, private snackBar : MatSnackBar) {
+  constructor(private dataService : DataService, private storageService : StorageService, private snackBar : MatSnackBar, private dialog : MatDialog) {
 
   }
 
@@ -43,7 +45,6 @@ export class OrganizationinviteviewComponent {
       this.ngOnInit();
       this.snackBar.open('Rolle erfolgreich geändert', 'OK', {duration: 3000});
     }, error => {
-      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
     });
   }
 
@@ -53,12 +54,17 @@ export class OrganizationinviteviewComponent {
    * @param inviteId
    */
   deleteInvite(inviteId : string) {
-    this.dataService.deleteOrganizationInvite(this.orgaID, inviteId).subscribe(success => {
-      console.log(success)
-      this.ngOnInit();
-      this.snackBar.open('Eintrag gelöscht', 'OK', {duration: 3000});
-    }, error => {
-      this.snackBar.open('Es ist ein Fehler aufgetreten', 'OK', {duration: 3000});
+    const dialogRef = this.dialog.open(DeletionConfirmationComponent,{
+      data: {message: 'Wollen Sie den Eintrag wirklich löschen und die Organisations-Einladung zurückziehen?'}
+    });
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.dataService.deleteOrganizationInvite(this.orgaID, inviteId).subscribe(success => {
+          console.log(success)
+          this.ngOnInit();
+          this.snackBar.open('Einladung entfernt', 'OK', {duration: 3000});
+        });
+      }
     });
   }
 
@@ -75,7 +81,7 @@ export class OrganizationinviteviewComponent {
       this.changeInviteRole(id, this.selectedRole)
       this.editMode = false;
       this.editedUser = '';
-      this.selectedRole = -1;
+      this.selectedRole = 5;
     }
   }
 

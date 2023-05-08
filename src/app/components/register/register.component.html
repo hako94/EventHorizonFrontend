@@ -2,9 +2,9 @@
   <div>
     <ng-container *ngIf="withNewUser">
       <ng-container *ngIf="withOrganizationId">
-        <h2>Registrierung für neue User mit Einladungslink</h2>
-        <p>zur Organisation: {{organization}}.decode</p>
-        <p>EinladungsId: {{inviteId}}</p>
+        <h2>Registrieren Sie sich hier für den Beitritt in die Organisation.</h2>
+<!--        <p>zur Organisation: {{organization}}.decode</p>
+        <p>EinladungsId: {{inviteId}}</p>-->
         <br>
       </ng-container>
       <ng-container *ngIf="!withOrganizationId">
@@ -17,11 +17,11 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>Vorname</mat-label>
-          <input matInput>
+          <input matInput name="firstname" [(ngModel)]="form.firstname">
         </mat-form-field>
         <mat-form-field>
           <mat-label>Nachname</mat-label>
-          <input matInput>
+          <input matInput name="lastname" [(ngModel)]="form.lastname">
         </mat-form-field>
         <mat-form-field>
           <mat-label>Passwort</mat-label>
@@ -29,15 +29,17 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>Passwort wiederholen</mat-label>
-          <input matInput type="password">
+          <input matInput name="password" type="password" [(ngModel)]="this.repeatPassword">
         </mat-form-field>
         <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Absenden</button>
       </form>
     </ng-container>
     <ng-container *ngIf="!withNewUser">
-      <p>Du wurdest zum Beitritt in eingeladen</p>
-      <button>Ja</button>
-      <button>Nein</button>
+      <h2>Sie können hier die Einladung annehmen oder ablehnen.</h2>
+      <div class="flex justify-center">
+        <button mat-raised-button color="primary" class="mr-2" (click)='answerInvitation("true")'>Einladung annehmen</button>
+        <button mat-raised-button color="warn" (click)='answerInvitation("false")'>Einladung ablehnen</button>
+      </div>
     </ng-container>
   </div>
 </div>

@@ -2,10 +2,7 @@ import {Component} from '@angular/core';
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Location} from "@angular/common";
 import {StorageService} from "../../../services/StorageService";
-import {UserRoleModel} from "../../../models/UserRoleModel";
 import {DataService} from "../../../services/DataService";
-import {lastValueFrom, Subscription} from "rxjs";
-import {EventItemComponent} from "../event-item/event-item.component";
 import {EventRoleStatusModel} from "../../../models/EventRoleStatusModel";
 
 @Component({
@@ -28,11 +25,11 @@ export class OrganizationEventDetailsViewComponent {
 
   currentRoleAndStatus: EventRoleStatusModel = {
     role: {
-      id: 12,
+      id: 99,
       role: 'Teilnehmer'
     },
     status: {
-      id: 1,
+      id: 99,
       status: 'erstellt'
     }
   };
@@ -69,23 +66,38 @@ export class OrganizationEventDetailsViewComponent {
     this.activatedRoute.queryParams.subscribe(params => {
 
       //TODO direkte Übersetzung ohne if / else Block
-      if (params['view'] == "description")
+      if (params['view'] == "description") {
         this.currentParam = this.descriptionViewParam;
-      else if (params['view'] == "survey")
+      } else if (params['view'] == "survey") {
         this.currentParam = this.surveyViewParam;
-      else if (params['view'] == "chat")
+      } else if (params['view'] == "chat") {
         this.currentParam = this.chatViewParam;
-      else if (params['view'] == "files")
+      } else if (params['view'] == "files") {
         this.currentParam = this.filesViewParam;
-      else if (params['view'] == "attender")
+      } else if (params['view'] == "attender") {
         this.currentParam = this.attenderViewParam;
-      else if (params['view'] == "invites")
+      } else if (params['view'] == "invites") {
         this.currentParam = this.invitesViewParam;
-      else if (params['view'] == "mails")
+      } else if (params['view'] == "mails") {
         this.currentParam = this.mailsViewParam;
+      } else if (params['view'] == "attendance") {
+        this.currentParam = this.attendanceViewParam;
+      }
     });
     this.dataService.getUserRoleAndEventStatus(this.currentOrganization, this.currentEvent).subscribe(success => {
       this.currentRoleAndStatus = success;
+      if (this.currentRoleAndStatus.role == null){
+        this.currentRoleAndStatus.role = {
+          id: 12,
+          role: 'Teilnehmer',
+        }
+      }
+      if (this.hasRole(1)){
+        this.currentRoleAndStatus.role = {
+          id: 11,
+          role: 'Tutor',
+        }
+      }
     });
   }
 

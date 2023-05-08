@@ -15,7 +15,6 @@ export class OrganizationviewComponent implements OnInit{
   invitesViewParam : Params = {'view' : 'invites'};
   mailsViewParam : Params = {'view' : 'mails'};
   settingsViewParam : Params = {'view' : 'settings'};
-  upcommingViewParam : Params = {'view' : 'upcomming'};
   presetViewParam : Params = {'view' : 'presetView'};
   currentOrganization : string = '';
 
@@ -51,12 +50,12 @@ export class OrganizationviewComponent implements OnInit{
         this.currentParam = this.invitesViewParam;
       else if (params['view'] == "presetView")
         this.currentParam = this.presetViewParam;
+      else if (params['view'] == "settings")
+        this.currentParam = this.settingsViewParam;
     });
   }
 
   updateURLWithParam(param : Params) : void {
-
-    console.log(this.currentParam)
 
     this.currentParam = param;
 
@@ -67,8 +66,6 @@ export class OrganizationviewComponent implements OnInit{
         queryParams: this.currentParam,
         queryParamsHandling: 'merge',
       });
-
-    console.log(this.currentParam)
   }
 
   /**

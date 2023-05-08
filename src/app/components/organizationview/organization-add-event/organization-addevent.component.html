@@ -1,326 +1,473 @@
-<mat-stepper style="height: calc(100% - 64px)" class="mat-typography">
-  <mat-step optional>
-    <ng-template matStepLabel>Templates</ng-template>
-    <br>
-    <h2>Templates</h2>
-    <p>Lade ein Template eines zuvor erstellen Events - oder gehe direkt zu Schritt 2</p>
-    <hr><br><br>
-    <div>
-      <div class="grid grid-cols-4 grid-rows-1">
-        <h2>Vorlagen-ID</h2>
-        <h2>Name</h2>
-        <h2>Beschreibung</h2>
-      </div>
-      <ng-container *ngFor="let template of eventTemplates">
+<div class="mat-typography max-h-[calc(100vh-64px)] overflow-y-scroll">
+  <mat-stepper>
+    <mat-step optional>
+      <ng-template matStepLabel>Templates</ng-template>
+      <br>
+      <h2>Templates</h2>
+      <p>Lade ein Template eines zuvor erstellen Events - oder gehe direkt zu Schritt 2</p>
+      <hr><br><br>
+      <div>
         <div class="grid grid-cols-4 grid-rows-1">
-          <p>{{template.id}}</p>
-          <p>{{template.name}}</p>
-          <p>{{template.description}}</p>
-          <button class="justify-self-end flex" (click)="loadTemplateWithId(template.id)" mat-raised-button matStepperNext><mat-icon>publish</mat-icon>Laden</button>
-          <br>
+          <h2>Vorlagen-ID</h2>
+          <h2>Name</h2>
+          <h2>Beschreibung</h2>
         </div>
-      </ng-container>
-    </div>
-    <hr><br>
-    <button color="primary" matStepperNext mat-raised-button>Weiter ohne Template</button>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Grundlegende Informationen</ng-template>
-    <br>
-    <h2>Grundlegende Informationen</h2>
-    <div>
-      <p>Der Name des Events der auch in der Übersicht ganz oben angezeigt wird</p>
-      <mat-form-field class="w-96">
-        <mat-label>Event Name</mat-label>
-        <input required matInput id="eventname" name="eventname" [(ngModel)]="form.eventName">
-      </mat-form-field>
-    </div>
-    <div class="mt-4">
-      <p>Die ausführliche Beschreibung des Events, sie erscheint nicht in der Übersicht, sondern nur in den Details</p>
-      <mat-form-field class="w-[600px]">
-        <mat-label>Event Beschreibung</mat-label>
-        <textarea required style="height: 300px" matInput id="description" name="description" [(ngModel)]="form.eventDescription"></textarea>
-      </mat-form-field>
-    </div>
-    <div class="mt-4">
-      <p>Der Ort, an dem das Event statt finden soll</p>
-      <mat-form-field class="w-96">
-        <mat-label>Ort</mat-label>
-        <input required matInput [(ngModel)]="form.location">
-      </mat-form-field>
-    </div>
-    <br>
-    <button color="primary" matStepperNext mat-raised-button>Weiter</button>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Zeit Planung</ng-template>
-    <br>
-    <h2>Zeitplanung</h2>
-    <div>
-      <div class="mb-4">
-        <p>Bitte wählen sie aus, um was für ein Event es sich handelt</p>
-        <mat-button-toggle-group [(ngModel)]="form.eventType" name="event-time-type">
-          <mat-button-toggle value="single">Einzelevent</mat-button-toggle>
-          <mat-button-toggle value="multi">Mehrfachevent</mat-button-toggle>
-          <mat-button-toggle value="serial">Serienevent</mat-button-toggle>
-        </mat-button-toggle-group>
+        <ng-container *ngFor="let template of eventTemplates">
+          <div class="grid grid-cols-4 grid-rows-1">
+            <p>{{template.id}}</p>
+            <p>{{template.name}}</p>
+            <p>{{template.description}}</p>
+            <button class="justify-self-end flex" (click)="loadTemplateWithId(template.id)" mat-raised-button matStepperNext><mat-icon>publish</mat-icon>Laden</button>
+            <br>
+          </div>
+        </ng-container>
+      </div>
+      <hr><br>
+      <div class="flex">
+        <button class="mr-5" mat-raised-button color="warn" (click)="goBack()"><mat-icon>delete</mat-icon>Abbrechen</button>
+        <button color="primary" matStepperNext mat-raised-button><mat-icon>arrow_right</mat-icon>Weiter ohne Template</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Grundlegende Informationen</ng-template>
+      <br>
+      <h2>Grundlegende Informationen</h2>
+      <div>
+        <p>Der Name des Events der auch in der Übersicht ganz oben angezeigt wird</p>
+        <mat-form-field class="w-96">
+          <mat-label>Event Name</mat-label>
+          <input required matInput id="eventname" name="eventname" [(ngModel)]="form.eventName">
+        </mat-form-field>
       </div>
       <div class="mt-4">
-        <div *ngIf="form.eventType == 'single'">
-          <div>
+        <p>Die ausführliche Beschreibung des Events, sie erscheint nicht in der Übersicht, sondern nur in den Details</p>
+        <mat-form-field class="w-[600px]">
+          <mat-label>Event Beschreibung</mat-label>
+          <textarea required style="height: 300px" matInput id="description" name="description" [(ngModel)]="form.eventDescription"></textarea>
+        </mat-form-field>
+      </div>
+      <div class="mt-4">
+        <p>Der Ort, an dem das Event statt finden soll</p>
+        <mat-form-field class="w-96">
+          <mat-label>Ort</mat-label>
+          <input required matInput [(ngModel)]="form.location">
+        </mat-form-field>
+      </div>
+      <br>
+      <div>
+        <button mat-raised-button matStepperPrevious><mat-icon>arrow_left</mat-icon>Zurück</button>
+        <button class="ml-5" matStepperNext mat-raised-button>Weiter</button>
+      </div>
+    </mat-step>
+    <mat-step optional>
+      <ng-template matStepLabel>Rechte</ng-template>
+      <br>
+      <h2>Personen berechtigen</h2>
+      <div>
+        <h3>Person als Organisator berechtigen</h3>
+        <div class="grid grid-rows-1 grid-cols-4 items-end">
+          <p><strong>Vorname</strong></p>
+          <p><strong>Nachname</strong></p>
+          <p><strong>Email</strong></p>
+          <p><strong>Aktion</strong></p>
+        </div>
+        <ng-container *ngFor="let organizer of organizers">
+          <div class="grid grid-rows-1 grid-cols-4 items-end">
+            <p>{{organizer.vorname || "Registrierung nicht abgeschlossen"}}</p>
+            <p>{{organizer.nachname}}</p>
+            <p>{{organizer.email}}</p>
+            <div class="flex">
+              <button *ngIf="!userIsInList(toAddOrganizer, organizer.id)"
+                      (click)="toAddOrganizer.push(organizer)"
+                      matTooltip="{{organizer.email}} als Organisator hinzufügen"
+                      matTooltipPosition="after"
+                      mat-icon-button color="primary">
+                <mat-icon matTooltip="hinzufügen">add</mat-icon>
+              </button>
+              <div *ngIf="userIsInList(toAddOrganizer, organizer.id)">
+                <button mat-icon-button disabled>
+                  <mat-icon>done</mat-icon>
+                </button>
+                <button (click)="removeOrganizerFromList(organizer.id)"
+                        matTooltip="{{organizer.email}} als Organisator entfernen"
+                        matTooltipPosition="after"
+                        mat-icon-button color="warn">
+                  <mat-icon matTooltip="entfernen">delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <hr>
+      <div class="mt-8">
+        <h3>Person als Tutor berechtigen</h3>
+        <div class="grid grid-rows-1 grid-cols-4 items-end">
+          <p><strong>Vorname</strong></p>
+          <p><strong>Nachname</strong></p>
+          <p><strong>Email</strong></p>
+          <p><strong>Aktion</strong></p>
+        </div>
+        <ng-container *ngFor="let member of members">
+          <div class="grid grid-rows-1 grid-cols-4 items-end">
+            <p>{{member.vorname || "Registrierung nicht abgeschlossen"}}</p>
+            <p>{{member.nachname}}</p>
+            <p>{{member.email}}</p>
+            <div class="flex">
+              <button *ngIf="!userIsInList(toAddTutor, member.id)"
+                      (click)="toAddTutor.push(member)"
+                      matTooltip="{{member.email}} als Tutor hinzufügen"
+                      matTooltipPosition="after"
+                      mat-icon-button color="primary">
+                <mat-icon matTooltip="hinzufügen">add</mat-icon>
+              </button>
+              <div *ngIf="userIsInList(toAddTutor, member.id)">
+                <button mat-icon-button disabled>
+                  <mat-icon>done</mat-icon>
+                </button>
+                <button (click)="removeTutorFromList(member.id)"
+                        matTooltip="{{member.email}} als Tutor entfernen"
+                        matTooltipPosition="after"
+                        mat-icon-button color="warn">
+                  <mat-icon matTooltip="entfernen">delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <br>
+      <hr>
+      <br>
+      <div>
+        <button mat-raised-button matStepperPrevious><mat-icon>arrow_left</mat-icon>Zurück</button>
+        <button class="ml-5" matStepperNext mat-raised-button>Weiter</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Zeit Planung</ng-template>
+      <br>
+      <h2>Zeitplanung</h2>
+      <div>
+        <div class="mb-4">
+          <p>Bitte wählen sie aus, um was für ein Event es sich handelt</p>
+          <mat-button-toggle-group [(ngModel)]="form.eventType" name="event-time-type">
+            <mat-button-toggle value="single">Einzelevent</mat-button-toggle>
+            <mat-button-toggle value="multi">Mehrfachevent</mat-button-toggle>
+            <mat-button-toggle value="serial">Serienevent</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+        <div class="mt-4">
+          <div *ngIf="form.eventType == 'single'">
+            <div>
+              <p>
+                Es handelt sich um ein Event, das einmalig stattfindet<br>
+                Beispiel: Das Event <strong>{{form.eventName}}</strong> findet am 23.11.2041 statt
+              </p>
+              <br><mat-divider></mat-divider><br>
+              <h3>Einzelevent-Details</h3>
+              <mat-form-field appearance="fill">
+                <mat-label>Beginn</mat-label>
+                <input [min]="minDate" matInput [matDatepicker]="startPicker" [formControl]="singleStartDate">
+                <mat-hint>DD.MM.YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+                <mat-datepicker #startPicker></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field class="ml-2">
+                <mat-label>Start-Uhrzeit</mat-label>
+                <input type="time" required #singleStart [(ngModel)]="singleStartTime" (input)="attachTimeToDate(singleStartDate, singleStart.value)" matInput>
+                <mat-hint>hh:mm</mat-hint>
+              </mat-form-field>
+              <br>
+              <mat-form-field appearance="fill" class="mt-4">
+                <mat-label>Ende</mat-label>
+                <input matInput [min]="singleStartDate.value"  [matDatepicker]="endPicker" [formControl]="singleEndDate">
+                <mat-hint>DD.MM.YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+                <mat-error>Der Endzeitpunkt muss gültig sein und nach dem Beginn liegen</mat-error>
+                <mat-datepicker #endPicker></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field class="ml-2">
+                <mat-label>End-Uhrzeit</mat-label>
+                <input type="time" required #singleEnd [(ngModel)]="singleEndTime" (input)="attachTimeToDate(singleEndDate, singleEnd.value)" matInput>
+                <mat-hint>hh:mm</mat-hint>
+                <mat-error></mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div *ngIf="form.eventType == 'multi'" class="mt-4">
             <p>
-              Es handelt sich um ein Event, das einmalig stattfindet<br>
-              Beispiel: Das Event <strong>{{form.eventName}}</strong> findet am 23.11.2041 statt
+              Es handelt sich um eine Serie an Events, die jeweils zu bestimmten festgelegten Zeitpunkten statt finden<br>
+              Beispiel: Das Event <strong>{{form.eventName}}</strong> findet am 23.11.2041, 23.11.2042 und 23.11.2043 statt
             </p>
             <br><mat-divider></mat-divider><br>
-            <h3>Einzelevent-Details</h3>
+            <h3>Mehrfachevent-Details</h3>
+            <mat-form-field>
+              <mat-label>Beginn</mat-label>
+              <input matInput [matDatepicker]="customStartPicker" [formControl]="startDate" >
+              <mat-hint>DD.MM.YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="customStartPicker"></mat-datepicker-toggle>
+              <mat-datepicker #customStartPicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="ml-2">
+              <mat-label>Start-Uhrzeit</mat-label>
+              <input type="time" matInput #multiStart (input)="attachTimeToDate(startDate, multiStart.value)">
+              <mat-hint>hh:mm</mat-hint>
+            </mat-form-field>
+            <br>
+            <mat-form-field class="mt-4">
+              <mat-label>Ende</mat-label>
+              <input matInput [matDatepicker]="customEndPicker" [formControl]="endDate">
+              <mat-hint>DD.MM.YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="customEndPicker"></mat-datepicker-toggle>
+              <mat-datepicker #customEndPicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="ml-2">
+              <mat-label>End-Uhrzeit</mat-label>
+              <input type="time" matInput #multiEnd (input)="attachTimeToDate(endDate, multiEnd.value)">
+              <mat-hint>hh:mm</mat-hint>
+            </mat-form-field>
+            <button class="ml-2" mat-raised-button color="primary"
+                    (click)='addChildEvent(startDate.value,endDate.value)'>Termin hinzufügen</button>
+            <ng-container *ngFor="let child of childs; let i = index">
+              <div>
+                <br>
+                <mat-divider></mat-divider>
+                <br>
+                <h1>{{ i+1 }}. Datum</h1>
+                <p>von {{child.eventStart | date:'dd.MM.yyyy HH:mm' }} bis {{child.eventEnd | date:'dd.MM.yyyy HH:mm'}}</p>
+                <button mat-raised-button (click)="deleteChildEvent(child.eventStart, child.eventEnd)" color="warn">
+                  <mat-icon>delete</mat-icon>
+                  Löschen
+                </button>
+              </div>
+            </ng-container>
+          </div>
+          <div *ngIf="form.eventType == 'serial'">
+            <p>
+              Es handelt sich um ein Event, das einmalig statt findet und dann in einem Intervall wiederholt wird<br>
+              Beispiel: Das Event <strong>{{form.eventName}}</strong> findet am 23.11.2041 statt und wird in einem Zyklus von 3 Tagen insgesamt 8 mal wiederholt
+            </p>
+            <br><mat-divider></mat-divider><br>
+            <h3>Serienevent-Details</h3>
+            <p>Das Datum, an dem das Event das erste mal statt findet</p>
             <mat-form-field appearance="fill">
-              <mat-label>Start-Datum</mat-label>
-              <input [min]="minDate" matInput [matDatepicker]="startPicker" [formControl]="singleStartDate">
+              <mat-label>Beginn</mat-label>
+              <input matInput [matDatepicker]="startPicker" [formControl]="startDate">
               <mat-hint>DD.MM.YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
               <mat-datepicker #startPicker></mat-datepicker>
             </mat-form-field>
             <mat-form-field class="ml-2">
               <mat-label>Start-Uhrzeit</mat-label>
-              <input type="time" required #singleStart [(ngModel)]="singleStartTime" (input)="attachTimeToDate(singleStartDate, singleStart.value)" matInput>
+              <input type="time" matInput>
               <mat-hint>hh:mm</mat-hint>
             </mat-form-field>
-            <br>
-            <mat-form-field appearance="fill" class="mt-4">
-              <mat-label>End-Datum</mat-label>
-              <input matInput [min]="singleStartDate.value"  [matDatepicker]="endPicker" [formControl]="singleEndDate">
+            <br><br>
+            <mat-form-field appearance="fill">
+              <mat-label>Ende</mat-label>
+              <input matInput [matDatepicker]="endPicker" [formControl]="endDate">
               <mat-hint>DD.MM.YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
-              <mat-error>Das End-Datum muss gültig sein und nach dem Startdatum liegen</mat-error>
               <mat-datepicker #endPicker></mat-datepicker>
             </mat-form-field>
             <mat-form-field class="ml-2">
               <mat-label>End-Uhrzeit</mat-label>
-              <input type="time" required #singleEnd [(ngModel)]="singleEndTime" (input)="attachTimeToDate(singleEndDate, singleEnd.value)" matInput>
+              <input type="time" matInput>
               <mat-hint>hh:mm</mat-hint>
-              <mat-error></mat-error>
             </mat-form-field>
-          </div>
-        </div>
-        <div *ngIf="form.eventType == 'multi'" class="mt-4">
-          <p>
-            Es handelt sich um eine Serie an Events, die jeweils zu bestimmten festgelegten Zeitpunkten statt finden<br>
-            Beispiel: Das Event <strong>{{form.eventName}}</strong> findet am 23.11.2041, 23.11.2042 und 23.11.2043 statt
-          </p>
-          <br><mat-divider></mat-divider><br>
-          <h3>Mehrfachevent-Details</h3>
-          <mat-form-field>
-            <mat-label>Start-Datum</mat-label>
-            <input matInput [matDatepicker]="customStartPicker" [formControl]="startDate" >
-            <mat-hint>DD.MM.YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="customStartPicker"></mat-datepicker-toggle>
-            <mat-datepicker #customStartPicker></mat-datepicker>
-          </mat-form-field>
-          <mat-form-field class="ml-2">
-            <mat-label>Start-Uhrzeit</mat-label>
-            <input type="time" matInput>
-            <mat-hint>hh:mm</mat-hint>
-          </mat-form-field>
-          <br>
-          <mat-form-field class="mt-4">
-            <mat-label>End-Datum</mat-label>
-            <input matInput [matDatepicker]="customEndPicker" [formControl]="endDate">
-            <mat-hint>DD.MM.YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="customEndPicker"></mat-datepicker-toggle>
-            <mat-datepicker #customEndPicker></mat-datepicker>
-          </mat-form-field>
-          <mat-form-field class="ml-2">
-            <mat-label>End-Uhrzeit</mat-label>
-            <input type="time" matInput>
-            <mat-hint>hh:mm</mat-hint>
-          </mat-form-field>
-          <button class="ml-2" mat-raised-button color="primary"
-                  (click)='addChildEvent(startDate.value,endDate.value)'>Termin hinzufügen</button>
-          <ng-container *ngFor="let child of childs">
-            <div>
-              <br>
-              <mat-divider></mat-divider>
-              <br>
-              <h1>{{child.childId}}. Datum</h1>
-              <p>von {{child.eventStart}} bis {{child.eventEnd}}</p>
-              <button mat-raised-button (click)="deleteChildEvent(child.childId || '0')" color="warn">
-                <mat-icon>delete</mat-icon>
-                Löschen
-              </button>
+            <br>
+            <div class="mt-8">
+              <p>Die Regel, nach der das Event wiederholt wird</p>
+              <mat-form-field>
+                <mat-label>Zyklus</mat-label>
+                <input matInput [(ngModel)]="serialEvent.repeatCycle">
+              </mat-form-field>
+              <mat-form-field class="ml-2" appearance="fill">
+                <mat-label>Einheit</mat-label>
+                <mat-select value="days">
+                  <mat-option [value]="'days'">Tage</mat-option>
+                  <mat-option [value]="'weeks'" disabled>Wochen</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="ml-2" appearance="fill">
+                <mat-label>Anzahl Wiederholungen</mat-label>
+                <input matInput [(ngModel)]="serialEvent.repeatTimes">
+              </mat-form-field>
             </div>
-          </ng-container>
-        </div>
-        <div *ngIf="form.eventType == 'serial'">
-          <p>
-            Es handelt sich um ein Event, das einmalig statt findet und dann in einem Intervall wiederholt wird<br>
-            Beispiel: Das Event <strong>{{form.eventName}}</strong> findet am 23.11.2041 statt und wird in einem Zyklus von 3 Tagen insgesamt 8 mal wiederholt
-          </p>
-          <br><mat-divider></mat-divider><br>
-          <h3>Serienevent-Details</h3>
-          <p>Das Datum, an dem das Event das erste mal statt findet</p>
-          <mat-form-field appearance="fill">
-            <mat-label>Start-Datum</mat-label>
-            <input matInput [matDatepicker]="startPicker" [formControl]="startDate">
-            <mat-hint>DD.MM.YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
-            <mat-datepicker #startPicker></mat-datepicker>
-          </mat-form-field>
-          <mat-form-field class="ml-2">
-            <mat-label>Start-Uhrzeit</mat-label>
-            <input type="time" matInput>
-            <mat-hint>hh:mm</mat-hint>
-          </mat-form-field>
-          <br><br>
-          <mat-form-field appearance="fill">
-            <mat-label>End-Datum</mat-label>
-            <input matInput [matDatepicker]="endPicker" [formControl]="endDate">
-            <mat-hint>DD.MM.YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
-            <mat-datepicker #endPicker></mat-datepicker>
-          </mat-form-field>
-          <mat-form-field class="ml-2">
-            <mat-label>End-Uhrzeit</mat-label>
-            <input type="time" matInput>
-            <mat-hint>hh:mm</mat-hint>
-          </mat-form-field>
-          <br>
-          <div class="mt-8">
-            <p>Die Regel, nach der das Event wiederholt wird</p>
-            <mat-form-field>
-              <mat-label>Zyklus</mat-label>
-              <input matInput [(ngModel)]="serialEvent.repeatCycle">
-            </mat-form-field>
-            <mat-form-field class="ml-2" appearance="fill">
-              <mat-label>Einheit</mat-label>
-              <mat-select>
-                <mat-option [value]="'days'">Tage</mat-option>
-                <mat-option [value]="'days'" disabled>Wochen</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field class="ml-2" appearance="fill">
-              <mat-label>Anzahl Wiederholungen</mat-label>
-              <input matInput [(ngModel)]="serialEvent.repeatTimes">
-            </mat-form-field>
           </div>
         </div>
       </div>
-    </div>
-    <br><br>
-    <button color="primary" matStepperNext mat-raised-button>Weiter</button>
-  </mat-step>
-  <mat-step optional>
-    <ng-template matStepLabel>Emails</ng-template>
-    <br>
-    <h2>mögliche Email-Vorlagen</h2>
-    <p>Hier sind alle Email-Vorlagen der Organisation aufgelistet. Klicken sie auf der + um die Vorlage zum Event hinzu zu fügen</p>
-    <br><br>
-    <div class="grid grid-cols-4">
-      <h2>Vorlagen-ID</h2>
-      <h2>Name</h2>
-      <h2>Email-Titel</h2>
-    </div>
-    <ng-container *ngFor="let emailTemplate of emailTemplates">
-      <div class="grid grid-cols-4">
-        <p>{{emailTemplate.id}}</p>
-        <p>{{emailTemplate.name}}</p>
-        <p>{{emailTemplate.subject}}</p>
-        <button class="justify-self-end flex" color="primary" mat-raised-button
-                (click)="addValueToInUseEmails(emailTemplate)"
-                [disabled]="emailTemplatesInUse.includes(emailTemplate)">
-          <mat-icon>add</mat-icon>Verwenden
-        </button>
-        <br>
+      <br>
+      <hr>
+      <br>
+      <div>
+        <button mat-raised-button matStepperPrevious><mat-icon>arrow_left</mat-icon>Zurück</button>
+        <button class="ml-5" matStepperNext mat-raised-button>Weiter</button>
       </div>
-    </ng-container>
-    <br><hr><br><br>
-    <h2>Verwendet</h2>
-    <p>Hier werden alle Email-Vorlagen aufgelistet, die für das aktuelle Event verwendet werden</p>
-    <br><br>
-    <div class="grid grid-cols-4">
-      <h2>Vorlagen-ID</h2>
-      <h2>Name</h2>
-      <h2>Email-Titel</h2>
-    </div>
-    <ng-container *ngFor="let emailTemplate of emailTemplatesInUse">
-      <div class="grid grid-cols-4">
-        <p>{{emailTemplate.id}}</p>
-        <p>{{emailTemplate.name}}</p>
-        <p>{{emailTemplate.subject}}</p>
-        <button class="justify-self-end flex" color="warn" mat-raised-button (click)="removeValueFromInUseEmails(emailTemplate.id)">
-          <mat-icon>remove</mat-icon>Entfernen
-        </button>
-        <br>
-      </div>
-    </ng-container>
-    <br><br>
-    <button color="primary" matStepperNext mat-raised-button>Weiter</button>
-  </mat-step>
-  <mat-step optional>
-    <ng-template matStepLabel>Dateien hochladen</ng-template>
-    <br>
-    <h2>Datei Upload</h2>
-    <div>
-      <h3>Event-Bild</h3>
-      <div class="mb-8 w-[400px] h-[200px] border-2 relative" >
-        <label style="color: #e5e7eb">Drag and Drop</label>
-        <div class="h-full flex flex-col items-center justify-center z-0">
-          <mat-icon class="w-32 h-32 scale-[3]">upload</mat-icon>
-          <label class="mt-8">Dateien hier ablegen oder klicken zum auswählen</label>
+    </mat-step>
+    <mat-step optional>
+      <ng-template matStepLabel>Emails</ng-template>
+      <br>
+      <br>
+      <div class="mx-3">
+        <h2>Verfügbare Mail-Vorlagen</h2>
+        <div class="p-2 max-h-[30vh] overflow-y-auto">
+          <div class="max-sm:hidden grid md:grid-cols-5">
+            <div class="col-span-2"><p><strong>Vorlagenbezeichnung</strong></p></div>
+            <div class="col-span-2"><p><strong>Mailbetreff</strong></p></div>
+          </div>
+          <mat-divider></mat-divider>
+          <div *ngFor="let template of availableMailTemplates">
+            <div *ngIf="!isUsed(template.id)" class="grid grid-cols-1 md:grid-cols-5">
+              <div class="md:col-span-2 pt-3"><p>{{template.name}}</p></div>
+              <div class="md:col-span-2 md:pt-3"><p>{{template.subject}}</p></div>
+              <div class="justify-self-end flex">
+                <div *ngIf="!isUsed(template.id)">
+                  <button mat-icon-button color="primary" (click)="addToUsed(template)">
+                    <mat-icon matTooltip="Verwenden">add</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+          </div>
         </div>
-        <input class="w-[400px] h-[200px] opacity-0 z-20 absolute top-0" (change)="onEventImageFileSelected($event)" type="file" #fileUpload>
+        <br><br>
+        <h2>Verwendete Mail-Vorlagen</h2>
+        <div class="p-2 max-h-[40vh] overflow-y-auto">
+          <div class="max-sm:hidden grid md:grid-cols-5">
+            <div class="md:col-span-2"><p><strong>Vorlagenbezeichnung</strong></p></div>
+            <div class="md:col-span-2"><p><strong>Versandzeitpunkt</strong></p></div>
+          </div>
+          <mat-divider></mat-divider>
+          <div *ngFor="let template of usedMailTemplates; let i = index">
+            <div class="grid grid-cols-1 md:grid-cols-5">
+              <div class="md:col-span-2"><p class="pt-3">{{template.name}}</p></div>
+              <div class="flex md:col-span-2">
+                <div>
+                  <mat-form-field class="max-w-[90px] mr-5">
+                    <mat-label>Anzahl*</mat-label>
+                    <input matInput (change)="updateToPersistMailTemplates()" type="number" min="0" max="999" [(ngModel)]="timeAmount[i]" oninput="validity.valid||(value='');">
+                  </mat-form-field>
+                  <mat-form-field appearance="fill" class="max-w-[120px] mr-5">
+                    <mat-label>Einheit*</mat-label>
+                    <mat-select [(value)]="timeUnit[i]">
+                      <mat-option value="D" (click)="updateToPersistMailTemplates()">Tage</mat-option>
+                      <mat-option value="H" (click)="updateToPersistMailTemplates()">Stunden</mat-option>
+                      <mat-option value="M" (click)="updateToPersistMailTemplates()">Minuten</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="fill" class="max-w-[150px]">
+                    <mat-label>Zeitpunkt*</mat-label>
+                    <mat-select [(value)]="timeSlot[i]">
+                      <mat-option value="before" (click)="updateToPersistMailTemplates()">vor Event</mat-option>
+                      <mat-option value="after" (click)="updateToPersistMailTemplates()">nach Event</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="justify-end flex">
+                <div class="justify-self-end"><button mat-icon-button color="warn" (click)="deleteFromUsedMail(template.id, i)">
+                  <mat-icon matTooltip="Entfernen">delete</mat-icon>
+                </button></div>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+          </div>
+        </div>
       </div>
-      <p>Vorschau</p>
-      <img [src]="shownPreviewImage" *ngIf="shownPreviewImage" class="w-32 h-32">
-    </div>
-    <br><mat-divider></mat-divider><br>
-    <div>
-      <h3>Weitere Dateien</h3>
-      <input type="file" #fileUpload multiple>
-    </div>
-    <br>
-    <button color="primary" matStepperNext mat-raised-button>Weiter</button>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Abschluss</ng-template>
-    <br>
-    <div class="border-l-2 p-2 mb-6">
-      <h2>Speichere Das Event als Template</h2>
-      <button mat-raised-button color="primary" (click)="persistTemplate()" type="submit" formaction="" [disabled]="disabledTemplateSafe">{{ disabledTemplateSafe ? 'Gespeichert' : 'Speichern'}}</button>
-    </div>
-    <hr>
-    <div class="flex mt-6">
-      <div class="border-l-2 p-2">
-        <h2>Erstelle das Event</h2>
-        <button mat-raised-button color="primary" (click)="persistData()" type="submit" formaction="">Erstellen</button>
+      <br><br>
+      <hr>
+      <br>
+      <div>
+        <button mat-raised-button matStepperPrevious><mat-icon>arrow_left</mat-icon>Zurück</button>
+        <button class="ml-5" matStepperNext mat-raised-button>Weiter</button>
       </div>
-      <div class="border-l-2 ml-10 p-2">
-        <h2>Abbrechen und verwerfen</h2>
-        <button style="margin-left: 5px" mat-raised-button color="warn" (click)="goBack()">Abbrechen</button>
+    </mat-step>
+    <mat-step optional>
+      <ng-template matStepLabel>Dateien hochladen</ng-template>
+      <br>
+      <h2>Datei Upload</h2>
+      <div>
+        <h3>Event-Bild</h3>
+        <p>Hier kann ein Event bild hochgeladen werden - alternativ kann dieses Feld leer gelassen werden, dann wird das Bild der Organisation verwendet</p>
+        <div class="mb-8 w-[400px] h-[200px] border-2 relative" >
+          <label style="color: #e5e7eb">Drag and Drop</label>
+          <div class="h-full flex flex-col items-center justify-center z-0">
+            <mat-icon class="w-32 h-32 scale-[3]">upload</mat-icon>
+            <label class="mt-8">Dateien hier ablegen oder klicken zum auswählen</label>
+          </div>
+          <input class="w-[400px] h-[200px] opacity-0 z-20 absolute top-0" (change)="onEventImageFileSelected($event)" type="file" #fileUpload>
+        </div>
+        <p>Vorschau</p>
+        <img [src]="shownPreviewImage" *ngIf="shownPreviewImage" class="w-32 h-32">
+        <div *ngIf="!shownPreviewImage" class="w-32 h-32 bg-gray-100">
+          <p class="p-4">Kein Bild ausgewählt</p>
+        </div>
       </div>
-    </div>
-    <mat-divider></mat-divider>
-    <br>
-    <h3>Vorschau</h3>
-    <br>
-    <div>
-      <div style="position: absolute; background-color: rgba(1,1,1,0.2); width: 96%; height: 43%; z-index: 100; overflow:hidden;"></div>
-      <h3 style="position: absolute; z-index: 100; font-size: 120px; text-align: center; width: 96%; margin-top: 180px; color: grey; transform: rotate(-20deg);"> Vorschau </h3>
-    </div>
-    <app-event
-      [orgEvent]=
-        '{
+      <br><mat-divider></mat-divider><br>
+      <div>
+        <h3>Weitere Dateien</h3>
+        <p>Hier können bis zu 20 weitere, auf das Event bezogene Dateien hochgeladen werden</p>
+        <div class="mb-8 w-[400px] h-[200px] border-2 relative" >
+          <label style="color: #e5e7eb">Drag and Drop</label>
+          <div class="h-full flex flex-col items-center justify-center z-0">
+            <mat-icon class="w-32 h-32 scale-[3]">upload</mat-icon>
+            <label class="mt-8">Dateien hier ablegen oder klicken zum auswählen</label>
+          </div>
+          <input #fileUpload class="w-[400px] h-[200px] opacity-0 z-20 absolute top-0" (change)="onFileSelected($event)" type="file" multiple>
+        </div>
+        <p>Es wurde(n) {{filesToPersist.length}} Dateien ausgewählt</p>
+      </div>
+      <br>
+      <hr>
+      <br>
+      <div>
+        <button mat-raised-button matStepperPrevious><mat-icon>arrow_left</mat-icon>Zurück</button>
+        <button class="ml-5" matStepperNext mat-raised-button>Weiter</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Abschluss</ng-template>
+      <br>
+      <div class="border-l-2 p-2 mb-6">
+        <h2>Speichere Das Event als Template</h2>
+        <button mat-raised-button color="primary" (click)="persistTemplate()" type="submit" formaction="" [disabled]="disabledTemplateSafe"><mat-icon>save</mat-icon>{{ disabledTemplateSafe ? 'Gespeichert' : 'Speichern'}}</button>
+      </div>
+      <hr>
+      <div class="flex mt-6">
+        <div class="border-l-2 p-2">
+          <h2>Erstelle das Event</h2>
+          <button mat-raised-button color="primary" (click)="persistData()" type="submit" formaction=""><mat-icon>check</mat-icon>Erstellen</button>
+        </div>
+        <div class="border-l-2 ml-10 p-2">
+          <h2>Abbrechen und verwerfen</h2>
+          <button style="margin-left: 5px" mat-raised-button color="warn" (click)="goBack()"><mat-icon>delete</mat-icon>Abbrechen</button>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+      <br>
+      <h3>Vorschau</h3>
+      <br>
+      <div>
+        <div style="position: absolute; background-color: rgba(1,1,1,0.2); width: 96%; height: 26%; z-index: 100; overflow:hidden;"></div>
+        <h3 style="position: absolute; z-index: 100; font-size: 120px; text-align: center; width: 96%; margin-top: 100px; color: grey; transform: rotate(-20deg);"> Vorschau </h3>
+      </div>
+      <app-event
+        [orgEvent]=
+          '{
           id: "0",
           name: form.eventName,
           description: form.eventDescription,
           childs:
           [
             {
-              eventStart: "none",
-              eventEnd: "none"
+              eventStart: (form.eventType == "single" ? singleStartDate.value!.toString() : ""),
+              eventEnd: (form.eventType == "single" ? singleEndDate.value!.toString() : "")
             }
           ],
-          serial: false,
+          serial: (form.eventType == "serial" || form.eventType == "multi"),
           organizationName: "none",
           location: form.location,
           parentId: "none",
@@ -331,12 +478,20 @@
           },
           organizationId: "none",
           organisator: true,
-          tutor: true,
-          attender: true
+          tutor: false,
+          attender: false,
+          invited: false
           }'
-      [orgId]="this.currentOrganization"></app-event>
-    <br>
-    <mat-divider></mat-divider>
-    <br>
-  </mat-step>
-</mat-stepper>
+        [orgId]="this.currentOrganization"></app-event>
+      <br>
+      <mat-divider></mat-divider>
+      <br>
+      <br>
+      <hr>
+      <br>
+      <div>
+        <button mat-raised-button matStepperPrevious><mat-icon>arrow_left</mat-icon>Zurück</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</div>

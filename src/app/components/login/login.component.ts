@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {AuthService} from "../../services/AuthService";
 import {StorageService} from "../../services/StorageService";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
@@ -38,8 +38,19 @@ export class LoginComponent {
 
   loading : boolean = false;
 
-  constructor(private authService : AuthService, private storageService : StorageService, private router : Router, private snackBar : MatSnackBar) {
+  params? : Params;
 
+  constructor(private authService : AuthService,
+              private storageService : StorageService,
+              private router : Router,
+              private route: ActivatedRoute,
+              private snackBar : MatSnackBar) {
+
+    this.route.queryParams.subscribe(data => {
+
+      this.params = data;
+
+    })
   }
 
   onSubmit() : void {
@@ -48,11 +59,29 @@ export class LoginComponent {
     this.authService.login(this.form.email, this.form.password).subscribe(sucess => {
 
       this.storageService.saveUser(sucess);
+      this.storageService.saveUserId(sucess.id.toString());
       this.storageService.saveEmail(sucess.email.toString());
       this.storageService.saveOrganizationList(sucess.organizations);
       this.storageService.savePlattformAdmin(sucess.plattformAdmin)
 
-      this.router.navigate(['/dashboard']);
+      if (this.params) {
+        if (this.params['locationToRedirectAfterLogin']) {
+          console.log(this.params['orgId'] + " sdsd " + this.params['eventId'])
+          if (this.params['orgId'] && this.params['eventId']) {
+            console.log("redirecting ...")
+            this.router.navigate(['/organizations/' + this.params['orgId'] + '/event/' + this.params['eventId'] + '/details'], { queryParams: { view: 'description' } })
+          } else {
+            console.log("standard login3")
+            this.router.navigate(['/dashboard']);
+          }
+        } else {
+          console.log("standard login2")
+          this.router.navigate(['/dashboard']);
+        }
+      } else {
+        console.log("standard login1")
+        this.router.navigate(['/dashboard']);
+      }
     }, error => {
       this.snackBar.open('Die eingegebenen Zugangsdaten sind nicht korrekt', 'OK', {duration: 5000});
       this.loading = false;

@@ -48,6 +48,7 @@ describe('StorageService', () => {
     //given
     const loginResponse: LoginResponse = {
       token: "hello",
+      refreshToken: "hello",
       type: "user",
       id: "123",
       username: "test",
@@ -65,6 +66,7 @@ describe('StorageService', () => {
     //given
     const loginResponse: LoginResponse = {
       token: "hello",
+      refreshToken: "hello",
       type: "user",
       id: "123",
       username: "test",

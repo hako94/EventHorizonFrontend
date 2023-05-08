@@ -1,16 +1,18 @@
-<mat-toolbar color="primary">
+<div class="max-w-full overflow-x-hidden">
+  <mat-toolbar color="primary">
   <span style="display: flex; align-items: center; justify-content: center; flex-grow: 1">
     <mat-icon routerLink="/dashboard" class="cursor-pointer">home</mat-icon>
     <h1 style="margin: 0px 0px 0px 10px;">Event Horizon</h1>
     <span class="mx-3 pt-2.5"><button *ngIf="isLoggedInPlatformAdmin()"><mat-icon routerLink="/platform-settings" class="cursor-pointer">settings</mat-icon></button></span>
     <span style="flex-grow: 4"></span>
+    <span class="text-neutral-400 text-xs mr-3 cursor-pointer" routerLink="/impressum">Impressum</span>
     <div *ngIf="!foundSession()">
       <button mat-raised-button aria-label="Login" routerLink="/login">
         <mat-icon>login</mat-icon>
         Login
       </button>
     </div>
-    <div *ngIf="foundSession()">
+    <div *ngIf="foundSession()" class="max-sm:max-w-[30px] max-sm:overflow-x-hidden">
       <button [matMenuTriggerFor]="menu" mat-button>
         {{ getUserEmail() }}
         <mat-icon>person</mat-icon>
@@ -22,4 +24,5 @@
       </mat-menu>
     </div>
   </span>
-</mat-toolbar>
+  </mat-toolbar>
+</div>
