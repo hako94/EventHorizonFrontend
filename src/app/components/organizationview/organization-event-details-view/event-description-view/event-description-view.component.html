@@ -75,46 +75,46 @@
         </mat-card-subtitle>
       </div>
       <div class="ml-auto">
-        <button
+        <button class="mr-4"
           *ngIf="!(!eventModel.organisator || !eventModel.tutor) && (!eventModel.attender && (eventModel.eventStatus.id == 2) && !eventModel.invited && !eventModel.serial && (eventModel.parentId == null))"
           mat-raised-button color="primary" (click)="book()">Teilnehmen
         </button>
-        <button
+        <button class="mr-4"
           *ngIf="!(!eventModel.organisator || !eventModel.tutor) && (eventModel.attender && (eventModel.eventStatus.id == 2) && !eventModel.invited && !eventModel.serial && (eventModel.parentId == null))"
           mat-raised-button color="primary" (click)="signOff()">Abmelden
         </button>
-        <button *ngIf="eventModel.invited" class="ml-4" (click)="acceptInvite()" mat-raised-button>Annehmen</button>
-        <button *ngIf="eventModel.invited" class="ml-4" (click)="declineInvite()" mat-raised-button color="warn">
+        <button *ngIf="eventModel.invited" class="mr-4" (click)="acceptInvite()" mat-raised-button>Annehmen</button>
+        <button *ngIf="eventModel.invited" class="mr-4" (click)="declineInvite()" mat-raised-button color="warn">
           Ablehnen
         </button>
-        <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 1" class="ml-4"
+        <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 1" class="mr-4"
                 mat-raised-button color="primary" (click)="setStatus(2)">Freigeben
         </button>
-        <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 2" class="mr-4 ml-4"
+        <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 2" class="mr-4"
                 mat-raised-button color="primary"
                 (click)="setStatus(3)"
                 matTooltip="Manuelles Starten eines Events erst 24h vor Eventstart möglich, Event wird automatisch 2h vor Beginn gestartet">
           Starten
         </button>
-        <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 2" mat-raised-button
+        <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 2" class="mr-4" mat-raised-button
                 color="warn" (click)="setStatus(5)"
                 matTooltip="Das Event wird abgesagt und für Teilnehmer nicht mehr angezeigt">Absagen
         </button>
-        <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 3" class="ml-4"
+        <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 3" class="mr-4"
                 mat-raised-button color="warn" (click)="setStatus(4)"
                 matTooltip="Das Event wird automatisch 1h nach Schluss beendet, manuelles Beenden erst nach eingetragenem Event Ende möglich">Beenden
         </button>
-        <button *ngIf="(roleIdInEvent==10 || roleIdInEvent==11) && (eventModel.eventStatus.id == 1 || eventModel.eventStatus.id == 4 || eventModel.eventStatus.id == 5)" class="ml-4"
+        <button *ngIf="(roleIdInEvent==10 || roleIdInEvent==11) && (eventModel.eventStatus.id == 1 || eventModel.eventStatus.id == 4 || eventModel.eventStatus.id == 5)" class="mr-4"
                 mat-raised-button color="warn" (click)="setStatus(6)">Löschen
         </button>
-        <button class="ml-4" mat-raised-button color="primary"
+        <button class="mr-4" mat-raised-button color="primary"
                 (click)="editMode = true"
                 *ngIf="!editMode && !eventModel.parentId &&(roleIdInEvent==10 || roleIdInEvent==11)">Bearbeiten
         </button>
-        <button class="ml-4" mat-raised-button color="primary" (click)="safeAndPersist()"
+        <button class="mr-4" mat-raised-button color="primary" (click)="safeAndPersist()"
                 *ngIf="editMode && (roleIdInEvent==10 || roleIdInEvent==11)">Speichern
         </button>
-        <button mat-raised-button color="primary" class="ml-4 !hidden sm:!inline-flex" (click)="safeAsTemplate()" *ngIf="(roleIdInEvent==10) && !eventModel.parentId">
+        <button mat-raised-button color="primary" class="mr-4 !hidden sm:!inline-flex" (click)="safeAsTemplate()" *ngIf="(roleIdInEvent==10) && !eventModel.parentId">
           Als Vorlage speichern
         </button>
       </div>
