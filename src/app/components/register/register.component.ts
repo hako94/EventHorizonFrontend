@@ -44,7 +44,6 @@ export class RegisterComponent {
 
       if (params['newUser'] == 'false') {
         this.withNewUser = false;
-        //TODO: Check session.isalive
       }
 
       this.organization = params['OrganizationId']

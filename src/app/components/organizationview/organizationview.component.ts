@@ -39,7 +39,6 @@ export class OrganizationviewComponent implements OnInit{
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
 
-      //TODO direkte Übersetzung ohne if / else Block
       if (params['view'] == "mails")
         this.currentParam = this.mailsViewParam;
       else if (params['view'] == "events")

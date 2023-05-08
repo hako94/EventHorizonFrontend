@@ -9,8 +9,6 @@ import {Observable, of} from "rxjs";
 })
 export class ImageGetServiceService {
 
-  //TODO
-
   images : Map<string, string> = new Map<string, any>();
 
   constructor(private httpClient : HttpClient, private sanitizer : DomSanitizer, private dataService : DataService) {

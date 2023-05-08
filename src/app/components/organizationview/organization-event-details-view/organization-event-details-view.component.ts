@@ -65,7 +65,6 @@ export class OrganizationEventDetailsViewComponent {
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
 
-      //TODO direkte Übersetzung ohne if / else Block
       if (params['view'] == "description") {
         this.currentParam = this.descriptionViewParam;
       } else if (params['view'] == "survey") {

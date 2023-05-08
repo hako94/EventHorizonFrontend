@@ -36,8 +36,8 @@ export class DashboardComponent implements OnInit {
    * Adds Events to event-radar that begin within the next 6 weeks
    */
   addAllEvents() {
-    let periodStart : string = new Date(Date.now()).toISOString().slice(0, 10);
-    let periodEnd : string = new Date(Date.now() + (6.048e+8 * 6)).toISOString().slice(0, 10); //TODO auf 2 Wochen reduzieren
+    let periodStart : string = new Date(Date.now() - (6.048e+8)).toISOString().slice(0, 10);
+    let periodEnd : string = new Date(Date.now() + (6.048e+8 * 2)).toISOString().slice(0, 10);
     this.dataService.getAllEventsForUser(periodStart, periodEnd).subscribe(success => {
       this.currentEvents = success;
       success.forEach(console.log)
