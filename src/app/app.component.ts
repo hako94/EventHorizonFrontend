@@ -23,8 +23,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
-    //TODO: remove session Check from component
-    //TODO: safe check
     if (!this.storageService.getUser() &&
       !this.location.path().includes("newUser") &&
       !this.location.path().includes("register") &&

@@ -9,7 +9,6 @@ import {DomSanitizer} from "@angular/platform-browser";
 })
 export class OrganizationItemComponent implements OnInit{
 
-  //TODO: combined INPUT with MODEL
   @Input() name = '';
   @Input() description = '';
   @Input() id = '';
