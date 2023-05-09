@@ -48,8 +48,8 @@
           <div class="flex flex-grow"></div>
           <div>
             <div class="flex flex-col sm:flex-row">
-              <button *ngIf="!orgEvent.organisator && !orgEvent.tutor && !orgEvent.attender && orgEvent.eventStatus.id == 2 && !orgEvent.invited && !orgEvent.serial && orgEvent.parentId == null" mat-raised-button color="primary" (click)="book()">Teilnehmen</button>
-              <button *ngIf="!orgEvent.organisator && !orgEvent.tutor && orgEvent.attender && orgEvent.eventStatus.id == 2 && !orgEvent.invited && !orgEvent.serial && orgEvent.parentId == null" mat-raised-button color="primary" (click)="signOff()">Abmelden</button>
+              <button *ngIf="!orgEvent.organisator && !orgEvent.tutor && !orgEvent.attender && orgEvent.eventStatus.id == 2 && !orgEvent.invited && orgEvent.parentId == null" mat-raised-button color="primary" (click)="book()">Teilnehmen</button>
+              <button *ngIf="!orgEvent.organisator && !orgEvent.tutor && orgEvent.attender && orgEvent.eventStatus.id == 2 && !orgEvent.invited && orgEvent.parentId == null" mat-raised-button color="primary" (click)="signOff()">Abmelden</button>
               <button *ngIf="orgEvent.invited" class="ml-4" (click)="acceptInvite()" mat-raised-button>Annehmen</button>
               <button *ngIf="orgEvent.invited" class="ml-4" (click)="declineInvite()" mat-raised-button color="warn">Ablehnen</button>
               <button class="ml-4" (click)="routeToEventDetails()" mat-raised-button>Details</button>
