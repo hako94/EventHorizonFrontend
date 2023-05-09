@@ -106,6 +106,11 @@ export class OrganizationAddeventComponent {
   multiEventTimeStringStart: string = '';
   multiEventTimeStringEnd: string = '';
 
+  serialStartDate = new FormControl(new Date());
+  serialEndDate = new FormControl(new Date());
+  serialEventStartTime : string = '';
+  serialEventEndTime : string = '';
+
   toPersistEmails: NotificationPostDto[] = [];
   shownPreviewImage: any;
 
@@ -272,7 +277,10 @@ export class OrganizationAddeventComponent {
 
     } else if (this.form.eventType == "serial") {
 
-      if (this.startDate.value != null && this.endDate.value != null) {
+      this.attachTimeToDate(this.serialStartDate, this.serialEventStartTime);
+      this.attachTimeToDate(this.serialEndDate, this.serialEventEndTime)
+
+      if (this.serialStartDate.value != null && this.serialEndDate.value != null) {
         modelExtended =
           {
             ...model,
@@ -286,8 +294,8 @@ export class OrganizationAddeventComponent {
               [
                 {
                   //id: 0 removedID, may break
-                  eventStart: this.dateToLocalDateTimeString(this.startDate.value),
-                  eventEnd: this.dateToLocalDateTimeString(this.endDate.value)
+                  eventStart: this.dateToLocalDateTimeString(this.serialStartDate.value),
+                  eventEnd: this.dateToLocalDateTimeString(this.serialEndDate.value)
                 }
               ]
           }
