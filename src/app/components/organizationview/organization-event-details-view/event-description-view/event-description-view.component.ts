@@ -20,7 +20,7 @@ export class EventDescriptionViewComponent implements OnInit {
 
   @Input() orgaID = '';
   @Input() eventID = '';
-  @Input() roleIdInEvent: number = 12;
+  @Input() roleIdInEvent: number = 99;
 
   editMode : boolean = false;
   multiEvent : boolean = false;
@@ -170,6 +170,7 @@ export class EventDescriptionViewComponent implements OnInit {
       .subscribe(success => {
         if (success.status == 200) {
           if (this.eventModel) {
+            this.roleIdInEvent = 12;
             this.eventModel.attender = true;
             this.snackBar.open('Erfolgreich für die Teilnahme am Event eingetragen', 'OK', {duration: 3000});
           }
@@ -182,6 +183,7 @@ export class EventDescriptionViewComponent implements OnInit {
       .subscribe(success => {
         if (success.status == 204) {
           if (this.eventModel) {
+            this.roleIdInEvent = 99;
             this.eventModel.attender = false;
             this.snackBar.open('Erfolgreich von der Teilnahme am Event abgemeldet', 'OK', {duration: 3000});
           }

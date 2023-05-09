@@ -87,7 +87,7 @@ export class OrganizationEventDetailsViewComponent {
       this.currentRoleAndStatus = success;
       if (this.currentRoleAndStatus.role == null){
         this.currentRoleAndStatus.role = {
-          id: 12,
+          id: 99,
           role: 'Teilnehmer',
         }
       }
