@@ -110,7 +110,14 @@ export class EventDescriptionViewComponent implements OnInit {
       const formData = new FormData();
       formData.append("file", file, file.name);
 
-      this.imageToPersist = formData;
+      let allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+
+      if (allowedExtensions.exec(file.name)) {
+        this.snackBar.open('Bild hochgeladen', 'OK', {duration: 3000});
+        this.imageToPersist = formData;
+      } else {
+        this.snackBar.open('Fehler: Es dürfen nur Bilder hochgeladen werden', 'OK', {duration: 3000});
+      }
     }
   }
 
@@ -164,6 +171,7 @@ export class EventDescriptionViewComponent implements OnInit {
         if (success.status == 200) {
           if (this.eventModel) {
             this.eventModel.attender = true;
+            this.snackBar.open('Erfolgreich für die Teilnahme am Event eingetragen', 'OK', {duration: 3000});
           }
         }
       });
@@ -175,6 +183,7 @@ export class EventDescriptionViewComponent implements OnInit {
         if (success.status == 204) {
           if (this.eventModel) {
             this.eventModel.attender = false;
+            this.snackBar.open('Erfolgreich von der Teilnahme am Event abgemeldet', 'OK', {duration: 3000});
           }
         }
       });
@@ -182,12 +191,14 @@ export class EventDescriptionViewComponent implements OnInit {
 
   acceptInvite() {
     this.dataService.acceptEventInvite(this.orgaID, this.eventID).subscribe(success => {
+      this.snackBar.open('Einladung erfolgreich angenommen', 'OK', {duration: 3000});
       window.location.reload();
     })
   }
 
   declineInvite() {
     this.dataService.declineEventInvite(this.orgaID, this.eventID).subscribe(success => {
+      this.snackBar.open('Einladung erfolgreich abgelehnt', 'OK', {duration: 3000});
       window.location.reload();
     })
   }
@@ -216,12 +227,15 @@ export class EventDescriptionViewComponent implements OnInit {
       }
       this.dataService.setEventUpdate(this.orgaID, this.eventID, eventUpdate).subscribe(() => {
         console.log(eventUpdate)
+        this.snackBar.open('Änderungen erfolgreich gespeichert', 'OK', {duration: 3000});
         this.ngOnInit()
       });
     }
 
     if (this.imageToPersist) {
-      this.dataService.storeEventImage(this.imageToPersist, this.orgaID, this.eventID).subscribe(() => { /*window.location.reload()*/ })
+      this.dataService.storeEventImage(this.imageToPersist, this.orgaID, this.eventID).subscribe(() => {
+        this.ngOnInit()
+      })
     }
     this.editMode = false;
   }
