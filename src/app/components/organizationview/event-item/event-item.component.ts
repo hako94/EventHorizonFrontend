@@ -34,12 +34,13 @@ export class EventItemComponent implements OnInit {
       if(this.orgEvent.pictureId == null) {
 
         this.dataService.getOrganizationInfos(this.orgId).subscribe(success => {
+          if (success.logoId) {
+            this.dataService.getImage(this.orgId, success.logoId).subscribe(success => {
 
-          this.dataService.getImage(this.orgId, success.logoId).subscribe(success => {
-
-            let objectURL = URL.createObjectURL(success);
-            this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-          })
+              let objectURL = URL.createObjectURL(success);
+              this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            })
+          }
         })
 
       } else {

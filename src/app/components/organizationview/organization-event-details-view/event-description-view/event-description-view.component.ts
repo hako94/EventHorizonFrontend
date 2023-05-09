@@ -70,26 +70,32 @@ export class EventDescriptionViewComponent implements OnInit {
       this.locationNew = this.eventModel.location;
       this.descriptionNew = this.eventModel.description;
 
-      this.dataService.getFileForEvent(this.orgaID, this.eventModel?.pictureId || 'error', this.eventID).subscribe(success => {
+      if (this.eventModel.pictureId) {
+        this.dataService.getFileForEvent(this.orgaID, this.eventModel?.pictureId || 'error', this.eventID).subscribe(success => {
 
-        let objectURL = URL.createObjectURL(success.body);
-        this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+          let objectURL = URL.createObjectURL(success.body);
+          this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
 
-      }, error => {
-
-        console.warn("Cant fetch Image for OrgID " + this.orgaID + " EventID " + this.eventID +  " : " + error.status + " using default Organization Image")
-
-        this.dataService.getOrganizationInfos(this.orgaID).subscribe(success => {
-
-          this.dataService.getImage(this.orgaID, success.logoId).subscribe(success => {
-
-            let objectURL = URL.createObjectURL(success);
-            this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-          })
+        }, error => {
+          this.fetchOrgImage();
+          console.warn("Cant fetch Image for OrgID " + this.orgaID + " EventID " + this.eventID + " : " + error.status + " using default Organization Image")
         })
-      })
+      } else {
+        this.fetchOrgImage();
+      }
+    })
+  }
 
-    });
+  fetchOrgImage() {
+    this.dataService.getOrganizationInfos(this.orgaID).subscribe(success => {
+      if (success.logoId) {
+        this.dataService.getImage(this.orgaID, success.logoId).subscribe(success => {
+
+          let objectURL = URL.createObjectURL(success);
+          this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+        })
+      }
+    })
   }
 
   onEventImageFileSelected(event: any) {
