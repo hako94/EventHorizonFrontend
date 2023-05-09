@@ -23,6 +23,7 @@ export class EventInvitesViewComponent {
   @Input() orgaID = '';
   @Input() eventID = '';
   @Input() roleIdInEvent!: number;
+  @Input() isChild = false;
 
   invitedUsers : EventInviteModel[] = [];
 

@@ -22,6 +22,7 @@ export class OrganizationEventDetailsViewComponent {
   attendanceViewParam: Params = {'view': 'attendance'};
   currentOrganization: string = '';
   currentEvent: string = '';
+  isChild: boolean = false;
 
   currentRoleAndStatus: EventRoleStatusModel = {
     role: {
@@ -36,6 +37,7 @@ export class OrganizationEventDetailsViewComponent {
   currentParam?: Params;
 
   constructor(private location: Location, private router: Router, private activatedRoute: ActivatedRoute, private storageService: StorageService, private dataService: DataService) {
+    this.isChild = false;
 
     let orga = this.location.path().split('/').at(2)?.toString();
 
@@ -98,6 +100,12 @@ export class OrganizationEventDetailsViewComponent {
         }
       }
     });
+
+    this.dataService.getSingleEvent(this.currentOrganization, this.currentEvent).subscribe(success => {
+      if (success) {
+        this.isChild = !!success.parentId;
+      }
+    })
   }
 
   updateURLWithParam(param: Params): void {
