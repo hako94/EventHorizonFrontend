@@ -96,8 +96,10 @@ export class OrganizationAddeventComponent {
 
   minDate = new Date();
 
-  singleStartDate = new FormControl(new Date());
-  singleEndDate = new FormControl(new Date());
+  singleEventStartDate = new FormControl(new Date());
+  singleEventEndDate = new FormControl(new Date());
+  singleEventTimeStringStart = '';
+  singleEventTimeStringEnd = '';
 
   toPersistEmails: NotificationPostDto[] = [];
 
@@ -213,8 +215,6 @@ export class OrganizationAddeventComponent {
 
   persistData(): void {
 
-    console.warn(this.singleStartDate.value)
-
     let model: baseModel = {
       name: this.form.eventName,
       description: this.form.eventDescription,
@@ -245,7 +245,16 @@ export class OrganizationAddeventComponent {
     let modelExtended;
 
     if (this.form.eventType == "single") {
-      if (this.singleStartDate.value != null && this.singleEndDate.value != null) {
+
+      if (this.singleEventStartDate.value != null && this.singleEventEndDate.value != null) {
+
+        if (this.singleEventTimeStringStart && this.singleEventTimeStringEnd) {
+
+          this.attachTimeToDate(this.singleEventStartDate, this.singleEventTimeStringStart);
+          this.attachTimeToDate(this.singleEventEndDate, this.singleEventTimeStringEnd);
+
+        }
+
         modelExtended = {
           ...model,
           serial: false,
@@ -253,8 +262,8 @@ export class OrganizationAddeventComponent {
             [
               {
                 //id: 0, remove ID, may break
-                eventStart: this.dateToLocalDateTimeString(this.singleStartDate.value),
-                eventEnd: this.dateToLocalDateTimeString(this.singleEndDate.value)
+                eventStart: this.dateToLocalDateTimeString(this.singleEventStartDate.value),
+                eventEnd: this.dateToLocalDateTimeString(this.singleEventEndDate.value)
               }
             ]
         }
@@ -463,7 +472,7 @@ export class OrganizationAddeventComponent {
 
     this.disabledTemplateSafe = true;
 
-    if (this.form.eventType == "single" && this.singleStartDate != null && this.singleEndDate != null) {
+    if (this.form.eventType == "single" && this.singleEventStartDate != null && this.singleEventEndDate != null) {
 
       let template: EventTemplatePrefillModel = {
         name: this.form.eventName,
@@ -473,8 +482,8 @@ export class OrganizationAddeventComponent {
         childs:
           [
             {
-              eventStart: this.dateToLocalDateTimeString(this.singleStartDate.value || new Date()),
-              eventEnd: this.dateToLocalDateTimeString(this.singleEndDate.value || new Date())
+              eventStart: this.dateToLocalDateTimeString(this.singleEventStartDate.value || new Date()),
+              eventEnd: this.dateToLocalDateTimeString(this.singleEventEndDate.value || new Date())
             }
           ],
         serial: (this.childs.length > 1)
@@ -540,14 +549,14 @@ export class OrganizationAddeventComponent {
         if (template.childs.length == 1) {
           this.form.eventType = "single";
 
-          this.singleStartDate.setValue(new Date(template.childs[0].eventStart));
-          this.singleEndDate.setValue(new Date(template.childs[0].eventEnd))
+          this.singleEventStartDate.setValue(new Date(template.childs[0].eventStart));
+          this.singleEventEndDate.setValue(new Date(template.childs[0].eventEnd))
 
           this.singleEndTime = (template.childs[0].eventEnd.split('T').at(1) || "0").slice(0, 5);
           this.singleStartTime = (template.childs[0].eventStart.split('T').at(1) || "0").slice(0, 5);
 
-          this.attachTimeToDate(this.singleStartDate, this.singleStartTime);
-          this.attachTimeToDate(this.singleEndDate, this.singleEndTime);
+          this.attachTimeToDate(this.singleEventStartDate, this.singleStartTime);
+          this.attachTimeToDate(this.singleEventEndDate, this.singleEndTime);
 
         } else if (template.childs.length == 2) {
           this.form.eventType = "multi";
@@ -599,8 +608,6 @@ export class OrganizationAddeventComponent {
       }
     })
   }
-
-  protected readonly Number = Number;
 
   attachTimeToDate(date: FormControl<Date | null>, time: string) {
 

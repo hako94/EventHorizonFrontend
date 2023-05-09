@@ -168,20 +168,20 @@
               <h3>Einzelevent-Details</h3>
               <mat-form-field appearance="fill">
                 <mat-label>Beginn</mat-label>
-                <input [min]="minDate" matInput [matDatepicker]="startPicker" [formControl]="singleStartDate">
+                <input [min]="minDate" matInput [matDatepicker]="startPicker" [formControl]="singleEventStartDate">
                 <mat-hint>DD.MM.YYYY</mat-hint>
                 <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
                 <mat-datepicker #startPicker></mat-datepicker>
               </mat-form-field>
               <mat-form-field class="ml-2">
                 <mat-label>Start-Uhrzeit</mat-label>
-                <input type="time" required #singleStart [(ngModel)]="singleStartTime" (input)="attachTimeToDate(singleStartDate, singleStart.value)" matInput>
+                <input type="time" required #singleStart [(ngModel)]="singleEventTimeStringStart" matInput>
                 <mat-hint>hh:mm</mat-hint>
               </mat-form-field>
               <br>
               <mat-form-field appearance="fill" class="mt-4">
                 <mat-label>Ende</mat-label>
-                <input matInput [min]="singleStartDate.value"  [matDatepicker]="endPicker" [formControl]="singleEndDate">
+                <input matInput [min]="singleEventStartDate.value"  [matDatepicker]="endPicker" [formControl]="singleEventEndDate">
                 <mat-hint>DD.MM.YYYY</mat-hint>
                 <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
                 <mat-error>Der Endzeitpunkt muss gültig sein und nach dem Beginn liegen</mat-error>
@@ -189,7 +189,7 @@
               </mat-form-field>
               <mat-form-field class="ml-2">
                 <mat-label>End-Uhrzeit</mat-label>
-                <input type="time" required #singleEnd [(ngModel)]="singleEndTime" (input)="attachTimeToDate(singleEndDate, singleEnd.value)" matInput>
+                <input type="time" required #singleEnd [(ngModel)]="singleEventTimeStringEnd" matInput>
                 <mat-hint>hh:mm</mat-hint>
                 <mat-error></mat-error>
               </mat-form-field>
@@ -463,8 +463,8 @@
           childs:
           [
             {
-              eventStart: (form.eventType == "single" ? singleStartDate.value!.toString() : ""),
-              eventEnd: (form.eventType == "single" ? singleEndDate.value!.toString() : "")
+              eventStart: (form.eventType == "single" ? singleEventStartDate.value!.toString() : ""),
+              eventEnd: (form.eventType == "single" ? singleEventEndDate.value!.toString() : "")
             }
           ],
           serial: (form.eventType == "serial" || form.eventType == "multi"),
