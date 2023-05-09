@@ -19,7 +19,7 @@
             <label class="hidden sm:block mt-8 text-center">Bild hier ablegen oder klicken zum auswählen</label>
           </div>
           <input class="w-64 h-64 opacity-0 z-20 absolute top-0"
-                 (change)="onEventImageFileSelected($event)" type="file">
+                 (change)="onEventImageFileSelected($event)" type="file" accept="image/png, image/jpg, image/jpeg">
         </div>
         <br>
       </div>
@@ -112,19 +112,19 @@
           Beenden
         </button>
         <button
-          *ngIf="(roleIdInEvent==10 || roleIdInEvent==11) && (eventModel.eventStatus.id == 1 || eventModel.eventStatus.id == 4 || eventModel.eventStatus.id == 5) && (eventModel.parentId == null)"
+          *ngIf="(roleIdInEvent==10) && (eventModel.eventStatus.id == 1 || eventModel.eventStatus.id == 4 || eventModel.eventStatus.id == 5) && (eventModel.parentId == null)"
           class="mr-4 mb-4"
           mat-raised-button color="warn" (click)="setStatus(6)"><mat-icon>delete</mat-icon>Löschen
         </button>
         <button class="mr-4 mb-4" mat-raised-button color="primary"
                 (click)="editMode = true"
-                *ngIf="!editMode && !eventModel.parentId &&(roleIdInEvent==10 || roleIdInEvent==11)"><mat-icon>edit</mat-icon>Bearbeiten
+                *ngIf="!editMode && !eventModel.parentId &&(roleIdInEvent==10)"><mat-icon>edit</mat-icon>Bearbeiten
         </button>
         <button class="mr-4 mb-4" mat-raised-button color="primary" (click)="safeAndPersist()"
-                *ngIf="editMode && (roleIdInEvent==10 || roleIdInEvent==11)"><mat-icon>save</mat-icon>Speichern
+                *ngIf="editMode && (roleIdInEvent==10)"><mat-icon>save</mat-icon>Speichern
         </button>
         <button mat-raised-button color="primary" class="mr-4 mb-4 !hidden sm:!inline-flex" (click)="safeAsTemplate()"
-                *ngIf="(roleIdInEvent==10) && !eventModel.parentId"><mat-icon>save_alt</mat-icon>
+                *ngIf="(roleIdInEvent==10 || hasRole(1)) && !eventModel.parentId"><mat-icon>save_alt</mat-icon>
           Als Vorlage speichern
         </button>
       </div>
