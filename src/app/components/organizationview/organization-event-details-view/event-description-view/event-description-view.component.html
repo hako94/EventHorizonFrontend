@@ -82,11 +82,11 @@
       </div>
       <div class="ml-auto">
         <button class="mr-4 mb-4"
-                *ngIf="!eventModel.organisator && !eventModel.tutor && !eventModel.attender && (eventModel.eventStatus.id == 2) && !eventModel.invited && (eventModel.parentId == null)"
+                *ngIf="!(roleIdInEvent == 10) && !(roleIdInEvent == 11) && !eventModel.attender && (eventModel.eventStatus.id == 2) && !eventModel.invited && (eventModel.parentId == null)"
                 mat-raised-button color="primary" (click)="book()"><mat-icon>assignment_turned_in</mat-icon>Teilnehmen
         </button>
         <button class="mr-4 mb-4"
-                *ngIf="!eventModel.organisator && !eventModel.tutor && eventModel.attender && (eventModel.eventStatus.id == 2) && !eventModel.invited && (eventModel.parentId == null)"
+                *ngIf="!(roleIdInEvent == 10) && !(roleIdInEvent == 11) && eventModel.attender && (eventModel.eventStatus.id == 2) && !eventModel.invited && (eventModel.parentId == null)"
                 mat-raised-button color="primary" (click)="signOff()"><mat-icon>power_settings_new</mat-icon>Abmelden
         </button>
         <button *ngIf="eventModel.invited" class="mr-4 mb-4" (click)="acceptInvite()" mat-raised-button><mat-icon>check_circle_outline</mat-icon>Annehmen</button>

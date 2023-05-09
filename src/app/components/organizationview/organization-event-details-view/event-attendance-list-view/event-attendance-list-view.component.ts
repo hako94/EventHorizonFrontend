@@ -107,8 +107,7 @@ export class EventAttendanceListViewComponent {
     this.inviteLoading = true;
     if (this.requireMatch(this.eventInviteControl.value!.email)) {
       console.log(this.selectedRole);
-      console.log(this.eventInviteControl.value!.id);
-      this.dataService.acceptEvent(this.orgaID, this.eventID, this.eventInviteControl.value!.id).subscribe(success => {
+      this.dataService.acceptEvent(this.orgaID, this.eventID, this.eventInviteControl.value!.email).subscribe(success => {
         console.log(success);
         this.snackBar.open('Einladung wurde erfolgreich versandt', 'OK', {duration: 3000});
         this.inviteLoading = false;
