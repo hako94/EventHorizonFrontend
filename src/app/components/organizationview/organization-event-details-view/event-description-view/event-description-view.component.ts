@@ -294,4 +294,12 @@ export class EventDescriptionViewComponent implements OnInit {
       date.value?.setMinutes(minutes)
     }
   }
+
+  addChildToSerial() {
+    if (this.eventModel?.eventRepeatScheme?.repeatTimes) {
+      this.eventModel.eventRepeatScheme.repeatTimes = this.eventModel.eventRepeatScheme.repeatTimes +1;
+      this.safeAndPersist();
+      this.snackBar.open('Event-Wiederholung wird an Serie angefügt...', 'OK', {duration: 3000});
+    }
+  }
 }

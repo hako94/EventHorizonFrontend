@@ -30,7 +30,9 @@
         <mat-card-subtitle class="whitespace-nowrap" *ngIf="!editMode">
           <label *ngIf="eventModel.serial"><strong>Datum erstes Event</strong></label>
           <label *ngIf="!eventModel.serial"><strong>Beginn</strong></label>
-          <p>{{eventModel.childs[eventModel.childs.length - 1].eventStart.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}}</p>
+          <p *ngIf="!eventModel.serial">{{eventModel.childs[eventModel.childs.length - 1].eventStart.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}}</p>
+          <p *ngIf="eventModel.serial">{{eventModel.childs[0].eventStart.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}} bis
+            {{eventModel.childs[0].eventEnd.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}}</p>
         </mat-card-subtitle>
         <!--<mat-card-subtitle *ngIf="editMode">
           <mat-form-field appearance="fill">
@@ -46,7 +48,9 @@
         <mat-card-subtitle class="whitespace-nowrap" *ngIf="!editMode">
           <label *ngIf="eventModel.serial"><strong>Datum letztes Event</strong></label>
           <label *ngIf="!eventModel.serial"><strong>Ende</strong></label>
-          <p>{{eventModel.childs[eventModel.childs.length - 1].eventEnd.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}}</p>
+          <p *ngIf="!eventModel.serial">{{eventModel.childs[eventModel.childs.length - 1].eventEnd.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}}</p>
+          <p *ngIf="eventModel.serial">{{eventModel.childs[eventModel.childs.length - 1].eventStart.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}} bis
+            {{eventModel.childs[eventModel.childs.length - 1].eventEnd.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}}</p>
         </mat-card-subtitle>
         <!--<mat-card-subtitle *ngIf="editMode">
           <mat-form-field appearance="fill">
@@ -179,7 +183,6 @@
         </ng-container>
         <div class="mr-10 mt-4 mb-8" *ngIf="editMode && multiEvent">
           <h2>Weiterer Termin</h2>
-          <h3>Einzelevent-Details</h3>
           <mat-form-field appearance="fill">
             <mat-label>Beginn</mat-label>
             <input [min]="minDate" matInput [matDatepicker]="startPicker" [formControl]="singleStartDate">
@@ -212,7 +215,17 @@
             Hinzufügen
           </button>
         </div>
+        <div class="mr-10 mt-4 mb-8" *ngIf="editMode && !multiEvent && eventModel?.serial">
+          <h2>Weiterer Termin</h2>
+          <mat-card-subtitle>
+            <p>Eine weitere Termin-Wiederholung <br> an die Serie anfügen</p>
+          </mat-card-subtitle>
+          <button mat-raised-button color="primary" (click)="addChildToSerial()">
+            <mat-icon>exposure_plus_1</mat-icon>
+            Hinzufügen
+          </button>
         </div>
       </div>
+    </div>
   </mat-card>
 </ng-container>
