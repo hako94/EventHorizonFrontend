@@ -22,35 +22,35 @@ export class EventDescriptionViewComponent implements OnInit {
   @Input() eventID = '';
   @Input() roleIdInEvent: number = 99;
 
-  editMode : boolean = false;
-  multiEvent : boolean = false;
-  imageToPersist? : FormData;
+  editMode: boolean = false;
+  multiEvent: boolean = false;
+  imageToPersist?: FormData;
 
   shownimage: any;
-  eventModel? : OrganizationEventModel;
+  eventModel?: OrganizationEventModel;
 
-  locationNew : string = '';
-  descriptionNew : string = '';
-  nameNew : string = '';
+  locationNew: string = '';
+  descriptionNew: string = '';
+  nameNew: string = '';
 
-  singleStartTime: string = '';
-  singleEndTime: string = '';
+  singleEventStartDate = new FormControl(new Date());
+  singleEventEndDate = new FormControl(new Date());
+  singleEventTimeStringStart = '';
+  singleEventTimeStringEnd = '';
   minDate = new Date();
-  singleStartDate = new FormControl(new Date());
-  singleEndDate = new FormControl(new Date());
 
-  constructor(private dataService : DataService,
-              private sanitizer : DomSanitizer,
+  constructor(private dataService: DataService,
+              private sanitizer: DomSanitizer,
               private storageService: StorageService,
-              private activeRoute : ActivatedRoute,
-              private dialog : MatDialog,
-              private snackBar : MatSnackBar) {
+              private activeRoute: ActivatedRoute,
+              private dialog: MatDialog,
+              private snackBar: MatSnackBar) {
 
   }
 
   ngOnInit(): void {
     this.activeRoute.url.subscribe(url => {
-      if (url.at(3)){
+      if (url.at(3)) {
         if (url[3].path != this.eventID) {
           this.window.location.reload();
         }
@@ -63,6 +63,13 @@ export class EventDescriptionViewComponent implements OnInit {
       if (this.eventModel) {
         if (this.eventModel.serial && this.eventModel.eventRepeatScheme == null) {
           this.multiEvent = true;
+        } else if (this.eventModel.serial) {
+
+        } else {
+          this.singleEventStartDate.setValue(new Date(this.eventModel.childs[0].eventStart));
+          this.singleEventEndDate.setValue(new Date(this.eventModel.childs[0].eventEnd));
+          this.singleEventTimeStringStart = (this.eventModel.childs[0].eventStart.split('T').at(1) || "0").slice(0, 5);
+          this.singleEventTimeStringEnd = (this.eventModel.childs[0].eventEnd.split('T').at(1) || "0").slice(0, 5);
         }
       }
       console.warn(this.eventModel);
@@ -101,7 +108,7 @@ export class EventDescriptionViewComponent implements OnInit {
   onEventImageFileSelected(event: any) {
 
     const fileReader = new FileReader();
-    const file:File = event.target.files[0];
+    const file: File = event.target.files[0];
 
     if (file) {
 
@@ -121,9 +128,14 @@ export class EventDescriptionViewComponent implements OnInit {
     }
   }
 
-  setStatus(id: number){
-    if(id == 4) { //beenden
-      const dialogRef = this.dialog.open(DeletionConfirmationComponent, {data: {message: 'Wollen Sie das Event wirklich beenden?', buttonText: {ok: 'Ja, Beenden'}}});
+  setStatus(id: number) {
+    if (id == 4) { //beenden
+      const dialogRef = this.dialog.open(DeletionConfirmationComponent, {
+        data: {
+          message: 'Wollen Sie das Event wirklich beenden?',
+          buttonText: {ok: 'Ja, Beenden'}
+        }
+      });
       dialogRef.afterClosed().subscribe((confirmed: boolean) => {
         if (confirmed) {
           this.dataService.setEventStatus(this.orgaID, this.eventID, id).subscribe(success => {
@@ -133,7 +145,7 @@ export class EventDescriptionViewComponent implements OnInit {
           })
         }
       });
-    } else if(id == 6) { //löschen
+    } else if (id == 6) { //löschen
       const dialogRef = this.dialog.open(DeletionConfirmationComponent, {data: {message: 'Wollen Sie das Event wirklich löschen?'}});
       dialogRef.afterClosed().subscribe((confirmed: boolean) => {
         if (confirmed) {
@@ -145,7 +157,12 @@ export class EventDescriptionViewComponent implements OnInit {
         }
       });
     } else if (id == 5) { //absagen
-      const dialogRef = this.dialog.open(DeletionConfirmationComponent, {data: {message: 'Wollen Sie das Event wirklich absagen?', buttonText: {ok: 'Ja, Absagen'}}});
+      const dialogRef = this.dialog.open(DeletionConfirmationComponent, {
+        data: {
+          message: 'Wollen Sie das Event wirklich absagen?',
+          buttonText: {ok: 'Ja, Absagen'}
+        }
+      });
       dialogRef.afterClosed().subscribe((confirmed: boolean) => {
         if (confirmed) {
           this.dataService.setEventStatus(this.orgaID, this.eventID, id).subscribe(success => {
@@ -216,8 +233,24 @@ export class EventDescriptionViewComponent implements OnInit {
     }
 
     if (this.eventModel) {
+      if (!this.eventModel.serial) {
+        if (this.singleEventStartDate.value != null && this.singleEventEndDate.value != null) {
+
+          if (this.singleEventTimeStringStart && this.singleEventTimeStringEnd) {
+
+            this.attachTimeToDate(this.singleEventStartDate, this.singleEventTimeStringStart);
+            this.attachTimeToDate(this.singleEventEndDate, this.singleEventTimeStringEnd);
+
+            let startString = this.dateToLocalDateTimeString(this.singleEventStartDate.value);
+            let endString = this.dateToLocalDateTimeString(this.singleEventEndDate.value);
+
+            this.eventModel.childs[0].eventStart = startString;
+            this.eventModel.childs[0].eventEnd = endString;
+          }
+        }
+      }
       console.log(this.eventModel.childs)
-      let eventUpdate : EventPutModel = {
+      let eventUpdate: EventPutModel = {
         id: this.eventModel.id,
         name: this.nameNew,
         description: this.descriptionNew,
@@ -225,7 +258,6 @@ export class EventDescriptionViewComponent implements OnInit {
         childs: this.eventModel.childs,
         serial: this.eventModel.serial,
         eventStatus: this.eventModel.eventStatus,
-        eventRepeatScheme: this.eventModel.eventRepeatScheme
       }
       this.dataService.setEventUpdate(this.orgaID, this.eventID, eventUpdate).subscribe(() => {
         console.log(eventUpdate)
@@ -244,6 +276,7 @@ export class EventDescriptionViewComponent implements OnInit {
 
   protected readonly window = window;
   protected readonly parent = parent;
+  //singleEventStartDate: any;
 
   safeAsTemplate() {
     this.dataService.safeExistingEventAsTemplate(this.orgaID, this.eventID).subscribe(() => {
@@ -264,19 +297,16 @@ export class EventDescriptionViewComponent implements OnInit {
     const dialogRef = this.dialog.open(DeletionConfirmationComponent, {data: {message: 'Wollen Sie diesen Einzel-Termin wirklich aus der Serie entfernen?'}});
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        let newChilds : ChildEvent[] = [];
+        let newChilds: ChildEvent[] = [];
         let i = 0;
         this.eventModel?.childs.forEach(child => {
-          if(i != index) {
+          if (i != index) {
             newChilds.push(child);
           }
           i++;
         })
         if (this.eventModel) {
           this.eventModel.childs = newChilds;
-          if (this.eventModel.eventRepeatScheme) {
-            this.eventModel.eventRepeatScheme.repeatTimes = this.eventModel.eventRepeatScheme.repeatTimes -1;
-          }
         }
       }
     });
@@ -295,11 +325,41 @@ export class EventDescriptionViewComponent implements OnInit {
     }
   }
 
+  dateToLocalDateTimeString<T extends Date>(date: T): string {
+    const dateString: string = `${date.getFullYear()}-${(date.getMonth() + 1).toString()
+      .padStart(2, '0')}-${date.getDate().toString()
+      .padStart(2, '0')}T${date.getHours().toString()
+      .padStart(2, '0')}:${date.getMinutes().toString()
+      .padStart(2, '0')}:${date.getSeconds().toString()
+      .padStart(2, '0')}`;
+    return dateString;
+  }
+
   addChildToSerial() {
-    if (this.eventModel?.eventRepeatScheme?.repeatTimes) {
-      this.eventModel.eventRepeatScheme.repeatTimes = this.eventModel.eventRepeatScheme.repeatTimes +1;
-      this.safeAndPersist();
-      this.snackBar.open('Event-Wiederholung wird an Serie angefügt...', 'OK', {duration: 3000});
+    if (this.singleEventStartDate.value != null && this.singleEventEndDate.value != null) {
+
+      if (this.singleEventTimeStringStart && this.singleEventTimeStringEnd) {
+
+        this.attachTimeToDate(this.singleEventStartDate, this.singleEventTimeStringStart);
+        this.attachTimeToDate(this.singleEventEndDate, this.singleEventTimeStringEnd);
+
+        let startString = this.dateToLocalDateTimeString(this.singleEventStartDate.value);
+        let endString = this.dateToLocalDateTimeString(this.singleEventEndDate.value);
+
+        this.eventModel?.childs.push(new class implements ChildEvent {
+          eventEnd: string = endString;
+          eventStart: string = startString;
+        })
+
+        console.log(startString + '' + endString);
+
+        this.snackBar.open('Event-Wiederholung wird an Serie angefügt...', 'OK', {duration: 3000});
+
+      } else {
+        this.snackBar.open('Bitte geben Sie korrekte Uhrzeiten an', 'OK', {duration: 3000});
+      }
+    } else {
+      this.snackBar.open('Bitte geben Sie korrekte Datumswerte an', 'OK', {duration: 3000});
     }
   }
 }
