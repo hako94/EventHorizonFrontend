@@ -211,7 +211,7 @@
             </mat-form-field>
             <mat-form-field class="ml-2">
               <mat-label>Start-Uhrzeit</mat-label>
-              <input type="time" matInput #multiStart (input)="attachTimeToDate(startDate, multiStart.value)">
+              <input type="time" matInput #multiStart [(ngModel)]="multiEventTimeStringStart">
               <mat-hint>hh:mm</mat-hint>
             </mat-form-field>
             <br>
@@ -224,7 +224,7 @@
             </mat-form-field>
             <mat-form-field class="ml-2">
               <mat-label>End-Uhrzeit</mat-label>
-              <input type="time" matInput #multiEnd (input)="attachTimeToDate(endDate, multiEnd.value)">
+              <input type="time" matInput #multiEnd [(ngModel)]="multiEventTimeStringEnd">
               <mat-hint>hh:mm</mat-hint>
             </mat-form-field>
             <button class="ml-2" mat-raised-button color="primary"

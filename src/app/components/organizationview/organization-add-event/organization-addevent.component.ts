@@ -101,15 +101,16 @@ export class OrganizationAddeventComponent {
   singleEventTimeStringStart = '';
   singleEventTimeStringEnd = '';
 
-  toPersistEmails: NotificationPostDto[] = [];
+  startDate = new FormControl(new Date());
+  endDate = new FormControl(new Date());
+  multiEventTimeStringStart: string = '';
+  multiEventTimeStringEnd: string = '';
 
+  toPersistEmails: NotificationPostDto[] = [];
   shownPreviewImage: any;
 
   imageToPersist?: FormData;
   filesToPersist: FormData[] = [];
-
-  startDate = new FormControl(new Date());
-  endDate = new FormControl(new Date());
 
   currentOrganization: string = '';
 
@@ -437,6 +438,10 @@ export class OrganizationAddeventComponent {
   }
 
   addChildEvent(eventStart: Date | null, eventEnd: Date | null): void {
+
+    this.attachTimeToDate(this.startDate, this.multiEventTimeStringStart);
+    this.attachTimeToDate(this.endDate, this.multiEventTimeStringEnd);
+
     if (eventStart != null && eventEnd != null) {
       this.childs.push(
         {
@@ -652,8 +657,6 @@ export class OrganizationAddeventComponent {
       }
     })
   }
-
-  protected readonly Date = Date;
 
   deleteFromUsedMail(id: string, index: number) {
     let mails: EmailTemplateModel[] = [];
