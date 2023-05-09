@@ -30,7 +30,7 @@
             </mat-form-field>
           </div>
           <div class="justify-self-end flex">
-            <div *ngIf="this.editMode && this.editedUser==invitedUser.id">
+            <div *ngIf="this.editMode && this.editedUser==invitedUser.id &&!isChild">
               <button mat-icon-button color="primary" (click)="this.edit(invitedUser.id)">
                 <mat-icon>save</mat-icon>
               </button>

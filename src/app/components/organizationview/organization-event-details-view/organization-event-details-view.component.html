@@ -33,7 +33,7 @@
   </div>
   <div *ngIf="hasRole(1) || hasRole(2)">
     <a mat-tab-link
-       *ngIf="hasRole(1) || currentRoleAndStatus.role.id != 12"
+       *ngIf="(hasRole(1) || currentRoleAndStatus.role.id != 12) && !isChild"
        [active]="currentParam == invitesViewParam"
        (click)="updateURLWithParam(invitesViewParam)">Einladungen</a>
   </div>
@@ -59,7 +59,7 @@
   </app-event-description-view>
 </ng-container>
 <ng-container *ngIf="currentParam == attenderViewParam" class="mx-3">
-  <app-event-attender-view [orgaID]="currentOrganization" [eventID]="currentEvent" [roleIdInEvent]="currentRoleAndStatus.role.id">
+  <app-event-attender-view [orgaID]="currentOrganization" [eventID]="currentEvent" [roleIdInEvent]="currentRoleAndStatus.role.id" [isChild]="isChild">
   </app-event-attender-view>
 </ng-container>
 <ng-container *ngIf="currentParam == surveyViewParam" class="mx3">
@@ -74,8 +74,8 @@
   <app-event-files-view [orgaID]="currentOrganization" [eventID]="currentEvent" [roleIdInEvent]="currentRoleAndStatus.role.id">
   </app-event-files-view>
 </ng-container>
-<ng-container *ngIf="currentParam == invitesViewParam && currentRoleAndStatus.role.id != 99" class="mx-3">
-  <app-event-invites-view [orgaID]="currentOrganization" [eventID]="currentEvent" [roleIdInEvent]="currentRoleAndStatus.role.id">
+<ng-container *ngIf="currentParam == invitesViewParam && currentRoleAndStatus.role.id != 99 &&!isChild" class="mx-3">
+  <app-event-invites-view [orgaID]="currentOrganization" [eventID]="currentEvent" [roleIdInEvent]="currentRoleAndStatus.role.id" [isChild]="isChild">
   </app-event-invites-view>
 </ng-container>
 <ng-container *ngIf="currentParam == mailsViewParam && currentRoleAndStatus.role.id != 99" class="mx-3">
