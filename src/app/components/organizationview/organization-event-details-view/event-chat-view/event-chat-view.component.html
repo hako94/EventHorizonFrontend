@@ -28,7 +28,7 @@
             <mat-label>Nachricht</mat-label>
             <input matInput #socketInput [disabled]="!subscription.closed">
           </mat-form-field>
-          <mat-checkbox class="mr-4 h-8 w-8" *ngIf="roleIdInEvent !== 12" [(ngModel)]="isImportant"
+          <mat-checkbox class="mr-4 h-8 w-8" *ngIf="!(roleIdInEvent == 12) && !(roleIdInEvent == 99)" [(ngModel)]="isImportant"
                         matTooltip="Als wichtige Nachricht kennzeichnen">
           </mat-checkbox>
 
@@ -49,7 +49,7 @@
             <div class="text-sm break-all">{{ message.message }}</div>
           </div>
         </div>
-        <div class="flex items-center" *ngIf="roleIdInEvent !== 12">
+        <div class="flex items-center" *ngIf="!(roleIdInEvent == 12) && !(roleIdInEvent == 99)">
           <mat-form-field class="flex-grow mr-2">
             <mat-label>Nachricht</mat-label>
             <input matInput #socketInput [disabled]="!subscription.closed">
