@@ -19,6 +19,7 @@ export class EventItemComponent implements OnInit {
   @Input() orgId: string = '';
 
   @Input() mock: boolean = false;
+  @Input() imagepre? : any;
 
   constructor(private storageService: StorageService,
               private dataService: DataService,
