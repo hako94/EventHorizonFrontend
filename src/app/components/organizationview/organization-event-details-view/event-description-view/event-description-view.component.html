@@ -241,7 +241,6 @@
         </ng-container>
         <div class="mr-10 mt-4 mb-8" *ngIf="editMode && eventModel.serial">
           <h2>Weiterer Termin</h2>
-          <div class="flex flex-auto">
           <mat-form-field appearance="fill">
             <mat-label>Beginn</mat-label>
             <input [min]="minDate" matInput [matDatepicker]="startPicker" [formControl]="singleEventStartDate">
@@ -269,13 +268,13 @@
             <mat-hint>hh:mm</mat-hint>
             <mat-error></mat-error>
           </mat-form-field>
+          <br>
           <button mat-raised-button color="primary" (click)="addChildToSerial()">
             <mat-icon>exposure_plus_1</mat-icon>
             Hinzufügen
           </button>
-          </div>
         </div>
       </div>
     </div>
   </mat-card>
-</ng-container>
+</ng-container> <!---->
