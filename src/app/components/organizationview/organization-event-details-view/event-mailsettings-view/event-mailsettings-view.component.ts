@@ -18,6 +18,7 @@ export class EventMailsettingsViewComponent {
   @Input() orgaID = '';
   @Input() eventID = '';
   @Input() roleIdInEvent!: number;
+  @Input() isChild: boolean = false;
 
   availableMailTemplates: EmailTemplateModel[] = [];
   usedMailTemplates: NotificationInfoModel[] = [];

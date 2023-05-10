@@ -35,7 +35,7 @@
         <div>
           <mat-form-field class="md:pl-2 w-full" appearance="fill">
             <mat-label>Event-Typ</mat-label>
-            <mat-select [(value)]="selectedTyp" (selectionChange)="onFilterChange()">
+            <mat-select [(ngModel)]="selectedTyp" (selectionChange)="onFilterChange()">
               <mat-option [value]="'all'">Alle</mat-option>
               <mat-option [value]="'single'">Einzel</mat-option>
               <mat-option [value]="'multi'">Serien</mat-option>
@@ -47,6 +47,7 @@
             <mat-label>Event-Status</mat-label>
             <mat-select [(value)]="selectedStatus" (selectionChange)="onFilterChange()">
               <mat-option [value]=0>Alle</mat-option>
+              <mat-option [value]=7>Verfügbar</mat-option>
               <mat-option [value]=1>Erstellt</mat-option>
               <mat-option [value]=2>Freigegeben</mat-option>
               <mat-option [value]=3>Gestartet</mat-option>

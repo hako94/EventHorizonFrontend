@@ -92,7 +92,7 @@
           <p>{{eventModel.eventStatus.status}}</p>
         </mat-card-subtitle>
       </div>
-      <div class="ml-auto">
+      <div class="ml-auto max-sm:hidden">
         <button class="mx-2 mb-4"
                 *ngIf="!(roleIdInEvent == 10) && !(roleIdInEvent == 11) && !(roleIdInEvent == 12) && (eventModel.eventStatus.id == 2) && !eventModel.invited && (eventModel.parentId == null)"
                 mat-raised-button color="primary" (click)="book()"><mat-icon>assignment_turned_in</mat-icon>Teilnehmen
@@ -149,6 +149,56 @@
                   [(ngModel)]="descriptionNew"></textarea>
       </mat-form-field>
     </div>
+    <div class="sm:hidden">
+      <mat-divider></mat-divider>
+      <br>
+      <button class="mx-2 mb-4"
+              *ngIf="!(roleIdInEvent == 10) && !(roleIdInEvent == 11) && !(roleIdInEvent == 12) && (eventModel.eventStatus.id == 2) && !eventModel.invited && (eventModel.parentId == null)"
+              mat-raised-button color="primary" (click)="book()"><mat-icon>assignment_turned_in</mat-icon>Teilnehmen
+      </button>
+      <button class="mx-2 mb-4"
+              *ngIf="!(roleIdInEvent == 10) && !(roleIdInEvent == 11) && (roleIdInEvent == 12) && (eventModel.eventStatus.id == 2) && !eventModel.invited && (eventModel.parentId == null)"
+              mat-raised-button color="primary" (click)="signOff()"><mat-icon>power_settings_new</mat-icon>Abmelden
+      </button>
+      <button *ngIf="eventModel.invited" class="mx-2 mb-4" (click)="acceptInvite()" mat-raised-button><mat-icon>check_circle_outline</mat-icon>Annehmen</button>
+      <button *ngIf="eventModel.invited" class="mx-2 mb-4" (click)="declineInvite()" mat-raised-button color="warn"><mat-icon>block</mat-icon>
+        Ablehnen
+      </button>
+      <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 1 && (eventModel.parentId == null)" class="mx-2 mb-4"
+              mat-raised-button color="primary" (click)="setStatus(2)"><mat-icon>event_note</mat-icon>Freigeben
+      </button>
+      <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 2" class="mx-2 mb-4"
+              mat-raised-button color="primary"
+              (click)="setStatus(3)"
+              matTooltip="Manuelles Starten eines Events erst 24h vor Eventstart möglich, Event wird automatisch 2h vor Beginn gestartet"><mat-icon>event_available</mat-icon>
+        Starten
+      </button>
+      <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 2 && (eventModel.parentId == null)" class="mx-2 mb-4" mat-raised-button
+              color="warn" (click)="setStatus(5)"
+              matTooltip="Das Event wird abgesagt und für Teilnehmer nicht mehr angezeigt"><mat-icon>event_busy</mat-icon>Absagen
+      </button>
+      <button *ngIf="roleIdInEvent==10 && eventModel.eventStatus.id == 3" class="mx-2 mb-4"
+              mat-raised-button color="warn" (click)="setStatus(4)"
+              matTooltip="Das Event wird automatisch 1h nach Schluss beendet, manuelles Beenden erst nach eingetragenem Event Ende möglich"><mat-icon>event_busy</mat-icon>
+        Beenden
+      </button>
+      <button
+        *ngIf="(roleIdInEvent==10) && (eventModel.eventStatus.id == 1 || eventModel.eventStatus.id == 4 || eventModel.eventStatus.id == 5) && (eventModel.parentId == null)"
+        class="mx-2 mb-4"
+        mat-raised-button color="warn" (click)="setStatus(6)"><mat-icon>delete</mat-icon>Löschen
+      </button>
+      <button class="mx-2 mb-4" mat-raised-button color="primary"
+              (click)="editMode = true"
+              *ngIf="!editMode && !eventModel.parentId &&(roleIdInEvent==10)"><mat-icon>edit</mat-icon>Bearbeiten
+      </button>
+      <button class="mx-2 mb-4" mat-raised-button color="primary" (click)="safeAndPersist()"
+              *ngIf="editMode && (roleIdInEvent==10)"><mat-icon>save</mat-icon>Speichern
+      </button>
+      <button mat-raised-button color="primary" class="mx-2 mb-4" (click)="safeAsTemplate()"
+              *ngIf="(roleIdInEvent==10 || hasRole(1)) && !eventModel.parentId"><mat-icon>save_alt</mat-icon>
+        Als Vorlage speichern
+      </button>
+    </div>
     <div *ngIf="eventModel.parentId">
       <br>
       <mat-divider></mat-divider>
@@ -191,6 +241,7 @@
         </ng-container>
         <div class="mr-10 mt-4 mb-8" *ngIf="editMode && eventModel.serial">
           <h2>Weiterer Termin</h2>
+          <div class="flex flex-auto">
           <mat-form-field appearance="fill">
             <mat-label>Beginn</mat-label>
             <input [min]="minDate" matInput [matDatepicker]="startPicker" [formControl]="singleEventStartDate">
@@ -222,6 +273,7 @@
             <mat-icon>exposure_plus_1</mat-icon>
             Hinzufügen
           </button>
+          </div>
         </div>
       </div>
     </div>
