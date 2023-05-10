@@ -11,6 +11,7 @@ const CSRF_KEY = "XSRF-TOKEN";
 const ORGANIZATIONS_STORAGE_KEY = "auth-orgs";
 const PLATTFORMADMIN_STORAGE_KEY = "admin";
 const USER_ID_STORAGE_KEY = "auth-user_id";
+const COLOR = "color";
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +37,15 @@ export class StorageService {
   public saveEmail(email : string) {
     window.sessionStorage.removeItem(EMAIL_STORAGE_KEY)
     window.sessionStorage.setItem(EMAIL_STORAGE_KEY, email)
+  }
+
+  public safeColor(color : string) {
+    window.sessionStorage.removeItem(COLOR)
+    window.sessionStorage.setItem(COLOR, color)
+  }
+
+  public getColor() : string {
+    return window.sessionStorage.getItem(COLOR) || 'alternate';
   }
 
   /**

@@ -130,11 +130,11 @@ export class OrganizationEventViewComponent implements OnInit {
       })
     }
 
-    this.filteredEvents = this.filteredEvents.slice(0, 50);
+    this.filteredEvents = this.filteredEvents.slice(0, 100);
   }
 
   defaultFilter(): void {
-    this.filteredEvents = this.events.slice(0, 50);
+    this.filteredEvents = this.events.slice(0, 100);
   }
 
   /**

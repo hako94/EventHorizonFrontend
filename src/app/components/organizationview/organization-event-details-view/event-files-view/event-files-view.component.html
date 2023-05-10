@@ -1,6 +1,6 @@
 <div class="mx-3 max-h-[85vh] overflow-y-auto">
   <div class="flex-row block lg:flex gap-4">
-    <div *ngIf="!(roleIdInEvent == 12)" class="w-1/2">
+    <div *ngIf="!(roleIdInEvent == 12) && !(roleIdInEvent == 99)" class="w-1/2">
       <br>
       <h2>Datei hochladen</h2>
       <div class="mb-8 w-[400px] h-[200px] border-2 relative">
@@ -20,7 +20,7 @@
         <mat-list-item class="fileItem hover:bg-gray-300 mb-0.5" *ngFor="let file of availableFilesInfos">
           <div class="flex justify-between">
             <span class="mt-3" (click)="downloadFile(file.id, file.fileName)">{{file.fileName}}</span>
-            <button *ngIf="!(roleIdInEvent == 12)" class="ml-auto" mat-icon-button color="warn" (click)="deleteFile(file.id)">
+            <button *ngIf="!(roleIdInEvent == 12) && !(roleIdInEvent == 99)" class="ml-auto" mat-icon-button color="warn" (click)="deleteFile(file.id)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>

@@ -21,11 +21,12 @@ export class OrganizationItemComponent implements OnInit{
 
   ngOnInit(): void {
     this.dataService.getOrganizationInfos(this.id).subscribe(success => {
-
-      this.dataService.getImage(this.id, success.logoId).subscribe(success => {
-        let objectURL = URL.createObjectURL(success);
-        this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-      })
+      if (success.logoId) {
+        this.dataService.getImage(this.id, success.logoId).subscribe(success => {
+          let objectURL = URL.createObjectURL(success);
+          this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+        })
+      }
     })
   }
 

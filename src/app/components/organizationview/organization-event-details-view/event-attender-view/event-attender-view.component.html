@@ -1,6 +1,6 @@
 <div class="mx-3">
   <br>
-  <div *ngIf="hasRole(1) || hasRole(2)">
+  <div *ngIf="(hasRole(1) || hasRole(2)) && !isChild">
     <h2>Mitglied einladen</h2>
     <form>
       <mat-form-field class="example-full-width m-2 w-1/4">
@@ -60,14 +60,16 @@
                 <mat-icon>save</mat-icon>
               </button>
             </div>
-            <div *ngIf="!(this.editedUser == attender.id)">
+            <div *ngIf="!(this.editedUser == attender.id) && !isChild">
               <button mat-icon-button color="primary" (click)="this.enableEdit(attender.id)" [disabled]="editMode">
                 <mat-icon>edit</mat-icon>
               </button>
             </div>
+            <div *ngIf="!isChild">
             <button mat-icon-button matTooltip="Abmelden" color="warn" [disabled]="editMode" (click)="deleteAttender(attender.email)">
               <mat-icon>delete</mat-icon>
             </button>
+            </div>
           </div>
         </div>
       </ng-container>

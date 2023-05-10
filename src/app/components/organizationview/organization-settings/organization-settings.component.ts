@@ -20,11 +20,13 @@ export class OrganizationSettingsComponent implements OnInit{
     this.dataService.getOrganizationInfos(this.orgaID).subscribe(success => {
       console.log(success)
 
-      this.dataService.getImage(this.orgaID, success.logoId).subscribe(success => {
-        console.warn(success)
-        let objectURL = URL.createObjectURL(success);
-        this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-      })
+      if (success.logoId) {
+        this.dataService.getImage(this.orgaID, success.logoId).subscribe(success => {
+          console.warn(success)
+          let objectURL = URL.createObjectURL(success);
+          this.shownimage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+        })
+      }
     })
   }
 

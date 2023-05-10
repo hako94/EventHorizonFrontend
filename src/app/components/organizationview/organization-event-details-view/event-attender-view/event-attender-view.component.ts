@@ -18,6 +18,7 @@ export class EventAttenderViewComponent implements OnInit {
   @Input() orgaID = '';
   @Input() eventID = '';
   @Input() roleIdInEvent!: number;
+  @Input() isChild = false;
 
   ownRoleInOrg: number = -1;
   attendee: UserForEventWithRoleModel[] = [];

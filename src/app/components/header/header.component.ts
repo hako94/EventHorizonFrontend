@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {StorageService} from "../../services/StorageService";
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/AuthService";
+import {ThemeService} from "../../services/theme.service";
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,10 @@ export class HeaderComponent {
 
   protected readonly sessionStorage = sessionStorage;
 
-  constructor(private storageService : StorageService, private router : Router, private authService : AuthService) {
+  constructor(private storageService : StorageService,
+              private router : Router,
+              private authService : AuthService,
+              private themeService : ThemeService) {
   }
 
   /**
@@ -47,5 +51,9 @@ export class HeaderComponent {
    */
   isLoggedInPlatformAdmin() : boolean {
     return ((this.storageService.isPlattformAdmin())) && (this.router.url == '/dashboard');
+  }
+
+  switchTheme() {
+    this.themeService.switchTheme();
   }
 }

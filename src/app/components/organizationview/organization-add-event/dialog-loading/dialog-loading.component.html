@@ -10,7 +10,7 @@
   <div class="flex">
     <mat-spinner *ngIf="!(data.mEventPictureUploaded.id == 1)" [diameter]="20"></mat-spinner>
     <mat-icon *ngIf="data.mEventPictureUploaded.id == 1">done</mat-icon>
-    <p> Event-Bild wir hochgeladen</p>
+    <p> Event-Bild wird hochgeladen</p>
   </div>
   <div class="flex">
     <mat-spinner *ngIf="!(data.mEventFilesUploaded.id == 1)" [diameter]="20"></mat-spinner>
@@ -20,10 +20,10 @@
   <div class="flex">
     <mat-spinner *ngIf="!(data.mEventFilesUploaded.id == 1)" [diameter]="20"></mat-spinner>
     <mat-icon *ngIf="data.mEventFilesUploaded.id == 1">done</mat-icon>
-    <p> Fertig stellen</p>
+    <p> Fertigstellen</p>
   </div>
 </div>
 <div mat-dialog-actions>
-  <button mat-button color="warn" (click)="onNoClick()">Abbrechen</button>
-  <button mat-button (click)="onNoClick()" [disabled]="!data.mEventFilesUploaded">Fertig</button>
+  <button mat-raised-button color="warn" (click)="onNoClick()">Abbrechen</button>
+  <button mat-raised-button color="primary" (click)="onNoClick()" [disabled]="!data.mEventFilesUploaded">Fertig</button>
 </div>
