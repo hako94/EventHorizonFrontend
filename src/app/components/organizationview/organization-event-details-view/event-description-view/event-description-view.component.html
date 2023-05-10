@@ -31,38 +31,46 @@
           <label *ngIf="eventModel.serial"><strong>Datum erstes Event</strong></label>
           <label *ngIf="!eventModel.serial"><strong>Beginn</strong></label>
           <p *ngIf="!eventModel.serial">{{eventModel.childs[eventModel.childs.length - 1].eventStart.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}}</p>
-          <p *ngIf="eventModel.serial">{{eventModel.childs[0].eventStart.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}} bis
+          <p *ngIf="eventModel.serial">{{eventModel.childs[0].eventStart.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}} <strong>bis</strong>
             {{eventModel.childs[0].eventEnd.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}}</p>
         </mat-card-subtitle>
-        <!--<mat-card-subtitle *ngIf="editMode">
+        <mat-card-subtitle *ngIf="editMode && !eventModel.serial">
           <mat-form-field appearance="fill">
             <mat-label>Beginn</mat-label>
-            <div *ngIf="eventModel?.childs?.[0]">
-              <input matInput [matDatepicker]="picker"
-                     value="{{(eventModel?.childs?.[0].eventStart || '' | date: 'dd.MM.yyyy, HH:mm')}}">
-            </div>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+            <input [min]="minDate" matInput [matDatepicker]="startPicker" [formControl]="singleEventStartDate">
+            <mat-hint>DD.MM.YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
           </mat-form-field>
-        </mat-card-subtitle>-->
+          <mat-form-field class="ml-2">
+            <mat-label>Start-Uhrzeit</mat-label>
+            <input type="time" required #singleStart [(ngModel)]="singleEventTimeStringStart" matInput>
+            <mat-hint>hh:mm</mat-hint>
+          </mat-form-field>
+        </mat-card-subtitle>
         <mat-card-subtitle class="whitespace-nowrap" *ngIf="!editMode">
           <label *ngIf="eventModel.serial"><strong>Datum letztes Event</strong></label>
           <label *ngIf="!eventModel.serial"><strong>Ende</strong></label>
           <p *ngIf="!eventModel.serial">{{eventModel.childs[eventModel.childs.length - 1].eventEnd.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}}</p>
-          <p *ngIf="eventModel.serial">{{eventModel.childs[eventModel.childs.length - 1].eventStart.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}} bis
+          <p *ngIf="eventModel.serial">{{eventModel.childs[eventModel.childs.length - 1].eventStart.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}} <strong>bis</strong>
             {{eventModel.childs[eventModel.childs.length - 1].eventEnd.replace('T', ', ').slice(0, 17) | date: 'dd.MM.yyyy, HH:mm'}}</p>
         </mat-card-subtitle>
-        <!--<mat-card-subtitle *ngIf="editMode">
-          <mat-form-field appearance="fill">
-            <mat-label>Ende</mat-label>
-            <div *ngIf="eventModel?.childs?.[0]">
-              <input matInput [matDatepicker]="picker2"
-                     value="{{eventModel?.childs?.[0].eventEnd || '' | date: 'dd.MM.yyyy, HH:mm'}}">
-            </div>
-            <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
-            <mat-datepicker #picker2></mat-datepicker>
-          </mat-form-field>
-        </mat-card-subtitle> -->
+        <mat-card-subtitle *ngIf="editMode && !eventModel.serial">
+        <mat-form-field appearance="fill" class="mt-4">
+          <mat-label>Ende</mat-label>
+          <input matInput [min]="singleEventStartDate.value"  [matDatepicker]="endPicker" [formControl]="singleEventEndDate">
+          <mat-hint>DD.MM.YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-error>Der Endzeitpunkt muss gültig sein und nach dem Beginn liegen</mat-error>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="ml-2">
+          <mat-label>End-Uhrzeit</mat-label>
+          <input type="time" required #singleEnd [(ngModel)]="singleEventTimeStringEnd" matInput>
+          <mat-hint>hh:mm</mat-hint>
+          <mat-error></mat-error>
+        </mat-form-field>
+        </mat-card-subtitle>
         <mat-card-subtitle class="whitespace-nowrap" *ngIf="!editMode">
           <label><strong>Ort</strong></label>
           <p>{{eventModel.location}}</p>
@@ -181,24 +189,24 @@
             </button>
           </div>
         </ng-container>
-        <div class="mr-10 mt-4 mb-8" *ngIf="editMode && multiEvent">
+        <div class="mr-10 mt-4 mb-8" *ngIf="editMode && eventModel.serial">
           <h2>Weiterer Termin</h2>
           <mat-form-field appearance="fill">
             <mat-label>Beginn</mat-label>
-            <input [min]="minDate" matInput [matDatepicker]="startPicker" [formControl]="singleStartDate">
+            <input [min]="minDate" matInput [matDatepicker]="startPicker" [formControl]="singleEventStartDate">
             <mat-hint>DD.MM.YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
             <mat-datepicker #startPicker></mat-datepicker>
           </mat-form-field>
           <mat-form-field class="ml-2">
             <mat-label>Start-Uhrzeit</mat-label>
-            <input type="time" required #singleStart [(ngModel)]="singleStartTime" (input)="attachTimeToDate(singleStartDate, singleStart.value)" matInput>
+            <input type="time" required #singleStart [(ngModel)]="singleEventTimeStringStart" matInput>
             <mat-hint>hh:mm</mat-hint>
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill" class="mt-4">
             <mat-label>Ende</mat-label>
-            <input matInput [min]="singleStartDate.value"  [matDatepicker]="endPicker" [formControl]="singleEndDate">
+            <input matInput [min]="singleEventStartDate.value"  [matDatepicker]="endPicker" [formControl]="singleEventEndDate">
             <mat-hint>DD.MM.YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
             <mat-error>Der Endzeitpunkt muss gültig sein und nach dem Beginn liegen</mat-error>
@@ -206,20 +214,10 @@
           </mat-form-field>
           <mat-form-field class="ml-2">
             <mat-label>End-Uhrzeit</mat-label>
-            <input type="time" required #singleEnd [(ngModel)]="singleEndTime" (input)="attachTimeToDate(singleEndDate, singleEnd.value)" matInput>
+            <input type="time" required #singleEnd [(ngModel)]="singleEventTimeStringEnd" matInput>
             <mat-hint>hh:mm</mat-hint>
             <mat-error></mat-error>
           </mat-form-field>
-          <button mat-raised-button color="primary">
-            <mat-icon>exposure_plus_1</mat-icon>
-            Hinzufügen
-          </button>
-        </div>
-        <div class="mr-10 mt-4 mb-8" *ngIf="editMode && !multiEvent && eventModel?.serial">
-          <h2>Weiterer Termin</h2>
-          <mat-card-subtitle>
-            <p>Eine weitere Termin-Wiederholung <br> an die Serie anfügen</p>
-          </mat-card-subtitle>
           <button mat-raised-button color="primary" (click)="addChildToSerial()">
             <mat-icon>exposure_plus_1</mat-icon>
             Hinzufügen

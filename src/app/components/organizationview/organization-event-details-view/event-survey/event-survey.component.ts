@@ -326,7 +326,7 @@ export class EventSurveyComponent implements OnInit {
     if (statusId == 1) {
       statusText = 'erstellt';
     } else if (statusId == 2) {
-      statusText = 'freigabe';
+      statusText = 'freigegeben';
     } else if (statusId == 3) {
       statusText = 'geschlossen';
     }

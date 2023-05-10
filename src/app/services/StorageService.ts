@@ -45,7 +45,7 @@ export class StorageService {
   }
 
   public getColor() : string {
-    return window.sessionStorage.getItem(COLOR) || '';
+    return window.sessionStorage.getItem(COLOR) || 'alternate';
   }
 
   /**
