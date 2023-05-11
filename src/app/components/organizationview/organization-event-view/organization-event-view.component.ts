@@ -29,12 +29,15 @@ export class OrganizationEventViewComponent implements OnInit {
 
 
   constructor(private dataService: DataService, private storageStorage: StorageService) {
+    this.selectedStatus = 7;
+    this.selectedTyp = 'single';
   }
 
   ngOnInit(): void {
     this.dataService.getOrganizationEvents(this.orgaID).subscribe(success => {
       this.events = success;
       this.defaultFilter();
+      this.onFilterChange();
       console.log(this.filteredEvents);
     })
   }
@@ -127,6 +130,12 @@ export class OrganizationEventViewComponent implements OnInit {
     if (this.selectedStatus == 6) {
       this.filteredEvents = this.filteredEvents.filter(val => {
         return val.eventStatus.id == 6
+      })
+    }
+    if (this.selectedStatus == 7) {
+      this.filteredEvents = this.filteredEvents.filter(val => {
+
+        return (val.eventStatus.id == 1 || val.eventStatus.id == 2 || val.eventStatus.id == 3)
       })
     }
 

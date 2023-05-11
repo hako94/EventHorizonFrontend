@@ -463,8 +463,8 @@
           childs:
           [
             {
-              eventStart: (form.eventType == "single" ? singleEventStartDate.value!.toString() : ""),
-              eventEnd: (form.eventType == "single" ? singleEventEndDate.value!.toString() : "")
+              eventStart: (form.eventType == "single" ? singleEventStartDate.value!.toString() : form.eventType == "multi" ? startDate.value!.toString() : serialStartDate.value!.toString()),
+              eventEnd: (form.eventType == "single" ? singleEventEndDate.value!.toString() : form.eventType == "multi" ? endDate.value!.toString() : serialEndDate.value!.toString())
             }
           ],
           serial: (form.eventType == "serial" || form.eventType == "multi"),
@@ -482,7 +482,10 @@
           attender: false,
           invited: false
           }'
-        [orgId]="this.currentOrganization"></app-event>
+        [orgId]='this.currentOrganization'
+        [mock]="true"
+        [imagepre]='this.shownPreviewImage'>
+      </app-event>
       <br>
       <mat-divider></mat-divider>
       <br>

@@ -79,7 +79,7 @@
   </app-event-invites-view>
 </ng-container>
 <ng-container *ngIf="currentParam == mailsViewParam && currentRoleAndStatus.role.id != 99" class="mx-3">
-  <app-event-mailsettings-view [orgaID]="currentOrganization" [eventID]="currentEvent" [roleIdInEvent]="currentRoleAndStatus.role.id">
+  <app-event-mailsettings-view [orgaID]="currentOrganization" [eventID]="currentEvent" [roleIdInEvent]="currentRoleAndStatus.role.id" [isChild]="isChild">
   </app-event-mailsettings-view>
 </ng-container>
 <ng-container *ngIf="currentParam == attendanceViewParam" class="mx-3">
